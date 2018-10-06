@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXEngine", "DirectXEngine\DirectXEngine.vcxproj", "{AAC801C6-4290-458E-A2F7-DA86F596D8FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Debug|x64.ActiveCfg = Debug|x64
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Debug|x64.Build.0 = Debug|x64
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Debug|x86.Build.0 = Debug|Win32
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Release|x64.ActiveCfg = Release|x64
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Release|x64.Build.0 = Release|x64
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Release|x86.ActiveCfg = Release|Win32
+		{AAC801C6-4290-458E-A2F7-DA86F596D8FC}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B6BE32C1-BC8A-4EE4-8DD5-530D1C3D1A53}
+	EndGlobalSection
+EndGlobal
