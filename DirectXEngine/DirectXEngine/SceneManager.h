@@ -12,11 +12,11 @@ public:
 
 	~SceneManager();
 private:
-	SceneManager();
+	SceneManager() = default;
 
 	static SceneManager* mInstance;
 
-	Scene* mCurrentScene;
+	Scene* mCurrentScene{};
 };
 
 #endif

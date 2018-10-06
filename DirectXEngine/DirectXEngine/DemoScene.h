@@ -4,6 +4,7 @@
 #include <vector>
 #include "Sprite.h"
 #include "Animation.h"
+#include "GameMap.h"
 
 class DemoScene :public Scene
 {
@@ -14,13 +15,18 @@ public:
 	void LoadContent() override;
 	void Draw() override;
 
-	~DemoScene() override = default;
+	void KeyDown(int keyCode) override;
+	void KeyUp(int keyCode) override;
+	void MouseDown(float x, float y) override;
+
+	~DemoScene();
 
 private:
 	//std::vector<Sprite*> mSprite;
 	//float mTimeCounter{};
-
-	Animation* mGoldBlock;
+	//Animation* mGoldBlock;
+	GameMap* mMap{};
+	Camera* mCamera{};
 };
 
 #endif

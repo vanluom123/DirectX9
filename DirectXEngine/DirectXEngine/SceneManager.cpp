@@ -1,16 +1,12 @@
 #include "SceneManager.h"
 
-SceneManager* SceneManager::mInstance = NULL;
-
-SceneManager::SceneManager()
-{
-	mCurrentScene = NULL;
-}
+SceneManager* SceneManager::mInstance = nullptr;
 
 SceneManager* SceneManager::GetInstance()
 {
-	if (mInstance == NULL)
+	if (!mInstance)
 		mInstance = new SceneManager();
+
 	return mInstance;
 }
 
@@ -35,6 +31,6 @@ SceneManager::~SceneManager()
 	if (mCurrentScene)
 	{
 		delete mCurrentScene;
-		mCurrentScene = NULL;
+		mCurrentScene = nullptr;
 	}
 }

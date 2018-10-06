@@ -16,3 +16,15 @@ void Scene::LoadContent()
 {
 	std::cout << "Content is loaded in class Scene" << std::endl;
 }
+
+void Scene::KeyDown(int keyCode)
+{
+}
+
+void Scene::KeyUp(int keyCode)
+{
+}
+
+void Scene::MouseDown(float x, float y)
+{
+}

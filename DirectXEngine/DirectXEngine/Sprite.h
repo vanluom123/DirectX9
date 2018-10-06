@@ -9,7 +9,7 @@ public:
 	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
 
 	Sprite() = default;
-	virtual ~Sprite(){}
+	virtual ~Sprite() = default;
 	LPDIRECT3DTEXTURE9 GetTexture() const;
 
 	//void Draw();
@@ -55,17 +55,17 @@ protected:
 	static bool isRect(RECT rect);
 
 	D3DXVECTOR3             mPosition; // vi tri cua Sprite, co goc la chinh giua hinh anh Texture
-	LPDIRECT3DTEXTURE9      mTexture; // load hinh anh vao day
-	LPD3DXSPRITE            mSpriteHandler; //SpriteHandler ho tro ve hinh
-	D3DXIMAGE_INFO          mImageInfo; // thong tin thuc cua hinh anh duoc lay
-	RECT                    mSourceRect; // hinh chu nhat cat tu anh cua texture
+	LPDIRECT3DTEXTURE9      mTexture{}; // load hinh anh vao day
+	LPD3DXSPRITE            mSpriteHandler{}; //SpriteHandler ho tro ve hinh
+	D3DXIMAGE_INFO          mImageInfo{}; // thong tin thuc cua hinh anh duoc lay
+	RECT                    mSourceRect{}; // hinh chu nhat cat tu anh cua texture
 
-	int                     mWidth, mHeight; // kich thuoc cua texture
+	int                     mWidth{}, mHeight{}; // kich thuoc cua texture
 
-	bool                    mIsFlipVertical, // lat theo chieu doc
-							mIsFlipHorizontal; // lat theo chieu ngang
+	bool                    mIsFlipVertical{}, // lat theo chieu doc
+							mIsFlipHorizontal{}; // lat theo chieu ngang
 
-	float                   mRotation; // goc quay cua Sprite tinh theo radian
+	float                   mRotation{}; // goc quay cua Sprite tinh theo radian
 
 	D3DXVECTOR2             mScale; // Vector tuy chinh do phong to / thu nho cua texture
 	D3DXVECTOR2             mTranslation; //Doi hinh anh vi tri thuc cua Sprite + mTranslate

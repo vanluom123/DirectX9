@@ -16,7 +16,7 @@ public:
 
 private:
 	GameTime() = default;
-	LARGE_INTEGER mStartTime, mEndTime, mDelta, mClockRate;
+	LARGE_INTEGER mStartTime{}, mEndTime{}, mDelta{}, mClockRate{};
 	static GameTime *mInstance;
 };
 

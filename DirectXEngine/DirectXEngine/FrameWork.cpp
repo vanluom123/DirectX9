@@ -1,6 +1,8 @@
 #include "FrameWork.h"
 #include "Game.h"
 #include "GameGlobal.h"
+#include "SceneManager.h"
+#include "DemoScene.h"
 
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -186,7 +188,8 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_KEYDOWN:
 		{
-			if (wParam == VK_ESCAPE)
+			SceneManager::GetInstance()->GetCurrentScene()->KeyDown(wParam);
+			if(wParam==VK_ESCAPE)
 			{
 				PostQuitMessage(0);
 				DestroyWindow(hwnd);

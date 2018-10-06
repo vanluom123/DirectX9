@@ -1,6 +1,6 @@
 #include "GameTime.h"
 
-GameTime* GameTime::mInstance = NULL;
+GameTime* GameTime::mInstance = nullptr;
 
 GameTime* GameTime::GetInstance()
 {

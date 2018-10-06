@@ -9,15 +9,15 @@ class Game
 public:
 	Game(int fps = 60);
 
-	~Game(){}
+	~Game() = default;
 
 protected:
 
-	PDIRECT3DSURFACE9       mBackground,
-							mBackBuffer;
+	PDIRECT3DSURFACE9       mBackground{},
+							mBackBuffer{};
 
-	int                     mWidth,
-							mHeight;
+	int                     mWidth{},
+							mHeight{};
 
 	static int              mIsDone;
 	float                   mFPS;

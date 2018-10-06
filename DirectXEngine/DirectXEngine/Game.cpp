@@ -31,7 +31,7 @@ void Game::Render()
 	auto scene = SceneManager::GetInstance()->GetCurrentScene();
 
 	//0x4866ff set mau cho surface
-	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
+	device->Clear(0, nullptr, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
 
 	{
 		device->BeginScene();
@@ -49,7 +49,7 @@ void Game::Render()
 		device->EndScene();
 	}
 
-	device->Present(0, 0, 0, 0);
+	device->Present(nullptr, nullptr, nullptr, nullptr);
 }
 
 void Game::InitLoop() const
@@ -63,7 +63,7 @@ void Game::InitLoop() const
 	{
 		GameTime::GetInstance()->StartCounter();
 
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
