@@ -1,9 +1,12 @@
 #include "Animation.h"
 
 
+Animation::Animation()
+{}
+
 Animation::Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame, D3DCOLOR colorKey)
 {
-	this->initWithAnimation(filePath, totalFrame, rows, columns, timePerFrame, colorKey);
+	initWithAnimation(filePath, totalFrame, rows, columns, timePerFrame, colorKey);
 }
 
 void Animation::initWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame,
@@ -73,3 +76,6 @@ void Animation::Update(float dt)
 	else
 		mCurrentTotalTime += dt;
 }
+
+Animation::~Animation()
+{}

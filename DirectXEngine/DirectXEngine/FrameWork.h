@@ -12,7 +12,7 @@
 class FrameWork
 {
 public:
-	FrameWork() = default;
+	FrameWork();
 	~FrameWork();
 
 	bool Initialize();

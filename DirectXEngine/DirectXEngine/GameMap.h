@@ -1,10 +1,5 @@
-#pragma once
 #ifndef __GAME_MAP__
 #define __GAME_MAP__
-
-#include <d3dx9.h>
-#include <d3d9.h>
-#include <vector>
 
 #include "Sprite.h"
 #include "../DirectXEngine/MapReader/Tmx.h.in"
@@ -16,12 +11,12 @@ class GameMap
 public:
 	GameMap(const char* filePath);
 
-	Tmx::Map* GetMap() const;
+	Tmx::Map* GetMap();
 
-	int GetWidth() const;
-	int GetHeight() const;
-	int GetTileWidth() const;
-	int GetTileHeight() const;
+	int GetWidth();
+	int GetHeight();
+	int GetTileWidth();
+	int GetTileHeight();
 
 	void SetCamera(Camera *camera);
 
@@ -34,10 +29,11 @@ private:
 
 	static bool isContain(RECT rect1, RECT rect2);
 
-	Tmx::Map                        *mMap{};
-	std::map<int, Sprite*>          mListTileset;
-	Camera *mCamera{};
-};
+	Tmx::Map                        *mMap;
+	std::map<int, Sprite*>          mListTilesSet;
 
+	Camera* mCamera;
+
+};
 #endif
 

@@ -10,19 +10,19 @@ SceneManager* SceneManager::GetInstance()
 	return mInstance;
 }
 
-Scene* SceneManager::GetCurrentScene() const
+Scene* SceneManager::GetCurrentScene()
 {
 	return mCurrentScene;
 }
 
-void SceneManager::Update(float dt) const
+void SceneManager::Update(float dt)
 {
 	mCurrentScene->Update(dt);
 }
 
 void SceneManager::ReplaceScene(Scene* scene)
 {
-	//delete mCurrentScene;
+	delete mCurrentScene;
 	mCurrentScene = scene;
 }
 
@@ -34,3 +34,6 @@ SceneManager::~SceneManager()
 		mCurrentScene = nullptr;
 	}
 }
+
+SceneManager::SceneManager(): mCurrentScene(nullptr)
+{}

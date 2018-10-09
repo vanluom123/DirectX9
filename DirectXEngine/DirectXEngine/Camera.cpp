@@ -1,5 +1,9 @@
 #include "Camera.h"
 
+Camera::Camera()
+{
+}
+
 Camera::Camera(int width, int height)
 {
 	this->mWidth = width;
@@ -7,29 +11,33 @@ Camera::Camera(int width, int height)
 	this->mPosition = D3DXVECTOR3(0, 0, 0);
 }
 
-int Camera::GetWidth() const
+Camera::~Camera()
+{
+}
+
+int Camera::GetWidth()
 {
 	return mWidth;
 }
 
-int Camera::GetHeight() const
+int Camera::GetHeight()
 {
 	return mHeight;
 }
 
-RECT Camera::GetBound() const
+RECT Camera::GetBound()
 {
 	RECT bound;
 
 	bound.left = long(mPosition.x - float(mWidth) / 2);
-	bound.right = bound.left + long(mWidth);
+	bound.right = bound.left + mWidth;
 	bound.top = long(mPosition.y - float(mHeight) / 2);
-	bound.bottom = bound.top + long(mHeight);
+	bound.bottom = bound.top + mHeight;
 
 	return bound;
 }
 
-D3DXVECTOR3 Camera::GetPosition() const
+D3DXVECTOR3 Camera::GetPosition()
 {
 	return mPosition;
 }

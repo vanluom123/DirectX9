@@ -10,6 +10,14 @@ GameTime* GameTime::GetInstance()
 	return mInstance;
 }
 
+GameTime::~GameTime()
+{
+}
+
+GameTime::GameTime(): mStartTime(), mEndTime(), mDelta(), mClockRate()
+{
+}
+
 void GameTime::StartCounter()
 {
 	if (!QueryPerformanceFrequency(&mClockRate))

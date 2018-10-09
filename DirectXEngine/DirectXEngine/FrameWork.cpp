@@ -3,8 +3,12 @@
 #include "GameGlobal.h"
 #include "SceneManager.h"
 #include "DemoScene.h"
+#include <windowsx.h>
 
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+FrameWork::FrameWork()
+{}
 
 FrameWork::~FrameWork()
 {
@@ -100,7 +104,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 	}
 
 
-	HWND hwnd = CreateWindow(
+	const HWND hwnd = CreateWindow(
 		m_applicationName,
 		szTitleName,
 		style,
@@ -129,7 +133,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 	SetFocus(hwnd);
 
 	if (init_device())
-		Game* game = new Game();
+		auto game = new Game();
 
 	return true;
 }
@@ -162,7 +166,7 @@ bool FrameWork::init_device()
 
 	if (FAILED(resultD3D))
 	{
-		MessageBox(NULL, "CreateDevice failed", "Error", MB_OK);
+		MessageBox(nullptr, "CreateDevice failed", "Error", MB_OK);
 		return false;
 	}
 
@@ -171,7 +175,7 @@ bool FrameWork::init_device()
 	const auto result = D3DXCreateSprite(d3ddev, &m_SpriteHandler);
 	if (FAILED(result))
 	{
-		MessageBox(NULL, "D3DXCreateSprite failed", "Error", MB_OK);
+		MessageBox(nullptr, "D3DXCreateSprite failed", "Error", MB_OK);
 		return false;
 	}
 
@@ -186,32 +190,39 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
-		case WM_KEYDOWN:
-		{
-			SceneManager::GetInstance()->GetCurrentScene()->KeyDown(wParam);
-			if(wParam==VK_ESCAPE)
-			{
-				PostQuitMessage(0);
-				DestroyWindow(hwnd);
-			}
-			break;
-		}
-		case WM_PAINT:
-		{
-			HDC hdc = BeginPaint(hwnd, &ps);
-			EndPaint(hwnd, &ps);
-			break;
-		}
-		case WM_CLOSE:
-		{
-			GameGlobal::isGameRunning = false;
-			PostQuitMessage(0);
-			DestroyWindow(hwnd);
-			break;
-		}
-		default: {
-			return DefWindowProc(hwnd, message, wParam, lParam);
-		}
+	case WM_LBUTTONDOWN:
+	{
+		SceneManager::GetInstance()->GetCurrentScene()->MouseDown(
+			float(GET_X_LPARAM(wParam)),
+			float(GET_Y_LPARAM(wParam))
+		);
+	}
+	case WM_KEYUP:
+	{
+		SceneManager::GetInstance()->GetCurrentScene()->KeyUp(wParam);
+		break;
+	}
+	case WM_KEYDOWN:
+	{
+		SceneManager::GetInstance()->GetCurrentScene()->KeyDown(wParam);
+		break;
+	}
+	case WM_PAINT:
+	{
+		HDC hdc = BeginPaint(hwnd, &ps);
+		EndPaint(hwnd, &ps);
+		break;
+	}
+	case WM_CLOSE:
+	{
+		GameGlobal::isGameRunning = false;
+		PostQuitMessage(0);
+		DestroyWindow(hwnd);
+		break;
+	}
+	default: {
+		return DefWindowProc(hwnd, message, wParam, lParam);
+	}
 	};
 
 	return 0;

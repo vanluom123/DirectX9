@@ -5,15 +5,16 @@
 class Camera
 {
 public:
+	Camera();
 	Camera(int width, int height);
-	~Camera() = default;
+	~Camera();
 
-	int GetWidth() const;
-	int GetHeight() const;
+	int GetWidth();
+	int GetHeight();
 
-	RECT GetBound() const;
+	RECT GetBound();
 
-	D3DXVECTOR3 GetPosition() const;
+	D3DXVECTOR3 GetPosition();
 
 	//Center camera
 	void SetPosition(float x, float y);

@@ -9,21 +9,21 @@ class Game
 public:
 	Game(int fps = 60);
 
-	~Game() = default;
+	~Game();
 
 protected:
 
-	PDIRECT3DSURFACE9       mBackground{},
-							mBackBuffer{};
+	PDIRECT3DSURFACE9       mBackground,
+							mBackBuffer;
 
-	int                     mWidth{},
-							mHeight{};
+	int                     mWidth,
+							mHeight;
 
 	static int              mIsDone;
 	float                   mFPS;
 
 	//khoi tao vong lap cho game
-	void InitLoop() const;
+	void InitLoop();
 
 	//ham dung de ve sau khi update
 	static void Render();

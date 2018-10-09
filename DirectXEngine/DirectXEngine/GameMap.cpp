@@ -1,7 +1,7 @@
 #include "GameMap.h"
 #include "GameGlobal.h"
 
-GameMap::GameMap(const char* filePath)
+GameMap::GameMap(const char* filePath): mMap(nullptr), mCamera(nullptr)
 {
 	LoadMap(filePath);
 }
@@ -32,13 +32,14 @@ void GameMap::LoadMap(const char* filePath)
 	r.right = this->GetWidth();
 	r.bottom = this->GetHeight();
 
+
 	for (int i = 0; i < mMap->GetNumTilesets(); i++)
 	{
 		const Tmx::Tileset *tileSet = mMap->GetTileset(i);
 
 		Sprite *sprite = new Sprite(tileSet->GetImage()->GetSource().c_str());
 
-		mListTileset.insert(std::pair<int, Sprite*>(i, sprite));
+		mListTilesSet.insert(std::pair<int, Sprite*>(i, sprite));
 	}
 }
 
@@ -48,27 +49,27 @@ bool GameMap::isContain(RECT rect1, RECT rect2)
 		top);
 }
 
-Tmx::Map* GameMap::GetMap() const
+Tmx::Map* GameMap::GetMap()
 {
 	return mMap;
 }
 
-int GameMap::GetWidth() const
+int GameMap::GetWidth()
 {
 	return mMap->GetWidth() * mMap->GetTileWidth();
 }
 
-int GameMap::GetHeight() const
+int GameMap::GetHeight()
 {
 	return mMap->GetHeight() * mMap->GetTileHeight();
 }
 
-int GameMap::GetTileWidth() const
+int GameMap::GetTileWidth()
 {
 	return mMap->GetTileWidth();
 }
 
-int GameMap::GetTileHeight() const
+int GameMap::GetTileHeight()
 {
 	return mMap->GetTileHeight();
 }
@@ -103,7 +104,7 @@ void GameMap::Draw()
 					const int tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
 					int tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
 
-					Sprite* sprite = mListTileset[layer->GetTileTilesetIndex(n, m)];
+					Sprite* sprite = mListTilesSet[layer->GetTileTilesetIndex(n, m)];
 
 					//tile index
 					const int tileID = layer->GetTileId(n, m);

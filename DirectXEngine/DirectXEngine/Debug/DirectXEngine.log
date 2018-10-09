@@ -1,4 +1,10 @@
 ﻿  DemoScene.cpp
-  GameMap.cpp
+  FrameWork.cpp
+  Game.cpp
+  Player.cpp
+  PlayerFallingState.cpp
+  PlayerJumpingState.cpp
+  PlayerRunningState.cpp
+  PlayerStandingState.cpp
   Generating Code...
   DirectXEngine.vcxproj -> C:\Users\Administrator\Desktop\Game Development\DirectX9\DirectXEngine\Debug\DirectXEngine.exe

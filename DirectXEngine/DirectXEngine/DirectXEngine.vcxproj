@@ -127,8 +127,10 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="FrameWork.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GameGlobal.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameTime.h" />
@@ -155,6 +157,13 @@
     <ClInclude Include="MapReader\TmxUtil.h" />
     <ClInclude Include="MapReader\zconf.h" />
     <ClInclude Include="MapReader\zlib.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerData.h" />
+    <ClInclude Include="PlayerFallingState.h" />
+    <ClInclude Include="PlayerJumpingState.h" />
+    <ClInclude Include="PlayerRunningState.h" />
+    <ClInclude Include="PlayerStandingState.h" />
+    <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
@@ -163,6 +172,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DemoScene.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FrameWork.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameGlobal.cpp" />
@@ -188,6 +198,13 @@
     <ClCompile Include="MapReader\TmxTileOffset.cpp" />
     <ClCompile Include="MapReader\TmxTileset.cpp" />
     <ClCompile Include="MapReader\TmxUtil.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerData.cpp" />
+    <ClCompile Include="PlayerFallingState.cpp" />
+    <ClCompile Include="PlayerJumpingState.cpp" />
+    <ClCompile Include="PlayerRunningState.cpp" />
+    <ClCompile Include="PlayerStandingState.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />

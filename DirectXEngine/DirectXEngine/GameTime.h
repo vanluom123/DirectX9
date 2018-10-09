@@ -12,11 +12,11 @@ public:
 	void StartCounter();
 	float GetCounter();
 	static GameTime* GetInstance();
-	~GameTime() = default;
+	~GameTime();
 
 private:
-	GameTime() = default;
-	LARGE_INTEGER mStartTime{}, mEndTime{}, mDelta{}, mClockRate{};
+	GameTime();
+	LARGE_INTEGER mStartTime, mEndTime, mDelta, mClockRate;
 	static GameTime *mInstance;
 };
 

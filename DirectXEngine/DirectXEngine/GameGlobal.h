@@ -1,5 +1,4 @@
-﻿#pragma once
-#ifndef __GAME_GLOBAL__
+﻿#ifndef __GAME_GLOBAL__
 #define __GAME_GLOBAL__
 #include <d3dx9.h>
 #include <d3d9.h>
@@ -8,8 +7,8 @@
 class GameGlobal
 {
 public:
-	GameGlobal() = default;
-	~GameGlobal(){}
+	GameGlobal();
+	~GameGlobal();
 
 	static HINSTANCE GetCurrentHINSTACE();
 	static HWND getCurrentHWND();

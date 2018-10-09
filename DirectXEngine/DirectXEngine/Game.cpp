@@ -5,19 +5,17 @@
 #include "SceneManager.h"
 #include "DemoScene.h"
 
-//Sprite *sprite;
-
-Game::Game(int fps)
+Game::Game(int fps): mBackground(nullptr), mBackBuffer(nullptr), mWidth(0), mHeight(0)
 {
 	mFPS = float(fps);
-
-	/*sprite = new Sprite("Resources/naruto.png");
-	sprite->SetPosition(float(GameGlobal::GetWidth() / 2), float(GameGlobal::GetHeight() / 2));*/
 
 	SceneManager::GetInstance()->ReplaceScene(new DemoScene());
 
 	InitLoop();
 }
+
+Game::~Game()
+{}
 
 void Game::Update(float dt)
 {
@@ -52,7 +50,7 @@ void Game::Render()
 	device->Present(nullptr, nullptr, nullptr, nullptr);
 }
 
-void Game::InitLoop() const
+void Game::InitLoop()
 {
 	MSG msg;
 
