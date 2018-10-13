@@ -40,6 +40,11 @@ void Animation::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D
 	Sprite::Draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
 }
 
+void Animation::Draw(D3DXVECTOR2 trans)
+{
+	Sprite::Draw(D3DXVECTOR3(), RECT(), D3DXVECTOR2(), trans);
+}
+
 void Animation::Update(float dt)
 {
 	if (mTotalFrame <= 1)

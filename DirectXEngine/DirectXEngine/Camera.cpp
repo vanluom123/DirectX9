@@ -1,8 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera()
-{
-}
+{}
 
 Camera::Camera(int width, int height)
 {
@@ -12,8 +11,7 @@ Camera::Camera(int width, int height)
 }
 
 Camera::~Camera()
-{
-}
+{}
 
 int Camera::GetWidth()
 {

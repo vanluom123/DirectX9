@@ -1,5 +1,4 @@
 #include "FrameWork.h"
-#include "Game.h"
 #include "GameGlobal.h"
 #include "SceneManager.h"
 #include "DemoScene.h"
@@ -8,15 +7,16 @@
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 FrameWork::FrameWork()
-{}
+{
+}
 
 FrameWork::~FrameWork()
 {
 	if (FULL_SCREEN)
-		ChangeDisplaySettings(nullptr, 0);
+		ChangeDisplaySettings(NULL, 0);
 
 	UnregisterClass(m_applicationName, m_hInstance);
-	m_hInstance = nullptr;
+	m_hInstance = NULL;
 }
 
 bool FrameWork::Initialize()
@@ -38,13 +38,15 @@ void FrameWork::Run()
 	//update loop
 	while (msg.message != WM_QUIT)
 	{
-		if (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else {
+		else
+		{
 			//Game loop
+			mGame->InitLoop();
 		}
 	}
 }
@@ -55,7 +57,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 
 	m_applicationName = szTitleName;
 
-	m_hInstance = GetModuleHandle(nullptr);
+	m_hInstance = GetModuleHandle(NULL);
 
 	//Setup the windows class with default settings
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -63,17 +65,17 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = m_hInstance;
-	wc.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
+	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
 	wc.hIconSm = wc.hIcon;
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = HBRUSH(GetStockObject(BLACK_BRUSH));
-	wc.lpszMenuName = nullptr;
+	wc.lpszMenuName = NULL;
 	wc.lpszClassName = m_applicationName;
 	wc.cbSize = sizeof(WNDCLASSEX);
 
 	if (!RegisterClassEx(&wc))
 	{
-		MessageBox(nullptr, "RegisterClassEx() failed", "Error", MB_OK);
+		MessageBox(NULL, "RegisterClassEx() failed", "Error", MB_OK);
 		return false;
 	}
 
@@ -104,7 +106,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 	}
 
 
-	const HWND hwnd = CreateWindow(
+	HWND hwnd = CreateWindow(
 		m_applicationName,
 		szTitleName,
 		style,
@@ -122,7 +124,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 
 	if (!hwnd)
 	{
-		MessageBox(nullptr, "CreateWindowEx() failed", "Error", MB_OK);
+		MessageBox(NULL, "CreateWindowEx() failed", "Error", MB_OK);
 		PostQuitMessage(0);
 		return false;
 	}
@@ -133,7 +135,7 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 	SetFocus(hwnd);
 
 	if (init_device())
-		auto game = new Game();
+		mGame = new Game();
 
 	return true;
 }
@@ -156,7 +158,7 @@ bool FrameWork::init_device()
 	d3dpp.BackBufferWidth = GameGlobal::GetWidth();
 
 	//Create DirectX 3D device
-	const auto resultD3D = d3d->CreateDevice(
+	HRESULT resultD3D = d3d->CreateDevice(
 		D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		GameGlobal::getCurrentHWND(),
@@ -166,16 +168,16 @@ bool FrameWork::init_device()
 
 	if (FAILED(resultD3D))
 	{
-		MessageBox(nullptr, "CreateDevice failed", "Error", MB_OK);
+		MessageBox(NULL, "CreateDevice failed", "Error", MB_OK);
 		return false;
 	}
 
 	GameGlobal::SetCurrentDevice(d3ddev);
 
-	const auto result = D3DXCreateSprite(d3ddev, &m_SpriteHandler);
+	HRESULT result = D3DXCreateSprite(d3ddev, &m_SpriteHandler);
 	if (FAILED(result))
 	{
-		MessageBox(nullptr, "D3DXCreateSprite failed", "Error", MB_OK);
+		MessageBox(NULL, "D3DXCreateSprite failed", "Error", MB_OK);
 		return false;
 	}
 
@@ -190,39 +192,49 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
-	case WM_LBUTTONDOWN:
-	{
-		SceneManager::GetInstance()->GetCurrentScene()->MouseDown(
-			float(GET_X_LPARAM(wParam)),
-			float(GET_Y_LPARAM(wParam))
-		);
-	}
-	case WM_KEYUP:
-	{
-		SceneManager::GetInstance()->GetCurrentScene()->KeyUp(wParam);
-		break;
-	}
-	case WM_KEYDOWN:
-	{
-		SceneManager::GetInstance()->GetCurrentScene()->KeyDown(wParam);
-		break;
-	}
-	case WM_PAINT:
-	{
-		HDC hdc = BeginPaint(hwnd, &ps);
-		EndPaint(hwnd, &ps);
-		break;
-	}
-	case WM_CLOSE:
-	{
-		GameGlobal::isGameRunning = false;
-		PostQuitMessage(0);
-		DestroyWindow(hwnd);
-		break;
-	}
-	default: {
-		return DefWindowProc(hwnd, message, wParam, lParam);
-	}
+		case WM_LBUTTONDOWN:
+		{
+			SceneManager::GetInstance()->GetCurrentScene()->MouseDown(
+				float(GET_X_LPARAM(wParam)),
+				float(GET_Y_LPARAM(wParam))
+			);
+		}
+		case WM_KEYUP:
+		{
+			SceneManager::GetInstance()->GetCurrentScene()->KeyUp(wParam);
+			break;
+		}
+		case WM_KEYDOWN:
+		{
+			SceneManager::GetInstance()->GetCurrentScene()->KeyDown(wParam);
+			if (wParam == VK_ESCAPE)
+			{
+				UINT confirmExitGame = 0;
+				MessageBox(hwnd, "Do you want to exit game?", "Confirm", confirmExitGame);
+				if (confirmExitGame == MB_OK)
+				{
+					PostQuitMessage(0);
+					DestroyWindow(hwnd);
+				}
+			}
+			break;
+		}
+		case WM_PAINT:
+		{
+			HDC hdc = BeginPaint(hwnd, &ps);
+			EndPaint(hwnd, &ps);
+			break;
+		}
+		case WM_CLOSE:
+		{
+			GameGlobal::isGameRunning = false;
+			PostQuitMessage(0);
+			DestroyWindow(hwnd);
+			break;
+		}
+		default: {
+			return DefWindowProc(hwnd, message, wParam, lParam);
+		}
 	};
 
 	return 0;

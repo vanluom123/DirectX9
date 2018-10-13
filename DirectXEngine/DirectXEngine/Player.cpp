@@ -53,7 +53,7 @@ void Player::SetState(PlayerState* newState)
 {
 	delete mPlayerData->state;
 	mPlayerData->state = newState;
-	ChangedAnimation(newState->GetState()); //Trạng thái tương ứng với một animation của trạng thái đó
+	ChangedAnimation(newState->GetState());			// Relative status with that status of an animation
 
 	mCurrentState = newState->GetState();
 }

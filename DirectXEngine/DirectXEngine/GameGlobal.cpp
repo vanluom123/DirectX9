@@ -1,13 +1,13 @@
 #include "GameGlobal.h"
 
-HINSTANCE GameGlobal::mHInstance = nullptr;
-HWND GameGlobal::mHwnd = nullptr;
-LPD3DXSPRITE GameGlobal::mSpriteHandler = nullptr;
+HINSTANCE GameGlobal::mHInstance = NULL;
+HWND GameGlobal::mHwnd = NULL;
+LPD3DXSPRITE GameGlobal::mSpriteHandler = NULL;
 int GameGlobal::mWidth = 600;
 int GameGlobal::mHeight = 600;
-LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
+LPDIRECT3DDEVICE9 GameGlobal::mDevice = NULL;
 bool GameGlobal::isGameRunning = true;
-IDirect3DSurface9* GameGlobal::backSurface = nullptr;
+IDirect3DSurface9* GameGlobal::backSurface = NULL;
 
 void GameGlobal::SetCurrentDevice(LPDIRECT3DDEVICE9 device)
 {

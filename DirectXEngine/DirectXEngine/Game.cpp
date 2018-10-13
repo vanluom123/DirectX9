@@ -5,13 +5,10 @@
 #include "SceneManager.h"
 #include "DemoScene.h"
 
-Game::Game(int fps): mBackground(nullptr), mBackBuffer(nullptr), mWidth(0), mHeight(0)
+Game::Game(int fps): mBackground(NULL), mBackBuffer(NULL), mWidth(0), mHeight(0)
 {
 	mFPS = float(fps);
-
 	SceneManager::GetInstance()->ReplaceScene(new DemoScene());
-
-	InitLoop();
 }
 
 Game::~Game()
@@ -29,7 +26,7 @@ void Game::Render()
 	auto scene = SceneManager::GetInstance()->GetCurrentScene();
 
 	//0x4866ff set mau cho surface
-	device->Clear(0, nullptr, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
+	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
 
 	{
 		device->BeginScene();
@@ -47,7 +44,7 @@ void Game::Render()
 		device->EndScene();
 	}
 
-	device->Present(nullptr, nullptr, nullptr, nullptr);
+	device->Present(NULL, NULL, NULL, NULL);
 }
 
 void Game::InitLoop()
@@ -61,7 +58,7 @@ void Game::InitLoop()
 	{
 		GameTime::GetInstance()->StartCounter();
 
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);

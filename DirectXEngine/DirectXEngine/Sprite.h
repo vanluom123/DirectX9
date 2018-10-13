@@ -7,7 +7,7 @@ class Sprite
 {
 public:
 	Sprite();
-	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	explicit Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
 
 	virtual ~Sprite();
 	LPDIRECT3DTEXTURE9 GetTexture();

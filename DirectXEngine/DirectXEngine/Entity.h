@@ -7,6 +7,27 @@ class Entity
 {
 public:
 	Entity();
+
+	enum SideCollision
+	{
+		Left,
+		Right,
+		Top,
+		Bottom,
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight,
+		Unknown
+	};
+
+	enum EntityTypes
+	{
+		None, Brick, Enemy, Mario, Static, BrickGoldNormal, BrickGold
+	};
+
+	EntityTypes Tag;
+
 	virtual ~Entity();
 
 	virtual RECT GetBound();

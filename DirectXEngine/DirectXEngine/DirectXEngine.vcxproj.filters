@@ -73,6 +73,9 @@
     <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerData">
       <UniqueIdentifier>{c675e511-31b6-46e4-b847-45c03f61bb78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\GameObject\MapObject">
+      <UniqueIdentifier>{59692afc-1172-4052-91af-8159bcf06338}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameGlobal.h">
@@ -204,6 +207,18 @@
     <ClInclude Include="FrameWork.h">
       <Filter>FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="MapObject.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickNormal.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickGold.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameGlobal.cpp">
@@ -323,6 +338,18 @@
     </ClCompile>
     <ClCompile Include="FrameWork.cpp">
       <Filter>FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickNormal.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickGold.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

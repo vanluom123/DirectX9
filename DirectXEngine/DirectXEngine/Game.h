@@ -7,7 +7,10 @@
 class Game
 {
 public:
-	Game(int fps = 60);
+	explicit Game(int fps = 60);
+
+	//khoi tao vong lap cho game
+	void InitLoop();
 
 	~Game();
 
@@ -21,10 +24,7 @@ protected:
 
 	static int              mIsDone;
 	float                   mFPS;
-
-	//khoi tao vong lap cho game
-	void InitLoop();
-
+		
 	//ham dung de ve sau khi update
 	static void Render();
 

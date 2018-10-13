@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "Game.h"
 
 #define FULL_SCREEN false
 
@@ -16,7 +17,7 @@ public:
 	~FrameWork();
 
 	bool Initialize();
-	static void Run();
+	void Run();
 
 private:
 	bool						create_dx_window(const char* szTitleName, int x, int y, int width, int height);
@@ -26,6 +27,8 @@ private:
 	PDIRECT3D9					d3d;
 	LPDIRECT3DDEVICE9			d3ddev;
 	LPD3DXSPRITE				m_SpriteHandler;
+
+	Game *mGame;
 };
 
 #endif

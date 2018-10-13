@@ -26,15 +26,15 @@ public:
 
 	void SetState(PlayerState* newState);
 
-	//xu ly input
-	//gom 256 key tuong ung true = dang dc nhan, false = khong dc nhan
+	// Handling input
+	// KeyBoard contain 256 character. If keys[KeyCode] is true, it is pressing. Else keys[KeyCode] is false, it isn't press
 	void HandlerKeyboard(std::map<int, bool> keys);
 
 	void OnKeyPressed(int key);
 
 	void OnKeyUp(int key);
 
-	//true thi se lat nguoc anh theo truc y
+	// If flag is True, it will flip image by y
 	void SetReverse(bool flag);
 
 	MoveDirection goMoveDirection();

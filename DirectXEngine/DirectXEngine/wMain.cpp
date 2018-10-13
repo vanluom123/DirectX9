@@ -6,7 +6,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	FrameWork* frameWork = new FrameWork();
 
 	if (frameWork->Initialize()) {
-		FrameWork::Run();
+		frameWork->Run();
 	}
 
 	delete frameWork;

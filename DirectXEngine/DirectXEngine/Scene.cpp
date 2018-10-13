@@ -1,10 +1,13 @@
 #include "Scene.h"
 #include <iostream>
 
-D3DCOLOR Scene::GetBackColor() const
+D3DCOLOR Scene::GetBackColor()
 {
 	return mBackColor;
 }
+
+Scene::~Scene()
+{}
 
 Scene::Scene()
 {
@@ -18,13 +21,10 @@ void Scene::LoadContent()
 }
 
 void Scene::KeyDown(int keyCode)
-{
-}
+{}
 
 void Scene::KeyUp(int keyCode)
-{
-}
+{}
 
 void Scene::MouseDown(float x, float y)
-{
-}
+{}

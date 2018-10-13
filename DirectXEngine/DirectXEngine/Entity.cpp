@@ -1,7 +1,9 @@
 #include "Entity.h"
 
 Entity::Entity()
-{}
+{
+	Tag = None;
+}
 
 Entity::~Entity()
 {}

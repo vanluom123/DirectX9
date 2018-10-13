@@ -14,9 +14,9 @@ public:
 	virtual void KeyUp(int keyCode);
 	virtual void MouseDown(float x, float y);
 
-	D3DCOLOR GetBackColor() const;
+	D3DCOLOR GetBackColor();
 
-	virtual ~Scene() = default;
+	virtual ~Scene();
 protected:
 	Scene();
 	D3DCOLOR mBackColor;
