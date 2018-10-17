@@ -12,8 +12,11 @@ class SceneManager
 
 public:
 	static SceneManager* GetInstance();
+
 	Scene* GetCurrentScene();
+
 	void Update(float dt);
+
 	void ReplaceScene(Scene* scene);
 
 	~SceneManager();

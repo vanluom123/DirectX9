@@ -119,8 +119,8 @@ bool FrameWork::create_dx_window(const char* szTitleName, int x, int y, int widt
 		m_hInstance,
 		NULL);
 
-	GameGlobal::SetCurrentHWND(hwnd);
-	GameGlobal::SetCurrentHINSTACE(m_hInstance);
+	GameGlobal::SetCurrent_hWnd(hwnd);
+	GameGlobal::SetCurrent_hInstance(m_hInstance);
 
 	if (!hwnd)
 	{
@@ -161,7 +161,7 @@ bool FrameWork::init_device()
 	HRESULT resultD3D = d3d->CreateDevice(
 		D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
-		GameGlobal::getCurrentHWND(),
+		GameGlobal::GetCurrent_hWnd(),
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp,
 		&d3ddev);

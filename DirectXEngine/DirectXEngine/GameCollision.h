@@ -10,16 +10,16 @@ public:
 	GameCollision();
 	~GameCollision();
 
-	// Checking impact between two Rect
+	// Checking collision between two Rectangle
 	static Entity::CollisionReturn RectAndRect(RECT rect1, RECT rect2);
 
-	static bool IsCollide(RECT rect1, RECT rect2);
+	static bool isCollision(RECT rect1, RECT rect2);
 
-	static Entity::SideCollision getSideCollision(Entity* e1, Entity* e2);
+	static Entity::SideCollision GetSideCollision(Entity* e1, Entity* e2);
 
-	static Entity::SideCollision getSideCollision(Entity* e1, Entity::CollisionReturn data);
+	static Entity::SideCollision GetSideCollision(Entity* e1, Entity::CollisionReturn data);
 
-	// Checking a point that has a inside Rect
+	// Checking a point that has a collision Rectangle
 	static bool PointAndRect(float x, float y, RECT rect);
 
 	// Rect and Circle

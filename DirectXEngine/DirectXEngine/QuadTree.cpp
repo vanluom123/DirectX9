@@ -100,41 +100,43 @@ int QuadTree::getTotalEntities()
 
 int QuadTree::getIndex(RECT body)
 {
-	/*lay vi tri cua Entity
-	0: nam trong Node con goc trai tren
-	1: nam trong Node con goc phai tren
-	2: nam trong Node con goc trai duoi
-	3: nam trong Node con goc phai duoi
-	-1: bi dinh > 2 node con*/
+	/*
+	 * Taking position of Entity
+	 * 0: in child node TOP-LEFT
+	 * 1: in child node TOP-RIGHT
+	 * 2: in child node BOTTOM-LEFT
+	 * 3: in child node BOTTOM-RIGHT
+	 * -1: Has two child node
+	 */
 
 	float middleVertical = Bound.left + (Bound.right - Bound.left) / 2.0f;
 	float middleHorizontal = Bound.top - (Bound.top - Bound.bottom) / 2.0f;
 
 	if(body.top < Bound.top && body.bottom > middleHorizontal)
 	{
-		// Nam o phia tren
+		// TOP
 		if(body.left > Bound.left && body.right < middleVertical)
 		{
-			// Nam o phia ben trai
+			// LEFT
 			return 0;
 		}
 		if(body.left > middleVertical && body.right < Bound.right )
 		{
-			// Nam o phia ben phai
+			// RIGHT
 			return 1;
 		}
 	}
 	if(body.top < middleHorizontal && body.bottom > Bound.bottom)
 	{
-		// Nam o phia duoi
+		// BOTTOM
 		if(body.left > Bound.left && body.right < middleVertical)
 		{
-			// Nam o phia ben trai
+			// LEFT
 			return 2;
 		}
 		if(body.left > middleVertical && body.right < Bound.right)
 		{
-			// Nam o phia ben phai
+			// RIGHT
 			return 3;
 		}
 	}
@@ -144,7 +146,7 @@ int QuadTree::getIndex(RECT body)
 
 void QuadTree::Split()
 {
-	// Cat phan region (ranh gioi) ra thanh 4 phan bang nhau
+	// The region elements that are separated to four equal parts
 	Nodes = new QuadTree*[4];
 
 	RECT bound;
@@ -184,6 +186,5 @@ void QuadTree::Split()
 bool QuadTree::isContain(Entity* entity)
 {
 	RECT r = entity->GetBound();
-
 	return (r.left >= Bound.left && r.right <= Bound.right && r.top >= Bound.top && r.bottom <= Bound.bottom);
 }

@@ -10,7 +10,7 @@ Entity::CollisionReturn GameCollision::RectAndRect(RECT rect1, RECT rect2)
 {
 	Entity::CollisionReturn result{ true, RECT() };
 
-	if(!IsCollide(rect1, rect2))
+	if(!isCollision(rect1, rect2))
 	{
 		result.isCollided = false;
 		return result;
@@ -28,12 +28,12 @@ Entity::CollisionReturn GameCollision::RectAndRect(RECT rect1, RECT rect2)
 	return result;
 }
 
-bool GameCollision::IsCollide(RECT rect1, RECT rect2)
+bool GameCollision::isCollision(RECT rect1, RECT rect2)
 {
 	return !(rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top);
 }
 
-Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity* e2)
+Entity::SideCollision GameCollision::GetSideCollision(Entity* e1, Entity* e2)
 {
 	RECT rect1 = e1->GetBound();
 	RECT rect2 = e2->GetBound();
@@ -46,7 +46,7 @@ Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity* e2)
 
 	if (abs(int(dx)) <= w && abs(int(dy)) <= h)
 	{
-		/* co va cham*/
+		// Has a collision
 		float wy = w * dy;
 		float hx = h * dx;
 
@@ -54,18 +54,19 @@ Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity* e2)
 		{
 			if (wy > -hx)
 			{
-				/*va cham phia tren e1*/
+				// Collision Top - Left e1
 				return Entity::Top;
 			}
-			/*va cham phia ben phai e1*/
+			// Collision Top - Right e1
 			return Entity::Right;
 		}
 		if (wy > -hx)
 		{
-			/*va cham ben trai e1*/
+			// Collision Bottom - Left e1
 			return Entity::Left;
 		}
-		/*va cham phia duoi e1*/
+
+		// Collision Bottom - Right e1
 		return Entity::Bottom;
 	}
 
@@ -98,7 +99,7 @@ bool GameCollision::RectAndCircle(RECT rect, int circleX, int circleY, int circl
 	return (dx * dx + dy * dy) <= circleRadius * circleRadius;
 }
 
-Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity::CollisionReturn data)
+Entity::SideCollision GameCollision::GetSideCollision(Entity* e1, Entity::CollisionReturn data)
 {
 	float xCenter = data.RegionCollision.left + (data.RegionCollision.right - data.RegionCollision.left) / 2.0f;
 	float yCenter = data.RegionCollision.top + (data.RegionCollision.bottom - data.RegionCollision.top) / 2.0f;
@@ -106,30 +107,30 @@ Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity::Collis
 	D3DXVECTOR2 cCenter = D3DXVECTOR2(xCenter, yCenter);
 	D3DXVECTOR2 eCenter = D3DXVECTOR2(e1->GetPosition().x, e1->GetPosition().y);
 
-	//lay vector noi tam Entity va CollisionRect
+	// Taking vector that it center between Entity and CollisionRect
 	D3DXVECTOR2 vec = cCenter - eCenter;
 
-	//chuan hoa vector
+	// Vector standard
 	D3DXVec2Normalize(&vec, &vec);
 
 	/*
-	- neu vector chuan hoa co y > 0 =>nam phia ben tren Entity
-	- neu vector chuan hoa co y < 0 =>nam phia ben duoi Entity
-	- neu vector chuan hoa co x > 0 => nam phia ben phai Entity
-	- neu vector chuan hoa co x < 0 => nam phia ben trai Entity
-	*/
+	 * - Vector has a y > 0, so TOP Entity
+	 * - Vector has a y < 0, so BOTTOM Entity
+	 * - Vector has a x > 0, so RIGHT Entity
+	 * - Vector has a x < 0, so LEFT Entity
+	 */
 
 	if (vec.y < 0)
 	{
-		//va cham phia ben tren
-		//lay cos cua goc neu ma nam trong khoang goc 70 -> 110 thi va cham top
+		// Collision TOP
+		// Taking angle cosine, if it is in angle range (70 to 110) collide TOP 
 		if (vec.x <= 0.35f && vec.x >= -0.35f)
 		{
 			return Entity::Top;
 		}
 		if (vec.x > 0.35f && vec.x < 0.8f)
 		{
-			// Angle (35, 70) Top - Right
+			// angle (35 to 70) Top - Right
 			return Entity::TopRight;
 		}
 		if (vec.x >= 0.8f)
@@ -138,22 +139,22 @@ Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity::Collis
 		}
 		if (vec.x < -0.35f && vec.x >= -0.8f)
 		{
-			// Impact Top - Left
+			// Collision Top - Left
 			return Entity::TopLeft;
 		}
 
 		return Entity::Left;
 	}
 
-	//va cham phia ben duoi
-	//lay cos cua goc neu ma nam trong khoang goc 70 -> 110 thi va cham top
+	// Collision Bottom
+	// Taking angle cosine, if it is in angle range (70 to 110) collide TOP 
 	if (vec.x <= 0.35f && vec.x >= -0.35)
 	{
 		return Entity::Bottom;
 	}
 	if (vec.x > 0.35 && vec.x < 0.8)
 	{
-		//goc trong khoang 35 -> 70 phia ben top - right
+		// in angle range (35 to 70) collide TOP - RIGHT
 		return Entity::BottomRight;
 	}
 	if (vec.x >= 0.8)
@@ -162,7 +163,7 @@ Entity::SideCollision GameCollision::getSideCollision(Entity* e1, Entity::Collis
 	}
 	if (vec.x < -0.35f && vec.x > -0.8f)
 	{
-		//va cham phia top - left
+		// Collision TOP - LEFT
 		return Entity::BottomLeft;
 	}
 

@@ -1,7 +1,7 @@
 #include "GameGlobal.h"
 
-HINSTANCE GameGlobal::mHInstance = NULL;
-HWND GameGlobal::mHwnd = NULL;
+HINSTANCE GameGlobal::m_hInstance = NULL;
+HWND GameGlobal::m_hWnd = NULL;
 LPD3DXSPRITE GameGlobal::mSpriteHandler = NULL;
 int GameGlobal::mWidth = 600;
 int GameGlobal::mHeight = 600;
@@ -28,24 +28,24 @@ GameGlobal::~GameGlobal()
 {
 }
 
-HINSTANCE GameGlobal::GetCurrentHINSTACE()
+HINSTANCE GameGlobal::GetCurrent_hInstance()
 {
-	return mHInstance;
+	return m_hInstance;
 }
 
-HWND GameGlobal::getCurrentHWND()
+HWND GameGlobal::GetCurrent_hWnd()
 {
-	return mHwnd;
+	return m_hWnd;
 }
 
-void GameGlobal::SetCurrentHINSTACE(HINSTANCE hInstance)
+void GameGlobal::SetCurrent_hInstance(HINSTANCE hInstance)
 {
-	mHInstance = hInstance;
+	m_hInstance = hInstance;
 }
 
-void GameGlobal::SetCurrentHWND(HWND hWnd)
+void GameGlobal::SetCurrent_hWnd(HWND hWnd)
 {
-	mHwnd = hWnd;
+	m_hWnd = hWnd;
 }
 
 void GameGlobal::SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler)

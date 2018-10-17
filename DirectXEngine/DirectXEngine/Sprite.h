@@ -5,6 +5,39 @@
 
 class Sprite
 {
+protected:
+	// Be used to inherit
+	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+
+	static bool isRect(RECT rect);
+
+	// Position of sprite. Image has center position
+	D3DXVECTOR3             mPosition;
+	// Loading image into Texture
+	LPDIRECT3DTEXTURE9      mTexture;
+	// SpriteHandler that will help for draw image
+	LPD3DXSPRITE            mSpriteHandler;
+	// Real image information is taken
+	D3DXIMAGE_INFO          mImageInfo;
+	// Rectangle is cut from Texture image
+	RECT                    mSourceRect;
+	// Size of Texture
+	int                     mWidth, mHeight;
+	// Flipping to vertical
+	bool                    mIsFlipVertical,
+		// Flipping to horizontal
+		mIsFlipHorizontal;
+	// Angle sprite rotation is calculated by radian
+	float                   mRotation;
+	// Zoom in or zoom out of Texture
+	D3DXVECTOR2             mScale;
+	// Image change to real position of Sprite + mTranslate
+	D3DXVECTOR2             mTranslation;
+	// Matrix of Sprite that is helped in geometry
+	D3DXMATRIX              mMatrix;
+	// Center point in image rotation
+	D3DXVECTOR2             mRotationCenter;
+
 public:
 	Sprite();
 
@@ -22,7 +55,8 @@ public:
 	void SetHeight(int height);
 	int GetHeight();
 
-	D3DXIMAGE_INFO GetImageInfo();							// lay thong tin thuc cua hinh anh duoc lay
+	// Taking image information
+	D3DXIMAGE_INFO GetImageInfo();
 
 	D3DXVECTOR3 GetPosition();
 	void SetPosition(D3DXVECTOR3 pos);
@@ -32,53 +66,29 @@ public:
 	D3DXVECTOR2 GetScale();
 	void SetScale(D3DXVECTOR2 scale);
 
-	D3DXVECTOR2 GetTranslation();							// phep tinh tien tu world position -> view position
-	void SetTranslation(D3DXVECTOR2 translation);			// phep tinh tien: tu the world position -> view															position
+	// Translation from world position to view position
+	D3DXVECTOR2 GetTranslation();
+	// Translation form world position to view
+	void SetTranslation(D3DXVECTOR2 translation);
 
 	D3DXVECTOR2 GetRotationCenter();
 	void SetRotationCenter(D3DXVECTOR2 rotationCenter);
 
+	// Rotate to radian
 	float GetRotation();
-	void SetRotation(float rotation);		// by radian
+	void SetRotation(float rotation);
 
 	void SetSourceRect(RECT rect);
 
-	void FlipHorizontal(bool flag);			// true: lat hinh theo chieu doc, false: binh thuong
+	// True: Image will be flipped to Horizontal.
+	// False: Image will be not flipped
+	void FlipHorizontal(bool flag);
 	bool IsFlipHorizontal();
 
-	void FlipVertical(bool flag);			// true: lat hinh theo chieu ngang, false: binh thuong
+	//// True: Image will be flipped to vertical.
+	// False: Image will be not flipped
+	void FlipVertical(bool flag);
 	bool IsFlipVertical();
 
-protected:
-	//su dung cho ke thua
-	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
-
-	static bool isRect(RECT rect);
-
-	D3DXVECTOR3             mPosition;					// vi tri cua Sprite, co goc la chinh giua hinh anh															Texture
-
-	LPDIRECT3DTEXTURE9      mTexture;					// load hinh anh vao day
-
-	LPD3DXSPRITE            mSpriteHandler;				//SpriteHandler ho tro ve hinh
-
-	D3DXIMAGE_INFO          mImageInfo;					// thong tin thuc cua hinh anh duoc lay
-
-	RECT                    mSourceRect;				// hinh chu nhat cat tu anh cua texture
-
-	int                     mWidth, mHeight;			// kich thuoc cua texture
-
-	bool                    mIsFlipVertical,			// lat theo chieu doc
-
-							mIsFlipHorizontal;			// lat theo chieu ngang
-
-	float                   mRotation;					// goc quay cua Sprite tinh theo radian
-
-	D3DXVECTOR2             mScale;						// Vector tuy chinh do phong to / thu nho cua texture
-
-	D3DXVECTOR2             mTranslation;				//Doi hinh anh vi tri thuc cua Sprite + mTranslate
-
-	D3DXMATRIX              mMatrix;					// ma tran cua Spite ho tro trong cac phep hinh hoc
-
-	D3DXVECTOR2             mRotationCenter;			// diem trung tam trong phep xoay hinh (origin vector)
 };
 #endif

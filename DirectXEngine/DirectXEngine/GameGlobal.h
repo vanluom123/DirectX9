@@ -10,11 +10,11 @@ public:
 	GameGlobal();
 	~GameGlobal();
 
-	static HINSTANCE GetCurrentHINSTACE();
-	static HWND getCurrentHWND();
+	static HINSTANCE GetCurrent_hInstance();
+	static HWND GetCurrent_hWnd();
 
-	static void SetCurrentHINSTACE(HINSTANCE hInstance);
-	static void SetCurrentHWND(HWND hWnd);
+	static void SetCurrent_hInstance(HINSTANCE hInstance);
+	static void SetCurrent_hWnd(HWND hWnd);
 
 	static void SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler);
 	static LPD3DXSPRITE GetCurrentSpriteHandler();
@@ -30,14 +30,20 @@ public:
 
 	static LPDIRECT3DSURFACE9 backSurface;
 
-	static bool isGameRunning; //trang thai xem game co dang chay khong
+	// Game status
+	static bool isGameRunning;
 
 private:
-	static HINSTANCE mHInstance; //hInstance của windows hiện tại
-	static HWND mHwnd; // hwnd hiện tại
-	static LPD3DXSPRITE mSpriteHandler; //spriteHanlder hiện tại
-	static int mWidth, mHeight; //size của cửa sổ
-	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
+	// hInstance current
+	static HINSTANCE m_hInstance;
+	// hWnd current
+	static HWND m_hWnd;
+	// Sprite current
+	static LPD3DXSPRITE mSpriteHandler;
+	// Size Windows
+	static int mWidth, mHeight;
+	// Device DirectX current
+	static LPDIRECT3DDEVICE9 mDevice;
 };
 
 #endif

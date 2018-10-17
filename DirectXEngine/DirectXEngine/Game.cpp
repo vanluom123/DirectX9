@@ -25,20 +25,20 @@ void Game::Render()
 	auto device = GameGlobal::GetCurrentDevice();
 	auto scene = SceneManager::GetInstance()->GetCurrentScene();
 
-	//0x4866ff set mau cho surface
+	//0x4866ff set color for surface
 	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
 
 	{
 		device->BeginScene();
 
-		//bat dau ve
+		// Starting draw
 		GameGlobal::GetCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 
 		//draw here
 		//sprite->Draw();
 		scene->Draw();
 
-		//ket thuc ve
+		// Ending draw
 		GameGlobal::GetCurrentSpriteHandler()->End();
 
 		device->EndScene();

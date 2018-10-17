@@ -119,7 +119,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	if (rotationCenter != D3DXVECTOR2())
 		rotation_center = rotationCenter;
 	else
-		mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);// cho phep quay giua hinh
+		mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y); // Can rotate image center
 
 	D3DXMatrixTransformation2D(&mMatrix, &scaling_center, 0, &vector2_scale, &rotation_center,
 		inRotation, &translation);

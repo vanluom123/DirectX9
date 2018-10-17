@@ -187,8 +187,7 @@ int GameMap::GetTileHeight()
 
 void GameMap::Draw()
 {
-	D3DXVECTOR2 trans = D3DXVECTOR2(float(GameGlobal::GetWidth()) / 2 - mCamera->GetPosition().x,
-		float(GameGlobal::GetHeight()) / 2 - mCamera->GetPosition().y);
+	D3DXVECTOR2 trans = D3DXVECTOR2(float(GameGlobal::GetWidth()) / 2 - mCamera->GetPosition().x, float(GameGlobal::GetHeight()) / 2 - mCamera->GetPosition().y);
 
 #pragma region DRAW TILESET
 	for (int i = 0; i < mMap->GetNumTileLayers(); i++)

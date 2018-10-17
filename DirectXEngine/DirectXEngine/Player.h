@@ -59,7 +59,7 @@ public:
 
 	PlayerState::StateName GetState();
 
-	void OnCollision(Entity* impact, CollisionReturn data, SideCollision side) override;
+	void OnCollision(Entity* entityCollision, CollisionReturn data, SideCollision side) override;
 
 	void OnCollisionWithBottom();
 

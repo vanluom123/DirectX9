@@ -2,14 +2,14 @@
 #define __GAME__
 #include <d3d9.h>
 
-#define KEYBOARD_BUFFERD_SIZE 1024
+#define KEYBOARD_BUFFERED_SIZE 1024
 
 class Game
 {
 public:
 	explicit Game(int fps = 60);
 
-	//khoi tao vong lap cho game
+	// Initialize game loop
 	void InitLoop();
 
 	~Game();
@@ -24,11 +24,10 @@ protected:
 
 	static int              mIsDone;
 	float                   mFPS;
-		
-	//ham dung de ve sau khi update
-	static void Render();
 
-	//ham update cua game
+	// Function used to draw when updated
+	static void Render();
+	// Function update game
 	static void Update(float dt);
 };
 

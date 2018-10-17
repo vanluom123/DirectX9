@@ -16,12 +16,13 @@ public:
 
 	D3DXVECTOR3 GetPosition();
 
-	//Center camera
+	// Camera center
 	void SetPosition(float x, float y);
 	void SetPosition(D3DXVECTOR3 pos);
 private:
-	int mHeight;
-	int mWidth;
+	// Size of camera
+	int mHeight, mWidth;
+	// Position of camera
 	D3DXVECTOR3 mPosition;
 };
 

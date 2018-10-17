@@ -6,18 +6,6 @@
 
 class Animation :public Sprite
 {
-public:
-	Animation();
-	Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
-
-	void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
-
-	void Draw(D3DXVECTOR2 trans);
-
-	virtual void Update(float dt);
-
-	~Animation();
-
 protected:
 	void initWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
 
@@ -33,7 +21,19 @@ protected:
 	float			mTimePerFrame,			//Thoi gian cho mot next frame
 					mCurrentTotalTime;		//Thoi gian hien tai neu CurrentTotalTime >= TotalPerFrame
 
-//Sprite*			mSprite;
 	RECT			mRect;
+
+public:
+	Animation();
+	Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
+
+	void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
+
+	void Draw(D3DXVECTOR2 trans);
+
+	virtual void Update(float dt);
+
+	~Animation();
+
 };
 #endif
