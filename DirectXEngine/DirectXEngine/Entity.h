@@ -5,6 +5,19 @@
 
 class Entity
 {
+protected:
+	// It has called when it inherited
+	virtual void OnSetPosition(D3DXVECTOR3 pos);
+
+	// Size of entity
+	int height, width;
+
+	// Position center posX, PosY
+	float posX, posY;
+
+	// Speed vx, vy
+	float vx, vy;
+
 public:
 	Entity();
 
@@ -21,9 +34,21 @@ public:
 		Unknown
 	};
 
+	struct CollisionReturn
+	{
+		bool isCollided;
+		RECT RegionCollision;
+	};
+
 	enum EntityTypes
 	{
-		None, Brick, Enemy, Mario, Static, BrickGoldNormal, BrickGold
+		None, 
+		Brick, 
+		Enemy, 
+		Mario, 
+		Static, 
+		BrickGoldNormal,
+		BrickGold
 	};
 
 	EntityTypes Tag;
@@ -58,18 +83,9 @@ public:
 	virtual void AddVy(float vy);
 
 	virtual void Update(float dt);
-protected:
-	//duoc goi khi set position cua Entity, dung cho ke thua
-	virtual void OnSetPosition(D3DXVECTOR3 pos);
 
-	//Size cua entity
-	int mHeight, mWidth;
+	virtual void OnCollision(Entity* entityCollision, CollisionReturn data, SideCollision side);
 
-	//vi tri tam position x va y
-	float posX, posY;
-
-	//phan toc vx, vy
-	float vx, vy;
 };
 
 #endif

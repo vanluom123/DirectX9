@@ -4,9 +4,25 @@
 #include "PlayerData.h"
 #include "PlayerState.h"
 #include "Animation.h"
+#include "Camera.h"
 
 class Player :public Entity
 {
+protected:
+
+	void ChangedAnimation(PlayerState::StateName state);
+
+	PlayerState::StateName mCurrentState;
+
+	// isJumping = false similar player is Standing, isJumping = true similar player is Jumping 
+	bool isJumping, isCurrentReverse;
+
+	Animation *mCurrentAnimation, *mAnimationStanding, *mAnimationRunning, *mAnimationJumping;
+
+	PlayerData *mPlayerData;
+
+	Camera* mCamera;
+
 public:
 	Player();
 	~Player();
@@ -20,14 +36,16 @@ public:
 
 	RECT GetBound() override;
 
+	void SetCamera(Camera* camera);
+
 	void Update(float dt) override;
 
 	void Draw(D3DXVECTOR3 pos = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
 
 	void SetState(PlayerState* newState);
 
-	// Handling input
-	// KeyBoard contain 256 character. If keys[KeyCode] is true, it is pressing. Else keys[KeyCode] is false, it isn't press
+	// Input Handler
+	// KeyBoard contain 256 character. If keys[KeyCode] is true, it is pressed. Else keys[KeyCode] is false, it doesn't press
 	void HandlerKeyboard(std::map<int, bool> keys);
 
 	void OnKeyPressed(int key);
@@ -40,16 +58,13 @@ public:
 	MoveDirection goMoveDirection();
 
 	PlayerState::StateName GetState();
-protected:
-	
-	void ChangedAnimation(PlayerState::StateName state);
-	PlayerState::StateName mCurrentState;
 
-	// isJumping = false similar player is Standing, isJumping = true similar player is Jumping 
-	bool isJumping, isCurrentReverse;
+	void OnCollision(Entity* impact, CollisionReturn data, SideCollision side) override;
 
-	Animation *mCurrentAnimation, *mAnimationStanding, *mAnimationRunning, *mAnimationJumping;
+	void OnCollisionWithBottom();
 
-	PlayerData *mPlayerData;
+	bool allowMoveToLeft;
+	bool allowMoveToRight;
+
 };
 #endif

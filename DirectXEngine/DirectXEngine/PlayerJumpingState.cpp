@@ -10,8 +10,8 @@ PlayerJumpingState::PlayerJumpingState(PlayerData* playerData)
 
 	isPressed = false;
 
-	acceleratorX = 5.0f;
-	acceleratorY = 6.0f;
+	acceleratorX = 14.0f;
+	acceleratorY = 15.0f;
 }
 
 PlayerJumpingState::~PlayerJumpingState()
@@ -19,23 +19,35 @@ PlayerJumpingState::~PlayerJumpingState()
 
 void PlayerJumpingState::Update(float dt)
 {
-	mPlayerData->player->AddVy(acceleratorY); // PLAYER_MAX_JUMP_VELOCITY + acceleratorY nó sẽ rớt xuống
+	// PLAYER_MAX_JUMP_VELOCITY + acceleratorY nó sẽ rớt xuống
+	mPlayerData->player->AddVy(acceleratorY); 
 
-	if (mPlayerData->player->GetVy() >= 0) // PLAYER_MAX_JUMP_VELOCITY + acceleratorY >= 0 thì nó sẽ set trạng thái Falling của nhân vật
+	// PLAYER_MAX_JUMP_VELOCITY + acceleratorY >= 0 thì nó sẽ set trạng											thái Falling của nhân vật
+	if (mPlayerData->player->GetVy() >= 0) 
 	{
-		mPlayerData->player->SetState(new PlayerFallingState(mPlayerData)); // Switch State
+		// Switch State
+		mPlayerData->player->SetState(new PlayerFallingState(mPlayerData)); 
 		return;
 	}
 
-	if (!isPressed) //Khi nguoi choi khong con nhan
+	//Khi nguoi choi khong con nhan
+	if (!isPressed)
 	{
-		if (mPlayerData->player->goMoveDirection() == Player::MoveToLeft) //Neu no di chuyen sang trai
+		// Neu no di chuyen sang trai
+		if (mPlayerData->player->goMoveDirection() == Player::MoveToLeft)
 		{
-			if (mPlayerData->player->GetVx() < 0) //Neu Vx < 0 cai nay luon dung vi di chuyen sang trai Vx se luon luon < 0
+			// Neu Vx < 0 cai nay luon dung vi di chuyen sang trai Vx se luon luon < 0
+			if (mPlayerData->player->GetVx() < 0)
 			{
-				mPlayerData->player->AddVx(acceleratorX); //Vx += acceleratorX de Vx > 0
-				if (mPlayerData->player->GetVx() > 0) //Vx > 0 thi minh reset Vx = 0
-					mPlayerData->player->SetVx(0); //Reset Vx = 0
+				// Vx += acceleratorX de Vx > 0
+				mPlayerData->player->AddVx(acceleratorX);
+
+				// Vx > 0 thi minh reset Vx = 0
+				if (mPlayerData->player->GetVx() > 0)
+				{
+					// Reset Vx = 0
+					mPlayerData->player->SetVx(0);
+				}
 			}
 		}
 		else if (mPlayerData->player->goMoveDirection() == Player::MoveToRight)
@@ -56,9 +68,9 @@ void PlayerJumpingState::HandlerKeyBoard(std::map<int, bool> keys)
 	{
 		mPlayerData->player->SetReverse(false); //Move to right don't reverse sprite
 
-		if (mPlayerData->player->GetVx() < Define::PLAYER_MAX_RUNNING_SPEED) //Vx < 180 move to right
+		if (mPlayerData->player->GetVx() < Define::PLAYER_MAX_RUNNING_SPEED) // Vx < 180 move to right
 		{
-			mPlayerData->player->AddVx(acceleratorX); //Sum Vx = Vx + acceleratorX
+			mPlayerData->player->AddVx(acceleratorX); // Sum Vx = Vx + acceleratorX
 
 			if (mPlayerData->player->GetVx() >= Define::PLAYER_MAX_RUNNING_SPEED) //Vx > 180 reset Vx = 180
 				mPlayerData->player->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
@@ -81,6 +93,37 @@ void PlayerJumpingState::HandlerKeyBoard(std::map<int, bool> keys)
 		isPressed = true;
 	}
 	else isPressed = false;
+}
+
+void PlayerJumpingState::OnCollision(Entity* impact, Entity::CollisionReturn data, Entity::SideCollision side)
+{
+	switch (side)
+	{
+		case Player::Left:
+		{
+			this->mPlayerData->player->AddPosition(data.RegionCollision.right - data.RegionCollision.left, 0);
+			this->mPlayerData->player->SetVx(0);
+			break;
+		}
+		case Player::Right:
+		{
+			this->mPlayerData->player->AddPosition(data.RegionCollision.left - data.RegionCollision.right, 0);
+			this->mPlayerData->player->SetVx(0);
+		}
+		case Player::Top: case Player::TopLeft: case Player::TopRight:
+		{
+			this->mPlayerData->player->AddPosition(0, data.RegionCollision.bottom - data.RegionCollision.top);
+			this->mPlayerData->player->SetVy(0);
+			break;
+		}
+		case Player::Bottom: case Player::BottomLeft: case Player::BottomRight:
+		{
+			this->mPlayerData->player->AddPosition(0, data.RegionCollision.top - data.RegionCollision.bottom);
+			break;
+		}
+		case Entity::Unknown: break;
+		default: break;
+	}
 }
 
 PlayerState::StateName PlayerJumpingState::GetState()

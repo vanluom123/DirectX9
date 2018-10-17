@@ -6,7 +6,7 @@
 class PlayerStandingState :public PlayerState
 {
 public:
-	PlayerStandingState(PlayerData* playerData);
+	explicit PlayerStandingState(PlayerData* playerData);
 
 	void Update(float dt) override;
 

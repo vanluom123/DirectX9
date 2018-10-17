@@ -2,11 +2,15 @@
 #define _PLAYER_STATE_H
 #include <map>
 #include "PlayerData.h"
+#include "Entity.h"
 
 class Player;
 
 class PlayerState
 {
+protected:
+	PlayerData *mPlayerData;
+
 public:
 	enum StateName
 	{
@@ -18,13 +22,19 @@ public:
 	};
 
 	virtual void Update(float dt);
+
 	virtual void HandlerKeyBoard(std::map<int, bool> keys);
+
 	virtual StateName GetState() = 0;
 
 	virtual ~PlayerState();
-	PlayerState(PlayerData* playerData);
+
+	explicit PlayerState(PlayerData* playerData);
+
 	PlayerState();
-protected:
-	PlayerData *mPlayerData;
+
+	virtual void OnCollision(Entity* ObjectImpact, Entity::CollisionReturn data, Entity::SideCollision side);
+
+
 };
 #endif

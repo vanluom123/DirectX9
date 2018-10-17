@@ -10,7 +10,7 @@ GameMap::GameMap(const char* filePath) : mMap(NULL), mCamera(NULL)
 
 void GameMap::Update(float dt)
 {
-	for (auto& mListBrick : mListBricks)
+	for (auto mListBrick : mListBricks)
 		mListBrick->Update(dt);
 }
 
@@ -130,10 +130,10 @@ void GameMap::LoadMap(const char* filePath)
 							bound.right = bound.left + tile_width;
 							bound.bottom = bound.top + tile_height;
 
-							D3DXVECTOR3 position(n*tile_width + float(tile_width) / 2, m*tile_height + float(tile_height) / 2, 0);
+							D3DXVECTOR3 position(n*tile_width + tile_width / 2, m*tile_height + tile_height / 2, 0);
 
 							Brick* bricks = NULL;
-							if (layer->GetName() == "coin")	// If layer's name is "Coin". Layer's tag will be BrickGoldNormal
+							if (layer->GetName() == "coin")	// If layer's name is "Coin". Layer's tag will be										BrickGoldNormal
 							{
 								bricks = new BrickGold(position);
 								bricks->Tag = Entity::EntityTypes::BrickGoldNormal;
@@ -234,8 +234,8 @@ void GameMap::Draw()
 						if (mCamera != NULL)
 						{
 							RECT objRECT;
-							objRECT.left = long(position.x - float(tile_width) / 2);
-							objRECT.top = long(position.y - float(tile_height) / 2);
+							objRECT.left = position.x - tile_width / 2;
+							objRECT.top = position.y - tile_height / 2;
 							objRECT.right = objRECT.left + tile_width;
 							objRECT.bottom = objRECT.top + tile_height;
 
@@ -255,7 +255,7 @@ void GameMap::Draw()
 #pragma endregion 
 
 #pragma region DRAW BRICK
-	for (auto& mListBrick : mListBricks)
+	for (auto mListBrick : mListBricks)
 		mListBrick->Draw(trans);
 #pragma endregion 
 }

@@ -11,15 +11,18 @@ public:
 
 	void HandlerKeyBoard(std::map<int, bool> keys) override;
 
+	void OnCollision(Entity* impact, Entity::CollisionReturn data, Entity::SideCollision side) override;
+
 	StateName GetState() override;
 
-	PlayerJumpingState(PlayerData* playerData);
+	explicit PlayerJumpingState(PlayerData* playerData);
 
 	~PlayerJumpingState();
+
+
 private:
 	bool isPressed;
 	float acceleratorX, acceleratorY;
-	bool isMoveLef, isMoveRight;
 };
 
 #endif

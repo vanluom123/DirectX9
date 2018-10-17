@@ -67,14 +67,20 @@
     <Filter Include="FrameWork\MapReader">
       <UniqueIdentifier>{7e352e3e-f0f1-40b4-8aa4-b76d9a5f7422}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Scenes\Scene">
-      <UniqueIdentifier>{490b0f6a-9b36-4572-862e-9d5c08ccfbc9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerData">
       <UniqueIdentifier>{c675e511-31b6-46e4-b847-45c03f61bb78}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\GameObject\MapObject">
       <UniqueIdentifier>{59692afc-1172-4052-91af-8159bcf06338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\GameCollision">
+      <UniqueIdentifier>{98041c3d-90e8-4277-8c57-daa02c8223b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\Quadtree">
+      <UniqueIdentifier>{e8d5a065-aa70-4249-bb5b-abf999e1a145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Input">
+      <UniqueIdentifier>{e30ee91c-0d3d-4c29-93df-ed9f9ebb083a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +198,6 @@
     <ClInclude Include="PlayerFallingState.h">
       <Filter>FrameWork\GameObject\Player\PlayerState\PlayerFallingState</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>FrameWork\Scenes\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerData.h">
       <Filter>FrameWork\GameObject\Player\PlayerState\PlayerData</Filter>
     </ClInclude>
@@ -218,6 +221,18 @@
     </ClInclude>
     <ClInclude Include="BrickGold.h">
       <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCollision.h">
+      <Filter>FrameWork\GameComponent\GameCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>FrameWork\GameComponent\Quadtree</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>FrameWork\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +339,6 @@
     <ClCompile Include="PlayerFallingState.cpp">
       <Filter>FrameWork\GameObject\Player\PlayerState\PlayerFallingState</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>FrameWork\Scenes\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerData.cpp">
       <Filter>FrameWork\GameObject\Player\PlayerState\PlayerData</Filter>
     </ClCompile>
@@ -350,6 +362,18 @@
     </ClCompile>
     <ClCompile Include="BrickGold.cpp">
       <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCollision.cpp">
+      <Filter>FrameWork\GameComponent\GameCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>FrameWork\GameComponent\Quadtree</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>FrameWork\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

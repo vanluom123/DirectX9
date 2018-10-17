@@ -4,22 +4,28 @@
 
 class Scene
 {
+protected:
+	Scene();
+
+	D3DCOLOR mBackColor;
+
 public:
 	virtual void Update(float dt) = 0;
+
 	virtual void LoadContent();
+
 	virtual void Draw() = 0;
 
 
 	virtual void KeyDown(int keyCode);
+
 	virtual void KeyUp(int keyCode);
+
 	virtual void MouseDown(float x, float y);
 
 	D3DCOLOR GetBackColor();
 
 	virtual ~Scene();
-protected:
-	Scene();
-	D3DCOLOR mBackColor;
 };
 
 #endif

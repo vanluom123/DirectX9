@@ -195,8 +195,8 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_LBUTTONDOWN:
 		{
 			SceneManager::GetInstance()->GetCurrentScene()->MouseDown(
-				float(GET_X_LPARAM(wParam)),
-				float(GET_Y_LPARAM(wParam))
+				GET_X_LPARAM(wParam),
+				GET_Y_LPARAM(wParam)
 			);
 		}
 		case WM_KEYUP:

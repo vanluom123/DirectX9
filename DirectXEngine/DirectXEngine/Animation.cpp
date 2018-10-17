@@ -20,7 +20,7 @@ void Animation::initWithAnimation(const char* filePath, int totalFrame, int rows
 	mCurrentRow = 0;
 	mCurrentColumn = 0;
 
-	//width - height luc nay la cua spritesheet
+	//width - height luc nay la cua sprite sheet
 	mFrameWidth = this->GetWidth() / mColumns;
 	mFrameHeight = this->GetHeight() / mRows;
 

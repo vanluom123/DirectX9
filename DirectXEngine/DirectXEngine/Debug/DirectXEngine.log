@@ -1,4 +1,66 @@
-﻿  DemoScene.cpp
+﻿  Animation.cpp
+  Brick.cpp
+  BrickGold.cpp
+  BrickNormal.cpp
+  DemoScene.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\demoscene.cpp(24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\demoscene.cpp(29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Entity.cpp
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\entity.cpp(15): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\entity.cpp(17): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  FrameWork.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\framework.cpp(199): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\framework.cpp(198): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Game.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  GameCollision.cpp
   GameMap.cpp
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\gamemap.cpp(133): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\gamemap.cpp(237): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\gamemap.cpp(238): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  GameTime.cpp
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\gametime.cpp(34): warning C4244: 'return': conversion from 'LONGLONG' to 'float', possible loss of data
+  dxinput.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  MarioState.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Player.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\player.cpp(32): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\player.cpp(34): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  PlayerFallingState.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerfallingstate.cpp(71): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerfallingstate.cpp(80): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerfallingstate.cpp(90): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  PlayerJumpingState.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerjumpingstate.cpp(104): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerjumpingstate.cpp(110): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerjumpingstate.cpp(115): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerjumpingstate.cpp(121): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  PlayerRunningState.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerrunningstate.cpp(59): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerrunningstate.cpp(69): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\playerrunningstate.cpp(76): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  PlayerStandingState.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  PlayerState.cpp
+  QuadTree.cpp
   Generating Code...
-  DirectXEngine.vcxproj -> C:\Users\Administrator\Desktop\Game Development\DirectX9\DirectXEngine\Debug\DirectXEngine.exe
+  Compiling...
+  Scene.cpp
+  SceneManager.cpp
+  Sprite.cpp
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\sprite.cpp(131): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+  Generating Code...
+dxinput.obj : error LNK2019: unresolved external symbol _DirectInput8Create@20 referenced in function "public: bool __thiscall Input::CreateInputDevice(struct HWND__ *)" (?CreateInputDevice@Input@@QAE_NPAUHWND__@@@Z)
+dxinput.obj : error LNK2001: unresolved external symbol _IID_IDirectInput8A
+dxinput.obj : error LNK2001: unresolved external symbol _GUID_SysMouse
+dxinput.obj : error LNK2001: unresolved external symbol _GUID_SysKeyboard
+dxinput.obj : error LNK2001: unresolved external symbol _c_dfDIMouse
+dxinput.obj : error LNK2001: unresolved external symbol _c_dfDIKeyboard
+C:\Users\Administrator\Desktop\Game Development\DirectX9\DirectXEngine\Debug\DirectXEngine.exe : fatal error LNK1120: 6 unresolved externals

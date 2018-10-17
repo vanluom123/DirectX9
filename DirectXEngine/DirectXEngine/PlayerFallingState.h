@@ -5,7 +5,7 @@
 class PlayerFallingState :public PlayerState
 {
 public:
-	PlayerFallingState(PlayerData* playerData);
+	explicit PlayerFallingState(PlayerData* playerData);
 
 	~PlayerFallingState();
 
@@ -13,9 +13,11 @@ public:
 
 	void HandlerKeyBoard(std::map<int, bool> keys) override;
 
+	void OnCollision(Entity* impact, Entity::CollisionReturn data, Entity::SideCollision side) override;
+
 	StateName GetState() override;
 
-private:
+protected:
 	float acceleratorX, acceleratorY;
 	bool allowMoveX;
 	bool isLeftOrRightKeyPressed;

@@ -20,12 +20,13 @@ public:
 	~DemoScene();
 
 private:
-	//std::vector<Sprite*> mSprite;
-	//float mTimeCounter{};
-	//Animation* mGoldBlock;
+
 	GameMap* mMap;
+
 	Camera* mCamera;
+
 	Player* mPlayer;
+
 	std::map<int, bool> keys;
 };
 

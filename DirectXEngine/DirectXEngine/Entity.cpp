@@ -11,10 +11,11 @@ Entity::~Entity()
 RECT Entity::GetBound()
 {
 	RECT rect;
-	rect.left = long(posX - float(mWidth) / 2);
-	rect.right = rect.left + mWidth; // rect.right = posX + mWidth / 2;
-	rect.top = long(posY - float(mHeight) / 2);
-	rect.bottom = rect.top + mHeight; // rect.bottom = posY + mHeight / 2;
+
+	rect.left = posX - width / 2;
+	rect.right = rect.left + width;
+	rect.top = posY + height / 2;
+	rect.bottom = rect.top - height;
 
 	return rect;
 }
@@ -59,22 +60,22 @@ void Entity::AddPosition(D3DXVECTOR2 pos)
 
 int Entity::GetWidth()
 {
-	return mWidth;
+	return width;
 }
 
 void Entity::SetWidth(int width)
 {
-	this->mWidth = width;
+	this->width = width;
 }
 
 int Entity::GetHeight()
 {
-	return mHeight;
+	return height;
 }
 
 void Entity::SetHeight(int height)
 {
-	this->mHeight = height;
+	this->height = height;
 }
 
 float Entity::GetVx()
@@ -110,10 +111,15 @@ void Entity::AddVy(float vy)
 void Entity::Update(float dt)
 {
 	//Velocity pixel / s
-	this->posX += this->vx*dt; // De cho vi tri di chuyen chi viec cong them cho dt. Mat khac o day co van toc nen vtri se cong voi van toc * dt 
-	this->posY += this->vy*dt;
+	this->posX += this->vx * dt; // De cho vi tri di chuyen chi viec cong them cho dt. Mat khac o day co van toc							nen vi tri se cong voi van toc * dt 
+	this->posY += this->vy * dt;
+}
+
+void Entity::OnCollision(Entity* entityCollision, CollisionReturn data, SideCollision side)
+{
+	vx = 0;
+	vy = 0;
 }
 
 void Entity::OnSetPosition(D3DXVECTOR3 pos)
-{
-}
+{}

@@ -4,6 +4,12 @@
 
 class SceneManager
 {
+	SceneManager();
+
+	static SceneManager* mInstance;
+
+	Scene* mCurrentScene;
+
 public:
 	static SceneManager* GetInstance();
 	Scene* GetCurrentScene();
@@ -11,12 +17,6 @@ public:
 	void ReplaceScene(Scene* scene);
 
 	~SceneManager();
-private:
-	SceneManager();
-
-	static SceneManager* mInstance;
-
-	Scene* mCurrentScene;
 };
 
 #endif

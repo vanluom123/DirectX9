@@ -5,18 +5,19 @@
 
 class PlayerRunningState : public PlayerState
 {
-public:
-	PlayerRunningState(PlayerData* playerData);
+	float acceleratorX;
 
-	void Update(float dt) override;
+public:
+	explicit  PlayerRunningState(PlayerData* playerData);
 
 	void HandlerKeyBoard(std::map<int, bool> keys) override;
 
 	StateName GetState() override;
 
+	void OnCollision(Entity* Impact, Entity::CollisionReturn data, Entity::SideCollision side) override;
+
 	~PlayerRunningState();
-private:
-	float acceleratorX;
+
 };
 
 #endif

@@ -1,6 +1,8 @@
 ﻿#include "Player.h"
 #include "PlayerJumpingState.h"
 #include "PlayerStandingState.h"
+#include "GameGlobal.h"
+#include "PlayerFallingState.h"
 
 Player::Player()
 {
@@ -15,7 +17,8 @@ Player::Player()
 
 	vx = 0;
 	vy = 0;
-	SetState(new PlayerStandingState(mPlayerData)); //Trạng thái mặt định là Standing
+
+	SetState(new PlayerStandingState(mPlayerData));
 }
 
 Player::~Player()
@@ -24,12 +27,17 @@ Player::~Player()
 RECT Player::GetBound()
 {
 	RECT rect;
-	rect.left = long(posX - float(mCurrentAnimation->GetWidth()) / 2);
+	rect.left = posX - mCurrentAnimation->GetWidth() / 2;
 	rect.right = rect.left + mCurrentAnimation->GetWidth();
-	rect.top = long(posY - float(mCurrentAnimation->GetHeight()) / 2);
+	rect.top = posY - mCurrentAnimation->GetHeight() / 2;
 	rect.bottom = rect.top + mCurrentAnimation->GetHeight();
 
 	return rect;
+}
+
+void Player::SetCamera(Camera* camera)
+{
+	this->mCamera = camera;
 }
 
 void Player::Update(float dt)
@@ -46,7 +54,14 @@ void Player::Draw(D3DXVECTOR3 pos, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTO
 {
 	mCurrentAnimation->FlipVertical(isCurrentReverse);
 	mCurrentAnimation->SetPosition(GetPosition());
-	mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0));
+
+	if (mCamera)
+	{
+		D3DXVECTOR2 trans = D3DXVECTOR2(float(GameGlobal::GetWidth()) / 2 - mCamera->GetPosition().x, float(GameGlobal::GetHeight()) / 2 - mCamera->GetPosition().y);
+		mCurrentAnimation->Draw(D3DXVECTOR3(pos.x, pos.y, 0), sourceRect, scale, trans, angle, rotationCenter, colorKey);
+	}
+	else
+		mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0));
 }
 
 void Player::SetState(PlayerState* newState)
@@ -107,6 +122,17 @@ PlayerState::StateName Player::GetState()
 	return mCurrentState;
 }
 
+void Player::OnCollision(Entity* entityCollision, CollisionReturn data, SideCollision side)
+{
+	mPlayerData->state->OnCollision(entityCollision, data, side);
+}
+
+void Player::OnCollisionWithBottom()
+{
+	if (mCurrentState != PlayerState::Jumping && mCurrentState != PlayerState::Falling)
+		this->SetState(new PlayerFallingState(this->mPlayerData));
+}
+
 void Player::ChangedAnimation(PlayerState::StateName state)
 {
 	switch (state)
@@ -129,6 +155,6 @@ void Player::ChangedAnimation(PlayerState::StateName state)
 		default: break;
 	}
 
-	mWidth = mCurrentAnimation->GetWidth();
-	mHeight = mCurrentAnimation->GetHeight();
+	width = mCurrentAnimation->GetWidth();
+	height = mCurrentAnimation->GetHeight();
 }

@@ -21,12 +21,12 @@ void DemoScene::LoadContent()
 	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	mMap = new GameMap("Resources/marioworld1-1.tmx");
 
-	mCamera->SetPosition(float(GameGlobal::GetWidth()) / 2, mMap->GetHeight() - float(mCamera->GetHeight()) / 2);
+	mCamera->SetPosition(GameGlobal::GetWidth() / 2, mMap->GetHeight() - mCamera->GetHeight() / 2);
 
 	mMap->SetCamera(mCamera);
 
 	mPlayer = new Player();
-	mPlayer->SetPosition(float(GameGlobal::GetWidth()) / 2, float(GameGlobal::GetHeight()) / 2);
+	mPlayer->SetPosition(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2);
 }
 
 void DemoScene::Draw()
@@ -71,11 +71,11 @@ DemoScene::~DemoScene()
 	if (mMap)
 	{
 		delete mMap;
-		mMap = nullptr;
+		mMap = NULL;
 	}
 	if (mCamera)
 	{
 		delete mCamera;
-		mCamera = nullptr;
+		mCamera = NULL;
 	}
 }

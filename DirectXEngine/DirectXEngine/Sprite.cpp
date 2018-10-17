@@ -99,7 +99,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	D3DXVECTOR3 inPosition = mPosition;
 	RECT inSourceRect = mSourceRect;
 	float inRotation = mRotation;
-	D3DXVECTOR2 dxvector2_scale = mScale;
+	D3DXVECTOR2 vector2_scale = mScale;
 	D3DXVECTOR2 translation = mTranslation;
 	D3DXVECTOR2 rotation_center = mRotationCenter;
 	D3DXVECTOR2 scaling_center = D3DXVECTOR2(inPosition.x, inPosition.y);
@@ -111,7 +111,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 		inSourceRect = sourceRect;
 
 	if (scale != D3DXVECTOR2())
-		dxvector2_scale = scale;
+		vector2_scale = scale;
 
 	if (transform != D3DXVECTOR2())
 		translation = transform;
@@ -121,14 +121,14 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	else
 		mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);// cho phep quay giua hinh
 
-	D3DXMatrixTransformation2D(&mMatrix, &scaling_center, 0, &dxvector2_scale, &rotation_center,
+	D3DXMatrixTransformation2D(&mMatrix, &scaling_center, 0, &vector2_scale, &rotation_center,
 		inRotation, &translation);
 
 	D3DXMATRIX oldMatrix;
 	mSpriteHandler->GetTransform(&oldMatrix);
 	mSpriteHandler->SetTransform(&mMatrix);
 
-	D3DXVECTOR3 center = D3DXVECTOR3(float(mWidth) / 2, float(mHeight) / 2, 0);
+	D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);
 
 	mSpriteHandler->Draw(mTexture,
 		&inSourceRect,

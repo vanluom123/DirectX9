@@ -17,3 +17,6 @@ PlayerState::PlayerState(PlayerData* playerData)
 
 PlayerState::PlayerState()
 {}
+
+void PlayerState::OnCollision(Entity* ObjectImpact, Entity::CollisionReturn data, Entity::SideCollision side)
+{}
