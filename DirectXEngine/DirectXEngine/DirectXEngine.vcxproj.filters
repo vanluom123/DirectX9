@@ -4,12 +4,6 @@
     <Filter Include="FrameWork">
       <UniqueIdentifier>{1af5bfb7-7c15-4a58-b15c-9a4cf45ad382}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Camera">
-      <UniqueIdentifier>{6a443266-dadc-4e9d-8f4a-a8b4e2dd2033}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Animation">
-      <UniqueIdentifier>{23080b7a-0a30-4f9d-a94c-d739650a9faa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\GameComponent">
       <UniqueIdentifier>{ca4d3002-bf96-42e3-973d-34d186899c5e}</UniqueIdentifier>
     </Filter>
@@ -31,47 +25,11 @@
     <Filter Include="FrameWork\GameDefine">
       <UniqueIdentifier>{68fb56ad-bfd1-4751-bdfa-50f84967d2d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameObject">
-      <UniqueIdentifier>{f10d91d4-136e-419a-a878-611a2270b3ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Entity">
-      <UniqueIdentifier>{b4c09d70-2877-4201-a318-93f6f4e5228d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player">
-      <UniqueIdentifier>{2e707a4e-cef3-4d8f-ac9c-1f8d543e849e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState">
-      <UniqueIdentifier>{abb13ea3-86ba-4264-a0fe-7eed22483906}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerStandingState">
-      <UniqueIdentifier>{08512e93-8e28-422a-bda5-d8a14e5eb354}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerFallingState">
-      <UniqueIdentifier>{980222f2-78a8-4f69-8310-c7a012ac69d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerRunningState">
-      <UniqueIdentifier>{72b965ae-d328-4ca1-a7d8-7f6c301ff335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerJumpingState">
-      <UniqueIdentifier>{e8e7bdf6-3231-48e7-8548-427d61a22209}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\Scenes">
       <UniqueIdentifier>{65b9ad45-153f-4760-87a0-0e318057f826}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Scenes\DemoScene">
-      <UniqueIdentifier>{d61f568a-c237-4cfa-9a31-634ff096b23c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Sprite">
-      <UniqueIdentifier>{89ae216a-3eed-4e5c-a08b-2ad3ad4a818f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\MapReader">
       <UniqueIdentifier>{7e352e3e-f0f1-40b4-8aa4-b76d9a5f7422}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\Player\PlayerState\PlayerData">
-      <UniqueIdentifier>{c675e511-31b6-46e4-b847-45c03f61bb78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\GameObject\MapObject">
-      <UniqueIdentifier>{59692afc-1172-4052-91af-8159bcf06338}</UniqueIdentifier>
     </Filter>
     <Filter Include="FrameWork\GameComponent\GameCollision">
       <UniqueIdentifier>{98041c3d-90e8-4277-8c57-daa02c8223b5}</UniqueIdentifier>
@@ -79,32 +37,32 @@
     <Filter Include="FrameWork\GameComponent\Quadtree">
       <UniqueIdentifier>{e8d5a065-aa70-4249-bb5b-abf999e1a145}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Input">
+    <Filter Include="FrameWork\GameComponent\Animation">
+      <UniqueIdentifier>{23080b7a-0a30-4f9d-a94c-d739650a9faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\Camera">
+      <UniqueIdentifier>{6a443266-dadc-4e9d-8f4a-a8b4e2dd2033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\Sprite">
+      <UniqueIdentifier>{89ae216a-3eed-4e5c-a08b-2ad3ad4a818f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\Input">
       <UniqueIdentifier>{e30ee91c-0d3d-4c29-93df-ed9f9ebb083a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject">
+      <UniqueIdentifier>{1f16b878-1890-497d-8b76-8b5bed04abe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject\MapObject">
+      <UniqueIdentifier>{80597f1c-1a95-4e82-a471-ffc6363465f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObject\Player">
+      <UniqueIdentifier>{c32c8cc3-6224-4b73-b08d-5dfc1ab48174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameComponent\Sound">
+      <UniqueIdentifier>{3fa640b3-6296-411c-ac30-5ce6924012ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameGlobal.h">
-      <Filter>FrameWork\GameComponent\GameGlobal</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>FrameWork\GameComponent\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>FrameWork\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTime.h">
-      <Filter>FrameWork\GameComponent\GameTime</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoScene.h">
-      <Filter>FrameWork\Scenes\DemoScene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>FrameWork\GameController</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>FrameWork\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="MapReader\base64.h">
       <Filter>FrameWork\MapReader</Filter>
     </ClInclude>
@@ -174,90 +132,96 @@
     <ClInclude Include="MapReader\zlib.h">
       <Filter>FrameWork\MapReader</Filter>
     </ClInclude>
-    <ClInclude Include="GameMap.h">
-      <Filter>FrameWork\GameComponent\GameMap</Filter>
+    <ClInclude Include="Input\Input.h">
+      <Filter>FrameWork\GameComponent\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>FrameWork\Camera</Filter>
+    <ClInclude Include="GameComponents\Animation.h">
+      <Filter>FrameWork\GameComponent\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>FrameWork\GameObject\Entity</Filter>
+    <ClInclude Include="GameComponents\Camera.h">
+      <Filter>FrameWork\GameComponent\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerJumpingState.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerJumpingState</Filter>
+    <ClInclude Include="Scenes\DemoScene.h">
+      <Filter>FrameWork\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="GameDefine.h">
+    <ClInclude Include="GameComponents\Scene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Entity.h">
+      <Filter>FrameWork\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MapObjects\Brick.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MapObjects\BrickGold.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MapObjects\BrickNormal.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MapObjects\GameObject.h">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\Player.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerData.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerFallingState.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerJumpingState.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerRunningState.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerStandingState.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerState.h">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameControllers\SceneManager.h">
+      <Filter>FrameWork\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\GameCollision.h">
+      <Filter>FrameWork\GameComponent\GameCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\Game.h">
+      <Filter>FrameWork\GameComponent\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDefines\GameDefine.h">
       <Filter>FrameWork\GameDefine</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStandingState.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerStandingState</Filter>
+    <ClInclude Include="GameComponents\GameGlobal.h">
+      <Filter>FrameWork\GameComponent\GameGlobal</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRunningState.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerRunningState</Filter>
+    <ClInclude Include="GameComponents\GameMap.h">
+      <Filter>FrameWork\GameComponent\GameMap</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerFallingState.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerFallingState</Filter>
+    <ClInclude Include="GameComponents\GameTime.h">
+      <Filter>FrameWork\GameComponent\GameTime</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerData.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerData</Filter>
+    <ClInclude Include="GameComponents\QuadTree.h">
+      <Filter>FrameWork\GameComponent\Quadtree</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerState.h">
-      <Filter>FrameWork\GameObject\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>FrameWork\GameObject\Player</Filter>
+    <ClInclude Include="GameComponents\Sprite.h">
+      <Filter>FrameWork\GameComponent\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork.h">
       <Filter>FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="MapObject.h">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
+    <ClInclude Include="GameComponents\Sound.h">
+      <Filter>FrameWork\GameComponent\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BrickNormal.h">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BrickGold.h">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameCollision.h">
-      <Filter>FrameWork\GameComponent\GameCollision</Filter>
-    </ClInclude>
-    <ClInclude Include="QuadTree.h">
-      <Filter>FrameWork\GameComponent\Quadtree</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
+    <ClInclude Include="Scenes\TestScene.h">
       <Filter>FrameWork\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Input\Input.h">
-      <Filter>FrameWork\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameGlobal.cpp">
-      <Filter>FrameWork\GameComponent\GameGlobal</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>FrameWork\GameComponent\Game</Filter>
-    </ClCompile>
     <ClCompile Include="wMain.cpp" />
-    <ClCompile Include="Sprite.cpp">
-      <Filter>FrameWork\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTime.cpp">
-      <Filter>FrameWork\GameComponent\GameTime</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
-      <Filter>FrameWork\Scenes\DemoScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>FrameWork\GameController</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>FrameWork\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="MapReader\base64.cpp">
       <Filter>FrameWork\MapReader</Filter>
     </ClCompile>
@@ -318,62 +282,89 @@
     <ClCompile Include="MapReader\TmxUtil.cpp">
       <Filter>FrameWork\MapReader</Filter>
     </ClCompile>
-    <ClCompile Include="GameMap.cpp">
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>FrameWork\GameComponent\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\Animation.cpp">
+      <Filter>FrameWork\GameComponent\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\Camera.cpp">
+      <Filter>FrameWork\GameComponent\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\DemoScene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\Scene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Entity.cpp">
+      <Filter>FrameWork\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\MapObjects\Brick.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\MapObjects\BrickGold.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\MapObjects\BrickNormal.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\MapObjects\GameObject.cpp">
+      <Filter>FrameWork\GameObject\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\Player.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerData.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerFallingState.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerJumpingState.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerRunningState.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerStandingState.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\PlayerState.cpp">
+      <Filter>FrameWork\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameControllers\SceneManager.cpp">
+      <Filter>FrameWork\GameController</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\GameCollision.cpp">
+      <Filter>FrameWork\GameComponent\GameCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\Game.cpp">
+      <Filter>FrameWork\GameComponent\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\GameGlobal.cpp">
+      <Filter>FrameWork\GameComponent\GameGlobal</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\GameMap.cpp">
       <Filter>FrameWork\GameComponent\GameMap</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>FrameWork\Camera</Filter>
+    <ClCompile Include="GameComponents\GameTime.cpp">
+      <Filter>FrameWork\GameComponent\GameTime</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>FrameWork\GameObject\Entity</Filter>
+    <ClCompile Include="GameComponents\QuadTree.cpp">
+      <Filter>FrameWork\GameComponent\Quadtree</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerJumpingState.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerJumpingState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStandingState.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerStandingState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerRunningState.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerRunningState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerFallingState.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerFallingState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerData.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState\PlayerData</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerState.cpp">
-      <Filter>FrameWork\GameObject\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>FrameWork\GameObject\Player</Filter>
+    <ClCompile Include="GameComponents\Sprite.cpp">
+      <Filter>FrameWork\GameComponent\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="FrameWork.cpp">
       <Filter>FrameWork</Filter>
     </ClCompile>
-    <ClCompile Include="MapObject.cpp">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
+    <ClCompile Include="GameComponents\Sound.cpp">
+      <Filter>FrameWork\GameComponent\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BrickNormal.cpp">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BrickGold.cpp">
-      <Filter>FrameWork\GameObject\MapObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameCollision.cpp">
-      <Filter>FrameWork\GameComponent\GameCollision</Filter>
-    </ClCompile>
-    <ClCompile Include="QuadTree.cpp">
-      <Filter>FrameWork\GameComponent\Quadtree</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
+    <ClCompile Include="Scenes\TestScene.cpp">
       <Filter>FrameWork\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Input\Input.cpp">
-      <Filter>FrameWork\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
