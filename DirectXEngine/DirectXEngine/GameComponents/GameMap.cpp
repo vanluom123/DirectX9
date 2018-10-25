@@ -12,19 +12,18 @@ GameMap::~GameMap()
 {
     delete mMap;
 
-    for (size_t i = 0; i < mListBricks.size(); i++)
+    for (auto& mListBrick : mListBricks)
     {
-        if (mListBricks[i])
-            delete mListBricks[i];
+	    delete mListBrick;
     }
     mListBricks.clear();
 
-    for (size_t i = 0; i < mListTileset.size(); i++)
+    for (size_t i = 0; i < mListTileSet.size(); i++)
     {
-        if (mListTileset[i])
-            delete mListTileset[i];
+        if (mListTileSet[i])
+            delete mListTileSet[i];
     }
-    mListTileset.clear();
+    mListTileSet.clear();
 
     delete mQuadTree;
 }
@@ -42,17 +41,17 @@ void GameMap::LoadMap(const char* filePath)
 
     mQuadTree = new QuadTree(1, r);
 
-    for (size_t i = 0; i < mMap->GetNumTilesets(); i++)
+    for (intptr_t i = 0; i < mMap->GetNumTilesets(); i++)
     {
-        const Tmx::Tileset *tileset = mMap->GetTileset(i);
+        const Tmx::Tileset *tileSet = mMap->GetTileset(i);
 
-        Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str());
-        mListTileset.insert(pair<int, Sprite*>(i, sprite));
+        Sprite *sprite = new Sprite(tileSet->GetImage()->GetSource().c_str());
+        mListTileSet.insert(pair<int, Sprite*>(i, sprite));
     }
 
     //khoi tao cac khoi Brick (vien gach)
 #pragma region -BRICK AND COIN LAYER-
-    for (size_t i = 0; i < GetMap()->GetNumTileLayers(); i++)
+    for (intptr_t i = 0; i < GetMap()->GetNumTileLayers(); i++)
     {
         const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
 
@@ -63,7 +62,7 @@ void GameMap::LoadMap(const char* filePath)
 
         if (layer->GetName() == "brick" || layer->GetName() == "coin")
         {
-            for (size_t j = 0; j < mMap->GetNumTilesets(); j++)
+            for (intptr_t j = 0; j < mMap->GetNumTilesets(); j++)
             {
                 const Tmx::Tileset *tileSet = mMap->GetTileset(j);
 
@@ -73,9 +72,9 @@ void GameMap::LoadMap(const char* filePath)
                 int tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
                 int tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
 
-                for (size_t m = 0; m < layer->GetHeight(); m++)
+                for (intptr_t m = 0; m < layer->GetHeight(); m++)
                 {
-                    for (size_t n = 0; n < layer->GetWidth(); n++)
+                    for (intptr_t n = 0; n < layer->GetWidth(); n++)
                     {
                         if (layer->GetTileTilesetIndex(n, m) != -1)
                         {
@@ -127,17 +126,17 @@ void GameMap::LoadMap(const char* filePath)
 
 #pragma region -OBJECTGROUP, STATIC OBJECT-
 
-    for (size_t i = 0; i < mMap->GetNumObjectGroups(); i++)
+    for (intptr_t i = 0; i < mMap->GetNumObjectGroups(); i++)
     {
         const Tmx::ObjectGroup *objectGroup = mMap->GetObjectGroup(i);
 
-        for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
+        for (intptr_t j = 0; j < objectGroup->GetNumObjects(); j++)
         {
             //lay object group chu khong phai layer
             //object group se chua nhung body
             Tmx::Object *object = objectGroup->GetObjects().at(j);
 
-            Entity *entity = new Entity();
+	        auto *entity = new Entity();
             entity->SetPosition(object->GetX() + object->GetWidth() / 2, 
                                     object->GetY() + object->GetHeight() / 2);
             entity->SetWidth(object->GetWidth());
@@ -224,7 +223,7 @@ void GameMap::Draw()
         GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
 
 #pragma region DRAW TILESET
-    for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
+    for (intptr_t i = 0; i < mMap->GetNumTileLayers(); i++)
     {
         const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
 
@@ -233,7 +232,7 @@ void GameMap::Draw()
             continue;
         }
 
-        for (size_t j = 0; j < mMap->GetNumTilesets(); j++)
+        for (intptr_t j = 0; j < mMap->GetNumTilesets(); j++)
         {
             const Tmx::Tileset *tileSet = mMap->GetTileset(j);
 
@@ -245,9 +244,9 @@ void GameMap::Draw()
             int tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
             int tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
 
-            for (size_t m = 0; m < layer->GetHeight(); m++)
+            for (intptr_t m = 0; m < layer->GetHeight(); m++)
             {
-                for (size_t n = 0; n < layer->GetWidth(); n++)
+                for (intptr_t n = 0; n < layer->GetWidth(); n++)
                 {
                     if (layer->GetTileTilesetIndex(n, m) != -1)
                     {
@@ -261,7 +260,7 @@ void GameMap::Draw()
                         sourceRECT.left = x * tileWidth;
                         sourceRECT.right = sourceRECT.left + tileWidth;
 
-                        Sprite* sprite = mListTileset[j];
+                        Sprite* sprite = mListTileSet[j];
 
                         //tru tilewidth/2 va tileheight/2 vi Sprite ve o vi tri giua hinh anh cho nen doi hinh de cho
                         //dung toa do (0,0) cua the gioi thuc la (0,0) neu khong thi se la (-tilewidth/2, -tileheigth/2);
@@ -275,7 +274,7 @@ void GameMap::Draw()
                             objRECT.right = objRECT.left + tileWidth;
                             objRECT.bottom = objRECT.top + tileHeight;
 
-                            if (!GameCollision::RecteAndRect(mCamera->GetBound(), objRECT).IsCollided)
+                            if (!GameCollision::isCollideBetweenRectAndRect(mCamera->GetBound(), objRECT).IsCollided)
                                 continue;
                         }
 
@@ -292,9 +291,9 @@ void GameMap::Draw()
 
 #pragma region DRAW BRICK
 
-    for (size_t i = 0; i < mListBricks.size(); i++)
+    for (auto& mListBrick : mListBricks)
     {
-        mListBricks[i]->Draw(trans);
+	    mListBrick->Draw(trans);
     }
 
 #pragma endregion
@@ -302,7 +301,7 @@ void GameMap::Draw()
 
 std::map<int, Sprite*> GameMap::getListTileSet()
 {
-    return mListTileset;
+    return mListTileSet;
 }
 
 std::vector<Brick*> GameMap::GetListBrick()

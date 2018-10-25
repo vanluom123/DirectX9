@@ -139,7 +139,7 @@ bool FrameWork::InitializeDevice3D()
 		GameGlobal::getCurrentHWND(),
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp,
-		&m_d3ddev);
+		&m_d3ddv);
 
 	if (FAILED(resultD3D))
 	{
@@ -147,9 +147,9 @@ bool FrameWork::InitializeDevice3D()
 		return false;
 	}
 
-	GameGlobal::SetCurrentDevice(m_d3ddev);
+	GameGlobal::SetCurrentDevice(m_d3ddv);
 
-	HRESULT result = D3DXCreateSprite(m_d3ddev, &m_spriteHandler);
+	HRESULT result = D3DXCreateSprite(m_d3ddv, &m_spriteHandler);
 	if (FAILED(result))
 	{
 		MessageBox(NULL, "D3DXCreateSprite failed", "Error", MB_OK);

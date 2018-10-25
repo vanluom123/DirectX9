@@ -1,19 +1,13 @@
 #pragma once
 
 #include "../GameComponents/Scene.h"
-#include "../Transition/SceneTransition.h"
-#include "../Transition/TransitionEffect.h"
 
 class SceneManager
 {
 private:
 	SceneManager();
-	static SceneManager     *mInstace;
-	Scene                   *mCurrentScene,
-							*mDestinationScene; // dung cho effect
-
-	static bool             mIsTransitioning;
-
+	static SceneManager     *mInstance;
+	Scene                   *mCurrentScene;
 public:
     static SceneManager *GetInstance();
     ~SceneManager();
@@ -21,7 +15,4 @@ public:
     Scene* GetCurrentScene();
     void Update(float dt);
     void ReplaceScene(Scene *scene);
-    void ReplaceScene(Scene *scenedest, TransitionEffect *effect);
-    void OnFinishTransition();
-
 };

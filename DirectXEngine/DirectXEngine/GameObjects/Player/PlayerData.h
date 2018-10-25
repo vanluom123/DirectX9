@@ -10,8 +10,5 @@ public:
 
     Player      *player;
     PlayerState *state;
-
-protected:
-    
 };
 

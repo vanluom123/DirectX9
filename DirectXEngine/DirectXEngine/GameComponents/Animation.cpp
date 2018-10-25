@@ -12,7 +12,6 @@ Animation::Animation(const char* filePath, int totalFrame, int rows, int columns
 
 void Animation::InitWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame, D3DCOLOR colorKey)
 {
-    //GAMELOG("animation: frame: %d, row: %d, column: %d, time: %f", totalFrame, rows, columns, timePerFrame);
     this->InitWithSprite(filePath);
     mCurrentColumn = 0;
     mCurrentRow = 0;
@@ -21,7 +20,7 @@ void Animation::InitWithAnimation(const char* filePath, int totalFrame, int rows
     mRows = rows;
     mColumns = columns;
 
-    //width - height luc nay la cua spritesheet
+    //width - height luc nay la cua sprite sheet
     mFrameWidth = GetWidth() / mColumns;
     mFrameHeight = GetHeight() / mRows;
 
@@ -36,9 +35,7 @@ void Animation::InitWithAnimation(const char* filePath, int totalFrame, int rows
 }
 
 Animation::~Animation()
-{
-
-}
+{}
 
 void Animation::Update(float dt)
 {
@@ -75,15 +72,12 @@ void Animation::Update(float dt)
         SetSourceRect(mRect);
     }
     else
-    {
-        mCurrentTotalTime += dt;
-    }
+		mCurrentTotalTime += dt;
 }
 
 void Animation::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale,
     D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
 {
-
     Sprite::Draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
 }
 

@@ -3,11 +3,9 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "../../GameComponents/Animation.h"
-#include "../../GameComponents/GameGlobal.h"
 #include "../../GameComponents/Camera.h"
 #include "PlayerData.h"
 #include "PlayerState.h"
-#include "PlayerRunningState.h"
 
 class Player : public Entity
 {
@@ -15,12 +13,12 @@ protected:
 
 	Camera      *mCamera;
 
-	PlayerData *mPlayerData;
+	PlayerData  *mPlayerData;
 
 	Animation   *mCurrentAnimation,
-		*mAnimationStanding,
-		*mAnimationRunning,
-		*mAnimationJumping;
+				*mAnimationStanding,
+				*mAnimationRunning,
+				*mAnimationJumping;
 
 	void changeAnimation(PlayerState::StateName state);
 
@@ -42,19 +40,21 @@ public:
 
     void SetCamera(Camera *camera);
 
-    void Update(float dt);
+    void Update(float dt) override;
 
-    void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
+    void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(),
+		D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(),
+		D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255));
 
     void SetState(PlayerState *newState);
 
-    void OnCollision(Entity *impactor, Entity::CollisionReturn data, Entity::SideCollisions side);
+    void OnCollision(Entity::CollisionReturn data, Entity::SideCollisions side) override;
 
     void OnNoCollisionWithBottom();
 
     MoveDirection getMoveDirection();
 
-    RECT GetBound();     
+    RECT GetBound() override;     
 
     PlayerState::StateName getState();
 
@@ -70,7 +70,6 @@ public:
     void SetReverse(bool flag);
 
     bool allowMoveLeft;
-    bool allowMoveRight;
-
+	bool allowMoveRight;
 };
 

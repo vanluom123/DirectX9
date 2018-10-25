@@ -1,23 +1,21 @@
 #include "SceneManager.h"
 
-SceneManager* SceneManager::mInstace = NULL;
-bool SceneManager::mIsTransitioning = false;
+SceneManager* SceneManager::mInstance = NULL;
 
 SceneManager::SceneManager()
 {
-    mCurrentScene = nullptr;
+    mCurrentScene = NULL;
 }
 
 SceneManager::~SceneManager()
-{
-}
+{}
 
 SceneManager* SceneManager::GetInstance()
 {
-    if (!mInstace)
-        mInstace = new SceneManager();
+    if (!mInstance)
+        mInstance = new SceneManager();
 
-    return mInstace;
+    return mInstance;
 }
 
 Scene* SceneManager::GetCurrentScene()
@@ -26,36 +24,10 @@ Scene* SceneManager::GetCurrentScene()
 }
 
 void SceneManager::Update(float dt)
-{
-
-    if (mIsTransitioning == false)
-    {
-        mCurrentScene->Update(dt);
-    }
-    else
-    {
-        SceneTransition::GetInstance()->Update(dt);
-    }
-}
+{}
 
 void SceneManager::ReplaceScene(Scene *scene)
 {
     delete mCurrentScene;
-
     mCurrentScene = scene;
-
-    OnFinishTransition();
-}
-
-void SceneManager::ReplaceScene(Scene * scenedest, TransitionEffect * effect)
-{
-    mIsTransitioning = true;
-    mDestinationScene = scenedest;
-
-    SceneTransition::GetInstance()->SetTransition(mCurrentScene, mDestinationScene, effect);
-}
-
-void SceneManager::OnFinishTransition()
-{
-    mIsTransitioning = false;
 }

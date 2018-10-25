@@ -38,7 +38,8 @@ public:
 
     static LPDIRECT3DSURFACE9 backSurface;
 
-    static bool isGameRunning; //trang thai xem game co dang chay khong
+	//Game's state is running
+    static bool isGameRunning;
 
 };
 

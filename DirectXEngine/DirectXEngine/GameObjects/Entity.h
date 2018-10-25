@@ -2,7 +2,6 @@
 
 #include <d3dx9.h>
 #include <d3d9.h>
-#include <map>
 
 class Entity
 {
@@ -21,8 +20,9 @@ protected:
 	float width, height;
 
 public:
+	virtual ~Entity();
 
-    Entity();
+	Entity();
 
     enum SideCollisions
     {
@@ -90,6 +90,6 @@ public:
 
     //kiem soat viec va cham
     //khi xay ra va cham voi 1 thuc the nao do thi ham nay se dc goi de xu ly
-    virtual void OnCollision(Entity *impactor, CollisionReturn data, SideCollisions side);
+    virtual void OnCollision(CollisionReturn data, SideCollisions side);
 
 };

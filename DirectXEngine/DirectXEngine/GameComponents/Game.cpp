@@ -2,6 +2,7 @@
 #include "GameGlobal.h"
 #include "../GameControllers/SceneManager.h"
 #include "../Scenes/DemoScene.h"
+#include "GameTime.h"
 
 Game::Game(int fps)
 {
@@ -13,14 +14,11 @@ Game::Game(int fps)
 }
 
 Game::~Game()
-{
-
-}
+{}
 
 void Game::Update(float dt)
 {
 	SceneManager::GetInstance()->Update(dt);
-
 	Render();
 }
 
@@ -28,11 +26,11 @@ void Game::Render()
 {
 	auto device = GameGlobal::GetCurrentDevice();
 
-	device->Clear(0, NULL, D3DCLEAR_TARGET, SceneManager::GetInstance()->GetCurrentScene()->GetBackcolor(), 0.0f, 0);
+	device->Clear(0, NULL, D3DCLEAR_TARGET, SceneManager::GetInstance()->GetCurrentScene()->GetBackColor(), 0.0f, 0);
 
 	if (device->BeginScene())
 	{
-		//bat dau ve
+		// Starting draw
 		GameGlobal::GetCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 		SceneManager::GetInstance()->GetCurrentScene()->Draw();
 		GameGlobal::GetCurrentSpriteHandler()->End();

@@ -5,7 +5,6 @@
 
 class Camera
 {
-private:
 	int             mWidth,
 					mHeight;
 
@@ -14,7 +13,7 @@ private:
 public:
     Camera(int width, int height);
 
-    //center of camera
+    //Camera center
     void SetPosition(float x, float y);
     void SetPosition(D3DXVECTOR3 pos);
 

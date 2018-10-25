@@ -7,10 +7,8 @@ public:
     PlayerStandingState(PlayerData *playerData);
     ~PlayerStandingState();
 
-    void HandleKeyboard(std::map<int, bool> keys);
+    void HandleKeyboard(std::map<int, bool> keys) override;
 
-    virtual StateName GetState();
-
-protected:
+	StateName GetState() override;
 };
 

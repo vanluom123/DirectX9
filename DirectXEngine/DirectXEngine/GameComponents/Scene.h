@@ -21,8 +21,8 @@ public:
     virtual void OnKeyUp(int keyCode);
     virtual void OnMouseDown(float x, float y);
 
-    D3DCOLOR GetBackcolor();
+    D3DCOLOR GetBackColor();
 
-    ~Scene();
+	virtual ~Scene();
 };
 

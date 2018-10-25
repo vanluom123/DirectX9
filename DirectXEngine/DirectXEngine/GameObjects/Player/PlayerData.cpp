@@ -2,10 +2,8 @@
 
 
 PlayerData::PlayerData()
-{
-}
+{}
 
 
 PlayerData::~PlayerData()
-{
-}
+{}

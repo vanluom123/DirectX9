@@ -12,13 +12,12 @@
 
 class FrameWork
 {
-private:
 	bool						CreateDX3DWindows(const char* szTitleName, int x, int y, int width, int height);
 	bool						InitializeDevice3D();
 	const char*					m_applicationName;
 	HINSTANCE					m_hInstance;
 	PDIRECT3D9					m_d3d;
-	LPDIRECT3DDEVICE9			m_d3ddev;
+	LPDIRECT3DDEVICE9			m_d3ddv;
 	LPD3DXSPRITE				m_spriteHandler;
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

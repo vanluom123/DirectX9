@@ -1,7 +1,6 @@
 #include "PlayerStandingState.h"
 #include "Player.h"
-#include "PlayerFallingState.h"
-#include "../../GameDefines/GameDefine.h"
+#include "PlayerRunningState.h"
 
 PlayerStandingState::PlayerStandingState(PlayerData *playerData)
 {
@@ -12,16 +11,12 @@ PlayerStandingState::PlayerStandingState(PlayerData *playerData)
 
 
 PlayerStandingState::~PlayerStandingState()
-{
-}
+{}
 
 void PlayerStandingState::HandleKeyboard(std::map<int, bool> keys)
 {
     if (keys[VK_LEFT] || keys[VK_RIGHT])
-    {
-        this->mPlayerData->player->SetState(new PlayerRunningState(this->mPlayerData));
-        return;
-    }
+		this->mPlayerData->player->SetState(new PlayerRunningState(this->mPlayerData));
 }
 
 PlayerState::StateName PlayerStandingState::GetState()

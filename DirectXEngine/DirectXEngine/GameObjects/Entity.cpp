@@ -8,7 +8,7 @@ Entity::Entity()
 
 D3DXVECTOR3 Entity::GetPosition()
 {
-    return D3DXVECTOR3(posX, posY, 0);
+    return {posX, posY, 0};
 }
 
 RECT Entity::GetBound()
@@ -23,15 +23,16 @@ RECT Entity::GetBound()
     return bound;
 }
 
-void Entity::OnCollision(Entity *impactor, CollisionReturn data, Entity::SideCollisions side)
+void Entity::OnCollision(CollisionReturn data, Entity::SideCollisions side)
 {
     vx = 0, vy = 0;
 }
 
 void Entity::OnSetPosition(D3DXVECTOR3 pos)
-{
+{}
 
-}
+Entity::~Entity()
+{}
 
 void Entity::Update(float dt)
 {

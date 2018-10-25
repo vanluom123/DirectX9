@@ -9,8 +9,6 @@
 #include "../GameComponents/Sprite.h"
 #include "../MapReader/Tmx.h.in"
 #include "Camera.h"
-#include "GameGlobal.h"
-#include "GameCollision.h"
 #include "QuadTree.h"
 #include "../GameObjects/MapObjects/Brick.h"
 
@@ -19,7 +17,7 @@ class GameMap
 	void LoadMap(const char* filePath);
 
 	Tmx::Map                        *mMap;
-	std::map<int, Sprite*>          mListTileset;
+	std::map<int, Sprite*>          mListTileSet;
 	LPD3DXSPRITE                    mSpriteHandler;
 	Camera                          *mCamera;
 	QuadTree                        *mQuadTree;

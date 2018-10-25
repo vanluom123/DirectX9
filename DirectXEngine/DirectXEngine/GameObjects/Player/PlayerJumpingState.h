@@ -4,22 +4,23 @@
 
 class PlayerJumpingState : public PlayerState
 {
+protected:
+	float acceleratorY;
+	float acceleratorX;
+	bool noPressed;
+	bool allowMoveRight, allowMoveLeft;
+
 public:
     PlayerJumpingState(PlayerData *playerData);
     ~PlayerJumpingState();
 
-    void Update(float dt);
+    void Update(float dt) override;
 
-    void HandleKeyboard(std::map<int, bool> keys);
+    void HandleKeyboard(std::map<int, bool> keys) override;
 
-    void OnCollision(Entity *impactor, Entity::SideCollisions side, Entity::CollisionReturn data);
+    void OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data) override;
 
-    virtual StateName GetState();
+	StateName GetState() override;
 
-protected:
-    float acceleratorY;
-    float acceleratorX;
-    bool noPressed;
-    bool allowMoveRight, allowMoveLeft;
 };
 

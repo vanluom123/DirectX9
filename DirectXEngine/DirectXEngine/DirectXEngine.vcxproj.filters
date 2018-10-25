@@ -58,9 +58,6 @@
     <Filter Include="FrameWork\GameObject\Player">
       <UniqueIdentifier>{c32c8cc3-6224-4b73-b08d-5dfc1ab48174}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameComponent\Sound">
-      <UniqueIdentifier>{3fa640b3-6296-411c-ac30-5ce6924012ad}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapReader\base64.h">
@@ -213,12 +210,6 @@
     <ClInclude Include="FrameWork.h">
       <Filter>FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponents\Sound.h">
-      <Filter>FrameWork\GameComponent\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\TestScene.h">
-      <Filter>FrameWork\Scenes</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wMain.cpp" />
@@ -359,12 +350,6 @@
     </ClCompile>
     <ClCompile Include="FrameWork.cpp">
       <Filter>FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="GameComponents\Sound.cpp">
-      <Filter>FrameWork\GameComponent\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\TestScene.cpp">
-      <Filter>FrameWork\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

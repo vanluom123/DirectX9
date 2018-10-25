@@ -134,7 +134,6 @@
     <ClInclude Include="GameComponents\GameTime.h" />
     <ClInclude Include="GameComponents\QuadTree.h" />
     <ClInclude Include="GameComponents\Scene.h" />
-    <ClInclude Include="GameComponents\Sound.h" />
     <ClInclude Include="GameComponents\Sprite.h" />
     <ClInclude Include="GameControllers\SceneManager.h" />
     <ClInclude Include="GameDefines\GameDefine.h" />
@@ -175,7 +174,6 @@
     <ClInclude Include="MapReader\zconf.h" />
     <ClInclude Include="MapReader\zlib.h" />
     <ClInclude Include="Scenes\DemoScene.h" />
-    <ClInclude Include="Scenes\TestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameWork.cpp" />
@@ -188,7 +186,6 @@
     <ClCompile Include="GameComponents\GameTime.cpp" />
     <ClCompile Include="GameComponents\QuadTree.cpp" />
     <ClCompile Include="GameComponents\Scene.cpp" />
-    <ClCompile Include="GameComponents\Sound.cpp" />
     <ClCompile Include="GameComponents\Sprite.cpp" />
     <ClCompile Include="GameControllers\SceneManager.cpp" />
     <ClCompile Include="GameObjects\Entity.cpp" />
@@ -225,7 +222,6 @@
     <ClCompile Include="MapReader\TmxTileset.cpp" />
     <ClCompile Include="MapReader\TmxUtil.cpp" />
     <ClCompile Include="Scenes\DemoScene.cpp" />
-    <ClCompile Include="Scenes\TestScene.cpp" />
     <ClCompile Include="wMain.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,18 +1,13 @@
 #ifndef __GAME__
 #define __GAME__
-#include <d3dx9.h>
 #include <d3d9.h>
-#include <Windows.h>
-#include <dinput.h>
 
-#include "GameTime.h"
-
-#define KEYBOARD_BUFFERD_SIZE 1024
+#define KEYBOARD_BUFFERED_SIZE 1024
 
 class Game
 {
 public:
-    Game(int fps = 60);
+	explicit Game(int fps = 60);
     ~Game();
 
 protected:
@@ -29,10 +24,10 @@ protected:
     void InitLoop();
 
     //ham dung de ve sau khi update
-    void Render();
+	static void Render();
 
     //ham update cua game
-    void Update(float dt);
+	static void Update(float dt);
 };
 
 #endif

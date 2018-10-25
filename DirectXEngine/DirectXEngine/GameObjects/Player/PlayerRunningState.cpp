@@ -16,8 +16,7 @@ PlayerRunningState::PlayerRunningState(PlayerData *playerData)
 
 
 PlayerRunningState::~PlayerRunningState()
-{
-}
+{}
 
 void PlayerRunningState::HandleKeyboard(std::map<int, bool> keys)
 {
@@ -64,10 +63,10 @@ void PlayerRunningState::HandleKeyboard(std::map<int, bool> keys)
     }
 }
 
-void PlayerRunningState::OnCollision(Entity *impactor, Entity::SideCollisions side, Entity::CollisionReturn data)
+void PlayerRunningState::OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data)
 {
     //lay phia va cham so voi player
-    //GameCollision::SideCollisions side = GameCollision::getSideCollision(this->mPlayerData->player, data);
+    //GameCollision::SideCollisions side = GameCollision::GetSideCollision(this->mPlayerData->player, data);
 
     switch (side)
     {
@@ -84,7 +83,7 @@ void PlayerRunningState::OnCollision(Entity *impactor, Entity::SideCollisions si
                 this->mPlayerData->player->SetState(new PlayerStandingState(this->mPlayerData));
             }
 
-            return;
+			break;
         }
 
         case Entity::Right: 
@@ -96,7 +95,7 @@ void PlayerRunningState::OnCollision(Entity *impactor, Entity::SideCollisions si
                 this->mPlayerData->player->AddPosition(-(data.RegionCollision.right - data.RegionCollision.left), 0);
                 this->mPlayerData->player->SetState(new PlayerStandingState(this->mPlayerData));
             }
-            return;
+			break;
         }
 
         case Entity::Top:
@@ -108,8 +107,9 @@ void PlayerRunningState::OnCollision(Entity *impactor, Entity::SideCollisions si
 
             this->mPlayerData->player->SetVy(0);
 
-            return;
+            break;
         }
+		default: break;
     }
 }
 

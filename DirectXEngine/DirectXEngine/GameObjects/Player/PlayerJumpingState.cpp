@@ -101,7 +101,7 @@ void PlayerJumpingState::HandleKeyboard(std::map<int, bool> keys)
     }
 }
 
-void PlayerJumpingState::OnCollision(Entity *impactor, Entity::SideCollisions side, Entity::CollisionReturn data)
+void PlayerJumpingState::OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data)
  {
     switch (side)
     {

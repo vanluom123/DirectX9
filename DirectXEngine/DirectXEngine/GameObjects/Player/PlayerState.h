@@ -16,14 +16,14 @@ public:
         Die
     };
 
-    ~PlayerState();
+	virtual ~PlayerState();
 
     virtual void Update(float dt);
 
     virtual void HandleKeyboard(std::map<int, bool> keys);
 
     //side va cham voi player
-    virtual void OnCollision(Entity *impactor, Entity::SideCollisions side, Entity::CollisionReturn data);
+    virtual void OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data);
 
     virtual StateName GetState() = 0;
 

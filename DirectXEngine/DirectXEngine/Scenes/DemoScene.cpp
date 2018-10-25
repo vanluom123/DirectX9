@@ -1,32 +1,27 @@
 #include "DemoScene.h"
 #include "../GameDefines/GameDefine.h"
 #include "../GameComponents/GameLog.h"
-#include "../GameComponents/Sound.h"
 #include "../GameControllers/SceneManager.h"
-#include "../Transition/TransitionCircleScan.h"
-#include "TestScene.h"
-
 
 DemoScene::DemoScene()
 {
-    LoadContent();
+	DemoScene::LoadContent();
 }
+
+DemoScene::~DemoScene()
+{}
 
 void DemoScene::LoadContent()
 {
     //set mau backcolor cho scene o day la mau xanh
     mBackColor = 0x54acd2;
 
-    Sound::getInstance()->loadSound("Resources/man1.wav", "man1");
-    Sound::getInstance()->play("man1", true, 0);
-
-    mDebugDraw = new GameDebugDraw();
+    //mDebugDraw = new GameDebugDraw();
 
     mMap = new GameMap("Resources/marioworld1-1.tmx");
 
     mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
-    mCamera->SetPosition(GameGlobal::GetWidth() / 2, 
-                            mMap->GetHeight() - mCamera->GetHeight());
+    mCamera->SetPosition(GameGlobal::GetWidth() / 2, mMap->GetHeight() - mCamera->GetHeight());
 
     mMap->SetCamera(mCamera);
 
@@ -57,9 +52,7 @@ void DemoScene::Draw()
 
     mPlayer->Draw();
 
-    DrawQuadtree(mMap->GetQuadTree());
-
-    DrawCollidable();
+    DrawQuadTree(mMap->GetQuadTree());
 }
 
 void DemoScene::OnKeyDown(int keyCode)
@@ -77,9 +70,7 @@ void DemoScene::OnKeyUp(int keyCode)
 }
 
 void DemoScene::OnMouseDown(float x, float y)
-{
-    SceneManager::GetInstance()->ReplaceScene(new TestScene(), new TransitionCircleScan());
-}
+{}
 
 void DemoScene::CheckCameraAndWorldMap()
 {
@@ -108,14 +99,13 @@ void DemoScene::CheckCameraAndWorldMap()
     if (mCamera->GetBound().bottom > mMap->GetHeight())
     {
         //luc nay cham day cua the gioi thuc
-        mCamera->SetPosition(mCamera->GetPosition().x, 
-                                mMap->GetHeight() - mCamera->GetHeight() / 2);
+        mCamera->SetPosition(mCamera->GetPosition().x, mMap->GetHeight() - mCamera->GetHeight() / 2);
     }
 }
 
 void DemoScene::checkCollision()
 {
-    mCollidable.clear();
+    mCollideAble.clear();
 
     /*su dung de kiem tra xem khi nao mario khong dung tren 1 object hoac
     dung qua sat mep trai hoac phai cua object do thi se chuyen state la falling*/ 
@@ -125,31 +115,27 @@ void DemoScene::checkCollision()
 
     mMap->GetQuadTree()->getEntitiesCollideAble(listCollision, mPlayer);
 
-    for (auto child : listCollision)
-    {
-        mCollidable.push_back(child);
-    }
+    for (auto& child : listCollision)
+		mCollideAble.push_back(child);
 
-    for (size_t i = 0; i < listCollision.size(); i++)
+    for (auto& i : listCollision)
     {
-        Entity::CollisionReturn r = GameCollision::RecteAndRect(mPlayer->GetBound(), 
-                                                    listCollision.at(i)->GetBound());
+        Entity::CollisionReturn r = GameCollision::isCollideBetweenRectAndRect(mPlayer->GetBound(), i->GetBound());
 
         if (r.IsCollided)
         {
             //lay phia va cham cua Entity so voi Player
-            Entity::SideCollisions sidePlayer = GameCollision::getSideCollision(mPlayer, r);
+            Entity::SideCollisions sidePlayer = GameCollision::GetSideCollision(mPlayer, r);
 
             //lay phia va cham cua Player so voi Entity
-            Entity::SideCollisions sideImpactor = GameCollision::getSideCollision(listCollision.at(i), r);
+            Entity::SideCollisions sideCollision = GameCollision::GetSideCollision(i, r);
 
             //goi den ham xu ly collision cua Player va Entity
-            mPlayer->OnCollision(listCollision.at(i), r, sidePlayer);
-            listCollision.at(i)->OnCollision(mPlayer, r, sideImpactor);
+            mPlayer->OnCollision(r, sidePlayer);
+	        i->OnCollision(r, sideCollision);
 
             //kiem tra neu va cham voi phia duoi cua Player 
-            if (sidePlayer == Entity::Bottom || sidePlayer == Entity::BottomLeft 
-                || sidePlayer == Entity::BottomRight)
+            if (sidePlayer == Entity::Bottom || sidePlayer == Entity::BottomLeft || sidePlayer == Entity::BottomRight)
             {
                 //kiem cha do dai ma mario tiep xuc phia duoi day
                 int bot = r.RegionCollision.right - r.RegionCollision.left;
@@ -162,36 +148,14 @@ void DemoScene::checkCollision()
 
     //Neu mario dung ngoai mep thi luc nay cho mario rot xuong duoi dat    
     if (widthBottom < Define::PLAYER_BOTTOM_RANGE_FALLING)
-    {
-        mPlayer->OnNoCollisionWithBottom();
-    }
+		mPlayer->OnNoCollisionWithBottom();
 }
 
-void DemoScene::DrawQuadtree(QuadTree *quadtree)
+void DemoScene::DrawQuadTree(QuadTree *quadTree)
 {
-    if (quadtree->GetNodes())
+    if (quadTree->GetNodes())
     {
         for (size_t i = 0; i < 4; i++)
-        {
-            DrawQuadtree(quadtree->GetNodes()[i]);
-        }
-    }
-
-    mDebugDraw->DrawRect(quadtree->Bound, mCamera);
-
-    if (quadtree->GetNodes())
-    {
-        for (size_t i = 0; i < 4; i++)
-        {
-            mDebugDraw->DrawRect(quadtree->GetNodes()[i]->Bound, mCamera);
-        }
-    }
-}
-
-void DemoScene::DrawCollidable()
-{
-    for (auto child : mCollidable)
-    {
-        mDebugDraw->DrawRect(child->GetBound(), mCamera);
-    }
+			DrawQuadTree(quadTree->GetNodes()[i]);
+	}
 }

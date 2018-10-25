@@ -11,9 +11,7 @@ Camera::Camera(int width, int height)
 
 
 Camera::~Camera()
-{
-
-}
+{}
 
 void Camera::SetPosition(float x, float y)
 {
