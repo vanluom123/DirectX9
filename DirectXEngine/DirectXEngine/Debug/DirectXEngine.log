@@ -1,0 +1,8 @@
+﻿  DemoScene.cpp
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(83): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\administrator\desktop\game development\directx9\directxengine\directxengine\scenes\demoscene.cpp(102): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  DirectXEngine.vcxproj -> C:\Users\Administrator\Desktop\Game Development\DirectX9\DirectXEngine\Debug\DirectXEngine.exe
