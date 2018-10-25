@@ -94,8 +94,8 @@ typedef struct z_stream_s {
     z_const char *msg;  /* last error message, NULL if no error */
     struct internal_state FAR *state; /* not visible by applications */
 
-    alloc_func zalloc;  /* used to allocate the internal state */
-    free_func  zfree;   /* used to free the internal state */
+    alloc_func zalloc;  /* used to allocate the internal pState */
+    free_func  zfree;   /* used to free the internal pState */
     voidpf     opaque;  /* private data object passed to zalloc and zfree */
 
     int     data_type;  /* best guess about the data type: binary or text */
@@ -223,7 +223,7 @@ ZEXTERN const char * ZEXPORT zlibVersion OF((void));
 /*
 ZEXTERN int ZEXPORT deflateInit OF((z_streamp strm, int level));
 
-     Initializes the internal stream state for compression.  The fields
+     Initializes the internal stream pState for compression.  The fields
    zalloc, zfree and opaque must be initialized before by the caller.  If
    zalloc and zfree are set to Z_NULL, deflateInit updates them to use default
    allocation functions.
@@ -305,7 +305,7 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm, int flush));
   the emission of deflate blocks.
 
     If flush is set to Z_FULL_FLUSH, all output is flushed as with
-  Z_SYNC_FLUSH, and the compression state is reset so that decompression can
+  Z_SYNC_FLUSH, and the compression pState is reset so that decompression can
   restart from this point if previous compressed data has been damaged or if
   random access is desired.  Using Z_FULL_FLUSH too often can seriously degrade
   compression.
@@ -342,7 +342,7 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm, int flush));
     deflate() returns Z_OK if some progress has been made (more input
   processed or more output produced), Z_STREAM_END if all input has been
   consumed and all output has been produced (only when flush is set to
-  Z_FINISH), Z_STREAM_ERROR if the stream state was inconsistent (for example
+  Z_FINISH), Z_STREAM_ERROR if the stream pState was inconsistent (for example
   if next_in or next_out was Z_NULL), Z_BUF_ERROR if no progress is possible
   (for example avail_in or avail_out was zero).  Note that Z_BUF_ERROR is not
   fatal, and deflate() can be called again with more input and more output
@@ -357,7 +357,7 @@ ZEXTERN int ZEXPORT deflateEnd OF((z_streamp strm));
    output.
 
      deflateEnd returns Z_OK if success, Z_STREAM_ERROR if the
-   stream state was inconsistent, Z_DATA_ERROR if the stream was freed
+   stream pState was inconsistent, Z_DATA_ERROR if the stream was freed
    prematurely (some input or output was discarded).  In the error case, msg
    may be set but then points to a static string (which must not be
    deallocated).
@@ -367,7 +367,7 @@ ZEXTERN int ZEXPORT deflateEnd OF((z_streamp strm));
 /*
 ZEXTERN int ZEXPORT inflateInit OF((z_streamp strm));
 
-     Initializes the internal stream state for decompression.  The fields
+     Initializes the internal stream pState for decompression.  The fields
    next_in, avail_in, zalloc, zfree and opaque must be initialized before by
    the caller.  If next_in is not Z_NULL and avail_in is large enough (the
    exact value depends on the compression method), inflateInit determines the
@@ -511,7 +511,7 @@ ZEXTERN int ZEXPORT inflateEnd OF((z_streamp strm));
    This function discards any unprocessed input and does not flush any pending
    output.
 
-     inflateEnd returns Z_OK if success, Z_STREAM_ERROR if the stream state
+     inflateEnd returns Z_OK if success, Z_STREAM_ERROR if the stream pState
    was inconsistent.  In the error case, msg may be set but then points to a
    static string (which must not be deallocated).
 */
@@ -556,7 +556,7 @@ ZEXTERN int ZEXPORT deflateInit2 OF((z_streamp strm,
    gzip stream is being written, strm->adler is a crc32 instead of an adler32.
 
      The memLevel parameter specifies how much memory should be allocated
-   for the internal compression state.  memLevel=1 uses minimum memory but is
+   for the internal compression pState.  memLevel=1 uses minimum memory but is
    slow and reduces compression ratio; memLevel=9 uses maximum memory for
    optimal speed.  The default value is 8.  See zconf.h for total memory usage
    as a function of windowBits and memLevel.
@@ -622,7 +622,7 @@ ZEXTERN int ZEXPORT deflateSetDictionary OF((z_streamp strm,
    adler32 value is not computed and strm->adler is not set.
 
      deflateSetDictionary returns Z_OK if success, or Z_STREAM_ERROR if a
-   parameter is invalid (e.g.  dictionary being Z_NULL) or the stream state is
+   parameter is invalid (e.g.  dictionary being Z_NULL) or the stream pState is
    inconsistent (for example if deflate has already been called for this stream
    or if not at a block boundary for raw deflate).  deflateSetDictionary does
    not perform any compression: this will be done by deflate().
@@ -637,11 +637,11 @@ ZEXTERN int ZEXPORT deflateCopy OF((z_streamp dest,
    tried, for example when there are several ways of pre-processing the input
    data with a filter.  The streams that will be discarded should then be freed
    by calling deflateEnd.  Note that deflateCopy duplicates the internal
-   compression state which can be quite large, so this strategy is slow and can
+   compression pState which can be quite large, so this strategy is slow and can
    consume lots of memory.
 
      deflateCopy returns Z_OK if success, Z_MEM_ERROR if there was not
-   enough memory, Z_STREAM_ERROR if the source stream state was inconsistent
+   enough memory, Z_STREAM_ERROR if the source stream pState was inconsistent
    (such as zalloc being Z_NULL).  msg is left unchanged in both source and
    destination.
 */
@@ -649,12 +649,12 @@ ZEXTERN int ZEXPORT deflateCopy OF((z_streamp dest,
 ZEXTERN int ZEXPORT deflateReset OF((z_streamp strm));
 /*
      This function is equivalent to deflateEnd followed by deflateInit,
-   but does not free and reallocate all the internal compression state.  The
+   but does not free and reallocate all the internal compression pState.  The
    stream will keep the same compression level and any other attributes that
    may have been set by deflateInit2.
 
      deflateReset returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent (such as zalloc or state being Z_NULL).
+   stream pState was inconsistent (such as zalloc or pState being Z_NULL).
 */
 
 ZEXTERN int ZEXPORT deflateParams OF((z_streamp strm,
@@ -669,12 +669,12 @@ ZEXTERN int ZEXPORT deflateParams OF((z_streamp strm,
    compressed with the old level (and may be flushed); the new level will take
    effect only at the next call of deflate().
 
-     Before the call of deflateParams, the stream state must be set as for
+     Before the call of deflateParams, the stream pState must be set as for
    a call of deflate(), since the currently available input may have to be
    compressed and flushed.  In particular, strm->avail_out must be non-zero.
 
      deflateParams returns Z_OK if success, Z_STREAM_ERROR if the source
-   stream state was inconsistent or if a parameter was invalid, Z_BUF_ERROR if
+   stream pState was inconsistent or if a parameter was invalid, Z_BUF_ERROR if
    strm->avail_out was zero.
 */
 
@@ -722,7 +722,7 @@ ZEXTERN int ZEXPORT deflatePending OF((z_streamp strm,
    or bits are Z_NULL, then those values are not set.
 
      deflatePending returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent.
+   stream pState was inconsistent.
  */
 
 ZEXTERN int ZEXPORT deflatePrime OF((z_streamp strm,
@@ -739,7 +739,7 @@ ZEXTERN int ZEXPORT deflatePrime OF((z_streamp strm,
 
      deflatePrime returns Z_OK if success, Z_BUF_ERROR if there was not enough
    room in the internal buffer to insert the bits, or Z_STREAM_ERROR if the
-   source stream state was inconsistent.
+   source stream pState was inconsistent.
 */
 
 ZEXTERN int ZEXPORT deflateSetHeader OF((z_streamp strm,
@@ -760,10 +760,10 @@ ZEXTERN int ZEXPORT deflateSetHeader OF((z_streamp strm,
 
      If deflateSetHeader is not used, the default gzip header has text false,
    the time set to zero, and os set to 255, with no extra, name, or comment
-   fields.  The gzip header is returned to the default state by deflateReset().
+   fields.  The gzip header is returned to the default pState by deflateReset().
 
      deflateSetHeader returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent.
+   stream pState was inconsistent.
 */
 
 /*
@@ -832,7 +832,7 @@ ZEXTERN int ZEXPORT inflateSetDictionary OF((z_streamp strm,
    that was used for compression is provided.
 
      inflateSetDictionary returns Z_OK if success, Z_STREAM_ERROR if a
-   parameter is invalid (e.g.  dictionary being Z_NULL) or the stream state is
+   parameter is invalid (e.g.  dictionary being Z_NULL) or the stream pState is
    inconsistent, Z_DATA_ERROR if the given dictionary doesn't match the
    expected one (incorrect adler32 value).  inflateSetDictionary does not
    perform any decompression: this will be done by subsequent calls of
@@ -851,7 +851,7 @@ ZEXTERN int ZEXPORT inflateGetDictionary OF((z_streamp strm,
    Similary, if dictLength is Z_NULL, then it is not set.
 
      inflateGetDictionary returns Z_OK on success, or Z_STREAM_ERROR if the
-   stream state is inconsistent.
+   stream pState is inconsistent.
 */
 
 ZEXTERN int ZEXPORT inflateSync OF((z_streamp strm));
@@ -879,12 +879,12 @@ ZEXTERN int ZEXPORT inflateCopy OF((z_streamp dest,
      Sets the destination stream as a complete copy of the source stream.
 
      This function can be useful when randomly accessing a large stream.  The
-   first pass through the stream can periodically record the inflate state,
+   first pass through the stream can periodically record the inflate pState,
    allowing restarting inflate at those points when randomly accessing the
    stream.
 
      inflateCopy returns Z_OK if success, Z_MEM_ERROR if there was not
-   enough memory, Z_STREAM_ERROR if the source stream state was inconsistent
+   enough memory, Z_STREAM_ERROR if the source stream pState was inconsistent
    (such as zalloc being Z_NULL).  msg is left unchanged in both source and
    destination.
 */
@@ -892,11 +892,11 @@ ZEXTERN int ZEXPORT inflateCopy OF((z_streamp dest,
 ZEXTERN int ZEXPORT inflateReset OF((z_streamp strm));
 /*
      This function is equivalent to inflateEnd followed by inflateInit,
-   but does not free and reallocate all the internal decompression state.  The
+   but does not free and reallocate all the internal decompression pState.  The
    stream will keep attributes that may have been set by inflateInit2.
 
      inflateReset returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent (such as zalloc or state being Z_NULL).
+   stream pState was inconsistent (such as zalloc or pState being Z_NULL).
 */
 
 ZEXTERN int ZEXPORT inflateReset2 OF((z_streamp strm,
@@ -907,7 +907,7 @@ ZEXTERN int ZEXPORT inflateReset2 OF((z_streamp strm,
    the same as it is for inflateInit2.
 
      inflateReset2 returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent (such as zalloc or state being Z_NULL), or if
+   stream pState was inconsistent (such as zalloc or pState being Z_NULL), or if
    the windowBits parameter is invalid.
 */
 
@@ -929,7 +929,7 @@ ZEXTERN int ZEXPORT inflatePrime OF((z_streamp strm,
    to feeding inflate codes.
 
      inflatePrime returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent.
+   stream pState was inconsistent.
 */
 
 ZEXTERN long ZEXPORT inflateMark OF((z_streamp strm));
@@ -957,7 +957,7 @@ ZEXTERN long ZEXPORT inflateMark OF((z_streamp strm));
    as noted in the description for the Z_BLOCK flush parameter for inflate.
 
      inflateMark returns the value noted above or -1 << 16 if the provided
-   source stream state was inconsistent.
+   source stream pState was inconsistent.
 */
 
 ZEXTERN int ZEXPORT inflateGetHeader OF((z_streamp strm,
@@ -997,14 +997,14 @@ ZEXTERN int ZEXPORT inflateGetHeader OF((z_streamp strm,
    retrieve the header from the next gzip stream.
 
      inflateGetHeader returns Z_OK if success, or Z_STREAM_ERROR if the source
-   stream state was inconsistent.
+   stream pState was inconsistent.
 */
 
 /*
 ZEXTERN int ZEXPORT inflateBackInit OF((z_streamp strm, int windowBits,
                                         unsigned char FAR *window));
 
-     Initialize the internal stream state for decompression using inflateBack()
+     Initialize the internal stream pState for decompression using inflateBack()
    calls.  The fields zalloc, zfree and opaque in strm must be initialized
    before the call.  If zalloc and zfree are Z_NULL, then the default library-
    derived memory allocation routines are used.  windowBits is the base two
@@ -1017,7 +1017,7 @@ ZEXTERN int ZEXPORT inflateBackInit OF((z_streamp strm, int windowBits,
      See inflateBack() for the usage of these routines.
 
      inflateBackInit will return Z_OK on success, Z_STREAM_ERROR if any of
-   the parameters are invalid, Z_MEM_ERROR if the internal state could not be
+   the parameters are invalid, Z_MEM_ERROR if the internal pState could not be
    allocated, or Z_VERSION_ERROR if the version of the library does not match
    the version of the header file.
 */
@@ -1038,11 +1038,11 @@ ZEXTERN int ZEXPORT inflateBack OF((z_streamp strm,
    buffers.  inflateBack() trusts the application to not change the output
    buffer passed by the output function, at least until inflateBack() returns.
 
-     inflateBackInit() must be called first to allocate the internal state
-   and to initialize the state with the user-provided window buffer.
+     inflateBackInit() must be called first to allocate the internal pState
+   and to initialize the pState with the user-provided window buffer.
    inflateBack() may then be used multiple times to inflate a complete, raw
    deflate stream with each call.  inflateBackEnd() is then called to free the
-   allocated state.
+   allocated pState.
 
      A raw deflate stream is one with no zlib or gzip header or trailer.
    This routine would normally be used in a utility that reads zip or gzip
@@ -1101,7 +1101,7 @@ ZEXTERN int ZEXPORT inflateBackEnd OF((z_streamp strm));
      All memory allocated by inflateBackInit() is freed.
 
      inflateBackEnd() returns Z_OK on success, or Z_STREAM_ERROR if the stream
-   state was inconsistent.
+   pState was inconsistent.
 */
 
 ZEXTERN uLong ZEXPORT zlibCompileFlags OF((void));
@@ -1255,7 +1255,7 @@ ZEXTERN gzFile ZEXPORT gzopen OF((const char *path, const char *mode));
    byte gzip header.
 
      gzopen returns NULL if the file could not be opened, if there was
-   insufficient memory to allocate the gzFile state, or if an invalid mode was
+   insufficient memory to allocate the gzFile pState, or if an invalid mode was
    specified (an 'r', 'w', or 'a' was not provided, or '+' was provided).
    errno can be checked to determine if the reason gzopen failed was that the
    file could not be opened.
@@ -1278,7 +1278,7 @@ ZEXTERN gzFile ZEXPORT gzdopen OF((int fd, const char *mode));
    descriptors.
 
      gzdopen returns NULL if there was insufficient memory to allocate the
-   gzFile state, if an invalid mode was specified (an 'r', 'w', or 'a' was not
+   gzFile pState, if an invalid mode was specified (an 'r', 'w', or 'a' was not
    provided, or '+' was provided), or if fd is -1.  The file descriptor is not
    used until the next gz* read, write, seek, or close operation, so gzdopen
    will not detect if fd is invalid (unless fd is -1).
@@ -1511,7 +1511,7 @@ ZEXTERN int ZEXPORT gzdirect OF((gzFile file));
 ZEXTERN int ZEXPORT    gzclose OF((gzFile file));
 /*
      Flushes all pending output if necessary, closes the compressed file and
-   deallocates the (de)compression state.  Note that once file is closed, you
+   deallocates the (de)compression pState.  Note that once file is closed, you
    cannot call gzerror with file, since its structures have been deallocated.
    gzclose must not be called more than once on the same file, just as free
    must not be called more than once on the same allocation.
@@ -1661,7 +1661,7 @@ ZEXTERN int ZEXPORT inflateBackInit_ OF((z_streamp strm, int windowBits,
 #ifndef Z_SOLO
 
 /* gzgetc() macro and its supporting function and exposed data structure.  Note
- * that the real internal state is much larger than the exposed structure.
+ * that the real internal pState is much larger than the exposed structure.
  * This abbreviated structure exposes just enough for the gzgetc() macro.  The
  * user should not mess with these exposed elements, since their names or
  * behavior could change in the future, perhaps even capriciously.  They can

@@ -286,7 +286,7 @@ typedef struct mz_stream_s
   mz_ulong total_out;               // total number of bytes produced so far
 
   char *msg;                        // error msg (unused)
-  struct mz_internal_state *state;  // internal state, allocated by zalloc/zfree
+  struct mz_internal_state *state;  // internal pState, allocated by zalloc/zfree
 
   mz_alloc_func zalloc;             // optional heap allocation function (defaults to malloc)
   mz_free_func zfree;               // optional heap free function (defaults to free)
@@ -729,7 +729,7 @@ typedef enum
   TINFL_STATUS_HAS_MORE_OUTPUT = 2
 } tinfl_status;
 
-// Initializes the decompressor to its initial state.
+// Initializes the decompressor to its initial pState.
 #define tinfl_init(r) do { (r)->m_state = 0; } MZ_MACRO_END
 #define tinfl_get_adler32(r) (r)->m_check_adler32
 
@@ -865,7 +865,7 @@ typedef enum
   TDEFL_FINISH = 4
 } tdefl_flush;
 
-// tdefl's compression state structure.
+// tdefl's compression pState structure.
 typedef struct
 {
   tdefl_put_buf_func_ptr m_pPut_buf_func;
@@ -2541,7 +2541,7 @@ static mz_bool tdefl_compress_normal(tdefl_compressor *d)
     if ((!flush) && (d->m_lookahead_size < TDEFL_MAX_MATCH_LEN))
       break;
 
-    // Simple lazy/greedy parsing state machine.
+    // Simple lazy/greedy parsing pState machine.
     len_to_move = 1; cur_match_dist = 0; cur_match_len = d->m_saved_match_len ? d->m_saved_match_len : (TDEFL_MIN_MATCH_LEN - 1); cur_pos = d->m_lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK;
     if (d->m_flags & (TDEFL_RLE_MATCHES | TDEFL_FORCE_ALL_RAW_BLOCKS))
     {
@@ -4106,7 +4106,7 @@ mz_bool mz_zip_writer_init_from_reader(mz_zip_archive *pZip, const char *pFilena
     pZip->m_pWrite = mz_zip_file_write_func;
     if (NULL == (pState->m_pFile = MZ_FREOPEN(pFilename, "r+b", pState->m_pFile)))
     {
-      // The mz_zip_archive is now in a bogus state because pState->m_pFile is NULL, so just close it.
+      // The mz_zip_archive is now in a bogus pState because pState->m_pFile is NULL, so just close it.
       mz_zip_reader_end(pZip);
       return MZ_FALSE;
     }
@@ -4213,7 +4213,7 @@ static mz_bool mz_zip_writer_add_to_central_dir(mz_zip_archive *pZip, const char
       (!mz_zip_array_push_back(pZip, &pState->m_central_dir, pComment, comment_size)) ||
       (!mz_zip_array_push_back(pZip, &pState->m_central_dir_offsets, &central_dir_ofs, 1)))
   {
-    // Try to push the central directory array back into its original state.
+    // Try to push the central directory array back into its original pState.
     mz_zip_array_resize(pZip, &pState->m_central_dir, orig_central_dir_size, MZ_FALSE);
     return MZ_FALSE;
   }

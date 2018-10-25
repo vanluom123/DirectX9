@@ -1,9 +1,9 @@
 #include "PlayerState.h"
 
 
-PlayerState::PlayerState(PlayerData *playerData)
+PlayerState::PlayerState(PlayerData *pData)
 {
-    this->mPlayerData = playerData;
+    this->pData = pData;
 }
 
 PlayerState::PlayerState()

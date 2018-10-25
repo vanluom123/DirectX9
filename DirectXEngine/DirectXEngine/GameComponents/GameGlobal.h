@@ -38,7 +38,7 @@ public:
 
     static LPDIRECT3DSURFACE9 backSurface;
 
-	//Game's state is running
+	//Game's pState is running
     static bool isGameRunning;
 
 };

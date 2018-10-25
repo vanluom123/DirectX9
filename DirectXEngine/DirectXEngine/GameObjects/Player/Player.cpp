@@ -10,11 +10,11 @@ Player::Player()
     mAnimationJumping = new Animation("Resources/mario/jumpingright.png", 1, 1, 1, 0);
     mAnimationRunning = new Animation("Resources/mario/runningright.png", 2, 1, 2, 0.15f);
 
-    this->mPlayerData = new PlayerData();
-    this->mPlayerData->player = this;
+    this->pData = new PlayerData();
+    this->pData->pPlayer = this;
     this->vx = 0;
     this->vy = 0;
-    this->SetState(new PlayerFallingState(this->mPlayerData));
+    this->SetState(new PlayerFallingState(this->pData));
 
     allowJump = true;
 }
@@ -26,16 +26,16 @@ void Player::Update(float dt)
 {    
     mCurrentAnimation->Update(dt);
 
-    if (this->mPlayerData->state)
-		this->mPlayerData->state->Update(dt);
+    if (this->pData->pState)
+		this->pData->pState->Update(dt);
 
     Entity::Update(dt);
 }
 
 void Player::HandleKeyboard(std::map<int, bool> keys)
 {
-    if (this->mPlayerData->state)
-		this->mPlayerData->state->HandleKeyboard(keys);
+    if (this->pData->pState)
+		this->pData->pState->HandleKeyboard(keys);
 }
 
 void Player::OnKeyPressed(int key)
@@ -45,7 +45,7 @@ void Player::OnKeyPressed(int key)
         if (allowJump)
         {
             if (mCurrentState == PlayerState::Running || mCurrentState == PlayerState::Standing)
-				this->SetState(new PlayerJumpingState(this->mPlayerData));
+				this->SetState(new PlayerJumpingState(this->pData));
 
             allowJump = false;
         }
@@ -90,9 +90,9 @@ void Player::SetState(PlayerState *newState)
     allowMoveLeft = true;
     allowMoveRight = true;
 
-    delete this->mPlayerData->state;
+    delete this->pData->pState;
 
-    this->mPlayerData->state = newState;
+    this->pData->pState = newState;
 
     this->changeAnimation(newState->GetState());
 
@@ -101,7 +101,7 @@ void Player::SetState(PlayerState *newState)
 
 void Player::OnCollision(Entity::CollisionReturn data, Entity::SideCollisions side)
 {
-    this->mPlayerData->state->OnCollision(side, data);
+    this->pData->pState->OnCollision(side, data);
 }
 
 RECT Player::GetBound()
@@ -146,17 +146,17 @@ void Player::changeAnimation(PlayerState::StateName state)
 Player::MoveDirection Player::getMoveDirection()
 {
     if (this->vx > 0)
-		return MoveDirection::MoveToRight;
-	else if (this->vx < 0)
-		return MoveDirection::MoveToLeft;
+		return MoveToRight;
+	if (this->vx < 0)
+		return MoveToLeft;
 
-    return MoveDirection::None;
+	return None;
 }
 
 void Player::OnNoCollisionWithBottom()
 {
     if (mCurrentState != PlayerState::Jumping && mCurrentState != PlayerState::Falling)
-		this->SetState(new PlayerFallingState(this->mPlayerData));
+		this->SetState(new PlayerFallingState(this->pData));
 }
 
 PlayerState::StateName Player::getState()

@@ -13,7 +13,7 @@ private:
 
 public:
     void StartCounter();
-    float GetCouter();
+    float GetCounter();
     static GameTime* GetInstance();
     ~GameTime();
 

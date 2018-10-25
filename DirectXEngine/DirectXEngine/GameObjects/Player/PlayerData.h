@@ -8,7 +8,7 @@ public:
     PlayerData();
     ~PlayerData();
 
-    Player      *player;
-    PlayerState *state;
+    Player      *pPlayer;
+    PlayerState *pState;
 };
 

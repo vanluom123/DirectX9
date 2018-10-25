@@ -1,7 +1,8 @@
 #include "FrameWork.h"
 #include <windowsx.h>
-#include "GameComponents\GameGlobal.h"
-#include "GameControllers\SceneManager.h"
+#include "GameComponents/GameGlobal.h"
+#include "GameControllers/SceneManager.h"
+#include "GameComponents/Game.h"
 
 FrameWork::FrameWork()
 {}

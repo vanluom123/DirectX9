@@ -108,7 +108,7 @@ void DemoScene::checkCollision()
     mCollideAble.clear();
 
     /*su dung de kiem tra xem khi nao mario khong dung tren 1 object hoac
-    dung qua sat mep trai hoac phai cua object do thi se chuyen state la falling*/ 
+    dung qua sat mep trai hoac phai cua object do thi se chuyen pState la falling*/ 
     int widthBottom = 0;
 
     vector<Entity*> listCollision;

@@ -1706,7 +1706,7 @@ public:
     /// If there is an error, print it to stdout.
     void PrintError() const;
     
-    /// Clear the document, resetting it to the initial state.
+    /// Clear the document, resetting it to the initial pState.
     void Clear();
 
     // internal

@@ -13,7 +13,7 @@ protected:
 
 	Camera      *mCamera;
 
-	PlayerData  *mPlayerData;
+	PlayerData  *pData;
 
 	Animation   *mCurrentAnimation,
 				*mAnimationStanding,

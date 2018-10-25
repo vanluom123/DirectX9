@@ -57,7 +57,7 @@ void Game::InitLoop()
 			DispatchMessage(&msg);
 		}
 
-		delta += GameTime::GetInstance()->GetCouter();
+		delta += GameTime::GetInstance()->GetCounter();
 
 		if (delta >= tickPerFrame)
 		{

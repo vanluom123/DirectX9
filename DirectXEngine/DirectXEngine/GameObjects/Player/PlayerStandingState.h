@@ -4,7 +4,7 @@
 class PlayerStandingState : public PlayerState
 {
 public:
-    PlayerStandingState(PlayerData *playerData);
+	explicit PlayerStandingState(PlayerData * pData);
     ~PlayerStandingState();
 
     void HandleKeyboard(std::map<int, bool> keys) override;

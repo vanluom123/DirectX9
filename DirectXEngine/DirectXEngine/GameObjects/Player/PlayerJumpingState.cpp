@@ -6,8 +6,8 @@
 
 PlayerJumpingState::PlayerJumpingState(PlayerData *playerData)
 {
-    this->mPlayerData = playerData;
-    this->mPlayerData->player->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+    this->pData = playerData;
+    this->pData->pPlayer->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
 
     acceleratorY = 15.0f;
     acceleratorX = 14.0f;
@@ -23,37 +23,37 @@ PlayerJumpingState::~PlayerJumpingState()
 
 void PlayerJumpingState::Update(float dt)
 {
-    this->mPlayerData->player->AddVy(acceleratorY);   
+    this->pData->pPlayer->AddVy(acceleratorY);   
 
-    if (mPlayerData->player->GetVy() >= 0)
+    if (pData->pPlayer->GetVy() >= 0)
     {
-        mPlayerData->player->SetState(new PlayerFallingState(this->mPlayerData));
+        pData->pPlayer->SetState(new PlayerFallingState(this->pData));
 
         return;
     }
 
     if (noPressed)
     {
-        if (mPlayerData->player->getMoveDirection() == Player::MoveToLeft)
+        if (pData->pPlayer->getMoveDirection() == Player::MoveToLeft)
         {
-            //player dang di chuyen sang ben trai      
-            if (mPlayerData->player->GetVx() < 0)
+            //pPlayer dang di chuyen sang ben trai      
+            if (pData->pPlayer->GetVx() < 0)
             {
-                this->mPlayerData->player->AddVx(acceleratorX);
+                this->pData->pPlayer->AddVx(acceleratorX);
 
-                if (mPlayerData->player->GetVx() > 0)
-                    this->mPlayerData->player->SetVx(0);
+                if (pData->pPlayer->GetVx() > 0)
+                    this->pData->pPlayer->SetVx(0);
             }
         }
-        else if (mPlayerData->player->getMoveDirection() == Player::MoveToRight)
+        else if (pData->pPlayer->getMoveDirection() == Player::MoveToRight)
         {
-            //player dang di chuyen sang phai   
-            if (mPlayerData->player->GetVx() > 0)
+            //pPlayer dang di chuyen sang phai   
+            if (pData->pPlayer->GetVx() > 0)
             {
-                this->mPlayerData->player->AddVx(-acceleratorX);
+                this->pData->pPlayer->AddVx(-acceleratorX);
 
-                if (mPlayerData->player->GetVx() < 0)
-                    this->mPlayerData->player->SetVx(0);
+                if (pData->pPlayer->GetVx() < 0)
+                    this->pData->pPlayer->SetVx(0);
             }
         }
     }
@@ -63,16 +63,16 @@ void PlayerJumpingState::HandleKeyboard(std::map<int, bool> keys)
 {
     if (keys[VK_RIGHT])
     {
-        mPlayerData->player->SetReverse(false);
+        pData->pPlayer->SetReverse(false);
 
         //di chuyen sang phai
-        if (this->mPlayerData->player->GetVx() < Define::PLAYER_MAX_RUNNING_SPEED)
+        if (this->pData->pPlayer->GetVx() < Define::PLAYER_MAX_RUNNING_SPEED)
         {
-            this->mPlayerData->player->AddVx(acceleratorX);
+            this->pData->pPlayer->AddVx(acceleratorX);
 
-            if (this->mPlayerData->player->GetVx() >= Define::PLAYER_MAX_RUNNING_SPEED)
+            if (this->pData->pPlayer->GetVx() >= Define::PLAYER_MAX_RUNNING_SPEED)
             {
-                this->mPlayerData->player->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
+                this->pData->pPlayer->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
             }
         }
 
@@ -80,16 +80,16 @@ void PlayerJumpingState::HandleKeyboard(std::map<int, bool> keys)
     }
     else if (keys[VK_LEFT])
     {
-        mPlayerData->player->SetReverse(true);
+        pData->pPlayer->SetReverse(true);
 
         //di chuyen sang trai
-        if (this->mPlayerData->player->GetVx() > -Define::PLAYER_MAX_RUNNING_SPEED)
+        if (this->pData->pPlayer->GetVx() > -Define::PLAYER_MAX_RUNNING_SPEED)
         {
-            this->mPlayerData->player->AddVx(-acceleratorX);
+            this->pData->pPlayer->AddVx(-acceleratorX);
 
-            if (this->mPlayerData->player->GetVx() < -Define::PLAYER_MAX_RUNNING_SPEED)
+            if (this->pData->pPlayer->GetVx() < -Define::PLAYER_MAX_RUNNING_SPEED)
             {
-                this->mPlayerData->player->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
+                this->pData->pPlayer->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
             }
         }
 
@@ -107,28 +107,28 @@ void PlayerJumpingState::OnCollision(Entity::SideCollisions side, Entity::Collis
     {
         case Entity::Left:
         {
-            this->mPlayerData->player->AddPosition(data.RegionCollision.right - data.RegionCollision.left, 0);
-            this->mPlayerData->player->SetVx(0);
+            this->pData->pPlayer->AddPosition(data.RegionCollision.right - data.RegionCollision.left, 0);
+            this->pData->pPlayer->SetVx(0);
             break;
         }     
 
         case Entity::Right:
         {
-            this->mPlayerData->player->AddPosition(-(data.RegionCollision.right - data.RegionCollision.left), 0);
-            this->mPlayerData->player->SetVx(0);
+            this->pData->pPlayer->AddPosition(-(data.RegionCollision.right - data.RegionCollision.left), 0);
+            this->pData->pPlayer->SetVx(0);
             break;
         }
 
         case Entity::TopRight: case Entity::TopLeft: case Entity::Top:
         {          
-            this->mPlayerData->player->AddPosition(0, data.RegionCollision.bottom - data.RegionCollision.top);            
-            this->mPlayerData->player->SetVy(0);
+            this->pData->pPlayer->AddPosition(0, data.RegionCollision.bottom - data.RegionCollision.top);            
+            this->pData->pPlayer->SetVy(0);
             break;
         }
 
         case Entity::BottomRight: case Entity::BottomLeft: case Entity::Bottom:
         {
-            this->mPlayerData->player->AddPosition(0, -(data.RegionCollision.bottom - data.RegionCollision.top));
+            this->pData->pPlayer->AddPosition(0, -(data.RegionCollision.bottom - data.RegionCollision.top));
         }
 
         default:

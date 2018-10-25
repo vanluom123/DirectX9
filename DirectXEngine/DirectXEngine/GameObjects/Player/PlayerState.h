@@ -22,15 +22,15 @@ public:
 
     virtual void HandleKeyboard(std::map<int, bool> keys);
 
-    //side va cham voi player
+    //side va cham voi pPlayer
     virtual void OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data);
 
     virtual StateName GetState() = 0;
 
 protected:
-    PlayerState(PlayerData *playerData);
+	explicit PlayerState(PlayerData *playerData);
     PlayerState();
 
-    PlayerData *mPlayerData;
+    PlayerData *pData;
 };
 

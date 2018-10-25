@@ -32,7 +32,7 @@ protected:
 	D3DXVECTOR2             mRotationCenter; // diem trung tam trong phep xoay hinh (origin vector)
 
 public:
-    Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	explicit Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
 
     Sprite();
 

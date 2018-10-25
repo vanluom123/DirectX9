@@ -66,12 +66,7 @@ bool QuadTree::isContain(Entity *entity)
 {
     RECT r = entity->GetBound();
 
-    if (r.left >= Bound.left && r.right <= Bound.right && r.top >= Bound.top && r.bottom <= Bound.bottom)
-    {
-        return true;
-    }
-
-    return false;
+	return r.left >= Bound.left && r.right <= Bound.right && r.top >= Bound.top && r.bottom <= Bound.bottom;
 }
 
 void QuadTree::split()
@@ -142,18 +137,18 @@ int QuadTree::getIndex(RECT body)
     3: nam trong Node con goc phai duoi
     -1: bi dinh > 2 node con*/
 
-    float middleVerticle = Bound.left + (Bound.right - Bound.left) / 2.0f;
+    float middleVertical = Bound.left + (Bound.right - Bound.left) / 2.0f;
     float middleHorizontal = Bound.top + (Bound.bottom - Bound.top) / 2.0f;
 
     if (body.top > Bound.top && body.bottom < middleHorizontal)
     {
         //nam phia ben tren
-        if (body.left > Bound.left && body.right < middleVerticle)
+        if (body.left > Bound.left && body.right < middleVertical)
         {
             //nam phia ben trai
             return 0;
         }
-        else if (body.left > middleVerticle && body.right < Bound.right)
+        else if (body.left > middleVertical && body.right < Bound.right)
         {
             //nam phia ben phai
             return 1;
@@ -162,12 +157,12 @@ int QuadTree::getIndex(RECT body)
     else if(body.top > middleHorizontal && body.bottom < Bound.bottom)
     {
         //nam phia ben duoi
-        if (body.left > Bound.left && body.right < middleVerticle)
+        if (body.left > Bound.left && body.right < middleVertical)
         {
             //nam phia ben trai
             return 2;
         }
-        else if (body.left > middleVerticle && body.right < Bound.right)
+        else if (body.left > middleVertical && body.right < Bound.right)
         {
             //nam phia ben phai
             return 3;
