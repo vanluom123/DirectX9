@@ -33,7 +33,7 @@ void PlayerJumpingState::Update(float dt)
     {
         if (mPlayerData->player->getMoveDirection() == Player::MoveToLeft)
         {
-            //player dang di chuyen sang ben trai      
+            //Player is moving to left   
             if (mPlayerData->player->GetVx() < 0)
             {
                 this->mPlayerData->player->AddVx(acceleratorX);
@@ -44,7 +44,7 @@ void PlayerJumpingState::Update(float dt)
         }
         else if (mPlayerData->player->getMoveDirection() == Player::MoveToRight)
         {
-            //player dang di chuyen sang phai   
+            //Player is moving to right   
             if (mPlayerData->player->GetVx() > 0)
             {
                 this->mPlayerData->player->AddVx(-acceleratorX);
@@ -62,7 +62,7 @@ void PlayerJumpingState::HandleKeyboard(std::map<int, bool> keys)
     {
         mPlayerData->player->SetReverse(false);
 
-        //di chuyen sang phai
+        //Move to right
         if (this->mPlayerData->player->GetVx() < Define::PLAYER_MAX_RUNNING_SPEED)
         {
             this->mPlayerData->player->AddVx(acceleratorX);
@@ -79,7 +79,7 @@ void PlayerJumpingState::HandleKeyboard(std::map<int, bool> keys)
     {
         mPlayerData->player->SetReverse(true);
 
-        //di chuyen sang trai
+        //Move to left
         if (this->mPlayerData->player->GetVx() > -Define::PLAYER_MAX_RUNNING_SPEED)
         {
             this->mPlayerData->player->AddVx(-acceleratorX);

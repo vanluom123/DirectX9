@@ -14,13 +14,13 @@ class Game
 	static int              mIsDone;
 	float                   mFPS;
 
-	//khoi tao vong lap cho game
+	//Initialize for game loop
 	void InitLoop();
 
-	//ham dung de ve sau khi update
+	//Function will be used to render, when it update
 	void Render();
 
-	//ham update cua game
+	//Update function
 	void Update(float dt);
 
 public:

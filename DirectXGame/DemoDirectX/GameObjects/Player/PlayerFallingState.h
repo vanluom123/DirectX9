@@ -8,7 +8,7 @@ protected:
 	float acceleratorY;
 	float acceleratorX;
 
-	//neu nhu van toc ban dau = khong thi se khong cho giam toc do
+	//First Velocity equal zero in case speed won't decrease 
 	bool allowMoveX;
 
 	bool isLeftOrRightKeyPressed;

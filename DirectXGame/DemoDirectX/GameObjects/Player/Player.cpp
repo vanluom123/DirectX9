@@ -15,7 +15,6 @@ Player::Player()
     this->vx = 0;
     this->vy = 0;
     this->SetState(new PlayerFallingState(this->mPlayerData));
-
     allowJump = true;
 }
 
@@ -82,10 +81,10 @@ void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 
     if (mCamera)
     {
-        D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
-            GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+        D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2.0f - mCamera->GetPosition().x,
+            GameGlobal::GetHeight() / 2.0f - mCamera->GetPosition().y);
 
-        mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0), sourceRect, scale, trans, angle, rotationCenter, colorKey);
+    	mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0), sourceRect, scale, trans, angle, rotationCenter, colorKey);
     }
     else
     {
@@ -115,9 +114,9 @@ void Player::OnCollision(Entity::CollisionReturn data, Entity::SideCollisions si
 RECT Player::GetBound()
 {
     RECT rect;
-    rect.left = this->posX - mCurrentAnimation->GetWidth() / 2;
+    rect.left = this->posX - mCurrentAnimation->GetWidth() / 2.0f;
     rect.right = rect.left + mCurrentAnimation->GetWidth();
-    rect.top = this->posY - mCurrentAnimation->GetHeight() / 2;
+    rect.top = this->posY - mCurrentAnimation->GetHeight() / 2.0f;
     rect.bottom = rect.top + mCurrentAnimation->GetHeight();
 
     return rect;
@@ -157,12 +156,12 @@ Player::MoveDirection Player::getMoveDirection()
     {
         return MoveDirection::MoveToRight;
     }
-    else if (this->vx < 0)
-    {
-        return MoveDirection::MoveToLeft;
-    }
+	if (this->vx < 0)
+	{
+		return MoveDirection::MoveToLeft;
+	}
 
-    return MoveDirection::None;
+	return MoveDirection::None;
 }
 
 void Player::OnNoCollisionWithBottom()

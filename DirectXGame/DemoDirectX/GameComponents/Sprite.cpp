@@ -11,13 +11,15 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-    if (mTexture != NULL)
-        mTexture->Release();  
+	if (mTexture != NULL)
+	{
+		mTexture->Release();
+		mTexture = NULL;
+	}
 }
 
 void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
 {
-    HRESULT result;
     mSpriteHandler = GameGlobal::GetCurrentSpriteHandler();
     mPosition = D3DXVECTOR3(0, 0, 0);
     mRotation = 0;
@@ -25,11 +27,16 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
     mTranslation = D3DXVECTOR2(0, 0);
     mScale = D3DXVECTOR2(0, 1);
     mSourceRect = sourceRect;
-    mScale.x = mScale.y = 1;
+	mScale = D3DXVECTOR2(1, 1);
 
-    D3DXGetImageInfoFromFileA(filePath, &mImageInfo);
+    HRESULT result = D3DXGetImageInfoFromFileA(filePath, &mImageInfo);
+	if (FAILED(result))
+	{
+		MessageBox(NULL, L"Don't get image information from file ...", L"Error", MB_OK);
+		return;
+	}
 
-    if (width == NULL)
+    if (width == 0)
     {
         if (!isRect(sourceRect))
             mWidth = mImageInfo.Width;
@@ -39,7 +46,7 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
     else
         mWidth = width;
 
-    if (height == NULL)
+    if (height == 0)
     {
         if (!isRect(sourceRect))
             mHeight = mImageInfo.Height;
@@ -60,7 +67,7 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
     LPDIRECT3DDEVICE9 device;
     mSpriteHandler->GetDevice(&device);
 
-    D3DXCreateTextureFromFileExA(
+    result = D3DXCreateTextureFromFileExA(
         device,
         filePath,
         mImageInfo.Width,
@@ -75,6 +82,11 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
         &mImageInfo,
         NULL,
         &mTexture);
+	if (FAILED(result))
+	{
+		MessageBox(NULL, L"Don't create texture from file ...", L"Error", MB_OK);
+		return;
+	}
 }
 
 bool Sprite::isRect(RECT rect)
@@ -103,10 +115,10 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
     D3DXVECTOR3 inPosition = mPosition;
     RECT inSourceRect = mSourceRect;
     float inRotation = mRotation;
-    D3DXVECTOR2 inCcale = mScale;
+    D3DXVECTOR2 inScale = mScale;
     D3DXVECTOR2 inTranslation = mTranslation;
     D3DXVECTOR2 inRotationCenter = mRotationCenter;
-    D3DXVECTOR2 scalingScenter = D3DXVECTOR2(inPosition.x, inPosition.y);
+    D3DXVECTOR2 scalingCenter = D3DXVECTOR2(inPosition.x, inPosition.y);
 
     if (position != D3DXVECTOR3())
         inPosition = position;
@@ -115,7 +127,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
         inSourceRect = sourceRect;
 
     if (scale != D3DXVECTOR2())
-        inCcale = scale;
+        inScale = scale;
 
     if (transform != D3DXVECTOR2())
         inTranslation = transform;
@@ -123,16 +135,16 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
     if (rotationCenter != D3DXVECTOR2())
         inRotationCenter = rotationCenter;
     else
-        mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);// cho phep quay giua hinh
+        mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);
 
-    D3DXMatrixTransformation2D(&mMatrix, &scalingScenter, 0, &inCcale, &inRotationCenter,
+    D3DXMatrixTransformation2D(&mMatrix, &scalingCenter, 0, &inScale, &inRotationCenter,
                                 inRotation, &inTranslation);
 
     D3DXMATRIX oldMatrix;
     mSpriteHandler->GetTransform(&oldMatrix);
     mSpriteHandler->SetTransform(&mMatrix);
 
-    D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);
+    D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2.0f, mHeight / 2.0f, 0);
 
     mSpriteHandler->Draw(mTexture,
         &inSourceRect,

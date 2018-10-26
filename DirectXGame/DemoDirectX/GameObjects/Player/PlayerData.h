@@ -9,9 +9,6 @@ public:
     ~PlayerData();
 
     Player      *player;
-    PlayerState *state;
-
-protected:
-    
+    PlayerState *state;    
 };
 

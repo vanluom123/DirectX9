@@ -27,7 +27,7 @@ public:
 
     virtual void HandleKeyboard(std::map<int, bool> keys);
 
-    //side va cham voi player
+    //Sides will collide with player
     virtual void OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data);
 
     virtual StateName GetState() = 0;

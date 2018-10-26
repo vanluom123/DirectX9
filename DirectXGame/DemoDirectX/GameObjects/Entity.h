@@ -34,7 +34,7 @@ public:
         TopRight, //5
         BottomLeft, //6
         BottomRight, //7
-        NotKnow
+        Unknown
     };
 
     struct CollisionReturn
@@ -45,51 +45,47 @@ public:
 
     enum EntityTypes
     {
-        None, Brick, Enemy, Mario, Static, BrickGoldNormal, BrickGoldEated
+        None,
+    	Brick,
+    	Enemy,
+    	Mario,
+    	Static,
+    	BrickGoldNormal,
+    	BrickGoldBeEaten
     };
 
-    EntityTypes Tag; //Tag de nhan vien loai Entity
+	//To confirm type of Entity
+    EntityTypes Tag;
 
     virtual RECT GetBound();
 
+	virtual D3DXVECTOR3 GetPosition();
     virtual void SetPosition(float x, float y);
-
     virtual void SetPosition(D3DXVECTOR2 pos);
-
     virtual void SetPosition(D3DXVECTOR3 pos);
 
+	virtual void AddPosition(float x, float y);
+	virtual void AddPosition(D3DXVECTOR2 pos);
     virtual void AddPosition(D3DXVECTOR3 pos);
 
-    virtual void AddPosition(D3DXVECTOR2 pos);
-
-    virtual void AddPosition(float x, float y);
-
     virtual void SetWidth(int width);
-
     virtual int GetWidth();
 
     virtual void SetHeight(int height);
-
     virtual int GetHeight();
 
     virtual float GetVx();
-
     virtual void SetVx(float vx);
-
     virtual void AddVx(float vx);
 
     virtual float GetVy();
-
     virtual void SetVy(float vy);
-
     virtual void AddVy(float vy);
-
-    virtual D3DXVECTOR3 GetPosition();
 
     virtual void Update(float dt);
 
-    //kiem soat viec va cham
-    //khi xay ra va cham voi 1 thuc the nao do thi ham nay se dc goi de xu ly
+    //Control collision
+	//When entity collide, this function will be called
     virtual void OnCollision(CollisionReturn data, SideCollisions side);
 
 };

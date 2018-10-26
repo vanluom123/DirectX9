@@ -101,7 +101,7 @@ Entity::SideCollisions GameCollision::getSideCollision(Entity *e1, Entity *e2)
 	    return Entity::Bottom;
     }
 
-	return Entity::NotKnow;
+	return Entity::Unknown;
 }
 
 Entity::SideCollisions GameCollision::getSideCollision(Entity *e1, Entity::CollisionReturn data)

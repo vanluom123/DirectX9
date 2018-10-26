@@ -70,14 +70,16 @@ int initWindow(int cmdShow)
         mHInstance,
         NULL);
 
-    GameGlobal::SetCurrentHINSTACE(mHInstance);
+    GameGlobal::SetCurrentHINSTANCE(mHInstance);
     GameGlobal::SetCurrentHWND(hWnd);
 
     ShowWindow(hWnd, cmdShow);
     UpdateWindow(hWnd);
 
-    if (InitDevice())
-	    auto*game = new Game(FPS);
+	if (InitDevice())
+	{
+		Game game(FPS);
+	}
 
     return 0;
 }

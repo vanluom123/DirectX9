@@ -1,2 +1,104 @@
-﻿  PlayerStandingState.cpp
-  DemoDirectX.vcxproj -> C:\Users\Administrator\Desktop\Game Development\11 - Collision\DirectXGame\Debug\DemoDirectX.exe
+﻿  Animation.cpp
+  Camera.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\camera.cpp(35): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\camera.cpp(37): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  Game.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\game.cpp(9): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\game.cpp(72): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
+  GameCollision.cpp
+  GameGlobal.cpp
+  GameMap.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(46): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(56): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(67): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(77): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(79): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(100): warning C4244: 'argument': conversion from 'size_t' to 'FLOAT', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(129): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(133): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(141): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(140): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(226): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(235): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(247): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(249): warning C4018: '<': signed/unsigned mismatch
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(267): warning C4244: 'argument': conversion from 'size_t' to 'FLOAT', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(272): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gamecomponents\gamemap.cpp(273): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+  GameTime.cpp
+  QuadTree.cpp
+  Scene.cpp
+  Sprite.cpp
+  SceneManager.cpp
+  Entity.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(16): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(17): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(18): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(19): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(83): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(88): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(93): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\entity.cpp(98): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  Brick.cpp
+  BrickGold.cpp
+  BrickNormal.cpp
+  GameObject.cpp
+  Player.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\player.cpp(117): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\player.cpp(119): warning C4244: '=': conversion from 'float' to 'LONG', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\player.cpp(149): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\player.cpp(150): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  PlayerData.cpp
+  PlayerFallingState.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerfallingstate.cpp(87): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerfallingstate.cpp(96): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerfallingstate.cpp(111): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  PlayerJumpingState.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerjumpingstate.cpp(107): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerjumpingstate.cpp(114): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerjumpingstate.cpp(121): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerjumpingstate.cpp(128): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  PlayerRunningState.cpp
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerrunningstate.cpp(80): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerrunningstate.cpp(94): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\gameobjects\player\playerrunningstate.cpp(102): warning C4244: 'argument': conversion from 'LONG' to 'float', possible loss of data
+  PlayerStandingState.cpp
+  PlayerState.cpp
+  main.cpp
+  base64.cpp
+d:\project\game development\directx9\directxgame\demodirectx\mapreader\base64.cpp(96): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\mapreader\base64.cpp(113): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
+  tinyxml2.cpp
+  TmxEllipse.cpp
+  TmxImage.cpp
+  TmxImageLayer.cpp
+  TmxLayer.cpp
+  TmxMap.cpp
+  TmxObject.cpp
+  TmxObjectGroup.cpp
+  TmxPolygon.cpp
+  TmxPolyline.cpp
+  TmxPropertySet.cpp
+d:\project\game development\directx9\directxgame\demodirectx\mapreader\tmxpropertyset.cpp(87): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  TmxTerrain.cpp
+  TmxTerrainArray.cpp
+  TmxTile.cpp
+  TmxTileLayer.cpp
+  Generating Code...
+  Compiling...
+  TmxTileOffset.cpp
+  TmxTileset.cpp
+  TmxUtil.cpp
+  DemoScene.cpp
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(76): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(82): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\project\game development\directx9\directxgame\demodirectx\scenes\demoscene.cpp(96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  miniz.c
+  DemoDirectX.vcxproj -> D:\Project\Game Development\DirectX9\DirectXGame\Debug\DemoDirectX.exe

@@ -9,11 +9,6 @@ Entity::Entity()
     Tag = None;
 }
 
-D3DXVECTOR3 Entity::GetPosition()
-{
-    return {posX, posY, 0};
-}
-
 RECT Entity::GetBound()
 {
     RECT bound;
@@ -26,6 +21,11 @@ RECT Entity::GetBound()
     return bound;
 }
 
+D3DXVECTOR3 Entity::GetPosition()
+{
+	return { posX, posY, 0 };
+}
+
 void Entity::OnCollision(CollisionReturn data, Entity::SideCollisions side)
 {
     vx = 0, vy = 0;
@@ -36,6 +36,7 @@ void Entity::OnSetPosition(D3DXVECTOR3 pos)
 
 void Entity::Update(float dt)
 {
+
     //velocity = pixel / s
     posX += vx * dt;
     posY += vy * dt;
@@ -43,35 +44,38 @@ void Entity::Update(float dt)
 
 void Entity::SetPosition(float x, float y)
 {
-    SetPosition(D3DXVECTOR2(x, y));
+	D3DXVECTOR2 pos = D3DXVECTOR2(x, y);
+    SetPosition(pos);
 }
 
 void Entity::SetPosition(D3DXVECTOR2 pos)
 {
-    SetPosition(D3DXVECTOR3(pos.x, pos.y, 0));
+	D3DXVECTOR3 position = D3DXVECTOR3(pos);
+    SetPosition(position);
 }
 
 void Entity::SetPosition(D3DXVECTOR3 pos)
 {
     this->posX = pos.x;
     this->posY = pos.y; 
-
     OnSetPosition(pos);
+}
+
+void Entity::AddPosition(float x, float y)
+{
+	D3DXVECTOR2 pos = D3DXVECTOR2(x, y);
+    AddPosition(pos);
+}
+
+void Entity::AddPosition(D3DXVECTOR2 pos)
+{
+	D3DXVECTOR3 position = D3DXVECTOR3(pos);
+	AddPosition(position);
 }
 
 void Entity::AddPosition(D3DXVECTOR3 pos)
 {
     this->SetPosition(this->GetPosition() + pos);
-}
-
-void Entity::AddPosition(D3DXVECTOR2 pos)
-{
-    AddPosition(D3DXVECTOR3(pos));
-}
-
-void Entity::AddPosition(float x, float y)
-{
-    AddPosition(D3DXVECTOR3(x, y, 0));
 }
 
 void Entity::SetWidth(int width)

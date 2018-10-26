@@ -13,11 +13,11 @@ protected:
 
 	void OnSetPosition(D3DXVECTOR3 pos) override;
 
-	virtual const char* FileName() = 0; // bat buoc phai override ham nay
-	virtual int TotalFrame() = 0; //so frame cua animation
-	virtual int Row() = 0; // so row cua resource hinh anh animation
-	virtual int Column() = 0; // so cot cua resource hinh anh animation
-	virtual float SecondPerFrame() = 0; //so giay de chuyen frame cua animation
+	virtual const char* FileName() = 0;
+	virtual int TotalFrame() = 0; // Total frame
+	virtual int Row() = 0; //Number of resource animation row 
+	virtual int Column() = 0; //Number of resource animation column
+	virtual float SecondPerFrame() = 0; //Number of seconds to transform animation
 
 	Animation *mAnimation;
 

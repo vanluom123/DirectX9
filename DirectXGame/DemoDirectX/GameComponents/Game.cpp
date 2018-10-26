@@ -29,13 +29,13 @@ void Game::Render()
 	{
 		device->BeginScene();
 
-		//bat dau ve
+		//Starting draw
 		GameGlobal::GetCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 
 		//draw here
 		scene->Draw();
 
-		//ket thuc ve
+		//Ending draw
 		GameGlobal::GetCurrentSpriteHandler()->End();
 
 		device->EndScene();

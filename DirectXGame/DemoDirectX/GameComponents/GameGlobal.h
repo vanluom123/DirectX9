@@ -7,20 +7,20 @@
 
 class GameGlobal
 {
-	static HINSTANCE mHInstance; //hInstance của windows hiện tại
-	static HWND mHwnd; // hwnd hiện tại
-	static LPD3DXSPRITE mSpriteHandler; //spriteHanlder hiện tại
-	static int mWidth, mHeight; //size của cửa sổ
-	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
+	static HINSTANCE mHINSTANCE; //current Windows HINSTANCE
+	static HWND mHWND; //current HWND
+	static LPD3DXSPRITE mSpriteHandler; //Current SpriteHandler
+	static int mWidth, mHeight; //Size of windows
+	static LPDIRECT3DDEVICE9 mDevice; //Current direct device
 
 public:
     GameGlobal();
     ~GameGlobal();
 
-    static HINSTANCE GetCurrentHINSTACE();
+    static HINSTANCE GetCurrentHINSTANCE();
     static HWND getCurrentHWND();
 
-    static void SetCurrentHINSTACE(HINSTANCE hInstance);
+    static void SetCurrentHINSTANCE(HINSTANCE hInstance);
     static void SetCurrentHWND(HWND hWnd);
 
     static void SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler);
@@ -37,7 +37,7 @@ public:
 
     static LPDIRECT3DSURFACE9 backSurface;
 
-    static bool isGameRunning; //trang thai xem game co dang chay khong
+    static bool isGameRunning; //Game State 
 
 };
 
