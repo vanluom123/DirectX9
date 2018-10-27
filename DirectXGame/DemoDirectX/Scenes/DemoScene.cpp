@@ -16,14 +16,14 @@ void DemoScene::LoadContent()
     mMap = new GameMap("Resources/marioworld1-1.tmx");
 
     mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
-    mCamera->SetPosition(GameGlobal::GetWidth() / 2, 
+    mCamera->SetPosition(GameGlobal::GetWidth() / 2.0f, 
                             mMap->GetHeight() - mCamera->GetHeight());
 
     mMap->SetCamera(mCamera);
 
     mPlayer = new Player();
 
-    mPlayer->SetPosition(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2);
+    mPlayer->SetPosition(GameGlobal::GetWidth() / 2.0f, GameGlobal::GetHeight() / 2.0f);
     mPlayer->SetCamera(mCamera);
 }
 
@@ -73,27 +73,27 @@ void DemoScene::CheckCameraAndWorldMap()
     {
         //vi position cua camera ma chinh giua camera
         //luc nay o vi tri goc ben trai cua the gioi thuc
-        mCamera->SetPosition(mCamera->GetWidth() / 2, mCamera->GetPosition().y);
+        mCamera->SetPosition(mCamera->GetWidth() / 2.0f, mCamera->GetPosition().y);
     }
 
     if (mCamera->GetBound().right > mMap->GetWidth())
     {
         //luc nay cham goc ben phai cua the gioi thuc
-        mCamera->SetPosition(mMap->GetWidth() - mCamera->GetWidth() / 2, 
+        mCamera->SetPosition(mMap->GetWidth() - mCamera->GetWidth() / 2.0f, 
                                 mCamera->GetPosition().y);
     }
 
     if (mCamera->GetBound().top < 0)
     {
         //luc nay cham goc tren the gioi thuc
-        mCamera->SetPosition(mCamera->GetPosition().x, mCamera->GetHeight() / 2);
+        mCamera->SetPosition(mCamera->GetPosition().x, mCamera->GetHeight() / 2.0f);
     }
 
     if (mCamera->GetBound().bottom > mMap->GetHeight())
     {
         //luc nay cham day cua the gioi thuc
         mCamera->SetPosition(mCamera->GetPosition().x, 
-                                mMap->GetHeight() - mCamera->GetHeight() / 2);
+                                mMap->GetHeight() - mCamera->GetHeight() / 2.0f);
     }
 }
 
@@ -113,7 +113,7 @@ void DemoScene::checkCollision()
 
     for (auto& i : listCollision)
     {
-        Entity::CollisionReturn r = GameCollision::RecteAndRect(mPlayer->GetBound(),
+        Entity::CollisionReturn r = GameCollision::RectAndRect(mPlayer->GetBound(),
                                                                 i->GetBound());
 
         if (r.IsCollided)

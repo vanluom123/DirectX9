@@ -10,7 +10,9 @@ bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 
 GameGlobal::GameGlobal()
-{}
+{
+	
+}
 
 
 GameGlobal::~GameGlobal()

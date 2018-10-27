@@ -13,26 +13,26 @@ using namespace std;
 class Animation : public Sprite
 {
 protected:
-	//su dung cho ke thua
+	//Use to inherit
 	void InitWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
 
-	int		mRows,				//so hang cua animation
-			mColumns,			//so cot cua animation
-			mCurrentIndex,		//gia tri frame hien tai - bat dau tu 0 -> tong so frame - 1
-			mCurrentRow,		// hang hien tai
-			mCurrentColumn,		// cot hien tai
-			mFrameWidth,		// chieu rong cua 1 frame 
-			mFrameHeight,		// chieu dai cua 1 frame
-			mTotalFrame;		//tong so frame
+	int		mRows,				//Row number of the animation
+			mColumns,			//Column number of the animation
+			mCurrentIndex,		//The value of the current frame - start from 0 -> Total frame - 1
+			mCurrentRow,		//The current row
+			mCurrentColumn,		//The current column
+			mFrameWidth,		//The width frame
+			mFrameHeight,		//The height frame
+			mTotalFrame;		//Total frame
 
 
-	float	mTimePerFrame,		//thoi gian luan chuyen 1 frame
-			mCurrentTotalTime;	//tong thoi gian hien tai de thuc hien timeperframe
+	float	mTimePerFrame,		//Time to convert a frame
+			mCurrentTotalTime;	//Total the current time to execute timePerFrame
 
 	RECT	mRect;
 
 public:
-    //ham ho tro lay animation voi anh co duy nhat 1 hang
+    //Support function get the animation with an image only row
     Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f,
 		D3DCOLOR colorKey = NULL);
 

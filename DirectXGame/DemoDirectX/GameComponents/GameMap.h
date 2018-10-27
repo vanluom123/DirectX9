@@ -18,12 +18,9 @@ class GameMap
 
 	Tmx::Map                        *mMap;
 	std::map<int, Sprite*>          mListTileSet;
-	LPD3DXSPRITE                    mSpriteHandler;
 	Camera                          *mCamera;
 	QuadTree                        *mQuadTree;
 	std::vector<Brick*>             mListBricks;
-
-	Sprite                          *mSpriteBricks, *mSpriteBrickGold;
 
 public:
 	explicit GameMap(char* filePath);

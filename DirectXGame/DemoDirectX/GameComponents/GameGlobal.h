@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿
 #ifndef __GAME_GLOBAL__
 #define __GAME_GLOBAL__
 #include <d3dx9.h>
@@ -7,11 +7,11 @@
 
 class GameGlobal
 {
-	static HINSTANCE mHINSTANCE; //current Windows HINSTANCE
-	static HWND mHWND; //current HWND
-	static LPD3DXSPRITE mSpriteHandler; //Current SpriteHandler
-	static int mWidth, mHeight; //Size of windows
-	static LPDIRECT3DDEVICE9 mDevice; //Current direct device
+	static HINSTANCE mHINSTANCE;			//current Windows HINSTANCE
+	static HWND mHWND;						//current HWND
+	static LPD3DXSPRITE mSpriteHandler;		//Current SpriteHandler
+	static int mWidth, mHeight;				//Size of windows
+	static LPDIRECT3DDEVICE9 mDevice;		//Current direct device
 
 public:
     GameGlobal();

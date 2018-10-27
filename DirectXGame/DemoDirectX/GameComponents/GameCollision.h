@@ -9,12 +9,12 @@ class GameCollision
 public:
     
     GameCollision();
-    //kiem tra va cham giua 2 hinh chu nhat
-    static Entity::CollisionReturn RecteAndRect(RECT rect1, RECT rect2);
+    //Check collision Rect and Rect
+    static Entity::CollisionReturn RectAndRect(RECT rect1, RECT rect2);
 
     static bool isCollide(RECT rect1, RECT rect2);
 
-    //neu rectagle qua to thi va cham co the bi sai
+    //if Rectangle is big, it will error
     static Entity::SideCollisions getSideCollision(Entity *e1, Entity *e2);
 
     //kiem tra vi tri va cham dua vao vung va cham cua 2 vat the

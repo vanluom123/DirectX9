@@ -7,30 +7,31 @@ class Sprite
 {
 protected:
 	//su dung cho ke thua
-	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
+	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL,
+		D3DCOLOR colorKey = NULL);
 
 	bool isRect(RECT rect);
 
-	D3DXVECTOR3             mPosition; // vi tri cua Sprite, co goc la chinh giua hinh anh Texture
-	LPDIRECT3DTEXTURE9      mTexture; // load hinh anh vao day
-	LPD3DXSPRITE            mSpriteHandler; //SpriteHandler ho tro ve hinh
-	D3DXIMAGE_INFO          mImageInfo; // thong tin thuc cua hinh anh duoc lay
-	RECT                    mSourceRect; // hinh chu nhat cat tu anh cua texture
+	D3DXVECTOR3             mPosition;				//Position of the sprite is located in the middle of texture image
+	LPDIRECT3DTEXTURE9      mTexture;				//Image will be saved here
+	LPD3DXSPRITE            mSpriteHandler;			//SpriteHandler: Image drawing support
+	D3DXIMAGE_INFO          mImageInfo;				//The actual information of the image is taken
+	RECT                    mSourceRect;			//Rectangle is cut from the texture image
 
-	int                     mWidth, mHeight; // kich thuoc cua texture
+	int                     mWidth, mHeight;		//Size of texture image
 
-	bool                    mIsFlipVertical, // lat theo chieu doc
-							mIsFlipHorizontal; // lat theo chieu ngang
+	bool                    mIsFlipVertical,		//Flip vertically
+							mIsFlipHorizontal;		//Flip horizontally
 
-	float                   mRotation; // goc quay cua Sprite tinh theo radian
+	float                   mRotation;				//The spin angle of the sprite is calculated in radians
 
-	D3DXVECTOR2             mScale; // Vector tuy chinh do phong to / thu nho cua texture
-	D3DXVECTOR2             mTranslation; //Doi hinh anh vi tri thuc cua Sprite + mTranslate
-	D3DXMATRIX              mMatrix; // ma tran cua Spite ho tro trong cac phep hinh hoc
-	D3DXVECTOR2             mRotationCenter; // diem trung tam trong phep xoay hinh (origin vector)
+	D3DXVECTOR2             mScale;					// Vector custom zoom in or zoom out of texture
+	D3DXVECTOR2             mTranslation;			//Image is translated from the sprite + mTranslate
+	D3DXMATRIX              mMatrix;				//Matrix of the sprite support for geometry
+	D3DXVECTOR2             mRotationCenter;		// (origin vector)
 
 public:
-	explicit Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL,
+	explicit Sprite(const char* filePath, RECT sourceRect = RECT(), int width = 0, int height = 0,
            D3DCOLOR colorKey = NULL);
 
     Sprite();
@@ -50,31 +51,38 @@ public:
     void SetHeight(int height);
     int GetHeight();
 
-    D3DXIMAGE_INFO GetImageInfo(); // lay thong tin thuc cua hinh anh duoc lay
+	// Get information about an image
+    D3DXIMAGE_INFO GetImageInfo();
 
     D3DXVECTOR3 GetPosition();
+	void SetPosition(float x, float y);
+	void SetPosition(D3DXVECTOR2 pos);
     void SetPosition(D3DXVECTOR3 pos);
-    void SetPosition(float x, float y);
-    void SetPosition(D3DXVECTOR2 pos);
 
     D3DXVECTOR2 GetScale();
     void SetScale(D3DXVECTOR2 scale);
 
-    D3DXVECTOR2 GetTranslation(); // phep tinh tien tu world position -> view position
-    void SetTranslation(D3DXVECTOR2 translation); // phep tinh tien: tu the world position -> view position
+	//The translation from the position of the World to the position of the View
+	D3DXVECTOR2 GetTranslation();
+    void SetTranslation(D3DXVECTOR2 translation);
 
     D3DXVECTOR2 GetRotationCenter();
     void SetRotationCenter(D3DXVECTOR2 rotationCenter);
 
+	//Rotate by radian
     float GetRotation();
-    void SetRotation(float rotation); // by radian
+    void SetRotation(float rotation);
 
     void SetSourceRect(RECT rect);
 
-    void FlipHorizontal(bool flag); // true: lat hinh theo chieu doc, false: binh thuong
+	//True: Flip vertically
+	//False: Don't flip
+    void FlipHorizontal(bool flag);
     bool IsFlipHorizontal();
 
-    void FlipVertical(bool flag); // true: lat hinh theo chieu ngang, false: binh thuong
+	//True: Flip horizontally
+	//False: Don't flip
+    void FlipVertical(bool flag);
     bool IsFlipVertical();
 
 };

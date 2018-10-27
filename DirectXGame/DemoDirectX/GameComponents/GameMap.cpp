@@ -97,7 +97,8 @@ void GameMap::LoadMap(char* filePath)
 							bound.right = bound.left + tileWidth;
 							bound.bottom = bound.top + tileHeight;
 
-							D3DXVECTOR3 position(n * tileWidth + tileWidth / 2, m * tileHeight + tileHeight / 2, 0);
+							D3DXVECTOR3 position(n * tileWidth + tileWidth / 2.0f,
+								m * tileHeight + tileHeight / 2.0f, 0);
 
 							Brick *brick = nullptr;
 
@@ -137,10 +138,12 @@ void GameMap::LoadMap(char* filePath)
 			Tmx::Object *object = objectGroup->GetObjects().at(j);
 
 			auto*entity = new Entity();
-			entity->SetPosition(object->GetX() + object->GetWidth() / 2,
-				object->GetY() + object->GetHeight() / 2);
+			entity->SetPosition(object->GetX() + object->GetWidth() / 2.0f,
+				object->GetY() + object->GetHeight() / 2.0f);
+
 			entity->SetWidth(object->GetWidth());
 			entity->SetHeight(object->GetHeight());
+
 			entity->Tag = Entity::EntityTypes::Static;
 
 			mQuadTree->insertEntity(entity);
@@ -163,8 +166,8 @@ RECT GameMap::GetWorldMapBound()
 {
 	RECT bound;
 	bound.left = bound.top = 0;
-	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
-	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
+	bound.right = GetWidth();
+	bound.bottom = GetHeight();
 
 	return bound;
 }
@@ -219,8 +222,8 @@ void GameMap::Update(float dt)
 
 void GameMap::Draw()
 {
-	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
-		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2.0f - mCamera->GetPosition().x,
+		GameGlobal::GetHeight() / 2.0f - mCamera->GetPosition().y);
 
 #pragma region DRAW TILESET
 	for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
@@ -228,9 +231,7 @@ void GameMap::Draw()
 		const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
 
 		if (!layer->IsVisible())
-		{
 			continue;
-		}
 
 		for (size_t j = 0; j < mMap->GetNumTilesets(); j++)
 		{
@@ -262,19 +263,17 @@ void GameMap::Draw()
 
 						Sprite* sprite = mListTileSet[j];
 
-						//tru tilewidth/2 va tileheight/2 vi Sprite ve o vi tri giua hinh anh cho nen doi hinh de cho
-						//dung toa do (0,0) cua the gioi thuc la (0,0) neu khong thi se la (-tilewidth/2, -tileheigth/2);
-						D3DXVECTOR3 position(n * tileWidth + tileWidth / 2, m * tileHeight + tileHeight / 2, 0);
+						D3DXVECTOR3 position(n * tileWidth + tileWidth / 2.0f, m * tileHeight + tileHeight / 2.0f, 0);
 
 						if (mCamera != NULL)
 						{
 							RECT objRECT;
-							objRECT.left = position.x - tileWidth / 2;
-							objRECT.top = position.y - tileHeight / 2;
+							objRECT.left = position.x - tileWidth / 2.0f;
+							objRECT.top = position.y - tileHeight / 2.0f;
 							objRECT.right = objRECT.left + tileWidth;
 							objRECT.bottom = objRECT.top + tileHeight;
 
-							if (!GameCollision::RecteAndRect(mCamera->GetBound(), objRECT).IsCollided)
+							if (!GameCollision::RectAndRect(mCamera->GetBound(), objRECT).IsCollided)
 								continue;
 						}
 

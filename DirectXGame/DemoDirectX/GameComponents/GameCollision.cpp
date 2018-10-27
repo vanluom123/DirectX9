@@ -7,7 +7,7 @@ GameCollision::GameCollision()
 GameCollision::~GameCollision()
 {}
 
-Entity::CollisionReturn GameCollision::RecteAndRect(RECT rect1, RECT rect2)
+Entity::CollisionReturn GameCollision::RectAndRect(RECT rect1, RECT rect2)
 {
 	Entity::CollisionReturn result = Entity::CollisionReturn();
 
@@ -20,13 +20,13 @@ Entity::CollisionReturn GameCollision::RecteAndRect(RECT rect1, RECT rect2)
 
     result.IsCollided = true;
 
-    //chon max Left
+    //Choice max left
     result.RegionCollision.left = rect1.left > rect2.left ? rect1.left : rect2.left;
-    //chon max right
+    //Choice max right
     result.RegionCollision.right = rect1.right < rect2.right ? rect1.right : rect2.right;
-    //chon min bottom
+    //Choice min bottom
     result.RegionCollision.bottom = rect1.bottom < rect2.bottom ? rect1.bottom : rect2.bottom;
-    //chon max top
+    //Choice max top
     result.RegionCollision.top = rect1.top > rect2.top ? rect1.top : rect2.top;
 
     return result;

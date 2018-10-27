@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "GameGlobal.h"
+#include "../GameDefines/GameDefine.h"
 
 Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
 {    
@@ -11,11 +12,7 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-	if (mTexture != NULL)
-	{
-		mTexture->Release();
-		mTexture = NULL;
-	}
+	SAFE_RELEASE(mTexture);
 }
 
 void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
@@ -25,7 +22,6 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
     mRotation = 0;
     mRotationCenter = D3DXVECTOR2(mPosition.x, mPosition.y);
     mTranslation = D3DXVECTOR2(0, 0);
-    mScale = D3DXVECTOR2(0, 1);
     mSourceRect = sourceRect;
 	mScale = D3DXVECTOR2(1, 1);
 
@@ -81,7 +77,8 @@ void Sprite::InitWithSprite(const char* filePath, RECT sourceRect, int width, in
         colorKey,
         &mImageInfo,
         NULL,
-        &mTexture);
+        &mTexture
+	);
 	if (FAILED(result))
 	{
 		MessageBox(NULL, L"Don't create texture from file ...", L"Error", MB_OK);
@@ -119,6 +116,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
     D3DXVECTOR2 inTranslation = mTranslation;
     D3DXVECTOR2 inRotationCenter = mRotationCenter;
     D3DXVECTOR2 scalingCenter = D3DXVECTOR2(inPosition.x, inPosition.y);
+	float rad = angle * (3.14159265358979323846 / 180);
 
     if (position != D3DXVECTOR3())
         inPosition = position;
@@ -137,8 +135,15 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
     else
         mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y);
 
-    D3DXMatrixTransformation2D(&mMatrix, &scalingCenter, 0, &inScale, &inRotationCenter,
-                                inRotation, &inTranslation);
+    D3DXMatrixTransformation2D(
+		&mMatrix,
+		&scalingCenter,
+		rad,
+		&inScale,
+		&inRotationCenter,
+		inRotation,
+		&inTranslation
+	);
 
     D3DXMATRIX oldMatrix;
     mSpriteHandler->GetTransform(&oldMatrix);
@@ -146,11 +151,13 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 
     D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2.0f, mHeight / 2.0f, 0);
 
-    mSpriteHandler->Draw(mTexture,
+    mSpriteHandler->Draw(
+		mTexture,
         &inSourceRect,
         &center,
         &inPosition,
-        D3DCOLOR_ARGB(255, 255, 255, 255)); // nhung pixel nao co mau trang se duoc to mau nay len
+        D3DCOLOR_ARGB(255, 255, 255, 255)
+	); // nhung pixel nao co mau trang se duoc to mau nay len
 
     mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
 }
@@ -165,24 +172,24 @@ LPDIRECT3DTEXTURE9 Sprite::GetTexture()
     return mTexture;
 }
 
-void Sprite::SetPosition(D3DXVECTOR3 pos)
+D3DXVECTOR3 Sprite::GetPosition()
 {
-    mPosition = pos;
+    return mPosition;
 }
 
 void Sprite::SetPosition(float x, float y)
 {
-    mPosition = D3DXVECTOR3(x, y, 0);
+	SetPosition(D3DXVECTOR2(x, y));
 }
 
 void Sprite::SetPosition(D3DXVECTOR2 pos)
 {
-    this->SetPosition(pos.x, pos.y);
+	SetPosition(D3DXVECTOR3(pos.x, pos.y, 0));
 }
 
-D3DXVECTOR3 Sprite::GetPosition()
+void Sprite::SetPosition(D3DXVECTOR3 pos)
 {
-    return mPosition;
+	mPosition = pos;
 }
 
 D3DXVECTOR2 Sprite::GetScale()
