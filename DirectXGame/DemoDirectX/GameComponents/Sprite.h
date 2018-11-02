@@ -6,7 +6,7 @@
 class Sprite
 {
 protected:
-	//su dung cho ke thua
+	//Use to inherit
 	void InitWithSprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL,
 		D3DCOLOR colorKey = NULL);
 

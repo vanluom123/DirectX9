@@ -159,7 +159,7 @@ void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
         D3DCOLOR_ARGB(255, 255, 255, 255)
 	); // nhung pixel nao co mau trang se duoc to mau nay len
 
-    mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
+    mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transform voi class nay
 }
 
 void Sprite::SetSourceRect(RECT rect)
