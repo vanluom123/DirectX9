@@ -57,7 +57,7 @@ int initWindow(int cmdShow)
     RegisterClassEx(&wc);
 
     //WS_OVERLAPPEDWINDOW <=> WS_EX_TOPMOST | WS_POPUP | WS_VISIBLE
-    HWND hWnd = CreateWindow(
+    const auto hWnd = CreateWindow(
         WIN_NAME,
         WIN_NAME,
         WS_OVERLAPPEDWINDOW,
@@ -98,7 +98,7 @@ int InitDevice()
     d3dpp.BackBufferWidth = GameGlobal::GetWidth();
     d3dpp.BackBufferHeight = GameGlobal::GetHeight();
 
-    HRESULT result = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
+	const auto result = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
         D3DDEVTYPE_HAL,
         GameGlobal::getCurrentHWND(),
         D3DCREATE_SOFTWARE_VERTEXPROCESSING,

@@ -2,12 +2,6 @@
 #include "../../GameComponents/GameGlobal.h"
 
 
-Brick::Brick()
-{}
-
-Brick::~Brick()
-{}
-
 bool Brick::init(D3DXVECTOR3 position)
 {
     mAnimation = new Animation(FileName(), TotalFrame(), Row(), Column(), SecondPerFrame());
@@ -30,12 +24,12 @@ void Brick::Update(float dt)
     mAnimation->Update(dt);
 }
 
-void Brick::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
+void Brick::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey) const
 {
     mAnimation->Draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
 }
 
-void Brick::Draw(D3DXVECTOR2 transform)
+void Brick::Draw(D3DXVECTOR2 transform) const
 {
     mAnimation->Draw(D3DXVECTOR2(transform));
 }

@@ -9,14 +9,6 @@ LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 
-GameGlobal::GameGlobal()
-{
-	
-}
-
-
-GameGlobal::~GameGlobal()
-{}
 
 void GameGlobal::SetCurrentDevice(LPDIRECT3DDEVICE9 device)
 {

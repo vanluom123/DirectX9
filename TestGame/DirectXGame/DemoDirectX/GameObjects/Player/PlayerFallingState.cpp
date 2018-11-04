@@ -76,7 +76,7 @@ void PlayerFallingState::HandleKeyboard(std::map<int, bool> keys)
 void PlayerFallingState::OnCollision(Entity::SideCollisions side, Entity::CollisionReturn data)
 {
 	//Getting collision side to with player
-	//GameCollision::SideCollisions side = GameCollision::getSideCollision(this->mPlayerData->player, data);
+	//GameCollision::SideCollisions side = GameCollision::getSideCollision(this->_PlayerData->player, data);
 
 	switch (side)
 	{

@@ -11,25 +11,27 @@ class Player : public Entity
 {
 protected:
 
-	Camera      *mCamera;
+	Camera      *_Camera;
 
-	PlayerData *mPlayerData;
+	PlayerData *_PlayerData;
 
-	Animation   *mCurrentAnimation,
-				*mAnimationStanding,
-				*mAnimationRunning,
-				*mAnimationJumping;
+	Animation   *_CurrentAnim,
+				*_AnimStanding,
+				*_AnimRunning,
+				*_AnimJumping,
+				*_AnimFalling;
 
 	void changeAnimation(PlayerState::StateName state);
+	void _LoadResources();
 
-	PlayerState::StateName mCurrentState;
+	PlayerState::StateName _CurrentState;
 
 	//chi cho phep jump khi nhan nhim space, muon nhay lai phai tha phim space roi nhan lai
-	bool allowJump, mCurrentReverse;
+	bool _AllowJump, _CurrentReverse;
 
 public:
     Player();
-    ~Player();
+    ~Player() = default;
 
     enum MoveDirection
     {
@@ -52,15 +54,15 @@ public:
 
     void OnNoCollisionWithBottom();
 
-    MoveDirection getMoveDirection();
+    MoveDirection getMoveDirection() const;
 
     RECT GetBound() override;     
 
-    PlayerState::StateName getState();
+    PlayerState::StateName getState() const;
 
     //xu ly input
     //gom 256 key tuong ung true = dang dc nhan, false = khong dc nhan
-    void HandleKeyboard(std::map<int, bool> keys);
+    void HandleKeyboard(std::map<int, bool> keys) const;
 
     void OnKeyPressed(int key);
 
@@ -73,4 +75,3 @@ public:
     bool allowMoveRight;
 
 };
-

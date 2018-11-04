@@ -5,6 +5,10 @@
 
 DemoScene::DemoScene()
 {
+	pMap = nullptr;
+	pCamera = nullptr;
+	pPlayer = nullptr;
+
 	DemoScene::LoadContent();
 }
 
@@ -13,7 +17,7 @@ void DemoScene::LoadContent()
 	//Set color for scene. Here is blue scene color 
 	mBackColor = 0x54acd2;
 
-	pMap = new GameMap("Resources/marioworld1-1.tmx");
+	pMap = new GameMap(Define::WORLD_MAP);
 
 	pCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	pCamera->SetPosition(GameGlobal::GetWidth() / 2.0f,
@@ -65,7 +69,7 @@ void DemoScene::OnMouseDown(float x, float y)
 {
 }
 
-void DemoScene::_CheckCameraAndWorldMap()
+void DemoScene::_CheckCameraAndWorldMap() const
 {
 	pCamera->SetPosition(pPlayer->GetPosition());
 
@@ -111,13 +115,10 @@ void DemoScene::_CheckCameraAndWorldMap()
 	}
 }
 
-DemoScene::~DemoScene()
-{}
-
-void DemoScene::_IsCheckCollision()
+void DemoScene::_IsCheckCollision() const
 {
 	/*Used to check when mario does not stand on an object or stand over the left or right edge of the object that will translate FallingState.*/
-	int widthBottom = 0;
+	auto widthBottom = 0;
 
 	vector<Entity*> listEntitiesCollision;
 
@@ -125,15 +126,15 @@ void DemoScene::_IsCheckCollision()
 
 	for (auto& i : listEntitiesCollision)
 	{
-		Entity::CollisionReturn r = GameCollision::RectAndRect(pPlayer->GetBound(), i->GetBound());
+		const auto r = GameCollision::RectAndRect(pPlayer->GetBound(), i->GetBound());
 
 		if (r.IsCollided)
 		{
 			//Get the Entity's collision side over the Player
-			Entity::SideCollisions entity_with_player = GameCollision::getSideCollision(pPlayer, r);
+			const auto entity_with_player = GameCollision::getSideCollision(pPlayer, r);
 
 			//Get the Player's collision side over the Entity
-			Entity::SideCollisions player_with_entity = GameCollision::getSideCollision(i, r);
+			const auto player_with_entity = GameCollision::getSideCollision(i, r);
 
 			//Call to collision-handling function of Player and Entity
 			pPlayer->OnCollision(r, entity_with_player);
@@ -144,7 +145,7 @@ void DemoScene::_IsCheckCollision()
 				|| entity_with_player == Entity::BottomRight)
 			{
 				//Check out the length that mario is touching at the bottom
-				int bot = r.RegionCollision.right - r.RegionCollision.left;
+				const int bot = r.RegionCollision.right - r.RegionCollision.left;
 
 				if (bot > widthBottom)
 					widthBottom = bot;

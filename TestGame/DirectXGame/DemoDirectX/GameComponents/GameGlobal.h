@@ -14,8 +14,8 @@ class GameGlobal
 	static LPDIRECT3DDEVICE9 mDevice;		//Current direct device
 
 public:
-    GameGlobal();
-    ~GameGlobal();
+    GameGlobal() = default;
+    ~GameGlobal() = default;
 
     static HINSTANCE GetCurrentHINSTANCE();
     static HWND getCurrentHWND();

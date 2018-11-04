@@ -14,10 +14,22 @@ protected:
 public:
     enum StateName
     {
+		Appear,
         Standing,
+		StandingShoot,
         Running,
+		RunningShoot,
         Falling,
+		FallingShoot,
         Jumping,
+		JumpingShoot,
+		Cling,
+		ClingShoot,
+		Climb,
+		ClimbShoot,
+		SlideVertical,
+		SlideHorizontal,
+		Win,
         Die
     };
 

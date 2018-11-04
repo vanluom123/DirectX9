@@ -8,9 +8,8 @@
 class DemoScene : public Scene
 {
 protected:
-	~DemoScene();
-	void _IsCheckCollision();
-	void _CheckCameraAndWorldMap();
+	void _IsCheckCollision() const;
+	void _CheckCameraAndWorldMap() const;
 
 	GameMap*	pMap;
 	Camera*		pCamera;
@@ -20,6 +19,7 @@ protected:
 
 public:
 	DemoScene();
+	~DemoScene() = default;
 
 	void Update(float dt) override;
 	void LoadContent() override;

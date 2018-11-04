@@ -4,7 +4,7 @@
 #include "GameCollision.h"
 #include "GameGlobal.h"
 
-GameMap::GameMap(char* filePath)
+GameMap::GameMap(const char* filePath)
 {
 	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	LoadMap(filePath);
@@ -30,7 +30,7 @@ GameMap::~GameMap()
 	delete mQuadTree;
 }
 
-void GameMap::LoadMap(char* filePath)
+void GameMap::LoadMap(const char* filePath)
 {
 	mMap = new Tmx::Map();
 	mMap->ParseFile(filePath);

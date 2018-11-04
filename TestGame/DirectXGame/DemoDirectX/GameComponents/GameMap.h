@@ -14,7 +14,7 @@
 
 class GameMap
 {
-	void LoadMap(char* filePath);
+	void LoadMap(const char* filePath);
 
 	Tmx::Map                        *mMap;
 	std::map<int, Sprite*>          mListTileSet;
@@ -23,7 +23,7 @@ class GameMap
 	std::vector<Brick*>             mListBricks;
 
 public:
-	explicit GameMap(char* filePath);
+	explicit GameMap(const char* filePath);
     void SetCamera(Camera* camera);
     void Update(float dt);
     void Draw();

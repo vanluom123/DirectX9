@@ -1,4 +1,4 @@
-#ifndef __ANIMATION__
+﻿#ifndef __ANIMATION__
 #define __ANIMATION__
 
 #include <Windows.h>
@@ -13,41 +13,46 @@ using namespace std;
 class Animation : public Sprite
 {
 protected:
-	//Use to inherit
-	void InitWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
 
-	int		mRows,				//Row number of the animation
-			mColumns,			//Column number of the animation
-			mCurrentIndex,		//The value of the current frame - start from 0 -> Total frame - 1
-			mCurrentRow,		//The current row
-			mCurrentColumn,		//The current column
-			mFrameWidth,		//The width frame
-			mFrameHeight,		//The height frame
-			mTotalFrame;		//Total frame
+	int		_NumberRow,		//Row number of the animation
+			_NumberColumn,	//Column number of the animation
+			_CurrentIndex,	//The value of the current frame - start from 0 -> Total frame - 1
+			_IndexRow,		//The current row
+			_IndexColumn,		//The current column
+			_FrameWidth,		//The width frame
+			_FrameHeight,		//The height frame
+			_TotalFrame;		//Total frame
 
 
-	float	mTimePerFrame,		//Time to convert a frame
-			mCurrentTotalTime;	//Total the current time to execute timePerFrame
+	float	_TimePerFrame,		//Time to convert a frame
+			_CurrentTotalFrame;	//Total the current time to execute timePerFrame
 
-	RECT	mRect;
+	RECT	_Rect;
+
+	float	_AnimationIndex;
+	float	_AnimationRate;
 
 public:
-    //Support function get the animation with an image only row
-    Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame = 0.1f,
-		D3DCOLOR colorKey = NULL);
+	//Support function get the animation with an image only row
+	Animation(LPWSTR ImagePath, int TotalFrame, int Rows, int Columns, float TimePerFrame = 0.1f,
+		D3DCOLOR Transcolor = NULL);
 
-    Animation();
+	Animation(LPWSTR ImagePath, const char* XMLPath, float AnimationRate, D3DCOLOR Transcolor = D3DCOLOR_XRGB(255, 255, 255));
 
-    virtual void Update(float dt);
+	Animation() = default;
 
-    void Draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(),
-		D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(),
-		D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void Update(float dt);
+	void Updated(float DeltaTime);
 
-    void Draw(D3DXVECTOR2 transform);
+	void Draw(D3DXVECTOR3 Position = D3DXVECTOR3(), RECT SourceRect = RECT(), D3DXVECTOR2 Scale = D3DXVECTOR2(),
+		D3DXVECTOR2 Translate = D3DXVECTOR2(), float Angle = 0, D3DXVECTOR2 RotationCenter = D3DXVECTOR2(),
+		D3DXCOLOR Transcolor = D3DCOLOR_XRGB(255, 255, 255)) override;
 
-    ~Animation();
+	void Draw(D3DXVECTOR2 Translate);
 
+	~Animation() = default;
+
+	void Render(float DeltaTime, float X, float Y, float ScaleSize, float FlipX) override;
 };
 
 #endif

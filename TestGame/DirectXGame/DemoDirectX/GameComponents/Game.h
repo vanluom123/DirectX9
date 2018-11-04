@@ -9,17 +9,17 @@ class Game
 	float                   mFPS;
 
 	//Initialize for game loop
-	void InitLoop();
+	void InitLoop() const;
 
 	//Function will be used to render, when it update
-	void Render();
+	static void Render();
 
 	//Update function
-	void Update(float dt);
+	static void Update(float dt);
 
 public:
 	explicit Game(int fps = 60);
-    ~Game();
+    ~Game() = default;
 };
 
 #endif

@@ -1,86 +1,95 @@
 #include "Animation.h"
 
-Animation::Animation()
-{}
-
-Animation::Animation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame, D3DCOLOR colorKey)
+Animation::Animation(LPWSTR ImagePath, int TotalFrame, int Rows, int Columns, float TimePerFrame, D3DCOLOR Transcolor) : Sprite(ImagePath)
 {
-    InitWithAnimation(filePath, totalFrame, rows, columns, timePerFrame, colorKey);
+	_IndexColumn = 0;
+	_IndexRow = 0;
+	_NumberRow = Rows;
+	_NumberColumn = Columns;
+	_TimePerFrame = TimePerFrame;
+	_TotalFrame = TotalFrame;
+
+	//width - height luc nay la cua sprite sheet
+	_FrameWidth = GetWidth() / _NumberColumn;
+	_FrameHeight = GetHeight() / _NumberRow;
+
+	SetWidth(_FrameWidth);
+	SetHeight(_FrameHeight);
+
+	_Rect.top = 0;
+	_Rect.left = 0;
+	_Rect.right = _FrameWidth;
+	_Rect.bottom = _FrameHeight;
+
+	SetSourceRect(_Rect);
 }
 
-void Animation::InitWithAnimation(const char* filePath, int totalFrame, int rows, int columns, float timePerFrame, D3DCOLOR colorKey)
+Animation::Animation(LPWSTR ImagePath, const char* XMLPath, float AnimationRate, D3DCOLOR Transcolor) : Sprite(ImagePath, XMLPath, AnimationRate, Transcolor)
 {
-    //GAMELOG("animation: frame: %d, row: %d, column: %d, time: %f", totalFrame, rows, columns, timePerFrame);
-    this->InitWithSprite(filePath);
-    mCurrentColumn = 0;
-    mCurrentRow = 0;
-    mTimePerFrame = timePerFrame;
-    mTotalFrame = totalFrame;
-    mRows = rows;
-    mColumns = columns;
-
-    //width - height luc nay la cua spritesheet
-    mFrameWidth = GetWidth() / mColumns;
-    mFrameHeight = GetHeight() / mRows;
-
-    SetWidth(mFrameWidth);
-    SetHeight(mFrameHeight);
-
-    mRect.top = 0;
-    mRect.left = 0;
-    mRect.right = mFrameWidth;
-    mRect.bottom = mFrameHeight;
-    SetSourceRect(mRect);
+	_AnimationIndex = 0;
+	_AnimationRate = AnimationRate;
 }
-
-Animation::~Animation()
-{}
 
 void Animation::Update(float dt)
 {
-    if (mTotalFrame <= 1)
-        return;
+	if (_TotalFrame <= 1)
+		return;
 
-	if (mCurrentTotalTime >= mTimePerFrame)
+	if (_CurrentTotalFrame >= _TimePerFrame)
 	{
-		mCurrentTotalTime = 0;
-		mCurrentIndex++;
-		mCurrentColumn++;
+		_CurrentTotalFrame = 0;
+		_CurrentIndex++;
+		_IndexColumn++;
 
-		if (mCurrentIndex >= mTotalFrame)
+		if (_CurrentIndex >= _TotalFrame)
 		{
-			mCurrentIndex = 0;
-			mCurrentColumn = 0;
-			mCurrentRow = 0;
+			_CurrentIndex = 0;
+			_IndexColumn = 0;
+			_IndexRow = 0;
 		}
 
-		if (mCurrentColumn >= mColumns)
+		if (_IndexColumn >= _NumberColumn)
 		{
-			mCurrentColumn = 0;
-			mCurrentRow++;
+			_IndexColumn = 0;
+			_IndexRow++;
 
-			if (mCurrentRow >= mRows)
-				mCurrentRow = 0;
+			if (_IndexRow >= _NumberRow)
+				_IndexRow = 0;
 		}
 
-		mRect.left = mCurrentColumn * mFrameWidth;
-		mRect.right = mRect.left + mFrameWidth;
-		mRect.top = mCurrentRow * mFrameHeight;
-		mRect.bottom = mRect.top + mFrameHeight;
+		_Rect.left = (_IndexColumn % _NumberColumn)*(_FrameWidth);
+		_Rect.top = (_IndexColumn / _NumberColumn)*(_FrameHeight);
+		_Rect.right = _Rect.left + _FrameWidth;
+		_Rect.bottom = _Rect.top + _FrameHeight;
 
-		SetSourceRect(mRect);
+		SetSourceRect(_Rect);
 	}
 	else
-		mCurrentTotalTime += dt;
+		_CurrentTotalFrame += dt;
 }
 
-void Animation::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale,
-    D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey)
+void Animation::Updated(float DeltaTime)
 {
-    Sprite::Draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
+	if(_AnimationIndex > _AnimationRate)
+	{
+		_AnimationIndex = 0;
+		_IndexTile = (_IndexTile + 1) % _ListTile.size();
+	}
+	_AnimationIndex += DeltaTime;
 }
 
-void Animation::Draw(D3DXVECTOR2 transform)
+void Animation::Draw(D3DXVECTOR3 Position, RECT SourceRect, D3DXVECTOR2 Scale,
+	D3DXVECTOR2 Translate, float Angle, D3DXVECTOR2 RotationCenter, D3DXCOLOR Transcolor)
 {
-    Sprite::Draw(D3DXVECTOR3(), RECT(), D3DXVECTOR2(), transform);
+	Sprite::Draw(Position, SourceRect, Scale, Translate, Angle, RotationCenter, Transcolor);
+}
+
+void Animation::Draw(D3DXVECTOR2 Translate)
+{
+	Sprite::Draw(D3DXVECTOR3(), RECT(), D3DXVECTOR2(), Translate);
+}
+
+void Animation::Render(float DeltaTime, float X, float Y, float ScaleSize, float FlipX)
+{
+	Sprite::Render(DeltaTime, X, Y, ScaleSize, FlipX);
 }

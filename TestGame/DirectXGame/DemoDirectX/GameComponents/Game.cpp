@@ -11,9 +11,6 @@ Game::Game(int fps)
 	InitLoop();
 }
 
-Game::~Game()
-{}
-
 void Game::Update(float dt)
 {
 	SceneManager::GetInstance()->GetCurrentScene()->Update(dt);
@@ -24,7 +21,7 @@ void Game::Render()
 {
 	auto device = GameGlobal::GetCurrentDevice();
 	auto scene = SceneManager::GetInstance()->GetCurrentScene();
-	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
+	device->Clear(0, nullptr, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
 
 	{
 		device->BeginScene();
@@ -41,20 +38,21 @@ void Game::Render()
 		device->EndScene();
 	}
 
-	device->Present(0, 0, 0, 0);
+	device->Present(nullptr, nullptr, nullptr, nullptr);
 }
 
-void Game::InitLoop()
+void Game::InitLoop() const
 {
 	MSG msg;
 
-	float tickPerFrame = 1.0f / mFPS, delta = 0;
+	const auto tickPerFrame = 1.0f / mFPS;
+	float delta = 0;
 
 	while (GameGlobal::isGameRunning)
 	{
 		GameTime::GetInstance()->StartCounter();
 
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -64,7 +62,7 @@ void Game::InitLoop()
 
 		if (delta >= tickPerFrame)
 		{
-			Update((delta));
+			Update(delta);
 			delta = 0;
 		}
 		else
