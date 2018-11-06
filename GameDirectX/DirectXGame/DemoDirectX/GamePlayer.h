@@ -2,6 +2,7 @@
 #include "GameComponents/Animation.h"
 #include "StandState.h"
 #include "GameComponents/Camera.h"
+#include "GameComponents/GameAnimation.h"
 
 class GameState; 
 
@@ -9,17 +10,20 @@ class GamePlayer : public Entity
 {
 	GameState	*pState;
 	Camera		*pCamera;
-	Animation   *_CurrentAnim,
+	/*Animation   *_CurrentAnim,
 				*_AnimStanding,
 				*_AnimRunning,
 				*_AnimJumping,
-				*_AnimFalling;
+				*_AnimFalling;*/
+
+	GameAnimation *_PlayerAnimation;
 
 	bool _isJumping, _isCurrentReverse;
 	bool _AllowRight, _AllowLeft;
 	MegaManState::StateName _CurrentState;
 
-	void _ChangeAnimation(MegaManState::StateName stateName);
+	void _ChangeGameAnimation(MegaManState::StateName state);
+	//void _ChangeAnimation(MegaManState::StateName stateName);
 
 public:
 

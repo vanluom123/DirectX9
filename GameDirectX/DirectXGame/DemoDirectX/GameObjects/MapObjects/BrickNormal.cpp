@@ -2,13 +2,8 @@
 
 BrickNormal::BrickNormal(D3DXVECTOR3 position)
 {
-    init(position);
+    _Init(position);
 }
-
-BrickNormal::~BrickNormal()
-{
-}
-
 
 const char * BrickNormal::FileName()
 {
@@ -30,7 +25,7 @@ int BrickNormal::Column()
     return 1;
 }
 
-float BrickNormal::SecondPerFrame()
+float BrickNormal::TimePerFrame()
 {
     return 1.0f;
 }

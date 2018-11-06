@@ -2,11 +2,7 @@
 
 BrickGold::BrickGold(D3DXVECTOR3 position)
 {
-    init(position);
-}
-
-BrickGold::~BrickGold()
-{
+    _Init(position);
 }
 
 const char * BrickGold::FileName()
@@ -29,7 +25,7 @@ int BrickGold::Column()
     return 4;
 }
 
-float BrickGold::SecondPerFrame()
+float BrickGold::TimePerFrame()
 {
     return 0.3f;
 }

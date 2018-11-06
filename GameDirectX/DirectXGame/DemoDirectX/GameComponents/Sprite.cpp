@@ -1,8 +1,15 @@
 ﻿#include "Sprite.h"
 #include "GameGlobal.h"
 #include "../GameDefines/GameDefine.h"
-#include "../MapReader/tinyxml.h"
-#include <iterator>
+
+bool Sprite::_CheckRect(RECT SourceRect)
+{
+	if (SourceRect.left == SourceRect.right)
+		return false;
+	if (SourceRect.top == SourceRect.bottom)
+		return false;
+	return true;
+}
 
 Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
 {
@@ -14,14 +21,15 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 	_Translation = D3DXVECTOR2(0, 0);
 	_Scale = D3DXVECTOR2(1, 1);
 
-	auto result = D3DXGetImageInfoFromFile(filePath, &_ImageInfo);
+	HRESULT result = D3DXGetImageInfoFromFile(filePath, &_ImageInfo);
 	if (FAILED(result))
 		return;
 
 	if (width == 0)
 	{
-		if (!_IsRect(sourceRect))
+		if (!_CheckRect(sourceRect))
 			_Width = _ImageInfo.Width;
+
 		else
 			_Width = sourceRect.right - sourceRect.left;
 	}
@@ -29,14 +37,15 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 
 	if (height == 0)
 	{
-		if (!_IsRect(sourceRect))
+		if (!_CheckRect(sourceRect))
 			_Height = _ImageInfo.Height;
+
 		else
 			_Height = sourceRect.bottom - sourceRect.top;
 	}
 	else _Height = height;
 
-	if (!_IsRect(sourceRect))
+	if (!_CheckRect(sourceRect))
 	{
 		_SourceRect.left = 0;
 		_SourceRect.right = _Width;
@@ -72,22 +81,11 @@ Sprite::~Sprite()
 	SAFE_RELEASE(_Texture);
 }
 
-bool Sprite::_IsRect(const RECT rect)
-{
-	if (rect.left == rect.right)
-		return false;
-
-	if (rect.top == rect.bottom)
-		return false;
-
-	return true;
-}
-
 void Sprite::Draw(D3DXVECTOR3 Position, RECT SourceRect, D3DXVECTOR2 Scale, D3DXVECTOR2 Translate, float Angle, D3DXVECTOR2 RotationCenter, D3DXCOLOR Transcolor)
 {
 	auto inPosition = _Position;
 	auto inSourceRect = _SourceRect;
-	auto inRotation = _Rotation;
+	float inRotation = _Rotation;
 	auto inScale = _Scale;
 	auto inTranslation = _Translation;
 	auto inRotationCenter = _RotationCenter;
@@ -97,7 +95,7 @@ void Sprite::Draw(D3DXVECTOR3 Position, RECT SourceRect, D3DXVECTOR2 Scale, D3DX
 	if (Position != D3DXVECTOR3())
 		inPosition = Position;
 
-	if (_IsRect(SourceRect))
+	if (_CheckRect(SourceRect))
 		inSourceRect = SourceRect;
 
 	if (Scale != D3DXVECTOR2())

@@ -2,14 +2,10 @@
 #define __SPRITE__
 #include <d3d9.h>
 #include <d3dx9.h>
-#include <vector>
-
-class CTile;
 
 class Sprite
 {
 protected:
-	static bool _IsRect(RECT rect);
 
 	D3DXVECTOR3             _Position;				//Position of the sprite is located in the middle of texture image
 	LPDIRECT3DTEXTURE9      _Texture;				//Image will be saved here
@@ -27,6 +23,7 @@ protected:
 	D3DXVECTOR2             _RotationCenter;		// (origin vector)
 
 	bool					_FlipX;
+	static bool _CheckRect(RECT SourceRect);
 public:
 
 	explicit Sprite(const char* filePath, RECT sourceRect = RECT(), int width = 0, int height = 0,

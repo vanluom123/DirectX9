@@ -3,7 +3,7 @@
 class BrickNormal : public Brick
 {
 public:
-    ~BrickNormal();
+    ~BrickNormal() = default;
 
 	explicit BrickNormal(D3DXVECTOR3 position);
 
@@ -11,6 +11,6 @@ public:
 	int TotalFrame() override;
 	int Row() override;
 	int Column() override;
-	float SecondPerFrame() override;
+	float TimePerFrame() override;
 };
 

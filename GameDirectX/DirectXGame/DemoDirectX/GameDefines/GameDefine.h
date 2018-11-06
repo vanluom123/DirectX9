@@ -42,7 +42,9 @@ namespace MegaManState
 		Climb,
 		ClimbShoot,
 		SlideVertical,
+		SlideVerticalShoot,
 		SlideHorizontal,
+		SlideHorizontalShoot,
 		Win,
 		Die
 	};

@@ -86,9 +86,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FallState.cpp" />
-    <ClCompile Include="GameComponents\Animation.cpp" />
     <ClCompile Include="GameComponents\Camera.cpp" />
     <ClCompile Include="GameComponents\Game.cpp" />
+    <ClCompile Include="GameComponents\GameAnimation.cpp" />
     <ClCompile Include="GameComponents\GameCollision.cpp" />
     <ClCompile Include="GameComponents\GameGlobal.cpp" />
     <ClCompile Include="GameComponents\GameMap.cpp" />
@@ -136,9 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FallState.h" />
-    <ClInclude Include="GameComponents\Animation.h" />
     <ClInclude Include="GameComponents\Camera.h" />
     <ClInclude Include="GameComponents\Game.h" />
+    <ClInclude Include="GameComponents\GameAnimation.h" />
     <ClInclude Include="GameComponents\GameCollision.h" />
     <ClInclude Include="GameComponents\GameGlobal.h" />
     <ClInclude Include="GameComponents\GameMap.h" />

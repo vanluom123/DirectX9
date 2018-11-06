@@ -2,6 +2,7 @@
 
 #include "./../../GameComponents/Animation.h"
 #include "../Entity/Entity.h"
+#include "../../GameComponents/GameAnimation.h"
 
 //vien gach
 class Brick : public Entity
@@ -9,7 +10,7 @@ class Brick : public Entity
 protected:
 	Brick() = default;
 
-	bool init(D3DXVECTOR3 position);
+	bool _Init(D3DXVECTOR3 position);
 
 	void _OnSetPosition(D3DXVECTOR3 pos) override;
 
@@ -17,9 +18,11 @@ protected:
 	virtual int TotalFrame() = 0; // Total frame
 	virtual int Row() = 0; //Number of resource animation row 
 	virtual int Column() = 0; //Number of resource animation column
-	virtual float SecondPerFrame() = 0; //Number of seconds to transform animation
+	virtual float TimePerFrame() = 0; //Number of seconds to transform animation
 
-	Animation *mAnimation;
+	//Animation *mAnimation;
+
+	GameAnimation *_BrickAnimation;
 
 public:
 	virtual ~Brick() = default;
