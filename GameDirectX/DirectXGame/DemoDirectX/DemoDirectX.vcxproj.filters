@@ -35,17 +35,23 @@
     <Filter Include="FrameWork\GameObjects\Player">
       <UniqueIdentifier>{7cadc00b-5477-4709-b25a-ee30590a5475}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameObjects\Player\StandState">
-      <UniqueIdentifier>{1884cefc-c4f8-4c36-9a05-7e33a21bce2a}</UniqueIdentifier>
+    <Filter Include="FrameWork\GameObjects\Player\GameState">
+      <UniqueIdentifier>{c37209ef-c1de-40e2-9f6f-bd3ab30a4165}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameObjects\Player\RunState">
-      <UniqueIdentifier>{1da986cc-26de-48c9-807b-0ff743d63bcc}</UniqueIdentifier>
+    <Filter Include="FrameWork\GameObjects\Player\GameState\FallState">
+      <UniqueIdentifier>{14da7f4d-3dab-462e-b1c6-1fa1b4df943a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameObjects\Player\JumpState">
+    <Filter Include="FrameWork\GameObjects\Player\GameState\JumpState">
       <UniqueIdentifier>{243ea498-f3a6-4413-887a-b87963a6d62e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\GameObjects\Player\FallState">
-      <UniqueIdentifier>{14da7f4d-3dab-462e-b1c6-1fa1b4df943a}</UniqueIdentifier>
+    <Filter Include="FrameWork\GameObjects\Player\GameState\RunState">
+      <UniqueIdentifier>{1da986cc-26de-48c9-807b-0ff743d63bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Player\GameState\StandState">
+      <UniqueIdentifier>{1884cefc-c4f8-4c36-9a05-7e33a21bce2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\GameObjects\Player\GameState\SlideState">
+      <UniqueIdentifier>{f2d45cbb-5b9a-4a82-98ca-98b6c4f29d1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,26 +178,29 @@
     <ClCompile Include="MapReader\tinyxmlparser.cpp">
       <Filter>FrameWork\MapReader</Filter>
     </ClCompile>
-    <ClCompile Include="GamePlayer.cpp">
-      <Filter>FrameWork\GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>FrameWork\GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="StandState.cpp">
-      <Filter>FrameWork\GameObjects\Player\StandState</Filter>
-    </ClCompile>
-    <ClCompile Include="RunState.cpp">
-      <Filter>FrameWork\GameObjects\Player\RunState</Filter>
-    </ClCompile>
-    <ClCompile Include="FallState.cpp">
-      <Filter>FrameWork\GameObjects\Player\FallState</Filter>
-    </ClCompile>
-    <ClCompile Include="JumpState.cpp">
-      <Filter>FrameWork\GameObjects\Player\JumpState</Filter>
-    </ClCompile>
     <ClCompile Include="GameComponents\GameAnimation.cpp">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\FallState\FallState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState\FallState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\JumpState\JumpState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState\JumpState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\RunState\RunState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState\RunState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\StandState\StandState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState\StandState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GamePlayer.cpp">
+      <Filter>FrameWork\GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\GameState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Player\GameState\SlideState\SlideHorizontalState.cpp">
+      <Filter>FrameWork\GameObjects\Player\GameState\SlideState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,26 +330,29 @@
     <ClInclude Include="MapReader\tinystr.h">
       <Filter>FrameWork\MapReader</Filter>
     </ClInclude>
-    <ClInclude Include="GamePlayer.h">
-      <Filter>FrameWork\GameObjects\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>FrameWork\GameObjects\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="StandState.h">
-      <Filter>FrameWork\GameObjects\Player\StandState</Filter>
-    </ClInclude>
-    <ClInclude Include="RunState.h">
-      <Filter>FrameWork\GameObjects\Player\RunState</Filter>
-    </ClInclude>
-    <ClInclude Include="FallState.h">
-      <Filter>FrameWork\GameObjects\Player\FallState</Filter>
-    </ClInclude>
-    <ClInclude Include="JumpState.h">
-      <Filter>FrameWork\GameObjects\Player\JumpState</Filter>
-    </ClInclude>
     <ClInclude Include="GameComponents\GameAnimation.h">
       <Filter>FrameWork\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\FallState\FallState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState\FallState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\JumpState\JumpState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState\JumpState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\RunState\RunState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState\RunState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\StandState\StandState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState\StandState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GamePlayer.h">
+      <Filter>FrameWork\GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\GameState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\GameState\SlideState\SlideHorizontalState.h">
+      <Filter>FrameWork\GameObjects\Player\GameState\SlideState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

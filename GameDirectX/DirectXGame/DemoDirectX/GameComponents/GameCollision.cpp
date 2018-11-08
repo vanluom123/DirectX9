@@ -180,14 +180,14 @@ bool GameCollision::isCollide(RECT rect1, RECT rect2)
 
 Entity::SideCollisions GameCollision::getSideCollision(Entity *e1, Entity *e2)
 {
-	RECT rect1 = e1->GetBound();
-	RECT rect2 = e2->GetBound();
+	RECT rect1 = e1->getBound();
+	RECT rect2 = e2->getBound();
 
-	float w = (e1->GetWidth() + e2->GetWidth()) / 2.0f;
-	float h = (e1->GetHeight() + e2->GetHeight()) / 2.0f;
+	float w = (e1->getWidth() + e2->getWidth()) / 2.0f;
+	float h = (e1->getHeight() + e2->getHeight()) / 2.0f;
 
-	float dx = e1->GetPosition().x - e2->GetPosition().y;
-	float dy = e1->GetPosition().x - e2->GetPosition().y;
+	float dx = e1->getPosition().x - e2->getPosition().y;
+	float dy = e1->getPosition().x - e2->getPosition().y;
 
 	if (abs(int(dx)) <= w && abs(int(dy)) <= h)
 	{
@@ -225,8 +225,8 @@ Entity::SideCollisions GameCollision::getSideCollision(Entity *e1, Entity::Colli
 
 	D3DXVECTOR2 cCenter = D3DXVECTOR2(xCenter, yCenter);
 	D3DXVECTOR2 eCenter;
-	eCenter.x = e1->GetPosition().x;
-	eCenter.y = e1->GetPosition().y;
+	eCenter.x = e1->getPosition().x;
+	eCenter.y = e1->getPosition().y;
 
 	//Get centered vector between Entity and CollisionRect
 	D3DXVECTOR2 vec = cCenter - eCenter;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "./../../GameComponents/Animation.h"
 #include "../Entity/Entity.h"
 #include "../../GameComponents/GameAnimation.h"
 
@@ -12,7 +11,7 @@ protected:
 
 	bool _Init(D3DXVECTOR3 position);
 
-	void _OnSetPosition(D3DXVECTOR3 pos) override;
+	void onSetPosition(D3DXVECTOR3 pos) override;
 
 	virtual const char* FileName() = 0;
 	virtual int TotalFrame() = 0; // Total frame

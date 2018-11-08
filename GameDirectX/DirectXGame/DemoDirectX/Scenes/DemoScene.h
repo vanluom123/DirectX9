@@ -3,7 +3,7 @@
 #include "../GameComponents/Scene.h"
 #include "../GameComponents/GameMap.h"
 #include "../GameComponents/Camera.h"
-#include "../GamePlayer.h"
+#include "../GameObjects/Player/GamePlayer.h"
 
 class DemoScene : public Scene
 {

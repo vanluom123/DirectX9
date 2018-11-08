@@ -33,7 +33,7 @@ void QuadTree::Clear()
 
 void QuadTree::insertEntity(Entity *entity)
 {
-    int index = getIndex(entity->GetBound());
+    int index = getIndex(entity->getBound());
 
     //neu node ta ton tai thi insert vao node con
     if (Nodes != NULL)
@@ -64,7 +64,7 @@ void QuadTree::insertEntity(Entity *entity)
 
 bool QuadTree::isContain(Entity *entity)
 {
-    RECT r = entity->GetBound();
+    RECT r = entity->getBound();
 
 	return r.left >= Bound.left && r.right <= Bound.right && r.top >= Bound.top && r.bottom <= Bound.bottom;
 }
@@ -185,7 +185,7 @@ void QuadTree::getAllEntities(std::vector<Entity*> &entitiesOut)
 
 void QuadTree::getEntitiesCollideAble(std::vector<Entity*> &entitiesOut, Entity *entity)
 {
-    int index = this->getIndex(entity->GetBound());
+    int index = this->getIndex(entity->getBound());
 
 	if (index != -1)
 	{

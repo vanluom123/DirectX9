@@ -5,7 +5,7 @@ Entity::Entity()
     Tag = None;
 }
 
-RECT Entity::GetBound()
+RECT Entity::getBound()
 {
     RECT bound;
 
@@ -29,84 +29,84 @@ void Entity::Update(float dt)
     _Y += _Vy * dt;
 }
 
-void Entity::_OnSetPosition(D3DXVECTOR3 pos)
+void Entity::onSetPosition(D3DXVECTOR3 pos)
 {}
 
-D3DXVECTOR3 Entity::GetPosition()
+D3DXVECTOR3 Entity::getPosition()
 {
 	return { _X, _Y, 0 };
 }
-void Entity::SetPosition(float x, float y)
+void Entity::setPosition(float x, float y)
 {
 	const auto pos = D3DXVECTOR2(x, y);
-    SetPosition(pos);
+    setPosition(pos);
 }
-void Entity::SetPosition(D3DXVECTOR2 pos)
+void Entity::setPosition(D3DXVECTOR2 pos)
 {
 	const auto position = D3DXVECTOR3(pos);
-    SetPosition(position);
+    setPosition(position);
 }
-void Entity::SetPosition(D3DXVECTOR3 pos)
+void Entity::setPosition(D3DXVECTOR3 pos)
 {
     this->_X = pos.x;
     this->_Y = pos.y; 
-    _OnSetPosition(pos);
+    onSetPosition(pos);
 }
-void Entity::AddPosition(float x, float y)
+void Entity::addPosition(float x, float y)
 {
 	const auto pos = D3DXVECTOR2(x, y);
-    AddPosition(pos);
+    addPosition(pos);
 }
-void Entity::AddPosition(D3DXVECTOR2 pos)
+void Entity::addPosition(D3DXVECTOR2 pos)
 {
 	const auto position = D3DXVECTOR3(pos);
-	AddPosition(position);
+	addPosition(position);
 }
-void Entity::AddPosition(D3DXVECTOR3 pos)
+void Entity::addPosition(D3DXVECTOR3 pos)
 {
-    this->SetPosition(this->GetPosition() + pos);
+    this->setPosition(this->getPosition() + pos);
 }
 
-void Entity::SetWidth(int width)
+void Entity::setWidth(int width)
 {
     this->_Width = width;
 }
-int Entity::GetWidth()
+int Entity::getWidth()
 {
     return _Width;
 }
 
-void Entity::SetHeight(int height)
+void Entity::setHeight(int height)
 {
     this->_Height = height;
 }
-int Entity::GetHeight()
+int Entity::getHeight()
 {
     return _Height;
 }
 
-float Entity::GetVx()
+float Entity::getVx()
 {
     return _Vx;
 }
-void Entity::SetVx(float vx)
+void Entity::setVx(float vx)
 {
     this->_Vx = vx;
 }
-void Entity::AddVx(float vx)
+void Entity::addVx(float vx)
 {
     this->_Vx += vx;
 }
 
-float Entity::GetVy()
+float Entity::getVy()
 {
     return _Vy;
 }
-void Entity::SetVy(float vy)
+void Entity::setVy(float vy)
 {
     this->_Vy = vy;
 }
-void Entity::AddVy(float vy)
+void Entity::addVy(float vy)
 {
     this->_Vy += vy;
 }

@@ -23,7 +23,7 @@ void DemoScene::LoadContent()
 
 	gp = new GamePlayer();
 
-	gp->SetPosition((float)GameGlobal::GetWidth() / 2, (float)GameGlobal::GetHeight() / 2);
+	gp->setPosition((float)GameGlobal::GetWidth() / 2, (float)GameGlobal::GetHeight() / 2);
 	gp->SetCamera(pCamera);
 }
 
@@ -62,38 +62,38 @@ void DemoScene::OnMouseDown(float x, float y)
 
 void DemoScene::_CheckCameraAndWorldMap() const
 {
-	pCamera->SetPosition(gp->GetPosition());
+	pCamera->SetPosition(gp->getPosition());
 
 	if (pCamera->GetBound().left < 0)
 	{
 		//The position of camera is now in the center
 		//The position of camera hits the left of the real world
 		pCamera->SetPosition((float)pCamera->GetWidth() / 2, pCamera->GetPosition().y);
-		if (gp->GetBound().left < 0)
-			gp->SetPosition((float)gp->GetWidth() / 2, gp->GetPosition().y);
+		if (gp->getBound().left < 0)
+			gp->setPosition((float)gp->getWidth() / 2, gp->getPosition().y);
 	}
 
 	if (pCamera->GetBound().right > pMap->GetWidth())
 	{
 		//The position of camera hits the right side of the real world
 		pCamera->SetPosition(pMap->GetWidth() - (float)pCamera->GetWidth() / 2, pCamera->GetPosition().y);
-		if (gp->GetBound().right > pMap->GetWidth())
-			gp->SetPosition(pMap->GetWidth() - (float)gp->GetWidth() / 2, gp->GetPosition().y);
+		if (gp->getBound().right > pMap->GetWidth())
+			gp->setPosition(pMap->GetWidth() - (float)gp->getWidth() / 2, gp->getPosition().y);
 	}
 
 	if (pCamera->GetBound().top < 0)
 	{
 		//Now. The position of camera hits the top of the real world
 		pCamera->SetPosition(pCamera->GetPosition().x, pCamera->GetHeight() / 2.0f);
-		if (gp->GetBound().top < 0)
-			gp->SetPosition(gp->GetPosition().x, (float)gp->GetHeight() / 2);
+		if (gp->getBound().top < 0)
+			gp->setPosition(gp->getPosition().x, (float)gp->getHeight() / 2);
 	}
 
 	if (pCamera->GetBound().bottom > pMap->GetHeight())
 	{
 		//Now. the position of camera hits the bottom of the real world
 		pCamera->SetPosition(pCamera->GetPosition().x, pMap->GetHeight() - pCamera->GetHeight() / 2.0f);
-		if (gp->GetBound().bottom > pMap->GetHeight())
+		if (gp->getBound().bottom > pMap->GetHeight())
 		{
 			//Layer has a die state
 		}
@@ -103,15 +103,15 @@ void DemoScene::_CheckCameraAndWorldMap() const
 void DemoScene::_IsCheckCollision() const
 {
 	/*Used to check when mario does not stand on an object or stand over the left or right edge of the object that will translate FallingState.*/
-	auto widthBottom = 0;
+	int widthBottom = 0;
 
-	vector<Entity*> listEntitiesCollision;
+	std::vector<Entity*> listEntitiesCollision;
 
 	pMap->GetQuadTree()->getEntitiesCollideAble(listEntitiesCollision, gp);
 
 	for (auto& i : listEntitiesCollision)
 	{
-		const auto r = GameCollision::RectAndRect(gp->GetBound(), i->GetBound());
+		const auto r = GameCollision::RectAndRect(gp->getBound(), i->getBound());
 
 		if (r.IsCollided)
 		{

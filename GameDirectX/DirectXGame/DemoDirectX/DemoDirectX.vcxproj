@@ -85,7 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FallState.cpp" />
     <ClCompile Include="GameComponents\Camera.cpp" />
     <ClCompile Include="GameComponents\Game.cpp" />
     <ClCompile Include="GameComponents\GameAnimation.cpp" />
@@ -102,9 +101,13 @@
     <ClCompile Include="GameObjects\MapObjects\BrickGold.cpp" />
     <ClCompile Include="GameObjects\MapObjects\BrickNormal.cpp" />
     <ClCompile Include="GameObjects\MapObjects\GameObject.cpp" />
-    <ClCompile Include="GamePlayer.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="JumpState.cpp" />
+    <ClCompile Include="GameObjects\Player\GamePlayer.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\FallState\FallState.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\GameState.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\JumpState\JumpState.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\RunState\RunState.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\SlideState\SlideHorizontalState.cpp" />
+    <ClCompile Include="GameObjects\Player\GameState\StandState\StandState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapReader\base64.cpp" />
     <ClCompile Include="MapReader\miniz.c" />
@@ -130,12 +133,9 @@
     <ClCompile Include="MapReader\TmxTileOffset.cpp" />
     <ClCompile Include="MapReader\TmxTileset.cpp" />
     <ClCompile Include="MapReader\TmxUtil.cpp" />
-    <ClCompile Include="RunState.cpp" />
     <ClCompile Include="Scenes\DemoScene.cpp" />
-    <ClCompile Include="StandState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FallState.h" />
     <ClInclude Include="GameComponents\Camera.h" />
     <ClInclude Include="GameComponents\Game.h" />
     <ClInclude Include="GameComponents\GameAnimation.h" />
@@ -153,9 +153,13 @@
     <ClInclude Include="GameObjects\MapObjects\BrickGold.h" />
     <ClInclude Include="GameObjects\MapObjects\BrickNormal.h" />
     <ClInclude Include="GameObjects\MapObjects\GameObject.h" />
-    <ClInclude Include="GamePlayer.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="JumpState.h" />
+    <ClInclude Include="GameObjects\Player\GamePlayer.h" />
+    <ClInclude Include="GameObjects\Player\GameState\FallState\FallState.h" />
+    <ClInclude Include="GameObjects\Player\GameState\GameState.h" />
+    <ClInclude Include="GameObjects\Player\GameState\JumpState\JumpState.h" />
+    <ClInclude Include="GameObjects\Player\GameState\RunState\RunState.h" />
+    <ClInclude Include="GameObjects\Player\GameState\SlideState\SlideHorizontalState.h" />
+    <ClInclude Include="GameObjects\Player\GameState\StandState\StandState.h" />
     <ClInclude Include="MapReader\base64.h" />
     <ClInclude Include="MapReader\tinystr.h" />
     <ClInclude Include="MapReader\tinyxml.h" />
@@ -181,9 +185,7 @@
     <ClInclude Include="MapReader\TmxUtil.h" />
     <ClInclude Include="MapReader\zconf.h" />
     <ClInclude Include="MapReader\zlib.h" />
-    <ClInclude Include="RunState.h" />
     <ClInclude Include="Scenes\DemoScene.h" />
-    <ClInclude Include="StandState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in" />

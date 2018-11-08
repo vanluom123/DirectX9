@@ -13,13 +13,13 @@ GameAnimation::GameAnimation(const char* filePath, int rows, int columns, int fr
 	this->mTimePerFrame = timePerFrame;
 }
 
-void GameAnimation::SetAnimation(int currentRow, int framePerRow, float timePerFrame)
+void GameAnimation::setAnimation(int currentRow, int framePerRow, int currentIndex, float timePerFrame)
 {
 	this->mCurrentRow = currentRow;
 	this->mframePerRow = framePerRow;
 	this->mTimePerFrame = timePerFrame;
 	mCurrentTotalTime = 0;
-	this->mCurrentIndex = 0;
+	this->mCurrentIndex = currentIndex;
 
 	mRect.left = mCurrentIndex * mFrameWidth;
 	mRect.right = mRect.left + mFrameWidth;

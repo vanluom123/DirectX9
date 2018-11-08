@@ -16,11 +16,11 @@ class GameMap
 {
 	void LoadMap(const char* filePath);
 
-	Tmx::Map                        *_pTmxMap;
-	std::map<int, Sprite*>          _ListTileSet;
-	Camera                          *_pCamera;
-	QuadTree                        *_pQuadTree;
-	std::vector<Brick*>             _ListBricks;
+	Tmx::Map                        *pTmxMap;
+	std::map<int, Sprite*>          LisTileset;
+	Camera                          *pCamera;
+	QuadTree                        *pQuadTree;
+	std::vector<Brick*>             ListBricks;
 
 public:
 	explicit GameMap(const char* filePath);

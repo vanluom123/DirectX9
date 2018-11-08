@@ -8,7 +8,7 @@ class Entity
 protected:
 
 	//duoc goi khi set position cua Entity, dung cho ke thua
-	virtual void _OnSetPosition(D3DXVECTOR3 pos);
+	virtual void onSetPosition(D3DXVECTOR3 pos);
 
 	//vi tri tam position x va y
 	float _X, _Y;
@@ -62,30 +62,30 @@ public:
 	//To confirm type of Entity
     EntityTypes Tag;
 
-    virtual RECT GetBound();
+    virtual RECT getBound();
 
-	virtual D3DXVECTOR3 GetPosition();
-    virtual void SetPosition(float x, float y);
-    virtual void SetPosition(D3DXVECTOR2 pos);
-    virtual void SetPosition(D3DXVECTOR3 pos);
+	virtual D3DXVECTOR3 getPosition();
+    virtual void setPosition(float x, float y);
+    virtual void setPosition(D3DXVECTOR2 pos);
+    virtual void setPosition(D3DXVECTOR3 pos);
 
-	virtual void AddPosition(float x, float y);
-	virtual void AddPosition(D3DXVECTOR2 pos);
-    virtual void AddPosition(D3DXVECTOR3 pos);
+	virtual void addPosition(float x, float y);
+	virtual void addPosition(D3DXVECTOR2 pos);
+    virtual void addPosition(D3DXVECTOR3 pos);
 
-    virtual void SetWidth(int width);
-    virtual int GetWidth();
+    virtual void setWidth(int width);
+    virtual int getWidth();
 
-    virtual void SetHeight(int height);
-    virtual int GetHeight();
+    virtual void setHeight(int height);
+    virtual int getHeight();
 
-    virtual float GetVx();
-    virtual void SetVx(float vx);
-    virtual void AddVx(float vx);
+    virtual float getVx();
+    virtual void setVx(float vx);
+    virtual void addVx(float vx);
 
-    virtual float GetVy();
-    virtual void SetVy(float vy);
-    virtual void AddVy(float vy);
+    virtual float getVy();
+    virtual void setVy(float vy);
+    virtual void addVy(float vy);
 
     virtual void Update(float dt);
 

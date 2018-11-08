@@ -6,34 +6,34 @@
 
 GameMap::GameMap(const char* filePath)
 {
-	_pCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
+	pCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	LoadMap(filePath);
 }
 
 GameMap::~GameMap()
 {
-	delete _pTmxMap;
+	delete pTmxMap;
 
-	for (auto& mListBrick : _ListBricks)
+	for (auto& mListBrick : ListBricks)
 	{
 		delete mListBrick;
 	}
-	_ListBricks.clear();
+	ListBricks.clear();
 
-	for (size_t i = 0; i < _ListTileSet.size(); i++)
+	for (size_t i = 0; i < LisTileset.size(); i++)
 	{
-		if (_ListTileSet[i])
-			delete _ListTileSet[i];
+		if (LisTileset[i])
+			delete LisTileset[i];
 	}
-	_ListTileSet.clear();
+	LisTileset.clear();
 
-	delete _pQuadTree;
+	delete pQuadTree;
 }
 
 void GameMap::LoadMap(const char* filePath)
 {
-	_pTmxMap = new Tmx::Map();
-	_pTmxMap->ParseFile(filePath);
+	pTmxMap = new Tmx::Map();
+	pTmxMap->ParseFile(filePath);
 
 	RECT r;
 	r.left = 0;
@@ -41,21 +41,21 @@ void GameMap::LoadMap(const char* filePath)
 	r.right = this->GetWidth();
 	r.bottom = this->GetHeight();
 
-	_pQuadTree = new QuadTree(1, r);
+	pQuadTree = new QuadTree(1, r);
 
-	for (size_t i = 0; i < _pTmxMap->GetNumTilesets(); i++)
+	for (size_t i = 0; i < pTmxMap->GetNumTilesets(); i++)
 	{
-		const auto tileSet = _pTmxMap->GetTileset(i);
+		const auto tileSet = pTmxMap->GetTileset(i);
 
 		auto sprite = new Sprite(tileSet->GetImage()->GetSource().c_str());
-		_ListTileSet.insert(pair<int, Sprite*>(i, sprite));
+		LisTileset.insert(std::pair<int, Sprite*>(i, sprite));
 	}
 
 	//Initialize the bricks
 #pragma region -BRICK AND COIN LAYER-
 	for (size_t i = 0; i < GetMap()->GetNumTileLayers(); i++)
 	{
-		const auto layer = _pTmxMap->GetTileLayer(i);
+		const auto layer = pTmxMap->GetTileLayer(i);
 
 		if (layer->IsVisible())
 			continue;
@@ -64,12 +64,12 @@ void GameMap::LoadMap(const char* filePath)
 
 		if (layer->GetName() == "brick" || layer->GetName() == "coin")
 		{
-			for (size_t j = 0; j < _pTmxMap->GetNumTilesets(); j++)
+			for (size_t j = 0; j < pTmxMap->GetNumTilesets(); j++)
 			{
-				const auto tileSet = _pTmxMap->GetTileset(j);
+				const auto tileSet = pTmxMap->GetTileset(j);
 
-				const auto tileWidth = _pTmxMap->GetTileWidth();
-				const auto tileHeight = _pTmxMap->GetTileHeight();
+				const auto tileWidth = pTmxMap->GetTileWidth();
+				const auto tileHeight = pTmxMap->GetTileHeight();
 
 				const auto tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
 				auto tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
@@ -106,16 +106,16 @@ void GameMap::LoadMap(const char* filePath)
 							{
 								brick = new BrickGold(position);
 								brick->Tag = Entity::EntityTypes::BrickGoldNormal;
-								_ListBricks.push_back(brick);
+								ListBricks.push_back(brick);
 							}
 							else
 							{
 								brick = new BrickNormal(position);
 								brick->Tag = Entity::EntityTypes::Brick;
-								_ListBricks.push_back(brick);
+								ListBricks.push_back(brick);
 							}
 							if (brick)
-								_pQuadTree->insertEntity(brick);
+								pQuadTree->insertEntity(brick);
 						}
 					}
 				}
@@ -127,9 +127,9 @@ void GameMap::LoadMap(const char* filePath)
 
 #pragma region -OBJECTGROUP, STATIC OBJECT-
 
-	for (size_t i = 0; i < _pTmxMap->GetNumObjectGroups(); i++)
+	for (size_t i = 0; i < pTmxMap->GetNumObjectGroups(); i++)
 	{
-		const auto objectGroup = _pTmxMap->GetObjectGroup(i);
+		const auto objectGroup = pTmxMap->GetObjectGroup(i);
 
 		for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 		{
@@ -137,15 +137,15 @@ void GameMap::LoadMap(const char* filePath)
 			const auto object = objectGroup->GetObjects().at(j);
 
 			auto*entity = new Entity();
-			entity->SetPosition(object->GetX() + object->GetWidth() / 2.0f,
+			entity->setPosition(object->GetX() + object->GetWidth() / 2.0f,
 				object->GetY() + object->GetHeight() / 2.0f);
 
-			entity->SetWidth(object->GetWidth());
-			entity->SetHeight(object->GetHeight());
+			entity->setWidth(object->GetWidth());
+			entity->setHeight(object->GetHeight());
 
 			entity->Tag = Entity::EntityTypes::Static;
 
-			_pQuadTree->insertEntity(entity);
+			pQuadTree->insertEntity(entity);
 		}
 	}
 #pragma endregion
@@ -153,12 +153,12 @@ void GameMap::LoadMap(const char* filePath)
 
 void GameMap::SetCamera(Camera* camera)
 {
-	_pCamera = camera;
+	pCamera = camera;
 }
 
 Tmx::Map* GameMap::GetMap() const
 {
-	return _pTmxMap;
+	return pTmxMap;
 }
 
 RECT GameMap::GetWorldMapBound() const
@@ -173,47 +173,47 @@ RECT GameMap::GetWorldMapBound() const
 
 int GameMap::GetWidth() const
 {
-	return _pTmxMap->GetWidth() * _pTmxMap->GetTileWidth();
+	return pTmxMap->GetWidth() * pTmxMap->GetTileWidth();
 }
 
 int GameMap::GetHeight() const
 {
-	return _pTmxMap->GetHeight() * _pTmxMap->GetTileHeight();
+	return pTmxMap->GetHeight() * pTmxMap->GetTileHeight();
 }
 
 int GameMap::GetTileWidth() const
 {
-	return _pTmxMap->GetTileWidth();
+	return pTmxMap->GetTileWidth();
 }
 
 int GameMap::GetTileHeight() const
 {
-	return _pTmxMap->GetTileHeight();
+	return pTmxMap->GetTileHeight();
 }
 
 bool GameMap::IsBoundLeft() const
 {
-	return (_pCamera->GetBound().left == 0);
+	return (pCamera->GetBound().left == 0);
 }
 
 bool GameMap::IsBoundRight() const
 {
-	return (_pCamera->GetBound().right == this->GetWidth());
+	return (pCamera->GetBound().right == this->GetWidth());
 }
 
 bool GameMap::IsBoundTop() const
 {
-	return (_pCamera->GetBound().top == 0);
+	return (pCamera->GetBound().top == 0);
 }
 
 bool GameMap::IsBoundBottom() const
 {
-	return (_pCamera->GetBound().bottom == this->GetHeight());
+	return (pCamera->GetBound().bottom == this->GetHeight());
 }
 
 void GameMap::Update(float dt)
 {
-	for (auto& mListBrick : _ListBricks)
+	for (auto& mListBrick : ListBricks)
 	{
 		mListBrick->Update(dt);
 	}
@@ -221,25 +221,25 @@ void GameMap::Update(float dt)
 
 void GameMap::Draw()
 {
-	const auto trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2.0f - _pCamera->GetPosition().x,
-		GameGlobal::GetHeight() / 2.0f - _pCamera->GetPosition().y);
+	const auto trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2.0f - pCamera->GetPosition().x,
+		GameGlobal::GetHeight() / 2.0f - pCamera->GetPosition().y);
 
 #pragma region DRAW TILESET
-	for (size_t i = 0; i < _pTmxMap->GetNumTileLayers(); i++)
+	for (size_t i = 0; i < pTmxMap->GetNumTileLayers(); i++)
 	{
-		const auto layer = _pTmxMap->GetTileLayer(i);
+		const auto layer = pTmxMap->GetTileLayer(i);
 
 		if (!layer->IsVisible())
 			continue;
 
-		for (size_t j = 0; j < _pTmxMap->GetNumTilesets(); j++)
+		for (size_t j = 0; j < pTmxMap->GetNumTilesets(); j++)
 		{
-			const auto tileSet = _pTmxMap->GetTileset(j);
+			const auto tileSet = pTmxMap->GetTileset(j);
 
 			RECT sourceRECT;
 
-			const auto tileWidth = _pTmxMap->GetTileWidth();
-			const auto tileHeight = _pTmxMap->GetTileHeight();
+			const auto tileWidth = pTmxMap->GetTileWidth();
+			const auto tileHeight = pTmxMap->GetTileHeight();
 
 			const auto tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
 			auto tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
@@ -260,11 +260,11 @@ void GameMap::Draw()
 						sourceRECT.left = x * tileWidth;
 						sourceRECT.right = sourceRECT.left + tileWidth;
 
-						auto sprite = _ListTileSet[j];
+						auto sprite = LisTileset[j];
 
 						const D3DXVECTOR3 position(n * tileWidth + tileWidth / 2.0f, m * tileHeight + tileHeight / 2.0f, 0);
 
-						if (_pCamera != nullptr)
+						if (pCamera != nullptr)
 						{
 							RECT objRECT;
 							objRECT.left = position.x - tileWidth / 2.0f;
@@ -272,7 +272,7 @@ void GameMap::Draw()
 							objRECT.right = objRECT.left + tileWidth;
 							objRECT.bottom = objRECT.top + tileHeight;
 
-							if (!GameCollision::RectAndRect(_pCamera->GetBound(), objRECT).IsCollided)
+							if (!GameCollision::RectAndRect(pCamera->GetBound(), objRECT).IsCollided)
 								continue;
 						}
 
@@ -289,7 +289,7 @@ void GameMap::Draw()
 
 #pragma region DRAW BRICK
 
-	for (auto& mListBrick : _ListBricks)
+	for (auto& mListBrick : ListBricks)
 	{
 		mListBrick->Draw(trans);
 	}
@@ -299,15 +299,15 @@ void GameMap::Draw()
 
 std::map<int, Sprite*> GameMap::getListTileSet() const
 {
-	return _ListTileSet;
+	return LisTileset;
 }
 
 std::vector<Brick*> GameMap::GetListBrick() const
 {
-	return _ListBricks;
+	return ListBricks;
 }
 
 QuadTree * GameMap::GetQuadTree() const
 {
-	return _pQuadTree;
+	return pQuadTree;
 }
