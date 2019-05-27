@@ -4,89 +4,91 @@
 #include "HelitState/HelitStand/HelitStand.h"
 #include "../../../GameComponents/GameCollision.h"
 #include "../../Item/SmallBlood.h"
-#include "../../Item/SmallSubtank.h"
+#include "../../Item/SmallSubtankItem.h"
 
 Helit::Helit()
 {
-	tag          = ENEMY;
-	anim         = new Animation(Define::HELIT_SPRITE_SHEET, 2, 4, 39, 37, 0.1, D3DCOLOR_XRGB(100, 100, 100));
-	animDie      = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
-	isReverse    = false;
-	isDie        = false;
-	allowDraw    = true;
-	MaxHP        = 4;
-	HP           = MaxHP;
-	Damage       = 3;
-	currentState = None;
+	_objectType = ENEMY;
+	_pAnim = new Animation(Define::HELIT_SPRITE_SHEET, 2, 4, 39, 37, 0.1, D3DCOLOR_XRGB(100, 100, 100));
+	_pAnimDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
+	_isReverse = false;
+	_isDie = false;
+	_isAllowDraw = true;
+	_MaxHP = 4;
+	_HP = _MaxHP;
+	_Damage = 3;
+	_currentState = HELIT_UNKNOWN;
 
-	pData		 = new HelitData();
-	pData->SetHelit(this);
-	setState(new HelitStand(pData));
+	_pHelitData = new HelitData;
+	_pHelitData->helit = this;
+	_pHelitData->helitState = NULL;
+
+	this->SetState(new HelitStand(_pHelitData));
 }
 
 void Helit::NewEntity()
 {
-	x            = startx;
-	y            = starty;
-	
-	isReverse    = false;
-	isDie        = false;
-	allowDraw    = true;
-	HP           = MaxHP;
-	currentState = None;
-	setState(new HelitStand(pData));
+	_posX = _startx;
+	_posY = _starty;
+
+	_isReverse = false;
+	_isDie = false;
+	_isAllowDraw = true;
+	_HP = _MaxHP;
+	_currentState = HELIT_UNKNOWN;
+	SetState(new HelitStand(_pHelitData));
 }
 
 Helit::~Helit()
 {
-	delete pData;
-	delete anim;
-	delete animDie;
-	for (auto& bullet : listBullet)
+	delete _pHelitData;
+	delete _pAnim;
+	delete _pAnimDie;
+	for (auto& bullet : _listBullet)
 		delete bullet;
-	listBullet.clear();
+	_listBullet.clear();
 }
 
 RECT Helit::GetBound()
 {
 	RECT r;
 
-	r.left   = x - 19;
-	r.right  = x + 19;
-	r.top    = y - 18;
-	r.bottom = y + 37 / 2.0f;
+	r.left = _posX - 19;
+	r.right = _posX + 19;
+	r.top = _posY - 18;
+	r.bottom = _posY + 37 / 2.0f;
 
 	return r;
 }
 
 void Helit::Update(float dt)
 {
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Update(dt);
 
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 
-	if (isDie == true)
-		animDie->update(dt);
+	if (_isDie == true)
+		_pAnimDie->Update(dt);
 	else
-		anim->update(dt);
+		_pAnim->Update(dt);
 
-	if (pData->GetHelitState() != NULL)
-		pData->GetHelitState()->update(dt);
+	if (_pHelitData->helitState != NULL)
+		_pHelitData->helitState->Update(dt);
 }
 
-void Helit::OnCollision(Entity* obj)
+void Helit::OnCollision(BaseObject* obj)
 {
-	if (obj->GetTag() == Entity::ROCK_MAN_BULLET && isDie == false)
+	if (obj->GetObjectType() == BaseObject::ROCK_MAN_BULLET && _isDie == false)
 	{
-		HP -= obj->GetDamage();
-		if (HP <= 0)
+		_HP -= obj->GetDamage();
+		if (_HP <= 0)
 		{
-			isDie = true;
-			setState(new HelitDie(pData));
+			_isDie = true;
+			SetState(new HelitDie(_pHelitData));
 		}
 
 		//
@@ -94,93 +96,90 @@ void Helit::OnCollision(Entity* obj)
 		if (num == 1)
 		{
 			auto* item = new SmallBloodItem();
-			listBullet.push_back(item);
-			item->SetPosition(x, y);
-			item->SetTag(Entity::ITEM);
+			_listBullet.push_back(item);
+			item->SetPosition(_posX, _posY);
+			item->SetObjectType(BaseObject::ITEM);
 		}
 		else if (num == 2)
 		{
-			auto* item = new SmallSubtank();
-			listBullet.push_back(item);
-			item->SetPosition(x, y);
-			item->SetTag(Entity::ITEM);
+			auto* item = new SmallSubtankItem();
+			_listBullet.push_back(item);
+			item->SetPosition(_posX, _posY);
+			item->SetObjectType(BaseObject::ITEM);
 		}
 	}
 }
 
-void Helit::Draw(Camera* camera, RECT rect, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotationCenter, D3DCOLOR color)
+void Helit::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {
-	if (isDie == false)
+	if (_isDie == false)
 	{
-		if (GameCollision::IsCollision(this->GetBound(), camera->getBound()) == false)
-			allowDraw = false;
+		if (GameCollision::IsCollision(this->GetBound(), camera->GetBound()) == false)
+			_isAllowDraw = false;
 		else
-			allowDraw = true;
+			_isAllowDraw = true;
 	}
 
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Draw(camera);
 
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	if (isDie == true)
+	if (_isDie == true)
 	{
-		animDie->setPosition(this->GetPosition());
+		_pAnimDie->SetPosition(this->GetPosition());
 
 		if (camera != NULL)
-			animDie->draw(animDie->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			_pAnimDie->Draw(_pAnimDie->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 		else
-			animDie->draw(animDie->getPosition());
+			_pAnimDie->Draw(_pAnimDie->GetPosition());
 	}
 	else
 	{
-		anim->setReverse(isReverse);
-		anim->setPosition(this->GetPosition());
+		_pAnim->SetReverse(_isReverse);
+		_pAnim->SetPosition(this->GetPosition());
 
 		if (camera != NULL)
-			anim->draw(anim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 		else
-			anim->draw(anim->getPosition());
+			_pAnim->Draw(_pAnim->GetPosition());
 	}
 }
 
-void Helit::setState(HelitState* newState)
+void Helit::SetState(HelitState* newState)
 {
-	if (currentState == newState->getState())
+	if (_currentState == newState->GetState())
 		return;
 
-	if (pData->GetHelitState()) {
-		delete pData->GetHelitState();
-		pData->SetHelitState(nullptr);
-	}
+	SAFE_DELETE(_pHelitData->helitState);
 
-	pData->SetHelitState(newState);
-	currentState = newState->getState();
-	changeAnimation(newState->getState());
+	_pHelitData->helitState = newState;
+	_currentState = newState->GetState();
+	ChangeAnimation(newState->GetState());
 }
 
-void Helit::changeAnimation(StateName state)
+void Helit::ChangeAnimation(eHelitState state)
 {
 	switch (state)
 	{
-			case Stand:
-				anim->setAnimation(0, 4, 0.15);
-				anim->setFrames(39, 36);
-				break;
+	case HELIT_STAND:
+		_pAnim->SetAnimation(0, 4, 0.15);
+		_pAnim->SetFrame(39, 36);
+		break;
 
-			case Attack:
-				anim->setAnimation(1, 4, 0.15);
-				anim->setFrames(39, 36);
-				break;
+	case HELIT_ATTACK:
+		_pAnim->SetAnimation(1, 4, 0.15);
+		_pAnim->SetFrame(39, 36);
+		break;
 
-			case Die:
-				animDie->setAnimation(0, 8, 0.05, false);
-				break;
+	case HELIT_DIE:
+		_pAnimDie->SetAnimation(0, 8, 0.05, false);
+		break;
 
-			default: break;
+	default: break;
 	}
-	
-	width = anim->getWidth();
-	height = anim->getHeight();
+
+	_width = _pAnim->GetWidth();
+	_height = _pAnim->GetHeight();
 }

@@ -1,19 +1,18 @@
 #ifndef __DIE_STATE_H__
 #define __DIE_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
 
-class DieState : public GameState
+class DieState : public PlayerState
 {
 public:
-	explicit DieState(PlayerData* data);
-	~DieState() = default;
+	DieState(PLAYERDATA* playerData);
 
 	void update(float dt) override;
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-	float timeDie;
+private:
+	float _timeDie;
 
 };
 

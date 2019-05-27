@@ -3,54 +3,55 @@
 #include "../StandState/StandState.h"
 #include "../../../../GameDefines/GameDefine.h"
 
-DashState::DashState(PlayerData* data) : GameState(data)
+
+DashState::DashState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
 	Sound::getInstance()->play("dash", false, 1);
 	Sound::getInstance()->setVolume(95);
-	translateX = 25.0f;
-	timePress = 0;
+	_accelerateX = 25.0f;
+	_timePress = 0;
 }
 
 void DashState::handlerKeyBoard(std::map<int, bool> keys, float dt)
 {
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	_playerData->player->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 
-	timePress += dt;
-	if (timePress <= 0.45f)
+	_timePress += dt;
+	if (_timePress <= 0.45f)
 	{
-		if (!pData->GetGamePlayer()->GetReverse())
+		if (!_playerData->player->GetReverse())
 		{
-			pData->GetGamePlayer()->SetVx(Define::PLAYER_MAX_SLIDE_SPEED);
+			_playerData->player->SetVx(Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_LEFT])
-				pData->GetGamePlayer()->SetState(new StandState(pData));
+				_playerData->player->SetState(new StandState(_playerData));
 		}
 		else
 		{
-			pData->GetGamePlayer()->SetVx(-Define::PLAYER_MAX_SLIDE_SPEED);
+			_playerData->player->SetVx(-Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_RIGHT])
-				pData->GetGamePlayer()->SetState(new StandState(pData));
+				_playerData->player->SetState(new StandState(_playerData));
 		}
 	}
 	else
-		pData->GetGamePlayer()->SetState(new StandState(pData));
+		_playerData->player->SetState(new StandState(_playerData));
 }
 
-void DashState::onCollision(Entity::SideCollisions side)
+void DashState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case Entity::LEFT:
-	case Entity::RIGHT:
-		{
-			Sound::getInstance()->stop("dash");
-			pData->GetGamePlayer()->SetState(new StandState(pData));
-			break;
-		}
+	case BaseObject::LEFT:
+	case BaseObject::RIGHT:
+	{
+		Sound::getInstance()->stop("dash");
+		_playerData->player->SetState(new StandState(_playerData));
+		break;
+	}
 	default: break;
 	}
 }
 
-GamePlayer::StateName DashState::GetState()
+Player::StateName DashState::GetState()
 {
-	return GamePlayer::DASH;
+	return Player::DASH;
 }

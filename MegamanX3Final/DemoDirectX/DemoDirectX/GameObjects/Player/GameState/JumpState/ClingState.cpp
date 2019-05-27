@@ -4,96 +4,96 @@
 #include "../SlipDownState/SlipDownState.h"
 #include "../../../../GameDefines/GameDefine.h"
 
-ClingState::ClingState(PlayerData* data, bool dash) : GameState(data)
+
+ClingState::ClingState(PLAYERDATA* playerData, bool dash) :PlayerState(playerData)
 {
-	speed = 0.0f;
-	countPress = 0;
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
-	translateY = 15.0f;
+	_speed = 0.0f;
+	_countPress = 0;
+	_playerData->player->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+	_accelerateY = 15.0f;
 
-	Pressed = dash;
+	_pressed = dash;
 }
-
 
 void ClingState::update(float dt)
 {
-	if (pData->GetGamePlayer()->GetVy() > 0)
-		pData->GetGamePlayer()->SetState(new FallState(pData, Pressed));
+	if (_playerData->player->GetVy() > 0)
+		_playerData->player->SetState(new FallState(_playerData, _pressed));
 }
 
 void ClingState::handlerKeyBoard(std::map<int, bool> keys, float dt)
 {
-	countPress += dt;
-	if (countPress < 0.25f)
+	_countPress += dt;
+	if (_countPress < 0.25f)
 	{
-		if (pData->GetGamePlayer()->GetReverse())
+		if (_playerData->player->GetReverse())
 		{
-			speed = Define::PLAYER_MAX_CLING_SPEED;
-			
+			_speed = Define::PLAYER_MAX_CLING_SPEED;
+
 			if (keys[VK_RIGHT])
-				countPress = 0.25;
+				_countPress = 0.25;
 		}
 		else
 		{
-			speed = -Define::PLAYER_MAX_CLING_SPEED;
+			_speed = -Define::PLAYER_MAX_CLING_SPEED;
 
 			if (keys[VK_LEFT])
-				countPress = 0.25;
+				_countPress = 0.25;
 		}
-		pData->GetGamePlayer()->SetVx(speed);
-		pData->GetGamePlayer()->AddVy(translateY);
+		_playerData->player->SetVx(_speed);
+		_playerData->player->AddVy(_accelerateY);
 		return;
 	}
 
 	if (keys[VK_RIGHT])
 	{
-		pData->GetGamePlayer()->SetReverse(false);
+		_playerData->player->SetReverse(false);
 
-		if (Pressed)
-			speed = Define::PLAYER_MAX_SLIDE_SPEED;
+		if (_pressed)
+			_speed = Define::PLAYER_MAX_SLIDE_SPEED;
 		else
-			speed = Define::PLAYER_MAX_RUNNING_SPEED;
+			_speed = Define::PLAYER_MAX_RUNNING_SPEED;
 	}
 	else if (keys[VK_LEFT])
 	{
-		pData->GetGamePlayer()->SetReverse(true);
-		if (Pressed)
-			speed = -Define::PLAYER_MAX_SLIDE_SPEED;
+		_playerData->player->SetReverse(true);
+		if (_pressed)
+			_speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
-			speed = -Define::PLAYER_MAX_RUNNING_SPEED;
+			_speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
-	pData->GetGamePlayer()->SetVx(speed);
-	pData->GetGamePlayer()->AddVy(translateY);
+	_playerData->player->SetVx(_speed);
+	_playerData->player->AddVy(_accelerateY);
 }
 
-void ClingState::onCollision(Entity::SideCollisions side)
+void ClingState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case Entity::LEFT:
-	case Entity::RIGHT:
+	case BaseObject::LEFT:
+	case BaseObject::RIGHT:
 	{
 		Sound::getInstance()->play("JumpUp", false, 1);
 		Sound::getInstance()->setVolume(95);
 
-		pData->GetGamePlayer()->SetState(new SlipDownState(pData));
+		_playerData->player->SetState(new SlipDownState(_playerData));
 		break;
 	}
-	case Entity::TOP:
+	case BaseObject::TOP:
 	{
-		pData->GetGamePlayer()->SetState(new FallState(pData, Pressed));
+		_playerData->player->SetState(new FallState(_playerData, _pressed));
 		break;
 	}
-	case Entity::BOTTOM:
+	case BaseObject::BOTTOM:
 	{
-		pData->GetGamePlayer()->SetState(new StandState(pData));
+		_playerData->player->SetState(new StandState(_playerData));
 		break;
 	}
 	default: break;
 	}
 }
 
-GamePlayer::StateName ClingState::GetState()
+Player::StateName ClingState::GetState()
 {
-	return GamePlayer::CLING;
+	return Player::CLING;
 }

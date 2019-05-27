@@ -6,7 +6,7 @@ Sound* Sound::instance = NULL;
 Sound* Sound::getInstance()
 {
 	if (instance == NULL)
-		instance = new Sound(GameGlobal::getCurrentHWND());
+		instance = new Sound(GameGlobal::GetHWND());
 
 	return instance;
 }

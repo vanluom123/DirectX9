@@ -27,9 +27,9 @@ int mCmdShow;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow)
 {
-    mHInstance = hInstance;
-    initWindow(cmdShow);
-    return 0;
+	mHInstance = hInstance;
+	initWindow(cmdShow);
+	return 0;
 }
 
 int initWindow(int cmdShow)
@@ -60,15 +60,15 @@ int initWindow(int cmdShow)
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		GameGlobal::getWidth() * 3,
-		GameGlobal::getHeight() * 3,
+		GameGlobal::GetWidth() * 2,
+		GameGlobal::GetHeight() * 2,
 		NULL,
 		NULL,
 		mHInstance,
 		NULL);
 
-	GameGlobal::setCurrentHINSTANCE(mHInstance);
-	GameGlobal::setCurrentHWND(hWnd);
+	GameGlobal::SetHINSTANCE(mHInstance);
+	GameGlobal::SetHWND(hWnd);
 
 	ShowWindow(hWnd, SW_NORMAL);
 	UpdateWindow(hWnd);
@@ -90,22 +90,22 @@ int InitDevice()
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 	d3dpp.BackBufferCount = 1;
-	d3dpp.BackBufferWidth = GameGlobal::getWidth();
-	d3dpp.BackBufferHeight = GameGlobal::getHeight();
+	d3dpp.BackBufferWidth = GameGlobal::GetWidth();
+	d3dpp.BackBufferHeight = GameGlobal::GetHeight();
 
 	const auto result = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
-	                                       D3DDEVTYPE_HAL,
-	                                       GameGlobal::getCurrentHWND(),
-	                                       D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-	                                       &d3dpp,
-	                                       &mDevice);
+		D3DDEVTYPE_HAL,
+		GameGlobal::GetHWND(),
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		&d3dpp,
+		&mDevice);
 	if (FAILED(result))
 		return 0;
 
-	GameGlobal::setCurrentDevice(mDevice);
+	GameGlobal::SetDevice(mDevice);
 
-	D3DXCreateSprite(GameGlobal::getCurrentDevice(), &mSpriteHandler);
-	GameGlobal::setCurrentSpriteHandler(mSpriteHandler);
+	D3DXCreateSprite(GameGlobal::GetDevice(), &mSpriteHandler);
+	GameGlobal::SetSpriteHandler(mSpriteHandler);
 
 	return 1;
 }
@@ -123,16 +123,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_LBUTTONDOWN:
-		SceneManager::getInstance()->getCurrentScene()->onMouseDown(float(GET_X_LPARAM(lParam)),
-		                                                            float(GET_Y_LPARAM(lParam)));
+		SceneManager::GetInstance()->GetCurrentScene()->onMouseDown(float(GET_X_LPARAM(lParam)), float(GET_Y_LPARAM(lParam)));
 		break;
 
 	case WM_KEYDOWN:
-		SceneManager::getInstance()->getCurrentScene()->onKeyDown(wParam);
+		SceneManager::GetInstance()->GetCurrentScene()->onKeyDown(wParam);
 		break;
 
 	case WM_KEYUP:
-		SceneManager::getInstance()->getCurrentScene()->onKeyUp(wParam);
+		SceneManager::GetInstance()->GetCurrentScene()->onKeyUp(wParam);
 		break;
 
 

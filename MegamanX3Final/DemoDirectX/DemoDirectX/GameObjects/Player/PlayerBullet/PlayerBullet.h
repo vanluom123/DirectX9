@@ -1,12 +1,13 @@
 #ifndef PLAYER_BULLET_H
 #define PLAYER_BULLET_H
 
-#include "../../Entity/Entity.h"
+#include "../../Entity/BaseObject.h"
 #include "../../../GameComponents/Animation.h"
+#include "../../../GameComponents/GameDebugDraw.h"
 
 class Camera;
 
-class PlayerBullet :public Entity
+class PlayerBullet :public BaseObject
 {
 public:
 	enum BulletType
@@ -28,27 +29,29 @@ public:
 	PlayerBullet();
 	~PlayerBullet();
 
-	bool getExplosions() const { return isExplosions; }
-	void setBulletX(float bulletX) { this->bulletX = bulletX; }
+	bool GetExplosion() const { return _isExplosions; }
+	void SetBulletX(float bulletX) { this->_bulletX = bulletX; }
 
-	void newBullet(float bx, float by, bool direction, BulletType type);
-	void changeBullet(BulletState state, BulletType type);
+	void NewBullet(float bx, float by, bool direction, BulletType type);
+	void ChangeBullet(BulletState state, BulletType type);
 
 	RECT GetBound() override;
 
-	void Draw(Camera* camera, RECT rect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
 	void Update(float dt) override;
-	void OnCollision(SideCollisions side) override;
-	void OnCollision(Entity* obj) override;
+	void OnCollision(eSideCollision side) override;
+	void OnCollision(BaseObject* obj) override;
 
-protected:
+private:
 
-	float			bulletX;
-	bool			isExplosions;
+	float			_bulletX;
+	bool			_isExplosions;
 
-	BulletType		bulletType;
-	BulletState		bulletState;
+	BulletType		_bulletType;
+	BulletState		_bulletState;
 
-	Animation* anim;
+	Animation* _pAnim;
+
+	GameDebugDraw* _gameDebug;
 };
 #endif // !PLAYER_BULLET_H

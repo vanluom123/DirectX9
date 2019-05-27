@@ -1,27 +1,28 @@
 #include "DieState.h"
 
-DieState::DieState(PlayerData* data) :GameState(data)
+
+DieState::DieState(PLAYERDATA* playerData) : PlayerState(playerData)
 {
-	pData->GetGamePlayer()->SetVx(0);
-	pData->GetGamePlayer()->SetVy(0);
-	timeDie = 0.0f;
+	_playerData->player->SetVx(0);
+	_playerData->player->SetVy(0);
+	_timeDie = 0.0f;
 }
 
 void DieState::update(float dt)
 {
-	timeDie += dt;
+	_timeDie += dt;
 
-	Sound::getInstance()->play("RockmanDie", false, timeDie);
+	Sound::getInstance()->play("RockmanDie", false, _timeDie);
 	Sound::getInstance()->setVolume(95);
 
-	if (timeDie >= 3.0f)
+	if (_timeDie >= 3.0f)
 	{
-		pData->GetGamePlayer()->GetAnimation()->setAnimation(20, 3, 0.3);
-		pData->GetGamePlayer()->SetDraw(false);
+		_playerData->player->GetAnimation()->SetAnimation(20, 3, 0.3);
+		_playerData->player->SetDraw(false);
 	}
 }
 
-GamePlayer::StateName DieState::GetState()
+Player::StateName DieState::GetState()
 {
-	return GamePlayer::DIE;
+	return Player::DIE;
 }

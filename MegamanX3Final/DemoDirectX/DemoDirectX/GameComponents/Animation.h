@@ -2,57 +2,52 @@
 #define __ANIMATION_H__
 
 #include <Windows.h>
-#include <d3dx9.h>
-#include <d3d9.h>
 #include <vector>
 
 #include "Sprite.h"
 
-using namespace std;
-
 class Animation : public Sprite
 {
 public:
-	//ham ho tro lay animation voi anh co duy nhat 1 hang
+	// ham ho tro lay animation voi anh co duy nhat 1 hang
 	Animation(const char* filePath, int rows, int columns, int frameWidth, int frameHeight,
 		float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
 
-	int getCurrentRow() const							{ return currentRow;                          }
-	int getCurrentColumn() const						{ return currentIndex;                        }
-	void setShoot(bool shoot)							{ this->isShoot = shoot;                      }
-	void setPause(bool pause)							{ this->isPause = pause;                      }
-	bool getPause() const								{ return this->isPause;                       }
-	void setLoopAnimation(bool allowLoopAnimation)		{ this->isLoopAnimation = allowLoopAnimation; }
+	void Update(float dt);
+	void Draw(GVec3 position = GVec3(), RECT sourceRect = RECT(),
+		GVec2 scale = GVec2(), GVec2 transform = GVec2(), float angle = 0,
+		GVec2 rotationCenter = GVec2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void Draw(GVec2 translate);
 
-	void setFrames(int frameW, int frameH);
+	// SUB-FUNCTION
+public:
+	int GetCurrentRow() const { return _currentRow; }
+	int GetCurrentColumn() const { return _currentIndex; }
+	void SetShoot(bool shoot) { this->_isShoot = shoot; }
+	void SetPause(bool pause) { this->_isPause = pause; }
+	bool GetPause() const { return this->_isPause; }
+	void SetLoop(bool isLoop) { this->_isLoop = isLoop; }
 
-	void setAnimation(int currentRow, int framePerRow, float timePerFrame = 0.1f, bool loopAnimation = true);
+	void SetFrame(int frameW, int frameH);
+	void SetAnimation(int currentRow, int framePerRow, float timePerFrame = 0.1f, bool isLoop = true);
 
-	void update(float dt);
+private:
 
-	void draw(D3DXVECTOR3 position = D3DXVECTOR3(), RECT sourceRect = RECT(),
-		D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, 
-		D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
+	int				_row,				//so hang cua animation
+					_cols,
+					_framePerRow,		//so cot cua animation
+					_currentIndex,		//gia tri frame hien tai - bat dau tu 0 -> tong so frame - 1
+					_currentRow,			// hang hien tai
+					_frameWidth,			// chieu rong cua 1 frame 
+					_frameHeight;		// chieu dai cua 1 frame
 
-	void draw(D3DXVECTOR2 translate);
+	bool			_isLoop,
+					_isShoot,
+					_isPause;
 
-protected:
+	float			_timePerFrame,		//thoi gian luan chuyen 1 frame
+					_currentTotalTime;	//tong thoi gian hien tai de thuc hien timeperframe
 
-	int				row,				//so hang cua animation
-					cols,
-					framePerRow,		//so cot cua animation
-					currentIndex,		//gia tri frame hien tai - bat dau tu 0 -> tong so frame - 1
-					currentRow,			// hang hien tai
-					frameWidth,			// chieu rong cua 1 frame 
-					frameHeight;		// chieu dai cua 1 frame
-
-	bool			isLoopAnimation,
-					isShoot,
-					isPause;
-
-	float			timePerFrame,		//thoi gian luan chuyen 1 frame
-					currentTotalTime;	//tong thoi gian hien tai de thuc hien timeperframe
-
-	RECT			rect;
+	RECT			_rect;
 };
 #endif

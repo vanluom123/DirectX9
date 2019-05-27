@@ -1,23 +1,22 @@
 #ifndef __APPEAR_STATE_H__
 #define __APPEAR_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class AppearState : public GameState
+class AppearState : public PlayerState
 {
 public:
-	explicit AppearState(PlayerData* data);
-	~AppearState() = default;
+	AppearState(PLAYERDATA* playerData);
 
 	void update(float dt) override;
 
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
 
-	void onCollision(Entity::SideCollisions side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-	float translateY;
+private:
+	float _accelerateY;
 };
 
 #endif

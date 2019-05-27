@@ -3,60 +3,61 @@
 #include "../FallState/FallState.h"
 #include "../../../../GameDefines/GameDefine.h"
 
-SlipDownState::SlipDownState(PlayerData* data) : GameState(data)
+
+SlipDownState::SlipDownState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
-	isSlide = true;
+	_playerData->player->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
+	_isSlide = true;
 }
 
 void SlipDownState::update(float dt)
 {
-	if (!isSlide)
-		pData->GetGamePlayer()->SetState(new FallState(pData));
+	if (!_isSlide)
+		_playerData->player->SetState(new FallState(_playerData));
 
-	isSlide = false;
+	_isSlide = false;
 }
 
 void SlipDownState::handlerKeyBoard(std::map<int, bool> keys, float dt)
 {
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
+	_playerData->player->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
 	if (keys[VK_RIGHT])
 	{
-		pData->GetGamePlayer()->SetReverse(false);
-		pData->GetGamePlayer()->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
+		_playerData->player->SetReverse(false);
+		_playerData->player->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else if (keys[VK_LEFT])
 	{
-		pData->GetGamePlayer()->SetReverse(true);
-		pData->GetGamePlayer()->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
+		_playerData->player->SetReverse(true);
+		_playerData->player->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else
 	{
-		pData->GetGamePlayer()->SetVx(0);
-		pData->GetGamePlayer()->SetState(new FallState(pData));
+		_playerData->player->SetVx(0);
+		_playerData->player->SetState(new FallState(_playerData));
 	}
 }
 
-void SlipDownState::onCollision(Entity::SideCollisions side)
+void SlipDownState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case Entity::LEFT:
-	case Entity::RIGHT:
+	case BaseObject::LEFT:
+	case BaseObject::RIGHT:
 	{
-		isSlide = true;
+		_isSlide = true;
 		break;
 	}
-	case Entity::BOTTOM:
+	case BaseObject::BOTTOM:
 	{
-		pData->GetGamePlayer()->SetState(new StandState(pData));
+		_playerData->player->SetState(new StandState(_playerData));
 		break;
 	}
 	default: break;
 	}
 }
 
-GamePlayer::StateName SlipDownState::GetState()
+Player::StateName SlipDownState::GetState()
 {
-	return GamePlayer::SLIP_DOWN;
+	return Player::SLIP_DOWN;
 }

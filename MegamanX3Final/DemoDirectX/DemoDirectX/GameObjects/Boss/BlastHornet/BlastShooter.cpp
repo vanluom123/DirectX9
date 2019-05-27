@@ -4,8 +4,8 @@
 
 BlastShooter::BlastShooter(BlastHornetData* b) :BlastHornetState(b)
 {
-	b->GetHornet()->SetVx(0);
-	b->GetHornet()->SetVy(0);
+	_pBlastHornetData->blastHornet->SetVx(0);
+	_pBlastHornetData->blastHornet->SetVy(0);
 	timeShooter = 0;
 	count = -1;
 }
@@ -41,19 +41,19 @@ void BlastShooter::Shoot()
 
 	if (count > 3)
 	{
-		b->GetHornet()->allowMove = false;
-		b->GetHornet()->SetState(new BlastStand(b));
+		_pBlastHornetData->blastHornet->allowMove = false;
+		_pBlastHornetData->blastHornet->SetState(new BlastStand(_pBlastHornetData));
 		return;
 	}
 
-	if (b->GetHornet()->GetListBullet()->size() < 5)
+	if (_pBlastHornetData->blastHornet->GetListBullet()->size() < 5)
 	{
 		auto* ebullet = new BlastBullet();
-		b->GetHornet()->GetListBullet()->push_back(ebullet);
+		_pBlastHornetData->blastHornet->GetListBullet()->push_back(ebullet);
 	}
 
 	float px = 0;
-	float py = b->GetHornet()->GetBound().top;
+	float py = _pBlastHornetData->blastHornet->GetBound().top;
 
 	if (count < 4)
 	{
@@ -62,13 +62,13 @@ void BlastShooter::Shoot()
 		else if (count == 2) py += 15;
 		else py += 20;
 
-		if (b->GetHornet()->GetReverse())
-			px = b->GetHornet()->GetBound().right;
+		if (_pBlastHornetData->blastHornet->GetReverse())
+			px = _pBlastHornetData->blastHornet->GetBound().right;
 		else
-			px = b->GetHornet()->GetBound().left;
+			px = _pBlastHornetData->blastHornet->GetBound().left;
 	}
 
-	b->GetHornet()->GetListBullet()->at(count)->SetPosition(px, py);
-	b->GetHornet()->GetListBullet()->at(count)->SetReverse(b->GetHornet()->GetReverse());
-	b->GetHornet()->GetListBullet()->at(count)->NewEntity();
+	_pBlastHornetData->blastHornet->GetListBullet()->at(count)->SetPosition(px, py);
+	_pBlastHornetData->blastHornet->GetListBullet()->at(count)->SetReverse(_pBlastHornetData->blastHornet->GetReverse());
+	_pBlastHornetData->blastHornet->GetListBullet()->at(count)->NewEntity();
 }

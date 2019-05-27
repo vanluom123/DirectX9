@@ -9,7 +9,7 @@ public:
 	~BlastAttack();
 
 	void Update(float dt) override;
-	void OnCollision(Entity::SideCollisions side) override;
+	void OnCollision(BaseObject::eSideCollision side) override;
 	BlastState GetState() override;
 };
 #endif // !BLAST_ATTACK_H

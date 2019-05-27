@@ -3,20 +3,20 @@
 
 Port::Port()
 {
-	tag = Entity::PORT;
+	_objectType = BaseObject::PORT;
 	pAnimation = new Animation("Resources/MapObject/Port.png", 1, 17, 16, 48, 0.1);
 
-	pAnimation->setAnimation(0, 1);
-	isReverse = false;
-	isDie = false;
-	allowDraw = true;
+	pAnimation->SetAnimation(0, 1);
+	_isReverse = false;
+	_isDie = false;
+	_isAllowDraw = true;
 	isOpen = false;
 	isClose = false;
 	isMove = false;
-	HP = 0;
-	Damage = 0;
-	vx = 0;
-	vy = 0;
+	_HP = 0;
+	_Damage = 0;
+	_vx = 0;
+	_vy = 0;
 }
 
 Port::~Port()
@@ -27,54 +27,54 @@ Port::~Port()
 RECT Port::GetBound()
 {
 	if (!isOpen)
-		return Entity::GetBound();
+		return BaseObject::GetBound();
 
 	RECT r;
-	r.left = x - width;
-	r.right = x + height;
-	r.top = y - height/2;
-	r.bottom = y + height / 2;
+	r.left = _posX - _width;
+	r.right = _posX + _height;
+	r.top = _posY - _height/2;
+	r.bottom = _posY + _height / 2;
 	return r;
 }
 
 void Port::Update(float dt)
 {
-	if (pAnimation->getPause() && isOpen)
+	if (pAnimation->GetPause() && isOpen)
 	{
 		if (isClose)
 		{
-			HP = 2;
-			Damage = 1;
+			_HP = 2;
+			_Damage = 1;
 			isOpen = false;
 			isMove = false;
-			pAnimation->setAnimation(0, 1);
+			pAnimation->SetAnimation(0, 1);
 			
 		}
 		else
 		{
 			isMove = true;
-			Damage = 1;
+			_Damage = 1;
 		}
 	}
 
-	pAnimation->update(dt);
+	pAnimation->Update(dt);
 }
 
-void Port::OnCollision(SideCollisions side)
+void Port::OnCollision(eSideCollision side)
 {}
 
-void Port::OnCollision(Entity* obj)
+void Port::OnCollision(BaseObject* obj)
 {
-	if (obj->GetTag() != ROCK_MAN || HP > 0 || obj->GetBound().top < GetBound().top)
+	if (obj->GetObjectType() != ROCK_MAN || _HP > 0 || obj->GetBound().top < GetBound().top)
 		return;
 
 	if (!isOpen && !isClose)
 	{
-		HP = -1;
+		_HP = -1;
 		isOpen = true;
 		isMove = false;
-		Damage = 0;
-		pAnimation->setAnimation(0, 17, 0.1, false);
+		_Damage = 0;
+		pAnimation->SetAnimation(0, 17, 0.1, false);
 	}
 
 	if (isMove)
@@ -84,17 +84,17 @@ void Port::OnCollision(Entity* obj)
 		else
 			obj->SetVx(40);
 
-		bound.top = y - height / 2;
-		bound.bottom = y + height / 2;
-		bound.left = x - 20;
-		bound.right = x + 20;
+		bound.top = _posY - _height / 2;
+		bound.bottom = _posY + _height / 2;
+		bound.left = _posX - 20;
+		bound.right = _posX + 20;
 
 		if (!GameCollision::IsCollision(bound, obj->GetBound()))
 		{
 			isClose = true;
-			pAnimation->setAnimation(1, 17, 0.1, false);
+			pAnimation->SetAnimation(1, 17, 0.1, false);
 			isMove = false;
-			Damage = 0;
+			_Damage = 0;
 		}
 	}
 	else
@@ -102,16 +102,16 @@ void Port::OnCollision(Entity* obj)
 	
 }
 
-void Port::Draw(Camera* camera, RECT rect, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotationCenter,
+void Port::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (pAnimation->getPause())
+	if (pAnimation->GetPause())
 		return;
-	pAnimation->setReverse(isReverse);
+	pAnimation->SetReverse(_isReverse);
 
-	pAnimation->setPosition(startx - 8, starty);
-	pAnimation->draw(pAnimation->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+	pAnimation->SetPosition(_startx - 8, _starty);
+	pAnimation->Draw(pAnimation->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 
-	pAnimation->setPosition(startx + 8, starty);
-	pAnimation->draw(pAnimation->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+	pAnimation->SetPosition(_startx + 8, _starty);
+	pAnimation->Draw(pAnimation->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 }

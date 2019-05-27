@@ -5,16 +5,16 @@
 
 Genjibo::Genjibo()
 {
-	tag = Tag::BOSS;
-	allowDraw = false;
+	_objectType = eObjectType::BOSS;
+	_isAllowDraw = false;
 	timeStand = 0;
 	timeMove = 0;
-	posY = y;
+	posY = _posY;
 	transY = 15;
 	count = 0;
-	MaxHP = 30;
-	HP = MaxHP;
-	Damage = 4;
+	_MaxHP = 30;
+	_HP = _MaxHP;
+	_Damage = 4;
 	anim = new Animation(Define::GENJIBO_SHURIKEIN, 8, 17, 49, 49, 0.01f);
 	animGenjinbo = new Animation(Define::SHURIKEN, 2, 2, 32, 68, 0.01f);
 	animDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.05);
@@ -35,58 +35,58 @@ Genjibo::~Genjibo()
 RECT Genjibo::GetBound()
 {
 	RECT r;
-	r.left = x - width / 2.0f;
-	r.right = r.left + width;
-	r.top = y - height / 2.0f;
-	r.bottom = r.top + height;
+	r.left = _posX - _width / 2.0f;
+	r.right = r.left + _width;
+	r.top = _posY - _height / 2.0f;
+	r.bottom = r.top + _height;
 	return r;
 }
 
 void Genjibo::Update(float dt)
 {
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Update(dt);
 
-	if (isDie == true)
+	if (_isDie == true)
 	{
-		if (animDie->getPause() == true)
+		if (animDie->GetPause() == true)
 			return;
-		animDie->update(dt);
+		animDie->Update(dt);
 	}
 	else
-		anim->update(dt);
+		anim->Update(dt);
 
-	animGenjinbo->update(dt);
+	animGenjinbo->Update(dt);
 	ManageState(dt);
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 }
 
-void Genjibo::OnCollision(Entity * obj)
+void Genjibo::OnCollision(BaseObject * obj)
 {
-	if (obj->GetTag() == Tag::ROCK_MAN_BULLET)
+	if (obj->GetObjectType() == eObjectType::ROCK_MAN_BULLET)
 	{
-		HP -= 2;
-		if (HP < 0)
+		_HP -= 2;
+		if (_HP < 0)
 		{
-			isDie = true;
+			_isDie = true;
 			SetState(Shurikein::DIE);
 
 			auto* item = new BigBloodItem();
-			listBullet.push_back(item);
-			item->SetPosition(x, y);
-			item->SetTag(Entity::ITEM);
+			_listBullet.push_back(item);
+			item->SetPosition(_posX, _posY);
+			item->SetObjectType(BaseObject::ITEM);
 			return;
 		}
 
 		if (shurikeinState == Shurikein::ATTACK_2 && currentState == GenjiboState::MOVE)
 		{
 			currentState = GenjiboState::JUMP;
-			vy = Define::ENEMY_MIN_JUMP_VELOCITY;
+			_vy = Define::ENEMY_MIN_JUMP_VELOCITY;
 		}
 	}
 }
 
-void Genjibo::OnCollision(SideCollisions side)
+void Genjibo::OnCollision(eSideCollision side)
 {
 	switch (shurikeinState)
 	{
@@ -95,37 +95,37 @@ void Genjibo::OnCollision(SideCollisions side)
 	case Shurikein::ATTACK_1:
 	{
 		//Attack Around
-		if (sideX == Entity::NONE && sideY != Entity::NONE)
+		if (_sideX == BaseObject::NONE && _sideY != BaseObject::NONE)
 		{
 			change = true;
-			if (vy > 0)
-				sideGen = Entity::BOTTOM;
+			if (_vy > 0)
+				sideGen = BaseObject::BOTTOM;
 			else
-				sideGen = Entity::TOP;
+				sideGen = BaseObject::TOP;
 		}
-		else if (sideX != Entity::NONE && sideY == Entity::NONE)
+		else if (_sideX != BaseObject::NONE && _sideY == BaseObject::NONE)
 		{
 			change = true;
-			if (vx > 0)
-				sideGen = Entity::RIGHT;
+			if (_vx > 0)
+				sideGen = BaseObject::RIGHT;
 			else
-				sideGen = Entity::LEFT;
+				sideGen = BaseObject::LEFT;
 		}
-		else if (sideX != Entity::NONE && sideY != Entity::NONE && change)
+		else if (_sideX != BaseObject::NONE && _sideY != BaseObject::NONE && change)
 		{
 			change = false;
 			if (sideGen == TOP || sideGen == BOTTOM)
-				vy *= -1;
+				_vy *= -1;
 			else
-				vx *= -1;
+				_vx *= -1;
 		}
-		else if (sideX == Entity::NONE && sideY == Entity::NONE && change)
+		else if (_sideX == BaseObject::NONE && _sideY == BaseObject::NONE && change)
 		{
 			change = false;
 			if (sideGen == TOP || sideGen == BOTTOM)
-				vx *= -1;
+				_vx *= -1;
 			else
-				vy *= -1;
+				_vy *= -1;
 		}
 		break;
 	}
@@ -133,11 +133,11 @@ void Genjibo::OnCollision(SideCollisions side)
 	case Shurikein::ATTACK_2:
 	case Shurikein::ATTACK_3:
 	{
-		if (side == Entity::BOTTOM)
+		if (side == BaseObject::BOTTOM)
 			currentState = GenjiboState::MOVE;
 		else
-			if (side == Entity::LEFT || side == Entity::RIGHT)
-				vx = -vx;
+			if (side == BaseObject::LEFT || side == BaseObject::RIGHT)
+				_vx = -_vx;
 		break;
 	}
 
@@ -146,30 +146,30 @@ void Genjibo::OnCollision(SideCollisions side)
 	}
 }
 
-void Genjibo::Draw(Camera * camera, RECT r, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotate, D3DCOLOR color)
+void Genjibo::Draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
 	if (shurikeinState == Shurikein::APPEAR)
 	{
-		animGenjinbo->setPosition(x, posY);
-		animGenjinbo->draw(animGenjinbo->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+		animGenjinbo->SetPosition(_posX, posY);
+		animGenjinbo->Draw(animGenjinbo->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 	}
 
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Draw(camera);
 
-	if (allowDraw == false) return;
+	if (_isAllowDraw == false) return;
 
-	if (isDie == true)
+	if (_isDie == true)
 	{
-		if (animDie->getPause() == true)
+		if (animDie->GetPause() == true)
 			return;
-		animDie->setPosition(GetPosition());
-		animDie->draw(animDie->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+		animDie->SetPosition(GetPosition());
+		animDie->Draw(animDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 	}
 	else
 	{
-		anim->setPosition(GetPosition());
-		anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+		anim->SetPosition(GetPosition());
+		anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 	}
 }
 
@@ -184,56 +184,56 @@ void Genjibo::SetState(Shurikein keinState)
 	{
 	case Shurikein::APPEAR:
 	{
-		vx = 0;
-		vy = 150;
-		anim->setAnimation(1, 10, 0.05);
-		animGenjinbo->setAnimation(0, 2, 0.05);
+		_vx = 0;
+		_vy = 150;
+		anim->SetAnimation(1, 10, 0.05);
+		animGenjinbo->SetAnimation(0, 2, 0.05);
 		posY = 920;
 		break;
 	}
 	case Shurikein::STAND:
 	{
-		vx = 0;
-		vy = 150;
-		anim->setAnimation(7, 17, 0.005);
+		_vx = 0;
+		_vy = 150;
+		anim->SetAnimation(7, 17, 0.005);
 		break;
 	}
 	case Shurikein::ATTACK_1:
 	{
-		vx = -150;
-		vy = 150;
-		sideGen = Entity::BOTTOM;
+		_vx = -150;
+		_vy = 150;
+		sideGen = BaseObject::BOTTOM;
 		currentState = GenjiboState::NONE;
-		anim->setAnimation(5, 10, 0.03);
+		anim->SetAnimation(5, 10, 0.03);
 		break;
 	}
 	case Shurikein::ATTACK_2:
 	{
 		currentState = GenjiboState::MOVE;
-		anim->setAnimation(6, 10, 0.03);
-		vx = -150;
-		vy = 150;
+		anim->SetAnimation(6, 10, 0.03);
+		_vx = -150;
+		_vy = 150;
 		break;
 	}
 	case Shurikein::ATTACK_3:
 	{
 		currentState = GenjiboState::MOVE;
-		anim->setAnimation(7, 17, 0.01);
-		vx = -80;
-		vy = 150;
+		anim->SetAnimation(7, 17, 0.01);
+		_vx = -80;
+		_vy = 150;
 		break;
 	}
 	case Shurikein::DIE:
-		animDie->setAnimation(0, 8, 0.05, false);
-		vx = 0;
-		vy = 0;
+		animDie->SetAnimation(0, 8, 0.05, false);
+		_vx = 0;
+		_vy = 0;
 		break;
 	default:
 		break;
 	}
 
-	width = anim->getWidth();
-	height = anim->getHeight();
+	_width = anim->GetWidth();
+	_height = anim->GetHeight();
 }
 
 void Genjibo::ManageState(float dt)
@@ -242,13 +242,13 @@ void Genjibo::ManageState(float dt)
 	{
 	case Shurikein::APPEAR:
 	{
-		if (posY >= y - 8)
+		if (posY >= _posY - 8)
 		{
-			posY = y - 8;
-			if (animGenjinbo->getCurrentRow() != 1)
+			posY = _posY - 8;
+			if (animGenjinbo->GetCurrentRow() != 1)
 			{
-				animGenjinbo->setAnimation(1, 2, 0.05);
-				allowDraw = true;
+				animGenjinbo->SetAnimation(1, 2, 0.05);
+				_isAllowDraw = true;
 			}
 			timeMove += dt;
 			if (timeMove > 2)
@@ -265,8 +265,8 @@ void Genjibo::ManageState(float dt)
 	}
 	case Shurikein::STAND:
 	{
-		vx = 0;
-		vy = 150;
+		_vx = 0;
+		_vy = 150;
 		timeStand += dt;
 		if (timeStand > 2.0f)
 		{
@@ -306,19 +306,19 @@ void Genjibo::ManageState(float dt)
 		switch (currentState)
 		{
 		case GenjiboState::MOVE:
-			vy = 150;
+			_vy = 150;
 			if (shurikeinState == Shurikein::ATTACK_3)
 			{
 				currentState = GenjiboState::JUMP;
-				vy = Define::ENEMY_MIN_JUMP_VELOCITY;
+				_vy = Define::ENEMY_MIN_JUMP_VELOCITY;
 				return;
 			}
 			break;
 		case GenjiboState::JUMP:
 		{
 			AddVy(transY);
-			if (vy > Define::ENEMY_MAX_JUMP_VELOCITY)
-				vy = Define::ENEMY_MAX_JUMP_VELOCITY;
+			if (_vy > Define::ENEMY_MAX_JUMP_VELOCITY)
+				_vy = Define::ENEMY_MAX_JUMP_VELOCITY;
 		}
 		default:
 			break;

@@ -1,23 +1,21 @@
 ﻿#ifndef __JUMP_STATE_H__
 #define __JUMP_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class JumpState : public GameState
+class JumpState : public PlayerState
 {
 public:
-	explicit JumpState(PlayerData* data);
-	~JumpState() = default;
+	JumpState(PLAYERDATA* playerData);
 
 	void update(float dt) override;
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
-	void onCollision(Entity::SideCollisions side) override;
-	GamePlayer::StateName GetState() override;
+	void onCollision(BaseObject::eSideCollision side) override;
+	Player::StateName GetState() override;
 
 protected:
-
-	float translateY;
-	bool Pressed;
-	float timePress;
+	float _accelerateY;
+	bool _pressed;
+	float _timePress;
 
 
 };

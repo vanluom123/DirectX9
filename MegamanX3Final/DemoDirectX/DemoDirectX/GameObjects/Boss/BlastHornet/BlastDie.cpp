@@ -12,7 +12,7 @@ void BlastDie::Update(float dt)
 {
 	timeDie += dt;
 	if (timeDie > 1)
-		b->GetHornet()->SetDraw(false);
+		_pBlastHornetData->blastHornet->SetDraw(false);
 }
 
 BlastState BlastDie::GetState()

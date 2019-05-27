@@ -1,18 +1,17 @@
 ﻿#ifndef __RUN_STATE_H__
 #define __RUN_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class RunState : public GameState
+class RunState : public PlayerState
 {
 public:
-	explicit RunState(PlayerData* data);
-	~RunState() = default;
+	RunState(PLAYERDATA* playerData);
 
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
 
-	void onCollision(Entity::SideCollisions side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
 protected:
 	bool boot;

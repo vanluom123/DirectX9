@@ -12,7 +12,7 @@ BlastHornetState::~BlastHornetState()
 void BlastHornetState::Update(float dt)
 {}
 
-void BlastHornetState::OnCollision(Entity::SideCollisions side)
+void BlastHornetState::OnCollision(BaseObject::eSideCollision side)
 {}
 
 void BlastHornetState::Shoot()

@@ -6,43 +6,44 @@
 
 BangerBullet::BangerBullet()
 {
-	tag = ENEMY_BULLET;
-	anim = new Animation(Define::NOTOR_BANGER_BULLET, 2, 3, 8, 8, D3DCOLOR_XRGB(0, 100, 100));
-	animExplosions = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.1);
-	BangerBullet::ChangeState(FIRE);
-	HP = 3;
-	Damage = 2;
-	bulletY = 25.0f;
-
-	allowDraw = true;
+	_objectType = ENEMY_BULLET;
+	_pAnim = new Animation(Define::NOTOR_BANGER_BULLET, 2, 3, 8, 8, D3DCOLOR_XRGB(0, 100, 100));
+	_pAnimExplosion = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.1f);
+	this->ChangeState(BULLET_FIRE);
+	_HP = 3;
+	_Damage = 2;
+	_bulletY = 25.0f;
+	_isAllowDraw = true;
 }
 
 BangerBullet::~BangerBullet()
 {
-	delete anim;
-	delete animExplosions;
+	delete _pAnim;
+	delete _pAnimExplosion;
 }
 
 RECT BangerBullet::GetBound()
 {
 	RECT r = RECT();
 
-	switch (bulletState)
+	switch (_bulletState)
 	{
 
-	case EXPLOSIONS:
-		r.left = x - 25;
-		r.right = x + 25;
-		r.top = y - 22;
-		r.bottom = y + 23;
+	case BULLET_EXPLOSION:
+		r.left = _posX - 25;
+		r.right = _posX + 25;
+		r.top = _posY - 22;
+		r.bottom = _posY + 23;
 		break;
 
-	default:
-		r.left = x - 4;
-		r.top = y - 4;
-		r.right = x + 4;
-		r.bottom = y + 4;
+	case BULLET_FIRE:
+		r.left = _posX - 4;
+		r.top = _posY - 4;
+		r.right = _posX + 4;
+		r.bottom = _posY + 4;
 		break;
+
+	default: break;
 	}
 
 	return r;
@@ -50,76 +51,79 @@ RECT BangerBullet::GetBound()
 
 void BangerBullet::NewEntity()
 {
-	tag = ENEMY_BULLET;
-	vy = -450;
-	if (isReverse == true)
+	_objectType = ENEMY_BULLET;
+	_vy = -450;
+	if (_isReverse == true)
 	{
 		//vx = 70;
-		vx = 100;
+		_vx = 100;
 
 	}
 	else
 	{
 		//vx = -70;
-		vx = -100;
+		_vx = -100;
 
 	}
-	ChangeState(FIRE);
-	isDie = false;
-	allowDraw = true;
+	ChangeState(BULLET_FIRE);
+	_isDie = false;
+	_isAllowDraw = true;
 }
 
 void BangerBullet::Update(float dt)
 {
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	if (isDie == false)
+	if (_isDie == false)
 	{
-		vy += bulletY;
-		if (vy > 300)
-			vy = 300;
+		_vy += _bulletY;
+		if (_vy > 300)
+			_vy = 300;
 
 	}
-	else if (anim->getPause() == true || animExplosions->getPause() == true)// da chay xong animation no
-		allowDraw = false;
+	else if (_pAnim->GetPause() == true || _pAnimExplosion->GetPause() == true)// da chay xong animation no
+		_isAllowDraw = false;
 
-	if (bulletState == EXPLOSIONS)
-		animExplosions->update(dt);
+	if (_bulletState == BULLET_EXPLOSION)
+		_pAnimExplosion->Update(dt);
 	else
-		anim->update(dt);
+		_pAnim->Update(dt);
 
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 }
 
-void BangerBullet::OnCollision(SideCollisions side)
+void BangerBullet::OnCollision(eSideCollision side)
 {}
 
-void BangerBullet::OnCollision(Entity * obj)
+void BangerBullet::OnCollision(BaseObject * obj)
 {
-	if (obj->GetTag() == ENEMY)
+	if (obj->GetObjectType() == ENEMY)
 		return;
-	vx = 0;
-	vy = 0;
-	isDie = true;
-	ChangeState(EXPLOSIONS);
+	_vx = 0;
+	_vy = 0;
+	_isDie = true;
+	ChangeState(BULLET_EXPLOSION);
 }
 
-void BangerBullet::ChangeState(BulletStateName state)
+void BangerBullet::ChangeState(eBulletState state)
 {
-	bulletState = state;
+	_bulletState = state;
+
 	switch (state)
 	{
-	case EXPLOSIONS:
-		animExplosions->setAnimation(0, 8, 0.05, false);
-		this->SetWidth(animExplosions->getWidth());
-		this->SetHeight(animExplosions->getHeight());
+	case BULLET_EXPLOSION:
+		_pAnimExplosion->SetAnimation(0, 8, 0.05, false);
+		this->SetWidth(_pAnimExplosion->GetWidth());
+		this->SetHeight(_pAnimExplosion->GetHeight());
 		break;
 
-	default:
-		anim->setAnimation(0, 1);
-		this->SetWidth(anim->getWidth());
-		this->SetHeight(anim->getHeight());
+	case BULLET_FIRE:
+		_pAnim->SetAnimation(0, 1);
+		this->SetWidth(_pAnim->GetWidth());
+		this->SetHeight(_pAnim->GetHeight());
 		break;
+
+	default: break;
 	}
 }

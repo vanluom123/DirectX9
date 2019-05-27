@@ -13,7 +13,7 @@ IntroScene::~IntroScene()
 
 void IntroScene::draw()
 {
-	backGround->draw();
+	backGround->Draw();
 }
 
 void IntroScene::onKeyDown(int keyCode)
@@ -33,5 +33,5 @@ void IntroScene::onMouseDown(float x, float y)
 
 void IntroScene::update(float dt)
 {
-	backGround->update(dt);
+	backGround->Update(dt);
 }

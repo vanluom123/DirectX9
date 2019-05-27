@@ -3,22 +3,22 @@
 BangerDie::BangerDie(BangerData* banger) : BangerState(banger)
 {
 	Sound::getInstance()->play("explosions", false, 1);
-	banger->GetBanger()->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
-	timeDie = 0;
-	translateY = 25.0f;
+	_pBangerData->banger->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
+	_timeDie = 0;
+	_accelerateY = 25.0f;
 }
 
-Banger::BangerStateName BangerDie::GetStateName()
+Banger::eBangerState BangerDie::GetStateName()
 {
-	return Banger::DIE;
+	return Banger::BANGER_DIE;
 }
 
 void BangerDie::Update(float dt)
 {
-	banger->GetBanger()->SetVx(0);
-	banger->GetBanger()->AddVy(translateY);
+	_pBangerData->banger->SetVx(0);
+	_pBangerData->banger->AddVy(_accelerateY);
 
-	timeDie += dt;
-	if(timeDie >= 0.45f)
-		banger->GetBanger()->SetDraw(false);
+	_timeDie += dt;
+	if(_timeDie >= 0.45f)
+		_pBangerData->banger->SetDraw(false);
 }

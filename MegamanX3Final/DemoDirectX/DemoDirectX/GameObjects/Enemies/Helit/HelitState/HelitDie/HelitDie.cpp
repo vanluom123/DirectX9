@@ -5,21 +5,21 @@
 HelitDie::HelitDie(HelitData* helit) :HelitState(helit)
 {
 	Sound::getInstance()->play("explosions", false, 1);
-	helit->GetHelit()->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
-    timeDie = 0;
-    translateY = 25.0f;
+	_pHelitData->helit->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
+    _timeDie = 0;
+    _accelerateY = 25.0f;
 }
 
-Helit::StateName HelitDie::getState()
+Helit::eHelitState HelitDie::GetState()
 {
-    return Helit::Die;
+    return Helit::HELIT_DIE;
 }
 
-void HelitDie::update(float dt)
+void HelitDie::Update(float dt)
 {
-	helit->GetHelit()->AddVy(translateY);
+	_pHelitData->helit->AddVy(_accelerateY);
 
-    timeDie += dt;
-    if (timeDie >= 0.45f)
-		helit->GetHelit()->SetDraw(false);
+    _timeDie += dt;
+    if (_timeDie >= 0.45f)
+		_pHelitData->helit->SetDraw(false);
 }

@@ -2,21 +2,21 @@
 
 #include <d3dx9.h>
 #include <d3d9.h>
-#include "../GameObjects/Entity/Entity.h"
+#include "../GameObjects/Entity/BaseObject.h"
 
 class GameCollision
 {
 public:
 	//Check collision Rect and Rect
-	static Entity::CollisionReturn rectCollision(RECT rect1, RECT rect2);
+	static BaseObject::CollisionReturn rectCollision(RECT rect1, RECT rect2);
 
 	static bool IsCollision(RECT rect1, RECT rect2);
 
 	//if Rectangle is big, it will be errored
-	static Entity::SideCollisions getSideCollision(Entity* e1, Entity* e2);
+	static BaseObject::eSideCollision getSideCollision(BaseObject* e1, BaseObject* e2);
 
 	//Side of collision of Entity
-	static Entity::SideCollisions getSideCollision(Entity* e1, Entity::CollisionReturn data);
+	static BaseObject::eSideCollision getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data);
 
 	//Check collision between Point and Rectangle
 	static bool pointCollision(float x, float y, RECT rect);
@@ -27,10 +27,10 @@ public:
 	//Checking intersectRect
 	static bool intersectRect(RECT obj, RECT other);
 
-	static D3DXVECTOR2 Distance(Entity* e1, Entity* e2, float dt);
+	static GVec2 Distance(BaseObject* e1, BaseObject* e2, float dt);
 
-	static RECT getBroad(RECT object, D3DXVECTOR2 distance);
+	static RECT getBroad(RECT object, GVec2 distance);
 
 	//Axis-Aligned Bounding box collision
-	static float SweptAABB(RECT obj, RECT other, D3DXVECTOR2 distance, Entity::SideCollisions& sideCollision);
+	static float SweptAABB(RECT obj, RECT other, GVec2 distance, BaseObject::eSideCollision& sideCollision);
 };

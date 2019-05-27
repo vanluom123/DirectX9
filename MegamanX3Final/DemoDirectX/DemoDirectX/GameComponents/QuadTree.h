@@ -4,31 +4,38 @@
 #include <d3d9.h>
 #include <vector>
 #include "Camera.h"
-#include "../GameObjects/Entity/Entity.h"
+#include "../GameObjects/Entity/BaseObject.h"
 
 class QuadTree
 {
-protected:
-	void split(); //thuc hien chia ra cac node
-	bool isContain(RECT r);
-	std::vector<Entity*> mListEntity; //danh sach cac phan tu co trong vung va cham (Bound)
-	RECT Bound;
-	int mLevel; //tuong ung voi so node
+private:
+	//thuc hien chia ra cac node
+	void Split(); 
+
+	bool IsContain(RECT r);
+
+	//danh sach cac phan tu co trong vung va cham (Bound)
+	std::vector<BaseObject*> _listObject;
+
+	RECT _bound;
+
+	//tuong ung voi so node
+	int _level; 
+
+	QuadTree** _node;
+
 public:
-	QuadTree();
 	QuadTree(int level, RECT bound);
-	~QuadTree();
+
 	void Clear();
-	void insertObject(Entity *entity);
+	void InsertObject(BaseObject *entity);
 
-	int getTotalObject();
-	void getAllObject(std::vector<Entity*> &ObjectOut, RECT rect);
-	void getObjectsCollideAble(std::vector<Entity*> &EntityStatic, RECT rect);
-	void getObjectsInCamera(std::vector<Entity*> &EntityOut, RECT rect);
-	RECT getBound() { return Bound; }
-	int getLevel() { return mLevel; }
-	std::vector<Entity*> *getListEntity() { return &mListEntity; }
+	int GetTotalObject();
+	void GetAllObject(std::vector<BaseObject*> &ObjectOut, RECT rect);
+	void GetObjectCollide(std::vector<BaseObject*> &EntityStatic, RECT rect);
+	void GetObjectCamera(std::vector<BaseObject*> &EntityOut, RECT rect);
 
-	QuadTree **Nodes;
-
+	RECT GetBound() { return _bound; }
+	int GetLevel() { return _level; }
+	std::vector<BaseObject*> *GetListObject() { return &_listObject; }
 };

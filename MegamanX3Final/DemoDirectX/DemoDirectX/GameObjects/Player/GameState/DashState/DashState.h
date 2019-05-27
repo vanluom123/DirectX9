@@ -1,22 +1,21 @@
 ﻿#ifndef __DASH_STATE_H__
 #define __DASH_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class DashState : public GameState
+class DashState : public PlayerState
 {
 public:
-	explicit DashState(PlayerData* data);
-	~DashState() = default;
+	DashState(PLAYERDATA* playerData);
 
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
 
-	void onCollision(Entity::SideCollisions side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-	float translateX;
-	float timePress;
+private:
+	float _accelerateX;
+	float _timePress;
 
 };
 #endif

@@ -4,8 +4,8 @@
 
 BlastAttack::BlastAttack(BlastHornetData* b) :BlastHornetState(b)
 {
-	b->GetHornet()->SetVx(-10);
-	b->GetHornet()->SetVy(10);
+	_pBlastHornetData->blastHornet->SetVx(-10);
+	_pBlastHornetData->blastHornet->SetVy(10);
 	accelerateX = 10;
 	accelerateY = 10;
 }
@@ -15,20 +15,21 @@ BlastAttack::~BlastAttack()
 
 void BlastAttack::Update(float dt)
 {
-	b->GetHornet()->AddVy(accelerateY);
-	b->GetHornet()->AddVx(-accelerateX);
-	if (b->GetHornet()->GetVy() > 300)
-		b->GetHornet()->SetVy(300);
+	_pBlastHornetData->blastHornet->AddVy(accelerateY);
+	_pBlastHornetData->blastHornet->AddVx(-accelerateX);
+
+	if (_pBlastHornetData->blastHornet->GetVy() > 300)
+		_pBlastHornetData->blastHornet->SetVy(300);
 }
 
-void BlastAttack::OnCollision(Entity::SideCollisions side)
+void BlastAttack::OnCollision(BaseObject::eSideCollision side)
 {
-	if (side == Entity::SideCollisions::LEFT || side == Entity::SideCollisions::BOTTOM)
+	if (side == BaseObject::eSideCollision::LEFT || side == BaseObject::eSideCollision::BOTTOM)
 	{
-		b->GetHornet()->SetReverse(true);
-		b->GetHornet()->moveUp = true;
-		b->GetHornet()->allowMove = true;
-		b->GetHornet()->SetState(new BlastStand(b));
+		_pBlastHornetData->blastHornet->SetReverse(true);
+		_pBlastHornetData->blastHornet->moveUp = true;
+		_pBlastHornetData->blastHornet->allowMove = true;
+		_pBlastHornetData->blastHornet->SetState(new BlastStand(_pBlastHornetData));
 	}
 }
 

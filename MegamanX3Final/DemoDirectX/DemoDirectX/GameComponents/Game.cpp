@@ -6,34 +6,34 @@
 
 Game::Game(int fps)
 {
-	mFPS = fps;
-	SceneManager::getInstance()->ReplaceScene(new BeginScene());
+	_FPS = fps;
+	SceneManager::GetInstance()->ReplaceScene(new BeginScene());
 	InitLoop();
 }
 
 void Game::Update(float dt)
 {
-	SceneManager::getInstance()->getCurrentScene()->update(dt);
+	SceneManager::GetInstance()->GetCurrentScene()->update(dt);
 	Render();
 }
 
 void Game::Render()
 {
-	auto device = GameGlobal::getCurrentDevice();
-	auto scene = SceneManager::getInstance()->getCurrentScene();
+	auto device = GameGlobal::GetDevice();
+	auto scene = SceneManager::GetInstance()->GetCurrentScene();
 	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->getBackColor(), 0.0f, 0);
 
 	{
 		device->BeginScene();
 
 		//Starting draw
-		GameGlobal::getCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
+		GameGlobal::GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 
 		//draw here
 		scene->draw();
 
 		//Ending draw
-		GameGlobal::getCurrentSpriteHandler()->End();
+		GameGlobal::GetSpriteHandler()->End();
 
 		device->EndScene();
 	}
@@ -55,7 +55,7 @@ void Game::InitLoop() const
 	LARGE_INTEGER endTime;
 	LARGE_INTEGER currentTime;
 
-	float frame_rate = 1.0f / mFPS;
+	float frame_rate = 1.0f / _FPS;
 	float gameTime = 0;
 
 	while (Msg.message != WM_QUIT)

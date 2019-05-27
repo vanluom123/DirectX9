@@ -1,20 +1,19 @@
 ﻿#ifndef __STAND_STATE_H__
 #define __STAND_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class StandState : public GameState
+class StandState : public PlayerState
 {
-protected:
-	float timeStand;
-	bool isMove;
+private:
+	float _timeStand;
+	bool _isMove;
 
 public:
-	explicit StandState(PlayerData* data);
-	~StandState() = default;
+	StandState(PLAYERDATA* playerData);
 
 	void update(float dt) override;
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
-	void onCollision(Entity::SideCollisions side) override;
-	GamePlayer::StateName GetState() override;
+	void onCollision(BaseObject::eSideCollision side) override;
+	Player::StateName GetState() override;
 };
 #endif

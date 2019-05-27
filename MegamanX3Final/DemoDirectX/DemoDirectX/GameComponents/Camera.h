@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include <d3dx9.h>
-#include <d3d9.h>
+#include "../GameDefines/GameDefine.h"
 
 class Camera
 {
@@ -9,22 +8,23 @@ public:
 	Camera(int width, int height);
 
 	//center of camera
-	D3DXVECTOR3 getPosition() const;
-	void setPosition(float x, float y);
-	void setPosition(D3DXVECTOR3 pos);
+	GVec3 GetPosition() const;
+	void SetPosition(float x, float y);
+	void SetPosition(GVec3 pos);
 
-	D3DXVECTOR2 getTrans() const;
+	GVec2 GetTrans() const;
 
-	RECT getBound() const;
+	RECT GetBound() const;
 
-	int getWidth() const { return mWidth; }
-	void setWidth(int val) { mWidth = val; }
-	int getHeight() const { return mHeight; }
-	void setHeight(int val) { mHeight = val; }
+	int GetWidth() const { return _width; }
+	void SetWidth(int val) { _width = val; }
+
+	int GetHeight() const { return _height; }
+	void SetHeight(int val) { _height = val; }
 
 private:
-	int mWidth, mHeight;
-	D3DXVECTOR3 mPositionWorld;
+	int _width, _height;
+	GVec3 _positionWorld;
 };
 
 #endif // !CAMERA_H

@@ -2,58 +2,59 @@
 #include "../RunState/RunState.h"
 #include "../../../../GameDefines/GameDefine.h"
 
-StandState::StandState(PlayerData* data) : GameState(data)
+
+StandState::StandState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
-	pData->GetGamePlayer()->SetVx(0);
-	timeStand = 0.0f;
-	isMove = false;
+	_playerData->player->SetVx(0);
+	_timeStand = 0.0f;
+	_isMove = false;
 }
 
 void StandState::update(float dt)
 {
-	timeStand += dt;
-	if (timeStand > 1.50f)
+	_timeStand += dt;
+	if (_timeStand > 1.50f)
 	{
-		pData->GetGamePlayer()->GetAnimation()->setAnimation(1, 4, 0.1, false);
-		timeStand = 0.0f;
+		_playerData->player->GetAnimation()->SetAnimation(1, 4, 0.1, false);
+		_timeStand = 0.0f;
 	}
 
-	if (isMove)
-		pData->GetGamePlayer()->SetState(new RunState(pData));
+	if (_isMove)
+		_playerData->player->SetState(new RunState(_playerData));
 }
 
 void StandState::handlerKeyBoard(std::map<int, bool> keys, float dt)
 {
-	pData->GetGamePlayer()->SetVx(0);
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY);
-	isMove = false;
+	_playerData->player->SetVx(0);
+	_playerData->player->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	_isMove = false;
 
 	if (keys[VK_RIGHT])
 	{
-		isMove = true;
-		pData->GetGamePlayer()->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
+		_isMove = true;
+		_playerData->player->SetVx(Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else if (keys[VK_LEFT])
 	{
-		isMove = true;
-		pData->GetGamePlayer()->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
+		_isMove = true;
+		_playerData->player->SetVx(-Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 }
 
-void StandState::onCollision(Entity::SideCollisions side)
+void StandState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case Entity::LEFT:
-	case Entity::RIGHT:
+	case BaseObject::LEFT:
+	case BaseObject::RIGHT:
 	{
-		isMove = false;
+		_isMove = false;
 	}
 	default: break;
 	}
 }
 
-GamePlayer::StateName StandState::GetState()
+Player::StateName StandState::GetState()
 {
-	return GamePlayer::STAND;
+	return Player::STAND;
 }

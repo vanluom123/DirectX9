@@ -5,7 +5,7 @@
 #include "../GameComponents/Animation.h"
 #include "../GameComponents/GameMap.h"
 #include "../GameComponents/Camera.h"
-#include "../GameObjects/Player/GamePlayer.h"
+#include "../GameObjects/Player/Player.h"
 #include "../GameObjects/Enemies/Banger/Banger.h"
 #include "../GameObjects/Enemies/Gunner/Gunner.h"
 #include "../GameObjects/Enemies/Helit/Helit.h"
@@ -29,19 +29,19 @@ protected:
 	void checkCameraAndWorldMap(float dt);
 	void checkCameraAndEnemies();
 
-	static void checkCollision(Entity* obj, Entity* other, float dt);
-	void checkCollision(Entity* obj, float dt);
+	static void checkCollision(BaseObject* obj, BaseObject* other, float dt);
+	void checkCollision(BaseObject* obj, float dt);
 
-	GameMap* pMap;
-	GamePlayer* gp;
-	Camera* pCamera;
+	GameMap* _pMap;
+	Player* _pPlayer;
+	Camera* _pCamera;
 
-	RECT CurentRoom;
-	RECT nextRoom;
-	std::vector<Entity*> ListEntityOut;
-	std::vector<Entity*> List000;
-	std::map<int, bool> keys;
-	int direction = 0;
-	bool isboss;
+	RECT _curentRoom;
+	RECT _nextRoom;
+	std::vector<BaseObject*> _listEntityOut;
+	std::vector<BaseObject*> _list000;
+	std::map<int, bool> _keys;
+	int _direction = 0;
+	bool _isboss;
 };
 #endif

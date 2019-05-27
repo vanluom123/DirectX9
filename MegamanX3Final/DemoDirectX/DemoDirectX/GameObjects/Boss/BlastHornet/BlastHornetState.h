@@ -5,7 +5,7 @@
 class BlastHornetState
 {
 protected:
-	BlastHornetData* b;
+	BlastHornetData* _pBlastHornetData;
 
 	float accelerateX; //gia toc x
 	float accelerateY; //gia toc y
@@ -14,7 +14,7 @@ public:
 	virtual ~BlastHornetState();
 
 	virtual void Update(float dt);
-	virtual void OnCollision(Entity::SideCollisions side);
+	virtual void OnCollision(BaseObject::eSideCollision side);
 	virtual BlastState GetState() = 0;
 	virtual void Shoot();
 };

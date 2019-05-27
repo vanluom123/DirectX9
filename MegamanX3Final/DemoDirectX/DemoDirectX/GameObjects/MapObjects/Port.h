@@ -1,11 +1,11 @@
 #ifndef PORT_H
 #define PORT_H
-#include "../Entity/Entity.h"
+#include "../Entity/BaseObject.h"
 #include "../../GameComponents/Animation.h"
 #include "../../GameComponents/Camera.h"
 
 class Port :
-	public Entity
+	public BaseObject
 {
 public:
 	Port();
@@ -13,9 +13,9 @@ public:
 
 	RECT GetBound() override;
 	void Update(float dt) override;
-	void OnCollision(SideCollisions side) override;
-	void OnCollision(Entity* obj) override;
-	void Draw(Camera* camera, RECT rect = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void OnCollision(eSideCollision side) override;
+	void OnCollision(BaseObject* obj) override;
+	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
 
 protected:
 	Animation* pAnimation;

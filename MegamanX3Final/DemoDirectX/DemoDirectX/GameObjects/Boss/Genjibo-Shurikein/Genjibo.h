@@ -1,6 +1,6 @@
 #ifndef GENJIBO_H
 #define GENJIBO_H
-#include "../../Entity/Entity.h"
+#include "../../Entity/BaseObject.h"
 #include "../../../GameComponents/Animation.h"
 #include "../../../GameComponents/Camera.h"
 
@@ -26,7 +26,7 @@ enum class Shurikein
 };
 
 class Genjibo :
-	public Entity
+	public BaseObject
 {
 protected:
 	Animation* anim;
@@ -34,7 +34,7 @@ protected:
 	Animation* animDie;
 	GenjiboState currentState;
 	Shurikein shurikeinState;
-	SideCollisions sideGen;
+	eSideCollision sideGen;
 	float timeStand;
 	bool change;
 	float posY;
@@ -48,10 +48,10 @@ public:
 
 	RECT GetBound() override;
 	void Update(float dt) override;
-	void OnCollision(Entity* obj) override;
-	void OnCollision(SideCollisions side) override;
+	void OnCollision(BaseObject* obj) override;
+	void OnCollision(eSideCollision side) override;
 
-	void Draw(Camera* camera, RECT r = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotate = D3DXVECTOR2(), D3DCOLOR color = NULL) override;
+	void Draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = NULL) override;
 	void SetState(Shurikein keinState);
 
 	void ManageState(float dt);

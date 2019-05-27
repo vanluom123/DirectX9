@@ -4,8 +4,8 @@
 
 MoveTest::MoveTest(BlastHornetData* b) : BlastHornetState(b)
 {
-	b->GetHornet()->SetVx(-10);
-	b->GetHornet()->SetVy(10);
+	_pBlastHornetData->blastHornet->SetVx(-10);
+	_pBlastHornetData->blastHornet->SetVy(10);
 	timeMove = 0;
 	accelerateX = 10;
 	accelerateY = 10;
@@ -22,94 +22,97 @@ void MoveTest::Update(float dt)
 
 	if (timeMove <= 0.45)
 	{
-		b->GetHornet()->AddVy(accelerateY);
-		b->GetHornet()->AddVx(-accelerateX);
-		if (b->GetHornet()->GetVy() >= 300)
-			b->GetHornet()->SetVy(300);
+		_pBlastHornetData->blastHornet->AddVy(accelerateY);
+		_pBlastHornetData->blastHornet->AddVx(-accelerateX);
+
+		if (_pBlastHornetData->blastHornet->GetVy() >= 300)
+			_pBlastHornetData->blastHornet->SetVy(300);
 	}
 	else if (timeMove <= 0.75)
 	{
-		b->GetHornet()->AddVy(-accelerateY * 2);
-		b->GetHornet()->AddVx(accelerateX / 1.5);
-		if (b->GetHornet()->GetVy() <= -300)
-			b->GetHornet()->SetVy(-300);
+		_pBlastHornetData->blastHornet->AddVy(-accelerateY * 2);
+		_pBlastHornetData->blastHornet->AddVx(accelerateX / 1.5);
+
+		if (_pBlastHornetData->blastHornet->GetVy() <= -300)
+			_pBlastHornetData->blastHornet->SetVy(-300);
 	}
 	else if (timeMove <= 1.5)
 	{
 		if(timeMove <= 1.45)
 		{
-			b->GetHornet()->ChangeAnimation(BlastState::Shooter);
+			_pBlastHornetData->blastHornet->ChangeAnimation(BlastState::Shooter);
 			Shoot();
 		}
-		else b->GetHornet()->ChangeAnimation(BlastState::Move);
+		else _pBlastHornetData->blastHornet->ChangeAnimation(BlastState::Move);
 	}
 	else if (timeMove <= 1.975)
 	{
-		b->GetHornet()->AddVy(accelerateY * 1.5);
-		b->GetHornet()->AddVx(-accelerateX / 2);
-		if (b->GetHornet()->GetVy() >= 300)
-			b->GetHornet()->SetVy(300);
+		_pBlastHornetData->blastHornet->AddVy(accelerateY * 1.5);
+		_pBlastHornetData->blastHornet->AddVx(-accelerateX / 2);
+
+		if (_pBlastHornetData->blastHornet->GetVy() >= 300)
+			_pBlastHornetData->blastHornet->SetVy(300);
 	}
 	else if (timeMove <= 2.5)
 	{
-		b->GetHornet()->AddVy(-accelerateY / 2);
-		b->GetHornet()->AddVx(accelerateX * 2);
-		if (b->GetHornet()->GetVy() <= -300)
-			b->GetHornet()->SetVy(-300);
+		_pBlastHornetData->blastHornet->AddVy(-accelerateY / 2);
+		_pBlastHornetData->blastHornet->AddVx(accelerateX * 2);
+
+		if (_pBlastHornetData->blastHornet->GetVy() <= -300)
+			_pBlastHornetData->blastHornet->SetVy(-300);
 	}
 	else if (timeMove <= 3)
 	{
 		if (timeMove == 2.75)
-			GPS();
+			this->GPS();
 
-		b->GetHornet()->AddVy(-accelerateY * 2);
-		b->GetHornet()->AddVx(accelerateX / 2);
-		if (b->GetHornet()->GetVy() <= -300)
-			b->GetHornet()->SetVy(-300);
+		_pBlastHornetData->blastHornet->AddVy(-accelerateY * 2);
+		_pBlastHornetData->blastHornet->AddVx(accelerateX / 2);
+
+		if (_pBlastHornetData->blastHornet->GetVy() <= -300)
+			_pBlastHornetData->blastHornet->SetVy(-300);
 	}
 	else if (timeMove <= 3.5)
 	{
-		b->GetHornet()->AddVy(-accelerateY / 10);
-		b->GetHornet()->AddVx(-accelerateX);
-		if (b->GetHornet()->GetVy() <= -300)
-			b->GetHornet()->SetVy(-300);
+		_pBlastHornetData->blastHornet->AddVy(-accelerateY / 10);
+		_pBlastHornetData->blastHornet->AddVx(-accelerateX);
+		if (_pBlastHornetData->blastHornet->GetVy() <= -300)
+			_pBlastHornetData->blastHornet->SetVy(-300);
 	}
 	else if (timeMove <= 5)
 	{
-		/*b->setVy(1);
-		b->addVx(-accelerateX);*/
-		b->GetHornet()->AddVy(rand() % 5);
-		b->GetHornet()->AddVx(-(rand() % 15));
+		_pBlastHornetData->blastHornet->AddVy(rand() % 5);
+		_pBlastHornetData->blastHornet->AddVx(-(rand() % 15));
 	}
 	else if (timeMove <= 5.75)
 	{
 		if(timeMove <= 5.75)
-			b->GetHornet()->ChangeAnimation(BlastState::Attack);
-		else b->GetHornet()->ChangeAnimation(BlastState::Move);
+			_pBlastHornetData->blastHornet->ChangeAnimation(BlastState::Attack);
+		else _pBlastHornetData->blastHornet->ChangeAnimation(BlastState::Move);
 
-		b->GetHornet()->SetVx(1);
-		b->GetHornet()->AddVy(accelerateY);
-		if (b->GetHornet()->GetVy() >= 300)
-			b->GetHornet()->SetVy(300);
+		_pBlastHornetData->blastHornet->SetVx(1);
+		_pBlastHornetData->blastHornet->AddVy(accelerateY);
+
+		if (_pBlastHornetData->blastHornet->GetVy() >= 300)
+			_pBlastHornetData->blastHornet->SetVy(300);
 	}
 	else if (timeMove <= 6.5)
 	{
-	/*	b->setVy(1);
-		b->addVx(accelerateX);*/
-		b->GetHornet()->AddVy(rand() % 5);
-		b->GetHornet()->AddVx(rand() % 15);
+		_pBlastHornetData->blastHornet->AddVy(rand() % 5);
+		_pBlastHornetData->blastHornet->AddVx(rand() % 15);
 	}
 	else if (timeMove <= 7)
 	{
-		b->GetHornet()->AddVy(-accelerateY * 2);
-		b->GetHornet()->AddVx(-accelerateX / 2);
-		if (b->GetHornet()->GetVy() <= -300)
-			b->GetHornet()->SetVy(-300);
+		_pBlastHornetData->blastHornet->AddVy(-accelerateY * 2);
+		_pBlastHornetData->blastHornet->AddVx(-accelerateX / 2);
+
+		if (_pBlastHornetData->blastHornet->GetVy() <= -300)
+			_pBlastHornetData->blastHornet->SetVy(-300);
 	}
 	else
 	{
-		b->GetHornet()->SetVx(0);
-		b->GetHornet()->SetVy(0);
+		_pBlastHornetData->blastHornet->SetVx(0);
+		_pBlastHornetData->blastHornet->SetVy(0);
 		timeMove = 0;
 	}
 }
@@ -129,14 +132,14 @@ void MoveTest::Shoot()
 		return;
 	}
 
-	if (b->GetHornet()->GetListBullet()->size() < 5)
+	if (_pBlastHornetData->blastHornet->GetListBullet()->size() < 5)
 	{
 		auto* ebullet = new BlastBullet();
-		b->GetHornet()->GetListBullet()->push_back(ebullet);
+		_pBlastHornetData->blastHornet->GetListBullet()->push_back(ebullet);
 	}
 
 	float px = 0;
-	float py = b->GetHornet()->GetBound().top;
+	float py = _pBlastHornetData->blastHornet->GetBound().top;
 
 	if (count < 4)
 	{
@@ -145,17 +148,17 @@ void MoveTest::Shoot()
 		else if (count == 2) py += 15;
 		else py += 20;
 
-		if (b->GetHornet()->GetReverse())
-			px = b->GetHornet()->GetBound().right;
+		if (_pBlastHornetData->blastHornet->GetReverse())
+			px = _pBlastHornetData->blastHornet->GetBound().right;
 		else
-			px = b->GetHornet()->GetBound().left;
+			px = _pBlastHornetData->blastHornet->GetBound().left;
 	}
 
 
-	b->GetHornet()->GetListBullet()->at(count)->NewEntity();
+	_pBlastHornetData->blastHornet->GetListBullet()->at(count)->NewEntity();
 }
 
 void MoveTest::GPS()
 {
-	//GPS location of Rockman
+	// Getting GPS the location of Player
 }

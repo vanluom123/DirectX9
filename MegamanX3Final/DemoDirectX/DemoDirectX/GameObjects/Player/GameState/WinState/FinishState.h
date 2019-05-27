@@ -1,13 +1,12 @@
 #ifndef __FINISH_STATE_H__
 #define __FINISH_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class FinishState : public GameState
+class FinishState : public PlayerState
 {
 public:
-	explicit FinishState(PlayerData* data) :GameState(data) {}
-	~FinishState() = default;
-	GamePlayer::StateName GetState() override;
+	FinishState(PLAYERDATA* playerData);
+	Player::StateName GetState() override;
 };
 
 #endif

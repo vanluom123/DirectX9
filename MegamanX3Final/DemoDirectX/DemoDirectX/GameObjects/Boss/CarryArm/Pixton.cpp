@@ -6,8 +6,8 @@ Pixton::Pixton()
 {
 	isBottom = false;
 	anim     = new Animation("Resources/Enemies/CarryArm/x3_subboss_carryarm_39.png", 1, 1, 144, 88);
-	this->SetWidth(anim->getWidth());
-	this->SetHeight(anim->getHeight());
+	this->SetWidth(anim->GetWidth());
+	this->SetHeight(anim->GetHeight());
 	posY = 0;
 }
 
@@ -19,37 +19,37 @@ Pixton::~Pixton()
 RECT Pixton::GetBound()
 {
 	RECT r;
-	r.left = x - width / 2;
-	r.right = x + width / 2;
-	r.bottom = y + height / 2;
+	r.left = _posX - _width / 2;
+	r.right = _posX + _width / 2;
+	r.bottom = _posY + _height / 2;
 	r.top = r.bottom -16;
 	return r;
 }
 
-void Pixton::Draw(Camera * camera, RECT r, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotate, D3DCOLOR color)
+void Pixton::Draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
-	anim->setPosition(GetPosition());
+	anim->SetPosition(GetPosition());
 	if (camera)
-		anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+		anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 	else
-		anim->draw(anim->getPosition());
+		anim->Draw(anim->GetPosition());
 }
 
-void Pixton::OnCollision(SideCollisions side)
+void Pixton::OnCollision(eSideCollision side)
 {
 	
 }
 
 void Pixton::Update(float gameTime)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
-	anim->update(gameTime);
-	Entity::Update(gameTime);
+	anim->Update(gameTime);
+	BaseObject::Update(gameTime);
 }
 
 bool Pixton::MoveDown(float gameTime, float x, float y)
@@ -76,7 +76,7 @@ bool Pixton::MoveUp(float gameTime, float x, float y)
 		{
 			isBottom = false;
 			posY = 0;
-			vy = -40;
+			_vy = -40;
 		}
 		SetPosition(x + 56, y + posY);
 	}

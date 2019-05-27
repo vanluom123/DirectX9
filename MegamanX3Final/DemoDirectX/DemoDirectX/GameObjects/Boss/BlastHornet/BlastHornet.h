@@ -1,7 +1,7 @@
 #ifndef BLAST_HORNET_H
 #define BLAST_HORNET_H
 
-#include "../../Entity/Entity.h"
+#include "../../Entity/BaseObject.h"
 #include "../../../GameComponents/Animation.h"
 #include "../../../GameComponents/Camera.h"
 #include "../../Bar/HPBar.h"
@@ -22,7 +22,7 @@ enum class BlastState
 };
 
 class BlastHornet :
-	public Entity
+	public BaseObject
 {
 	Animation* anim;
 	HPBar* hpbar;
@@ -41,9 +41,9 @@ public:
 
 	RECT GetBound() override;
 	void Update(float dt) override;
-	void OnCollision(SideCollisions side) override;
-	void OnCollision(Entity* obj) override;
-	void Draw(Camera* camera, RECT r = RECT(), D3DXVECTOR2 scale = D3DXVECTOR2(), float angle = 0, D3DXVECTOR2 rotate = D3DXVECTOR2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void OnCollision(eSideCollision side) override;
+	void OnCollision(BaseObject* obj) override;
+	void Draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
 	void SetState(BlastHornetState* newState);
 	void ChangeAnimation(BlastState state);
 

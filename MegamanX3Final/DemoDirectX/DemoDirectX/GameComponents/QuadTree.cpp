@@ -1,179 +1,172 @@
 ﻿#include "QuadTree.h"
 #include "GameCollision.h"
 
-QuadTree::~QuadTree()
-{
-}
-QuadTree::QuadTree()
-{
-
-}
 QuadTree::QuadTree(int level, RECT bound)
 {
 	//chia lam 4
 
-	this->Bound = bound;
-	this->mLevel = level;
+	this->_bound = bound;
+	this->_level = level;
 }
 
 void QuadTree::Clear()
 {
-	if (Nodes)
+	if (_node)
 	{
-		for (size_t i = 0; i < 4; i++)
+		for (size_t i = 0; i < (size_t)4; i++)
 		{
-			if (Nodes[i])
+			if (_node[i])
 			{
-				Nodes[i]->Clear();
-				delete Nodes[i];
-				Nodes[i] = nullptr;
+				_node[i]->Clear();
+				delete _node[i];
+				_node[i] = nullptr;
 			}
 		}
 
-		delete[] Nodes;
+		delete[] _node;
 	}
 }
 
-void QuadTree::insertObject(Entity *entity)
+void QuadTree::InsertObject(BaseObject *entity)
 {
-	if (Nodes)
+	if (_node)
 	{
-		if (Nodes[0]->isContain(entity->GetBound()))
-			Nodes[0]->insertObject(entity);
-		if (Nodes[1]->isContain(entity->GetBound()))
-			Nodes[1]->insertObject(entity);
-		if (Nodes[2]->isContain(entity->GetBound()))
-			Nodes[2]->insertObject(entity);
-		if (Nodes[3]->isContain(entity->GetBound()))
-			Nodes[3]->insertObject(entity);
+		if (_node[0]->IsContain(entity->GetBound()))
+			_node[0]->InsertObject(entity);
+		if (_node[1]->IsContain(entity->GetBound()))
+			_node[1]->InsertObject(entity);
+		if (_node[2]->IsContain(entity->GetBound()))
+			_node[2]->InsertObject(entity);
+		if (_node[3]->IsContain(entity->GetBound()))
+			_node[3]->InsertObject(entity);
 
 		return; //Thoát ra luôn
 	}
 
 	//Thêm đối tượng vào quadtree
-	if (this->isContain(entity->GetBound()))
-		this->mListEntity.push_back(entity);
+	if (this->IsContain(entity->GetBound()))
+		this->_listObject.push_back(entity);
 
-	if (mListEntity.size() > 5 && mLevel < 6)
+	if (_listObject.size() > 5 && _level < 6)
 	{
-		split();
+		Split();
 
-		while (!mListEntity.empty())
+		while (!_listObject.empty())
 		{
-			if (Nodes[0]->isContain(mListEntity.back()->GetBound()))
-				Nodes[0]->insertObject(mListEntity.back());
-			if (Nodes[1]->isContain(mListEntity.back()->GetBound()))
-				Nodes[1]->insertObject(mListEntity.back());
-			if (Nodes[2]->isContain(mListEntity.back()->GetBound()))
-				Nodes[2]->insertObject(mListEntity.back());
-			if (Nodes[3]->isContain(mListEntity.back()->GetBound()))
-				Nodes[3]->insertObject(mListEntity.back());
+			if (_node[0]->IsContain(_listObject.back()->GetBound()))
+				_node[0]->InsertObject(_listObject.back());
+			if (_node[1]->IsContain(_listObject.back()->GetBound()))
+				_node[1]->InsertObject(_listObject.back());
+			if (_node[2]->IsContain(_listObject.back()->GetBound()))
+				_node[2]->InsertObject(_listObject.back());
+			if (_node[3]->IsContain(_listObject.back()->GetBound()))
+				_node[3]->InsertObject(_listObject.back());
 
-			mListEntity.pop_back();
+			_listObject.pop_back();
 		}
 	}
 }
 
-bool QuadTree::isContain(RECT rect1)
+bool QuadTree::IsContain(RECT rect1)
 {
-	return !(rect1.left > Bound.right || rect1.right < Bound.left || rect1.top > Bound.bottom || rect1.bottom < Bound.top);
+	return !(rect1.left > _bound.right || rect1.right < _bound.left || rect1.top > _bound.bottom || rect1.bottom < _bound.top);
 }
 
-void QuadTree::split()
+void QuadTree::Split()
 {
 	//cat phan region (ranh gioi) ra thanh 4 phan bang nhau
-	Nodes = new QuadTree *[4];
+	_node = new QuadTree *[4];
 
 	RECT bound;
 
-	int width = (Bound.right - Bound.left) / 2;
-	int height = (Bound.bottom - Bound.top) / 2;
+	int width = (_bound.right - _bound.left) / 2;
+	int height = (_bound.bottom - _bound.top) / 2;
 
 	//phan goc trai tren
-	bound.left = Bound.left;
+	bound.left = _bound.left;
 	bound.right = bound.left + width;
-	bound.top = Bound.top;
+	bound.top = _bound.top;
 	bound.bottom = bound.top + height;
-	Nodes[0] = new QuadTree(mLevel + 1, bound);
+	_node[0] = new QuadTree(_level + 1, bound);
 
 	//phan goc phai tren
-	bound.left = Bound.left + width;
+	bound.left = _bound.left + width;
 	bound.right = bound.left + width;
-	bound.top = Bound.top;
+	bound.top = _bound.top;
 	bound.bottom = bound.top + height;
-	Nodes[1] = new QuadTree(mLevel + 1, bound);
+	_node[1] = new QuadTree(_level + 1, bound);
 
 	//phan goc trai duoi
-	bound.left = Bound.left;
+	bound.left = _bound.left;
 	bound.right = bound.left + width;
-	bound.top = Bound.top + height;
+	bound.top = _bound.top + height;
 	bound.bottom = bound.top + height;
-	Nodes[2] = new QuadTree(mLevel + 1, bound);
+	_node[2] = new QuadTree(_level + 1, bound);
 
 	//phan goc phai duoi
-	bound.left = Bound.left + width;
+	bound.left = _bound.left + width;
 	bound.right = bound.left + width;
-	bound.top = Bound.top + height;
+	bound.top = _bound.top + height;
 	bound.bottom = bound.top + height;
-	Nodes[3] = new QuadTree(mLevel + 1, bound);
+	_node[3] = new QuadTree(_level + 1, bound);
 }
 
-int QuadTree::getTotalObject()
+int QuadTree::GetTotalObject()
 {
-	int total = mListEntity.size();
+	int total = _listObject.size();
 
-	if (Nodes)
+	if (_node)
 	{
 		for (size_t i = 0; i < 4; i++)
 		{
-			total += Nodes[i]->getTotalObject();
+			total += _node[i]->GetTotalObject();
 		}
 	}
 
 	return total;
 }
 
-void QuadTree::getAllObject(std::vector<Entity*> &EntityOut, RECT rect)
+void QuadTree::GetAllObject(std::vector<BaseObject*> &EntityOut, RECT rect)
 {
-	for (auto child : mListEntity)
+	for (auto child : _listObject)
 	{
 			EntityOut.push_back(child);
 	}
 
-	if (Nodes)
+	if (_node)
 	{
 		for (size_t i = 0; i < 4; i++)
 		{
-			Nodes[i]->getAllObject(EntityOut, rect);
+			_node[i]->GetAllObject(EntityOut, rect);
 		}
 	}
 }
 
-void QuadTree::getObjectsCollideAble(std::vector<Entity*> &EntityStatic, RECT rect)
+void QuadTree::GetObjectCollide(std::vector<BaseObject*> &EntityStatic, RECT rect)
 {
-	if (Nodes)
+	if (_node)
 	{
-		if (Nodes[0]->isContain(rect))
-			Nodes[0]->getObjectsCollideAble(EntityStatic, rect);
-		if (Nodes[1]->isContain(rect))
-			Nodes[1]->getObjectsCollideAble(EntityStatic, rect);
-		if (Nodes[2]->isContain(rect))
-			Nodes[2]->getObjectsCollideAble(EntityStatic, rect);
-		if (Nodes[3]->isContain(rect))
-			Nodes[3]->getObjectsCollideAble(EntityStatic, rect);
+		if (_node[0]->IsContain(rect))
+			_node[0]->GetObjectCollide(EntityStatic, rect);
+		if (_node[1]->IsContain(rect))
+			_node[1]->GetObjectCollide(EntityStatic, rect);
+		if (_node[2]->IsContain(rect))
+			_node[2]->GetObjectCollide(EntityStatic, rect);
+		if (_node[3]->IsContain(rect))
+			_node[3]->GetObjectCollide(EntityStatic, rect);
 
 		return;
 	}
 
 	//Lấy tất cả đối tượng trong vùng
-	if (isContain(rect))
+	if (IsContain(rect))
 	{
-		for (auto child : mListEntity)
+		for (auto child : _listObject)
 		{
 			bool istrue = true;
 
 			for (auto& entity : EntityStatic)
-				if (child->id == entity->id)
+				if (child->GetId() == entity->GetId())
 				{
 					istrue = false;
 					break;
@@ -181,40 +174,40 @@ void QuadTree::getObjectsCollideAble(std::vector<Entity*> &EntityStatic, RECT re
 			
 			if (istrue)
 			{
-				if (child->GetTag() != Entity::ENEMY && child->GetTag() != Entity::BOSS && child->GetTag() != Entity::ITEM)
+				if (child->GetObjectType() != BaseObject::ENEMY && child->GetObjectType() != BaseObject::BOSS && child->GetObjectType() != BaseObject::ITEM)
 					EntityStatic.push_back(child);
 			}
 		}
 	}
 }
 
-void QuadTree::getObjectsInCamera(std::vector<Entity*> &EntityOut, RECT rect)
+void QuadTree::GetObjectCamera(std::vector<BaseObject*> &EntityOut, RECT rect)
 {
-	if (Nodes)
+	if (_node)
 	{
-		if (Nodes[0]->isContain(rect))
-			Nodes[0]->getObjectsInCamera(EntityOut, rect);
-		if (Nodes[1]->isContain(rect))
-			Nodes[1]->getObjectsInCamera(EntityOut, rect);
-		if (Nodes[2]->isContain(rect))
-			Nodes[2]->getObjectsInCamera(EntityOut, rect);
-		if (Nodes[3]->isContain(rect))
-			Nodes[3]->getObjectsInCamera(EntityOut, rect);
+		if (_node[0]->IsContain(rect))
+			_node[0]->GetObjectCamera(EntityOut, rect);
+		if (_node[1]->IsContain(rect))
+			_node[1]->GetObjectCamera(EntityOut, rect);
+		if (_node[2]->IsContain(rect))
+			_node[2]->GetObjectCamera(EntityOut, rect);
+		if (_node[3]->IsContain(rect))
+			_node[3]->GetObjectCamera(EntityOut, rect);
 
 		return;
 	}
 
 	//Lấy tất cả đối tượng trong vùng
-	if (isContain(rect))
+	if (IsContain(rect))
 	{
-		for (auto child : mListEntity)
+		for (auto child : _listObject)
 		{
 			if (GameCollision::IsCollision(child->GetBound(), rect))
 			{
 				bool istrue = true;
 
 				for (auto& entity : EntityOut)
-					if (child->id == entity->id)
+					if (child->GetId() == entity->GetId())
 					{
 						istrue = false;
 						break;
@@ -222,7 +215,7 @@ void QuadTree::getObjectsInCamera(std::vector<Entity*> &EntityOut, RECT rect)
 
 				if (istrue)
 				{
-					if (child->GetTag() != Entity::STATIC)
+					if (child->GetObjectType() != BaseObject::STATIC)
 						EntityOut.push_back(child);
 				}
 			}

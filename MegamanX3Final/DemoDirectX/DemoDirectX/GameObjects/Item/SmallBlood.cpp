@@ -4,58 +4,58 @@
 SmallBloodItem::SmallBloodItem()
 {
 	SetItemsType(SMALL_BLOOD);
-	small_item = new Animation("Resources/Items/small_blood.bmp", 1, 4, 10, 8, 0.07, D3DCOLOR_XRGB(6, 113, 158));
-	width = 10;
-	height = 8;
-	vy = 200;
+	_small_item = new Animation("Resources/Items/small_blood.bmp", 1, 4, 10, 8, 0.07, D3DCOLOR_XRGB(6, 113, 158));
+	_width = 10;
+	_height = 8;
+	_vy = 200;
 }
 
 SmallBloodItem::~SmallBloodItem()
 {
-	delete small_item;
+	delete _small_item;
 }
 
 RECT SmallBloodItem::GetBound()
 {
 	RECT r;
 
-	r.left = x - 5;
-	r.top = y - 4;
-	r.right = x + 5;
-	r.bottom = y + 4;
+	r.left = _posX - 5;
+	r.top = _posY - 4;
+	r.right = _posX + 5;
+	r.bottom = _posY + 4;
 
 	return r;
 }
 
 void SmallBloodItem::Update(float dt)
 {
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
-	small_item->update(dt);
-	Entity::Update(dt);
+	_small_item->Update(dt);
+	BaseObject::Update(dt);
 }
 
-void SmallBloodItem::Draw(Camera* camera, RECT rect /*= RECT()*/, D3DXVECTOR2 scale /*= D3DXVECTOR2()*/, float angle /*= 0*/, D3DXVECTOR2 rotationCenter /*= D3DXVECTOR2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
+void SmallBloodItem::Draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
 {
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
-	small_item->setPosition(GetPosition());
+	_small_item->SetPosition(GetPosition());
 	if (camera != NULL)
-		small_item->draw(GetPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		_small_item->Draw(GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 	else
-		small_item->draw(GetPosition());
+		_small_item->Draw(GetPosition());
 }
 
-void SmallBloodItem::OnCollision(Entity *obj)
+void SmallBloodItem::OnCollision(BaseObject *obj)
 {
-	if (obj->GetTag() == Entity::ROCK_MAN) {
-		isDie = true;
+	if (obj->GetObjectType() == BaseObject::ROCK_MAN) {
+		_isDie = true;
 		obj->SetHP(obj->GetHP() + 3);
-		this->allowDraw = false;
+		this->_isAllowDraw = false;
 	}
 }
 
-Items::ItemsType SmallBloodItem::GetItemsType()
+Items::eItemType SmallBloodItem::GetItemsType()
 {
 	return SMALL_BLOOD;
 }

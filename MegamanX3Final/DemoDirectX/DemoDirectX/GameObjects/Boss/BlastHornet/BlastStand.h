@@ -13,7 +13,7 @@ public:
 
 	void Update(float dt) override;
 	BlastState GetState() override;
-	void OnCollision(Entity::SideCollisions side) override;
+	void OnCollision(BaseObject::eSideCollision side) override;
 
 };
 #endif

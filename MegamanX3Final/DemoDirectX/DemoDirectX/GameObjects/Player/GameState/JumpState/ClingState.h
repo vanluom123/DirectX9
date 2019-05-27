@@ -1,25 +1,22 @@
 #ifndef __CLING_STATE_H__
 #define __CLING_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class ClingState : public GameState
+class ClingState : public PlayerState
 {
 
 public:
-	explicit ClingState(PlayerData* data, bool dash = false);
-	~ClingState() = default;
-
+	ClingState(PLAYERDATA* playerData, bool dash = false);
 
 	void update(float dt) override;
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
-	void onCollision(Entity::SideCollisions side) override;
-	GamePlayer::StateName GetState() override;
+	void onCollision(BaseObject::eSideCollision side) override;
+	Player::StateName GetState() override;
 
-protected:
-
-	float translateY;
-	float speed, countPress;
-	bool Pressed;
+private:
+	float _accelerateY;
+	float _speed, _countPress;
+	bool _pressed;
 
 };
 #endif

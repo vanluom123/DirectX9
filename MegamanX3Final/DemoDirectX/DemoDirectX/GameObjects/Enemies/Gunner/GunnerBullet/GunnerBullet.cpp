@@ -5,43 +5,43 @@
 
 GunnerBullet::GunnerBullet()
 {
-	tag = ENEMY_BULLET;
-	anim = new Animation(Define::HEAD_GUNNER_BULLET, 1, 2, 23, 7, 0.1);
-	animExplosions = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.1);
+	_objectType = ENEMY_BULLET;
+	_pAnim = new Animation(Define::HEAD_GUNNER_BULLET, 1, 2, 23, 7, 0.1);
+	_pAnimExplosion = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.1);
 
-	isReverse = true;
-	HP = 3;
-	Damage = 3;
-	bulletX = 25.0f;
-	timeFire = 0.0f;
+	_isReverse = true;
+	_HP = 3;
+	_Damage = 3;
+	_bulletX = 25.0f;
+	_timeFire = 0.0f;
 
-	GunnerBullet::ChangeState(FIRE);
+	this->ChangeState(BULLET_FIRE);
 }
 
 GunnerBullet::~GunnerBullet()
 {
-	delete anim;
-	delete animExplosions;
+	delete _pAnim;
+	delete _pAnimExplosion;
 }
 
 RECT GunnerBullet::GetBound()
 {
 	RECT r = RECT();
 
-	switch (bulletState)
+	switch (_bulletState)
 	{
-	case EXPLOSIONS:
-		r.left = x - 25;
-		r.right = x + 25;
-		r.top = y - 22;
-		r.bottom = y + 23;
+	case BULLET_EXPLOSION:
+		r.left = _posX - 25;
+		r.right = _posX + 25;
+		r.top = _posY - 22;
+		r.bottom = _posY + 23;
 		break;
 
 	default:
-		r.left = x - 10;
-		r.right = x + 13;
-		r.top = y - 3;
-		r.bottom = y + 4;
+		r.left = _posX - 10;
+		r.right = _posX + 13;
+		r.top = _posY - 3;
+		r.bottom = _posY + 4;
 		break;	
 	}
 
@@ -50,7 +50,7 @@ RECT GunnerBullet::GetBound()
 
 void GunnerBullet::NewEntity()
 {
-	if (isReverse == false)
+	if (_isReverse == false)
 	{
 		SetReverse(false);
 		SetVx(-80);
@@ -63,93 +63,93 @@ void GunnerBullet::NewEntity()
 		SetBulletX(25.0f);
 	}
 
-	ChangeState(FIRE);
-	isDie = false;
-	allowDraw = true;
+	this->ChangeState(BULLET_FIRE);
+	_isDie = false;
+	_isAllowDraw = true;
 }
 
 void GunnerBullet::Update(float dt)
 {
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	if (isDie == false)
+	if (_isDie == false)
 	{
-		vx += bulletX;
-		if (vx > 300)
-			vx = 300;
-		else if (vx < -300)
-			vx = -300;
+		_vx += _bulletX;
+		if (_vx > 300)
+			_vx = 300;
+		else if (_vx < -300)
+			_vx = -300;
 	}
-	else if (anim->getPause() == true || animExplosions->getPause() == true)
-		allowDraw = false;
+	else if (_pAnim->GetPause() == true || _pAnimExplosion->GetPause() == true)
+		_isAllowDraw = false;
 
-	if (bulletState == EXPLOSIONS)
-		animExplosions->update(dt);
+	if (_bulletState == BULLET_EXPLOSION)
+		_pAnimExplosion->Update(dt);
 	else
-		anim->update(dt);
+		_pAnim->Update(dt);
 
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 }
 
-void GunnerBullet::OnCollision(SideCollisions side)
+void GunnerBullet::OnCollision(eSideCollision side)
 {}
 
-void GunnerBullet::OnCollision(Entity * obj)
+void GunnerBullet::OnCollision(BaseObject * obj)
 {
-	if (obj->GetTag() == ENEMY)
+	if (obj->GetObjectType() == ENEMY)
 		return;
 
-	vx = 0;
-	vy = 0;
-	isDie = true;
-	ChangeState(EXPLOSIONS);
+	_vx = 0;
+	_vy = 0;
+	_isDie = true;
+	this->ChangeState(BULLET_EXPLOSION);
 }
 
-void GunnerBullet::Draw(Camera * camera, RECT rect, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotationCenter,
+void GunnerBullet::Draw(Camera * camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	switch (bulletState)
+	switch (_bulletState)
 	{
-	case EXPLOSIONS:
-		animExplosions->setPosition(this->GetPosition());
+	case BULLET_EXPLOSION:
+		_pAnimExplosion->SetPosition(this->GetPosition());
 		if (camera)
-			animExplosions->draw(animExplosions->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			_pAnimExplosion->Draw(_pAnimExplosion->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 		else
-			animExplosions->draw(animExplosions->getPosition());
+			_pAnimExplosion->Draw(_pAnimExplosion->GetPosition());
 		break;
 
 	default:
-		anim->setReverse(isReverse);
-		anim->setPosition(this->GetPosition());
+		_pAnim->SetReverse(_isReverse);
+		_pAnim->SetPosition(this->GetPosition());
 
 		if (camera)
-			anim->draw(anim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 		else
-			anim->draw(anim->getPosition());
+			_pAnim->Draw(_pAnim->GetPosition());
 		break;	
 	}
 }
 
-void GunnerBullet::ChangeState(BulletStateName state)
+void GunnerBullet::ChangeState(eBulletState state)
 {
-	bulletState = state;
+	_bulletState = state;
 
 	switch (state)
 	{
-	case EXPLOSIONS:
-		animExplosions->setAnimation(0, 8, 0.05, false);
-		this->SetWidth(animExplosions->getWidth());
-		this->SetHeight(animExplosions->getHeight());
+	case BULLET_EXPLOSION:
+		_pAnimExplosion->SetAnimation(0, 8, 0.05, false);
+		this->SetWidth(_pAnimExplosion->GetWidth());
+		this->SetHeight(_pAnimExplosion->GetHeight());
 		break;
 
 	default:
-		anim->setAnimation(0, 2);
-		this->SetWidth(anim->getWidth());
-		this->SetHeight(anim->getHeight());
+		_pAnim->SetAnimation(0, 2);
+		this->SetWidth(_pAnim->GetWidth());
+		this->SetHeight(_pAnim->GetHeight());
 		break;
 	
 	}

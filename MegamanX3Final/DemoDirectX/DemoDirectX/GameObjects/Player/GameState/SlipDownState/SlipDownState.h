@@ -1,24 +1,23 @@
 ﻿#ifndef __SLIDE_VERTICAL_STATE_H__
 #define __SLIDE_VERTICAL_STATE_H__
 
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class SlipDownState : public GameState
+class SlipDownState : public PlayerState
 {
 public:
-	explicit SlipDownState(PlayerData* data);
-	~SlipDownState() = default;
+	SlipDownState(PLAYERDATA* playerData);
 
 	void update(float dt) override;
 
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
 
-	void onCollision(Entity::SideCollisions side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-	bool isSlide;
+private:
+	bool _isSlide;
 
 };
 #endif

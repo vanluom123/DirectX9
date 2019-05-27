@@ -10,44 +10,44 @@ BeginScene::BeginScene()
 	//BackGround
 	mBackColor = 0x000000;
 	AniBackGround = new Animation("Resources/Map/BackGround.png", 2, 1, 512, 256);
-	AniBackGround->setPosition(128, 128);
-	AniBackGround->setAnimation(0, 1);
+	AniBackGround->SetPosition(128, 128);
+	AniBackGround->SetAnimation(0, 1);
 
 	//Map
-	pMap = new GameMap(Define::WORLD_MAP);
-	gp = new GamePlayer();
-	pMap->gp = gp;
-	pMap->LoadMap();
+	_pMap = new GameMap(Define::WORLD_MAP);
+	_pPlayer = new Player();
+	_pMap->SetPlayer(_pPlayer);
+	_pMap->LoadMap();
 
 	//Camera
-	pCamera = new Camera(GameGlobal::getWidth(), GameGlobal::getHeight());
-	//pCamera->setPosition(128, 800);
+	_pCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
+	_pCamera->SetPosition(128, 800);
 
-	pCamera->setPosition(825, 900);
+	//pCamera->setPosition(825, 900);
 	//camera->setPosition(1670, 420);
 	//camera->setPosition(2245, 1175);
 	//camera->setPosition(2900, 1175);
 	//camera->setPosition(4735, 1175);
 	//camera->setPosition(6000, 1940);
 	//pCamera->setPosition(7560, 1940);
-	pMap->setCamera(pCamera);
+	_pMap->SetCamera(_pCamera);
 
 	//Player
-	gp->SetPosition(pCamera->getPosition());
+	_pPlayer->SetPosition(_pCamera->GetPosition());
 
 	//Other
-	isboss = false;
-	CurentRoom = { 0, 768, 768, 1024 };
+	_isboss = false;
+	_curentRoom = { 0, 768, 768, 1024 };
 
-	ListEntityOut.clear();
-	List000.clear();
+	_listEntityOut.clear();
+	_list000.clear();
 }
 
 BeginScene::~BeginScene()
 {
-	delete pMap;
-	delete pCamera;
-	delete gp;
+	delete _pMap;
+	delete _pCamera;
+	delete _pPlayer;
 	delete AniBackGround;
 }
 
@@ -55,13 +55,14 @@ void BeginScene::update(float dt)
 {
 	Sound::getInstance()->play("BlastHornet", true, 0);
 	Sound::getInstance()->setVolume(90);
+
 	//Get Object in Camera
-	ListEntityOut.clear();
-	ListEntityOut.swap(List000);
-	pMap->getQuadTree()->getObjectsInCamera(ListEntityOut, pCamera->getBound());
+	_listEntityOut.clear();
+	_listEntityOut.swap(_list000);
+	_pMap->GetQuadTree()->GetObjectCamera(_listEntityOut, _pCamera->GetBound());
 
 	//Run KeyBoard play
-	gp->handlerKeyBoard(keys, dt);
+	_pPlayer->handlerKeyBoard(_keys, dt);
 
 	//Check collision all object in camera
 	checkCollision(dt);
@@ -69,143 +70,143 @@ void BeginScene::update(float dt)
 	checkCameraAndEnemies();
 
 	//Update Object
-	pMap->update(dt);
-	gp->Update(dt);
-	for (auto& entity : ListEntityOut)
+	_pMap->Update(dt);
+	_pPlayer->Update(dt);
+	for (auto& entity : _listEntityOut)
 	{
 		entity->Update(dt);
-		if (GameCollision::IsCollision(entity->GetBound(), pCamera->getBound()) == true)
-			List000.push_back(entity);
+		if (GameCollision::IsCollision(entity->GetBound(), _pCamera->GetBound()) == true)
+			_list000.push_back(entity);
 	}
 
 	//Background
-	if (gp->GetPosition().x > 2600 && gp->GetPosition().x < 5632)
-		AniBackGround->setAnimation(1, 1);
+	if (_pPlayer->GetPosition().x > 2600 && _pPlayer->GetPosition().x < 5632)
+		AniBackGround->SetAnimation(1, 1);
 	else
-		AniBackGround->setAnimation(0, 1);
+		AniBackGround->SetAnimation(0, 1);
 
-	AniBackGround->update(dt);
+	AniBackGround->Update(dt);
 }
 
 void BeginScene::draw()
 {
-	AniBackGround->draw();
-	pMap->draw();
-	gp->Draw(pCamera);
-	for (auto& entity : ListEntityOut)
-		entity->Draw(pCamera);
-	pMap->draw1();
-	gp->drawHP();
+	AniBackGround->Draw();
+	_pMap->Draw();
+	_pPlayer->Draw(_pCamera);
+	for (auto& entity : _listEntityOut)
+		entity->Draw(_pCamera);
+	_pMap->Draw1();
+	_pPlayer->drawHP();
 }
 
 void BeginScene::onKeyDown(int keyCode)
 {
-	keys[keyCode] = true;
-	gp->onKeyDown(keys, keyCode);
+	_keys[keyCode] = true;
+	_pPlayer->onKeyDown(_keys, keyCode);
 }
 
 void BeginScene::onKeyUp(int keyCode)
 {
-	keys[keyCode] = false;
-	gp->onKeyUp(keyCode);
+	_keys[keyCode] = false;
+	_pPlayer->onKeyUp(keyCode);
 }
 
 void BeginScene::checkCameraAndWorldMap(float dt)
 {
-	if (isboss == true)
+	if (_isboss == true)
 	{
-		if (gp->GetBound().left < pCamera->getBound().left)
+		if (_pPlayer->GetBound().left < _pCamera->GetBound().left)
 		{
-			if (gp->GetVx() < 0)
-				gp->SetVx(0);
+			if (_pPlayer->GetVx() < 0)
+				_pPlayer->SetVx(0);
 		}
 		else
 		{
-			if (gp->GetBound().right > CurentRoom.right)
+			if (_pPlayer->GetBound().right > _curentRoom.right)
 			{
-				if (gp->GetVx() > 0)
-					gp->SetVx(0);
+				if (_pPlayer->GetVx() > 0)
+					_pPlayer->SetVx(0);
 			}
 		}
 	}
-	if (!GameCollision::pointCollision(gp->GetPosition().x, gp->GetPosition().y, CurentRoom))
+	if (!GameCollision::pointCollision(_pPlayer->GetPosition().x, _pPlayer->GetPosition().y, _curentRoom))
 	{
 		bool noRoom = true;
-		for (auto& Room : pMap->getListRoom())
-			if (GameCollision::pointCollision(gp->GetPosition().x, gp->GetPosition().y, Room))
+		for (auto& Room : _pMap->GetListRoom())
+			if (GameCollision::pointCollision(_pPlayer->GetPosition().x, _pPlayer->GetPosition().y, Room))
 			{
 				noRoom = false;
-				nextRoom = Room;
-				CurentRoom = Room;
-				if (gp->GetPosition().x < (CurentRoom.left + (CurentRoom.right - CurentRoom.left) / 2))
+				_nextRoom = Room;
+				_curentRoom = Room;
+				if (_pPlayer->GetPosition().x < (_curentRoom.left + (_curentRoom.right - _curentRoom.left) / 2))
 				{
-					if (pCamera->getBound().left < CurentRoom.left)
+					if (_pCamera->GetBound().left < _curentRoom.left)
 					{
-						direction = 1;
-						CurentRoom.left = pCamera->getBound().left;
+						_direction = 1;
+						_curentRoom.left = _pCamera->GetBound().left;
 					}
 				}
-				else if (gp->GetPosition().x > (CurentRoom.left + (CurentRoom.right - CurentRoom.left) / 2))
+				else if (_pPlayer->GetPosition().x > (_curentRoom.left + (_curentRoom.right - _curentRoom.left) / 2))
 				{
-					if (pCamera->getBound().right > CurentRoom.right)
+					if (_pCamera->GetBound().right > _curentRoom.right)
 					{
-						direction = -1;
-						CurentRoom.right = pCamera->getBound().right;
+						_direction = -1;
+						_curentRoom.right = _pCamera->GetBound().right;
 					}
 				}
 				break;
 			}
 		if (noRoom)
-			gp->SetState(new DieState(gp->GetPlayerData()));
+			_pPlayer->SetState(new DieState(_pPlayer->GetPlayerData()));
 	}
 
-	if (direction == 1)
+	if (_direction == 1)
 	{
-		CurentRoom.left += 300 * dt;
-		if (CurentRoom.left >= nextRoom.left)
+		_curentRoom.left += 300 * dt;
+		if (_curentRoom.left >= _nextRoom.left)
 		{
-			CurentRoom.left = nextRoom.left;
-			direction = 0;
+			_curentRoom.left = _nextRoom.left;
+			_direction = 0;
 		}
 	}
-	else if (direction == -1)
+	else if (_direction == -1)
 	{
-		CurentRoom.right -= 300 * dt;
-		if (CurentRoom.right <= nextRoom.right)
+		_curentRoom.right -= 300 * dt;
+		if (_curentRoom.right <= _nextRoom.right)
 		{
-			CurentRoom.right = nextRoom.right;
-			direction = 0;
+			_curentRoom.right = _nextRoom.right;
+			_direction = 0;
 		}
 	}
 	else
 	{
-		pCamera->setPosition(gp->GetPosition());
+		_pCamera->SetPosition(_pPlayer->GetPosition());
 	}
 
-	if (pCamera->getBound().left < CurentRoom.left)
-		pCamera->setPosition(CurentRoom.left + pCamera->getWidth() / 2, pCamera->getPosition().y);
-	else if (pCamera->getBound().right > CurentRoom.right)
-		pCamera->setPosition(CurentRoom.right - pCamera->getWidth() / 2, pCamera->getPosition().y);
+	if (_pCamera->GetBound().left < _curentRoom.left)
+		_pCamera->SetPosition(_curentRoom.left + _pCamera->GetWidth() / 2, _pCamera->GetPosition().y);
+	else if (_pCamera->GetBound().right > _curentRoom.right)
+		_pCamera->SetPosition(_curentRoom.right - _pCamera->GetWidth() / 2, _pCamera->GetPosition().y);
 
-	if (pCamera->getBound().top < CurentRoom.top)
-		pCamera->setPosition(pCamera->getPosition().x, CurentRoom.top + pCamera->getHeight() / 2);
-	else if (pCamera->getBound().bottom > CurentRoom.bottom)
-		pCamera->setPosition(pCamera->getPosition().x, CurentRoom.bottom - pCamera->getHeight() / 2);
+	if (_pCamera->GetBound().top < _curentRoom.top)
+		_pCamera->SetPosition(_pCamera->GetPosition().x, _curentRoom.top + _pCamera->GetHeight() / 2);
+	else if (_pCamera->GetBound().bottom > _curentRoom.bottom)
+		_pCamera->SetPosition(_pCamera->GetPosition().x, _curentRoom.bottom - _pCamera->GetHeight() / 2);
 }
 
 void BeginScene::checkCameraAndEnemies()
 {
-	for (auto& entity : ListEntityOut)
+	for (auto& entity : _listEntityOut)
 	{
-		if (entity->GetTag() == Entity::ENEMY)
+		if (entity->GetObjectType() == BaseObject::ENEMY)
 		{
-			if (gp->GetPosition().x > entity->GetPosition().x)
+			if (_pPlayer->GetPosition().x > entity->GetPosition().x)
 				entity->SetReverse(true);
 			else
 				entity->SetReverse(false);
 
-			if (!GameCollision::IsCollision(pCamera->getBound(), entity->GetBound())
-				&& !GameCollision::pointCollision(entity->getPositionStart().x, entity->getPositionStart().y, pCamera->getBound()))
+			if (!GameCollision::IsCollision(_pCamera->GetBound(), entity->GetBound())
+				&& !GameCollision::pointCollision(entity->getPositionStart().x, entity->getPositionStart().y, _pCamera->GetBound()))
 			{
 				entity->NewEntity();
 			}
@@ -216,17 +217,17 @@ void BeginScene::checkCameraAndEnemies()
 void BeginScene::checkCollision(float dt)
 {
 	//check boss and lock port
-	isboss = false;
-	for (auto& entity : ListEntityOut)
+	_isboss = false;
+	for (auto& entity : _listEntityOut)
 	{
-		if (entity->GetTag() == Entity::BOSS)
+		if (entity->GetObjectType() == BaseObject::BOSS)
 		{
 			if (entity->GetHP() > 0)
 			{
-				isboss = true;
-				for (auto& obj : ListEntityOut)
+				_isboss = true;
+				for (auto& obj : _listEntityOut)
 				{
-					if (obj->GetTag() == Entity::PORT)
+					if (obj->GetObjectType() == BaseObject::PORT)
 					{
 						if (obj->GetHP() == 0)
 						{
@@ -238,9 +239,9 @@ void BeginScene::checkCollision(float dt)
 			}
 			else
 			{
-				for (auto& obj : ListEntityOut)
+				for (auto& obj : _listEntityOut)
 				{
-					if (obj->GetTag() == Entity::PORT)
+					if (obj->GetObjectType() == BaseObject::PORT)
 					{
 						if (obj->GetHP() == 1)
 						{
@@ -255,39 +256,39 @@ void BeginScene::checkCollision(float dt)
 	}
 
 	//player with object
-	checkCollision(gp, dt);
-	for (auto& playerBullet : *gp->getPlayerBullet())
+	checkCollision(_pPlayer, dt);
+	for (auto& playerBullet : *_pPlayer->GetPlayerBullet())
 	{
-		if (playerBullet->getExplosions())
+		if (playerBullet->GetExplosion())
 			continue;
-		for (auto& entity : ListEntityOut)
+		for (auto& entity : _listEntityOut)
 			checkCollision(entity, playerBullet, dt);
 	}
 
 	//object with object
-	for (auto& entity : ListEntityOut)
+	for (auto& entity : _listEntityOut)
 	{
 		checkCollision(entity, dt);
 
 		//checkCollision Enemy and EnemyBullet
-		if (entity->GetTag() == Entity::ENEMY || entity->GetTag() == Entity::BOSS)
+		if (entity->GetObjectType() == BaseObject::ENEMY || entity->GetObjectType() == BaseObject::BOSS)
 		{
 			for (auto& bullet : *entity->GetListBullet())
 			{
 				if (bullet->GetDie())
 					continue;
 
-				if (bullet->GetTag() == Entity::ITEM)
+				if (bullet->GetObjectType() == BaseObject::ITEM)
 				{
 					checkCollision(bullet, dt);
-					checkCollision(gp, bullet, dt);
+					checkCollision(_pPlayer, bullet, dt);
 					continue;
 				}
 
-				checkCollision(gp, bullet, dt);
+				checkCollision(_pPlayer, bullet, dt);
 
-				std::vector<Entity*> listEntityStatic;
-				pMap->getQuadTree()->getObjectsCollideAble(listEntityStatic, bullet->GetBound());
+				std::vector<BaseObject*> listEntityStatic;
+				_pMap->GetQuadTree()->GetObjectCollide(listEntityStatic, bullet->GetBound());
 
 				for (auto& obj : listEntityStatic)
 				{
@@ -298,30 +299,30 @@ void BeginScene::checkCollision(float dt)
 	}
 }
 
-void BeginScene::checkCollision(Entity * obj, float dt)
+void BeginScene::checkCollision(BaseObject * obj, float dt)
 {
-	for (auto& entity : ListEntityOut)
+	for (auto& entity : _listEntityOut)
 	{
-		if (obj->id != entity->id)
+		if (obj->GetId() != entity->GetId())
 			checkCollision(obj, entity, dt);
 	}
 
-	std::vector<Entity*> listEntityStatic;
-	pMap->getQuadTree()->getObjectsCollideAble(listEntityStatic, obj->GetBound());
+	std::vector<BaseObject*> listEntityStatic;
+	_pMap->GetQuadTree()->GetObjectCollide(listEntityStatic, obj->GetBound());
 
 	for (auto& entity : listEntityStatic)
 	{
-		if (obj->id != entity->id)
+		if (obj->GetId() != entity->GetId())
 		{
 			if (obj->GetDie() || entity->GetDie())
 				continue;
 
-			D3DXVECTOR2 distance = GameCollision::Distance(obj, entity, dt);
+			GVec2 distance = GameCollision::Distance(obj, entity, dt);
 			RECT broad = GameCollision::getBroad(obj->GetBound(), distance);
 
 			if (GameCollision::IsCollision(broad, entity->GetBound()))
 			{
-				Entity::SideCollisions other_with_entity;
+				BaseObject::eSideCollision other_with_entity;
 				float collision_time = GameCollision::SweptAABB(obj->GetBound(), entity->GetBound(), distance, other_with_entity);
 
 				if (collision_time < 1.0f)
@@ -331,12 +332,12 @@ void BeginScene::checkCollision(Entity * obj, float dt)
 	}
 }
 
-void BeginScene::checkCollision(Entity * obj, Entity * other, float dt)
+void BeginScene::checkCollision(BaseObject * obj, BaseObject * other, float dt)
 {
 	if (obj->GetDie() || other->GetDie())
 		return;
 
-	D3DXVECTOR2 distance = GameCollision::Distance(obj, other, dt);
+	GVec2 distance = GameCollision::Distance(obj, other, dt);
 	RECT broad = GameCollision::getBroad(obj->GetBound(), distance);
 
 	if (GameCollision::IsCollision(broad, other->GetBound()))
@@ -347,7 +348,7 @@ void BeginScene::checkCollision(Entity * obj, Entity * other, float dt)
 			other->OnCollision(obj);
 			return;
 		}
-		Entity::SideCollisions other_with_entity;
+		BaseObject::eSideCollision other_with_entity;
 		float collision_time = GameCollision::SweptAABB(obj->GetBound(), other->GetBound(), distance, other_with_entity);
 
 		if (collision_time < 1.0f)

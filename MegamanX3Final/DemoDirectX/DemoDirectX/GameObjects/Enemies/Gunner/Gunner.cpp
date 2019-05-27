@@ -1,60 +1,62 @@
 #include "Gunner.h"
 #include "../../../GameDefines/GameDefine.h"
 #include "GunnerState/GunnerFall/GunnerFall.h"
-#include "../../Player/GamePlayer.h"
+#include "../../Player/Player.h"
 #include "GunnerState/GunnerDie/GunnerDie.h"
 #include "../../../GameComponents/GameCollision.h"
 #include "../../Item/SmallBlood.h"
-#include "../../Item/SmallSubtank.h"
+#include "../../Item/SmallSubtankItem.h"
 
 Gunner::Gunner()
 {
-	tag = ENEMY;
-	anim = new Animation(Define::HEAD_GUNNER_SPRITE, 4, 4, 51, 45, 0.15, D3DCOLOR_XRGB(100, 100, 100));
-	animDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
-	isReverse = false;
-	allowDraw = true;
-	isDie = false;
-	MaxHP = 6;
-	Damage = 3;
-	HP = MaxHP;
-	curState = NONE;
+	_objectType = ENEMY;
+	_pAnim = new Animation(Define::HEAD_GUNNER_SPRITE, 4, 4, 51, 45, 0.15, D3DCOLOR_XRGB(100, 100, 100));
+	_pAnimDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
+	_isReverse = false;
+	_isAllowDraw = true;
+	_isDie = false;
+	_MaxHP = 6;
+	_Damage = 3;
+	_HP = _MaxHP;
+	_curState = GUNNER_NONE;
 
-	pData = new GunnerData();
-	pData->SetGunner(this);
-	SetState(new GunnerFall(pData));
+	_pGunnerData = new GunnerData;
+	_pGunnerData->gunner = this;
+	_pGunnerData->gunnerState = NULL;
+
+	this->SetState(new GunnerFall(_pGunnerData));
 }
 
 void Gunner::NewEntity()
 {
-	x = startx;
-	y = starty;
-	isReverse = false;
-	allowDraw = true;
-	isDie = false;
-	HP = MaxHP;
-	curState = NONE;
-	SetState(new GunnerFall(pData));
+	_posX = _startx;
+	_posY = _starty;
+	_isReverse = false;
+	_isAllowDraw = true;
+	_isDie = false;
+	_HP = _MaxHP;
+	_curState = GUNNER_NONE;
+	SetState(new GunnerFall(_pGunnerData));
 }
 
 Gunner::~Gunner()
 {
-	delete anim;
-	delete animDie;
-	delete pData;
-	for (auto& bullet : listBullet)
+	delete _pAnim;
+	delete _pAnimDie;
+	delete _pGunnerData;
+	for (auto& bullet : _listBullet)
 		delete bullet;
-	listBullet.clear();
+	_listBullet.clear();
 }
 
 RECT Gunner::GetBound()
 {
 	RECT rect;
 
-	rect.left = x - 15;
-	rect.right = x + 15;
-	rect.top = y - 21;
-	rect.bottom = y + 45 / 2.0f;
+	rect.left = _posX - 15;
+	rect.right = _posX + 15;
+	rect.top = _posY - 21;
+	rect.bottom = _posY + 45 / 2.0f;
 
 	return rect;
 }
@@ -63,53 +65,53 @@ void Gunner::Update(float dt)
 {
 	OnNoCollisionWithBottom();
 
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Update(dt);
 
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	if (isDie == false)
-		anim->update(dt);
+	if (_isDie == false)
+		_pAnim->Update(dt);
 	else
-		animDie->update(dt);
+		_pAnimDie->Update(dt);
 
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 
-	if (pData->GetGunnerState() != NULL)
-		pData->GetGunnerState()->update(dt);
+	if (_pGunnerData->gunnerState != NULL)
+		_pGunnerData->gunnerState->Update(dt);
 }
 
-void Gunner::OnCollision(SideCollisions side)
+void Gunner::OnCollision(eSideCollision side)
 {
-	if (pData->GetGunnerState() != NULL)
-		pData->GetGunnerState()->onCollision(side);
+	if (_pGunnerData->gunnerState != NULL)
+		_pGunnerData->gunnerState->OnCollision(side);
 }
 
-void Gunner::OnCollision(Entity * obj)
+void Gunner::OnCollision(BaseObject * obj)
 {
-	if (obj->GetTag() == Entity::ROCK_MAN_BULLET && !isDie)
+	if (obj->GetObjectType() == BaseObject::ROCK_MAN_BULLET && !_isDie)
 	{
-		HP -= obj->GetDamage();
-		if (HP <= 0)
+		_HP -= obj->GetDamage();
+		if (_HP <= 0)
 		{
-			isDie = true;
-			this->SetState(new GunnerDie(pData));
+			_isDie = true;
+			this->SetState(new GunnerDie(_pGunnerData));
 
 			int num = (rand() % 999) % 4;
 			if (num == 1)
 			{
 				auto* item = new SmallBloodItem();
-				listBullet.push_back(item);
-				item->SetPosition(x, y);
-				item->SetTag(Entity::ITEM);
+				_listBullet.push_back(item);
+				item->SetPosition(_posX, _posY);
+				item->SetObjectType(BaseObject::ITEM);
 			}
 			else if (num == 2)
 			{
-				auto* item = new SmallSubtank();
-				listBullet.push_back(item);
-				item->SetPosition(x, y);
-				item->SetTag(Entity::ITEM);
+				auto* item = new SmallSubtankItem();
+				_listBullet.push_back(item);
+				item->SetPosition(_posX, _posY);
+				item->SetObjectType(BaseObject::ITEM);
 			}
 		}
 	}
@@ -117,106 +119,103 @@ void Gunner::OnCollision(Entity * obj)
 
 void Gunner::OnNoCollisionWithBottom()
 {
-	if (sideY != BOTTOM)
+	if (_sideY != BOTTOM)
 	{
-		switch (curState)
+		switch (_curState)
 		{
-		case STAND:
-		case ATTACK:
-		case ATTACK_ROCKET:
-		case ATTACK_BULLET:
-			SetState(new GunnerFall(pData));
+		case GUNNER_STAND:
+		case GUNNER_ATTACK:
+		case GUNNER_ATTACK_ROCKET:
+		case GUNNER_ATTACK_BULLET:
+			SetState(new GunnerFall(_pGunnerData));
 			break;
 		default: break;
 		}
 	}
 }
 
-void Gunner::Draw(Camera * camera, RECT rect, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotationCenter,
+void Gunner::Draw(Camera * camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (isDie == false)
+	if (_isDie == false)
 	{
-		if (GameCollision::IsCollision(this->GetBound(), camera->getBound()) == false)
-			allowDraw = false;
+		if (GameCollision::IsCollision(this->GetBound(), camera->GetBound()) == false)
+			_isAllowDraw = false;
 		else
-			allowDraw = true;
+			_isAllowDraw = true;
 	}
 
-	for (auto& bullet : listBullet)
+	for (auto& bullet : _listBullet)
 		bullet->Draw(camera);
 
-	if (allowDraw == false)
+	if (_isAllowDraw == false)
 		return;
 
-	if (isDie == true)
+	if (_isDie == true)
 	{
-		animDie->setPosition(this->GetPosition());
-		animDie->setReverse(isReverse);
+		_pAnimDie->SetPosition(this->GetPosition());
+		_pAnimDie->SetReverse(_isReverse);
 
 		if (camera != NULL)
-			animDie->draw(animDie->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			_pAnimDie->Draw(_pAnimDie->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 		else
-			animDie->draw(animDie->getPosition());
+			_pAnimDie->Draw(_pAnimDie->GetPosition());
 
 		return;
 	}
 
-	anim->setPosition(this->GetPosition());
-	anim->setReverse(isReverse);
+	_pAnim->SetPosition(this->GetPosition());
+	_pAnim->SetReverse(_isReverse);
 
 	if (camera != NULL)
-		anim->draw(anim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 	else
-		anim->draw(anim->getPosition());
+		_pAnim->Draw(_pAnim->GetPosition());
 }
 
-void Gunner::ChangeAnimation(GunnerStateName stateName)
+void Gunner::ChangeAnimation(eGunnerState stateName)
 {
 	switch (stateName)
 	{
-	case STAND:
-		anim->setAnimation(0, 1);
+	case GUNNER_STAND:
+		_pAnim->SetAnimation(0, 1);
 		break;
 
-	case ATTACK:
-		anim->setAnimation(2, 3, 0.15, false);
+	case GUNNER_ATTACK:
+		_pAnim->SetAnimation(2, 3, 0.15, false);
 		break;
 
-	case ATTACK_ROCKET:
-		anim->setAnimation(1, 3, 0.15, false);
+	case GUNNER_ATTACK_ROCKET:
+		_pAnim->SetAnimation(1, 3, 0.15, false);
 		break;
 
-	case ATTACK_BULLET:
-		anim->setAnimation(0, 1);
+	case GUNNER_ATTACK_BULLET:
+		_pAnim->SetAnimation(0, 1);
 		break;
 
-	case FALL:
-		anim->setAnimation(0, 1);
+	case GUNNER_FALL:
+		_pAnim->SetAnimation(0, 1);
 		break;
 
-	case DIE:
-		animDie->setAnimation(0, 8, 0.05, false);
+	case GUNNER_DIE:
+		_pAnimDie->SetAnimation(0, 8, 0.05, false);
 		break;
 
 	default: break;
 	}
 
-	this->SetWidth(anim->getWidth());
-	this->SetHeight(anim->getHeight());
+	this->SetWidth(_pAnim->GetWidth());
+	this->SetHeight(_pAnim->GetHeight());
 }
 
 void Gunner::SetState(GunnerState * state)
 {
-	if (curState == state->getState())
+	if (_curState == state->GetState())
 		return;
 
-	if (pData->GetGunnerState()) {
-		delete pData->GetGunnerState();
-		pData->SetGunnerState(nullptr);
-	}
+	SAFE_DELETE(_pGunnerData->gunnerState);
 
-	pData->SetGunnerState(state);
-	curState = state->getState();
-	ChangeAnimation(state->getState());
+	_pGunnerData->gunnerState = state;
+	_curState = state->GetState();
+	this->ChangeAnimation(state->GetState());
 }

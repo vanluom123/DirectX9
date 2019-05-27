@@ -1,6 +1,10 @@
 #include "FinishState.h"
 
-GamePlayer::StateName FinishState::GetState()
+FinishState::FinishState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
-	return GamePlayer::WIN;
+}
+
+Player::StateName FinishState::GetState()
+{
+	return Player::WIN;
 }

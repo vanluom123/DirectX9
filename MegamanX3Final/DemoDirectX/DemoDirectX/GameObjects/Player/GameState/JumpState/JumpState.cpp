@@ -4,78 +4,84 @@
 #include "../SlipDownState/SlipDownState.h"
 #include "../../../../GameDefines/GameDefine.h"
 
-JumpState::JumpState(PlayerData* data) : GameState(data)
+
+JumpState::JumpState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
 	Sound::getInstance()->play("JumpUp", false, 1);
 	Sound::getInstance()->setVolume(95);
 
-	pData->GetGamePlayer()->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
-	translateY = 15.0f;
-	timePress = 0;
-	Pressed = false;
-	if (pData->GetGamePlayer()->GetStateName() == GamePlayer::DASH)
-		Pressed = true;
+	_playerData->player->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+	_accelerateY = 15.0f;
+	_timePress = 0;
+	_pressed = false;
+
+	/*if (_playerData->player->GetStateName() == GamePlayer::DASH)
+		Pressed = true;*/
+
+	if (_playerData->state->GetState() == Player::DASH)
+		_pressed = true;
 }
 
 void JumpState::update(float dt)
 {
-	if (pData->GetGamePlayer()->GetVy() > 0)
-		pData->GetGamePlayer()->SetState(new FallState(pData, Pressed));
+	if (_playerData->player->GetVy() > 0)
+		_playerData->player->SetState(new FallState(_playerData, _pressed));
 }
 
 void JumpState::handlerKeyBoard(std::map<int, bool> keys, float dt)
 {
-	timePress += dt; //tranhs loi va cham
+	// Exception collide
+	_timePress += dt;
 	float speed = 0.0f;
 	if (keys[VK_RIGHT])
 	{
-		pData->GetGamePlayer()->SetReverse(false);
+		_playerData->player->SetReverse(false);
 
-		if (Pressed)
+		if (_pressed)
 			speed = Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			speed = Define::PLAYER_MAX_RUNNING_SPEED;
 	}
 	else if (keys[VK_LEFT])
 	{
-		pData->GetGamePlayer()->SetReverse(true);
-		if (Pressed)
+		_playerData->player->SetReverse(true);
+		if (_pressed)
 			speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
-	pData->GetGamePlayer()->SetVx(speed);
+	_playerData->player->SetVx(speed);
 
-	pData->GetGamePlayer()->AddVy(translateY);
+	_playerData->player->AddVy(_accelerateY);
 }
 
-void JumpState::onCollision(Entity::SideCollisions side)
+void JumpState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case Entity::LEFT:
-	case Entity::RIGHT:
+	case BaseObject::LEFT:
+	case BaseObject::RIGHT:
 	{
-		if (timePress < 0.3f)
+		if (_timePress < 0.3f)
 			break;
-		pData->GetGamePlayer()->SetState(new SlipDownState(pData));
+		_playerData->player->SetState(new SlipDownState(_playerData));
 		break;
 	}
-	case Entity::TOP:
+	case BaseObject::TOP:
 	{
-		pData->GetGamePlayer()->SetState(new FallState(pData, Pressed));
+		_playerData->player->SetState(new FallState(_playerData, _pressed));
 		break;
 	}
-	case Entity::BOTTOM:
+	case BaseObject::BOTTOM:
 	{
-		pData->GetGamePlayer()->SetState(new StandState(pData));
+		_playerData->player->SetState(new StandState(_playerData));
 		break;
 	}
 	default: break;
 	}
 }
 
-GamePlayer::StateName JumpState::GetState()
+Player::StateName JumpState::GetState()
 {
-	return GamePlayer::JUMP;
+	return Player::JUMP;
 }

@@ -3,16 +3,16 @@
 #include "../../GameDefines/GameDefine.h"
 Elevator::Elevator()
 {
-	tag = Entity::ELEVATOR;
+	_objectType = BaseObject::ELEVATOR;
 	pAnimation = new Animation(Define::Elevator, 1, 3, 96, 45, 0.1);
 
-	pAnimation->setAnimation(0, 1);
-	isReverse = false;
-	isDie = false;
+	pAnimation->SetAnimation(0, 1);
+	_isReverse = false;
+	_isDie = false;
 	isRun = false;
-	allowDraw = true;
-	vx = 0;
-	vy = 0;
+	_isAllowDraw = true;
+	_vx = 0;
+	_vy = 0;
 }
 
 Elevator::~Elevator()
@@ -22,67 +22,67 @@ Elevator::~Elevator()
 
 void Elevator::Update(float dt)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
-	if (y > starty && y < starty + 2)
+	if (_posY > _starty && _posY < _starty + 2)
 	{
-		y = starty;
+		_posY = _starty;
 		isRun = false;
-		pAnimation->setAnimation(0, 1);
-		vx = 0;
-		vy = 0;
+		pAnimation->SetAnimation(0, 1);
+		_vx = 0;
+		_vy = 0;
 	}
 
 	if (GetBound().top < 428.0f)
 	{
 		isRun = false;
-		pAnimation->setAnimation(0, 1);
-		vx = 0;
-		vy = 0;
+		pAnimation->SetAnimation(0, 1);
+		_vx = 0;
+		_vy = 0;
 	}
 		
 	if (isRun)
 	{
-		y -= 35 * dt;
+		_posY -= 35 * dt;
 	}
 
-	pAnimation->update(dt);
+	pAnimation->Update(dt);
 
-	Entity::Update(dt);
+	BaseObject::Update(dt);
 }
 
-void Elevator::OnCollision(SideCollisions side)
+void Elevator::OnCollision(eSideCollision side)
 {
 }
 
-void Elevator::OnCollision(Entity* obj)
+void Elevator::OnCollision(BaseObject* obj)
 {
-	if (obj->GetTag() != ROCK_MAN || isRun == true)
+	if (obj->GetObjectType() != ROCK_MAN || isRun == true)
 		return;
 
 	isRun = true;
-	pAnimation->setAnimation(0, 3, 0.05);
+	pAnimation->SetAnimation(0, 3, 0.05);
 }
 
-void Elevator::Draw(Camera* camera, RECT rect, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotationCenter,
+void Elevator::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
-	if (!GameCollision::IsCollision(camera->getBound(), GetBound()))
+	if (!GameCollision::IsCollision(camera->GetBound(), GetBound()))
 	{
 		isRun = true;
-		pAnimation->setAnimation(0, 3, 0.05);
-		y = starty + 65;
+		pAnimation->SetAnimation(0, 3, 0.05);
+		_posY = _starty + 65;
 	}
 
-	pAnimation->setReverse(isReverse);
-	pAnimation->setPosition(this->GetPosition());
+	pAnimation->SetReverse(_isReverse);
+	pAnimation->SetPosition(this->GetPosition());
 	if (camera)
-		pAnimation->draw(pAnimation->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		pAnimation->Draw(pAnimation->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
 	else
-		pAnimation->draw(pAnimation->getPosition());
+		pAnimation->Draw(pAnimation->GetPosition());
 
 }

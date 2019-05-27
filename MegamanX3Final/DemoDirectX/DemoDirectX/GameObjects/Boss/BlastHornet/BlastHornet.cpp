@@ -7,16 +7,18 @@
 
 BlastHornet::BlastHornet()
 {
-	tag = Tag::BOSS;
-	MaxHP = 30;
-	Damage = 3;
-	HP = MaxHP;
+	_objectType = eObjectType::BOSS;
+	_MaxHP = 30;
+	_Damage = 3;
+	_HP = _MaxHP;
 	curState = BlastState::None;
-	hpbar = new HPBar(tag);
+	hpbar = new HPBar(_objectType);
 
-	pData = new BlastHornetData();
-	pData->SetHornet(this);
-	SetState(new BlastAppear(pData));
+	pData = new BlastHornetData;
+	pData->blastHornet = this;
+	pData->blastHornetState = NULL;
+
+	this->SetState(new BlastAppear(pData));
 }
 
 
@@ -32,10 +34,10 @@ BlastHornet::~BlastHornet()
 RECT BlastHornet::GetBound()
 {
 	RECT r;
-	r.left = x - 20;
-	r.right = x + 30;
-	r.top = y - 30;
-	r.bottom = y + 45;
+	r.left = _posX - 20;
+	r.right = _posX + 30;
+	r.top = _posY - 30;
+	r.bottom = _posY + 45;
 	return r;
 }
 
@@ -44,51 +46,51 @@ void BlastHornet::Update(float dt)
 	for (auto&i : list_bullets_)
 		i->Update(dt);
 
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
-	anim->update(dt);
-	Entity::Update(dt);
+	anim->Update(dt);
+	BaseObject::Update(dt);
 
-	if (pData->GetHornetState())
-		pData->GetHornetState()->Update(dt);
+	if (pData->blastHornetState)
+		pData->blastHornetState->Update(dt);
 }
 
-void BlastHornet::OnCollision(SideCollisions side)
+void BlastHornet::OnCollision(eSideCollision side)
 {
-	if (pData->GetHornetState()) 
-		pData->GetHornetState()->OnCollision(side);
+	if (pData->blastHornetState) 
+		pData->blastHornetState->OnCollision(side);
 }
 
-void BlastHornet::OnCollision(Entity* obj)
+void BlastHornet::OnCollision(BaseObject* obj)
 {
-	if (obj->GetTag() == Tag::ROCK_MAN_BULLET && !isDie)
+	if (obj->GetObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
 	{
-		HP -= 1 + obj->GetDamage() / 2;
+		_HP -= 1 + obj->GetDamage() / 2;
 			
-		if (HP <= 0)
+		if (_HP <= 0)
 		{
 			SetState(new BlastDie(pData));
-			isDie = true;
+			_isDie = true;
 		}
 	}
 }
 
-void BlastHornet::Draw(Camera* camera, RECT r, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotate, D3DCOLOR color)
+void BlastHornet::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
 	for (auto&i : list_bullets_)
 		i->Draw(camera, r, scale, angle, rotate, color);
 
-	hpbar->draw(HP, MaxHP);
+	hpbar->draw(_HP, _MaxHP);
 
-	if (!allowDraw) return;
+	if (!_isAllowDraw) return;
 
-	anim->setPosition(GetPosition());
-	anim->setReverse(isReverse);
+	anim->SetPosition(GetPosition());
+	anim->SetReverse(_isReverse);
 	if (camera)
-		anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+		anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 	else
-		anim->draw(anim->getPosition());
+		anim->Draw(anim->GetPosition());
 }
 
 void BlastHornet::SetState(BlastHornetState* newState)
@@ -96,12 +98,8 @@ void BlastHornet::SetState(BlastHornetState* newState)
 	if (curState == newState->GetState())
 		return;
 
-	if (pData->GetHornetState()) {
-		delete pData->GetHornetState();
-		pData->SetHornetState(nullptr);
-	}
-
-	pData->SetHornetState(newState);
+	SAFE_DELETE(pData->blastHornetState);
+	pData->blastHornetState = newState;
 	curState = newState->GetState();
 	ChangeAnimation(newState->GetState());
 }
@@ -111,7 +109,7 @@ void BlastHornet::ChangeAnimation(BlastState state)
 	if (state == BlastState::Stand || state == BlastState::Move)
 	{
 		anim = new Animation("Resources/Enemies/BlastHornet/State/Stand/standspritesheet.png", 1, 4, 96, 96, 0.05, D3DCOLOR_XRGB(0, 128, 128));
-		anim->setAnimation(0, 4, 0.05);
+		anim->SetAnimation(0, 4, 0.05);
 	}
 	else if (state == BlastState::Appear)
 	{
@@ -126,14 +124,14 @@ void BlastHornet::ChangeAnimation(BlastState state)
 	else if (state == BlastState::Shooter)
 	{
 		anim = new Animation("Resources/Enemies/BlastHornet/State/Shooter/shooterspirtesheet.png", 1, 15, 96, 96, 0.05, D3DCOLOR_XRGB(0, 128, 128));
-		anim->setAnimation(0, 15, 0.05, false);
+		anim->SetAnimation(0, 15, 0.05, false);
 	}
 	else if (state == BlastState::Die)
 	{
 		anim = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.05);
-		anim->setAnimation(0, 8, 0.05, false);
+		anim->SetAnimation(0, 8, 0.05, false);
 	}
 
-	SetWidth(anim->getWidth());
-	SetHeight(anim->getHeight());
+	this->SetWidth(anim->GetWidth());
+	this->SetHeight(anim->GetHeight());
 }

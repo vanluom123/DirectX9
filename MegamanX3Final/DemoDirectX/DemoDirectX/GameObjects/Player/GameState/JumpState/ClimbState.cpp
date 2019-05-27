@@ -1,6 +1,10 @@
 #include "ClimbState.h"
 
-GamePlayer::StateName ClimbState::GetState()
+ClimbState::ClimbState(PLAYERDATA* playerData) :PlayerState(playerData)
 {
-	return GamePlayer::CLIMB;
+}
+
+Player::StateName ClimbState::GetState()
+{
+	return Player::CLIMB;
 }

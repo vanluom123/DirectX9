@@ -1,19 +1,18 @@
 #ifndef __BLEED_STATE_H__
 #define __BLEED_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
 
-class BleedState : public GameState
+class BleedState : public PlayerState
 {
 public:
-	explicit BleedState(PlayerData* data, int Direction);
-	~BleedState() = default;
+	BleedState(PLAYERDATA* playerData, int direction);
 
 	void update(float dt) override;
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-	float timeBleed;
+private:
+	float _timeBleed;
 
 };
 

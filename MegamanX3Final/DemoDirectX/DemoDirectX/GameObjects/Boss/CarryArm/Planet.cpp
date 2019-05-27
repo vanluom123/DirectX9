@@ -2,18 +2,18 @@
 #include "../../../GameComponents/GameCollision.h"
 #include "../../Player/GameState/StandState/StandState.h"
 
-Planet::Planet(GamePlayer* gp)
+Planet::Planet(Player* gp)
 {
 	pixton = new Pixton();
 	anim = new Animation("Resources/Enemies/CarryArm/x3_subboss_carryarm_01.png", 1, 1, 256, 88);
 	animAttack = new Animation("Resources/Enemies/CarryArm/attack.png", 2, 10, 32, 32);
 	animBullet = new Animation("Resources/Enemies/CarryArm/bullet.png", 1, 3, 16, 16);
-	animAttack->setAnimation(0, 1);
-	animAttack->setPause(1);
-	animBullet->setAnimation(0, 3, 0.1);
+	animAttack->SetAnimation(0, 1);
+	animAttack->SetPause(1);
+	animBullet->SetAnimation(0, 3, 0.1);
 
-	HP = 1;
-	Damage = 3;
+	_HP = 1;
+	_Damage = 3;
 	posY = 0;
 	posX = 0;
 	isMove = true;
@@ -21,8 +21,8 @@ Planet::Planet(GamePlayer* gp)
 	carryArms = new CarryArms();
 	box1 = new Box();
 	box2 = new Box();
-	box1->SetTag(ENEMY);
-	box2->SetTag(ENEMY);
+	box1->SetObjectType(ENEMY);
+	box2->SetObjectType(ENEMY);
 	box1->SetDie(true);
 	box2->SetDie(true);
 	isAttack = false;
@@ -40,20 +40,20 @@ Planet::~Planet()
 	delete box2;
 }
 
-void Planet::Draw(Camera* camera, RECT r, D3DXVECTOR2 scale, float angle, D3DXVECTOR2 rotate, D3DCOLOR color)
+void Planet::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
 	pixton->Draw(camera);
 
-	animBullet->draw(animBullet->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+	animBullet->Draw(animBullet->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 
-	anim->setPosition(GetPosition());
-	anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+	anim->SetPosition(GetPosition());
+	anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 
-	animAttack->setPosition(x - 40, y + 32);
-	animAttack->draw(animAttack->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
+	animAttack->SetPosition(_posX - 40, _posY + 32);
+	animAttack->Draw(animAttack->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
 
 	carryArms->Draw(camera);
 	box1->Draw(camera);
@@ -63,22 +63,22 @@ void Planet::Draw(Camera* camera, RECT r, D3DXVECTOR2 scale, float angle, D3DXVE
 RECT Planet::GetBound()
 {
 	RECT r;
-	r.left = x + width / 4;
-	r.right = x + width / 2;
-	r.top = y - height / 2;
-	r.bottom = y + height / 2;
+	r.left = _posX + _width / 4;
+	r.right = _posX + _width / 2;
+	r.top = _posY - _height / 2;
+	r.bottom = _posY + _height / 2;
 
 	return r;
 }
 void Planet::Update(float gameTime)
 {
-	if (!allowDraw)
+	if (!_isAllowDraw)
 		return;
 
 	pixton->Update(gameTime);
-	anim->update(gameTime);
-	animAttack->update(gameTime);
-	animBullet->update(gameTime);
+	anim->Update(gameTime);
+	animAttack->Update(gameTime);
+	animBullet->Update(gameTime);
 
 	MoveDown(gameTime);
 	///Update
@@ -93,17 +93,17 @@ void Planet::MoveDown(float gameTime)
 	{
 		rockman->SetState(new StandState(rockman->GetPlayerData()));
 		rockman->SetLock(true);
-		y += 40 * gameTime;
-		if (y > starty)
+		_posY += 40 * gameTime;
+		if (_posY > _starty)
 		{
-			y = starty;
-			isMove = pixton->MoveDown(gameTime, x, y);
+			_posY = _starty;
+			isMove = pixton->MoveDown(gameTime, _posX, _posY);
 			if (isMove)
 			{
 				timeplay = 30;
-				box1->SetPositionStart(x + 32, y - height);
-				box2->SetPositionStart(x + 88, y - height);
-				carryArms->SetPositionStart(x + 160, y + height);
+				box1->SetPositionStart(_posX + 32, _posY - _height);
+				box2->SetPositionStart(_posX + 88, _posY - _height);
+				carryArms->SetPositionStart(_posX + 160, _posY + _height);
 			}
 		}
 	}
@@ -113,8 +113,8 @@ void Planet::MoveDown(float gameTime)
 		timeplay -= gameTime;
 		if (timeplay < 0 && box1->GetDie() && box2->GetDie())
 		{
-			if (!pixton->MoveUp(gameTime, x, y))
-				y -= 40 * gameTime;
+			if (!pixton->MoveUp(gameTime, _posX, _posY))
+				_posY -= 40 * gameTime;
 			rockman->SetState(new StandState(rockman->GetPlayerData()));
 			rockman->SetLock(true);
 			return;
@@ -122,23 +122,23 @@ void Planet::MoveDown(float gameTime)
 
 		//Planet attack when have 2 box on the pixton
 		if (box1->GetBottom() && box2->GetBottom())
-			if (!isAttack && animAttack->getPause())
+			if (!isAttack && animAttack->GetPause())
 			{
 				isAttack = true;
-				animAttack->setAnimation(0, 10, 0.15, false);
+				animAttack->SetAnimation(0, 10, 0.15, false);
 			}
 
-		if (isAttack && animAttack->getPause())
+		if (isAttack && animAttack->GetPause())
 		{
 			posY += 50 * gameTime;
-			if (rockman->GetPosition().x > animBullet->getPosition().x)
+			if (rockman->GetPosition().x > animBullet->GetPosition().x)
 				posX += 20 * gameTime;
 			else
 				posX -= 20 * gameTime;
 			if (posY > 76)
 			{
 				posY = 76;
-				if (rockman->GetPosition().x > animAttack->getPosition().x)
+				if (rockman->GetPosition().x > animAttack->GetPosition().x)
 					posX += 150 * gameTime;
 				else
 					posX -= 150 * gameTime;
@@ -149,26 +149,26 @@ void Planet::MoveDown(float gameTime)
 					posY = 0;
 					posX = 0;
 					isAttack = false;
-					animAttack->setAnimation(1, 10, 0.15, false);
-					animBullet->setPosition(0, 0);
+					animAttack->SetAnimation(1, 10, 0.15, false);
+					animBullet->SetPosition(0, 0);
 					timeAttack = 0;
 				}
 			}
-			animBullet->setPosition(animAttack->getPosition().x + posX, y + 48 + posY);
+			animBullet->SetPosition(animAttack->GetPosition().x + posX, _posY + 48 + posY);
 
-			Entity * e = new Entity();
-			e->SetPosition(animBullet->getPosition());
+			BaseObject * e = new BaseObject();
+			e->SetPosition(animBullet->GetPosition());
 			e->SetHeight(16);
 			e->SetWidth(16);
 			e->SetDamage(3);
-			e->SetTag(Entity::ENEMY_BULLET);
+			e->SetObjectType(BaseObject::ENEMY_BULLET);
 			if (GameCollision::IsCollision(e->GetBound(), rockman->GetBound()))
 				rockman->OnCollision(e);
 
 			delete e;
 		}
 		else
-			animBullet->setPosition(0, 0);
+			animBullet->SetPosition(0, 0);
 		//Select Box
 		if (carryArms->GetState() == CarryArmsState::STAND)
 		{
@@ -176,14 +176,14 @@ void Planet::MoveDown(float gameTime)
 			{
 				box1->NewEntity();
 				box1->SetVy(80);
-				carryArms->SetPosition(x + 32, y - height - 48);
+				carryArms->SetPosition(_posX + 32, _posY - _height - 48);
 				carryArms->SetState(CarryArmsState::MOVE_DOWN);
 			}
 			else if (box2->GetDie())
 			{
 				box2->NewEntity();
 				box2->SetVy(80);
-				carryArms->SetPosition(x + 88, y - height - 48);
+				carryArms->SetPosition(_posX + 88, _posY - _height - 48);
 				carryArms->SetState(CarryArmsState::MOVE_DOWN);
 			}
 		}
@@ -191,14 +191,14 @@ void Planet::MoveDown(float gameTime)
 		///Box Collision with pixton
 		if (GameCollision::IsCollision(box1->GetBound(), pixton->GetBound()))
 		{
-			box1->SetPosition(x + 32, pixton->GetBound().top - 25);
+			box1->SetPosition(_posX + 32, pixton->GetBound().top - 25);
 			box1->SetVy(0);
 			box1->SetBottom(true);
 			carryArms->SetState(CarryArmsState::EVENT_MOVE_UP_2);
 		}
 		if (GameCollision::IsCollision(box2->GetBound(), pixton->GetBound()))
 		{
-			box2->SetPosition(x + 88, pixton->GetBound().top - 25);
+			box2->SetPosition(_posX + 88, pixton->GetBound().top - 25);
 			box2->SetVy(0);
 			box2->SetBottom(true);
 			carryArms->SetState(CarryArmsState::EVENT_MOVE_UP_2);
@@ -213,9 +213,9 @@ void Planet::MoveDown(float gameTime)
 				rockman->OnCollision(box2);
 
 		///Box Collision with rockmanBullet
-		for (auto& rockmanBullet : *rockman->getPlayerBullet())
+		for (auto& rockmanBullet : *rockman->GetPlayerBullet())
 		{
-			if (rockmanBullet->getExplosions())
+			if (rockmanBullet->GetExplosion())
 				continue;
 
 			if (!box1->GetDie())

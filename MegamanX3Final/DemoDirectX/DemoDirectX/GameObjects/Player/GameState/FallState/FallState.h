@@ -1,28 +1,26 @@
 ﻿#ifndef __FALL_STATE_H__
 #define __FALL_STATE_H__
-#include "../GameState.h"
+#include "../PlayerState.h"
 
-class FallState : public GameState
+class FallState : public PlayerState
 {
 public:
-	explicit FallState(PlayerData* data, bool dash = false);
-	~FallState() = default;
+	FallState(PLAYERDATA* playerData, bool dash = false);
 
 	void handlerKeyBoard(std::map<int, bool> keys, float dt) override;
 
-	void onCollision(Entity::SideCollisions side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	GamePlayer::StateName GetState() override;
+	Player::StateName GetState() override;
 
-protected:
-
-	float translateY;
+private:
+	float _accelerateY;
 	float translateX;
-	bool Pressed;
+	bool _pressed;
 	//First Velocity equal zero in case speed won't decrease 
-	bool allowMoveX;
+	bool _allowMoveX;
 
-	bool isLeftOrRightKeyPressed;
+	bool _isLeftOrRightKeyPressed;
 
 };
 #endif
