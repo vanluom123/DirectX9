@@ -20,6 +20,11 @@ typedef D3DXVECTOR2 GVec2;
 #define Gvec2Zero GVec2(0.0f, 0.0f)
 #define Gvec3Zero GVec3(0.0f, 0.0f, 0.0f)
 
+enum eSoundID
+{
+
+};
+
 namespace Define
 {
 	const char ANIMATION_ROCKMAN[]       = "Resources/rockman/Rockman_49x49_background(100,100,100).png";

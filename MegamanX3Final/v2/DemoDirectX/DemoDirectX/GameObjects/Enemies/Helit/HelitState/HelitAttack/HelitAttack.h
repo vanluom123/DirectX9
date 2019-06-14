@@ -7,8 +7,8 @@ class HelitAttack :public HelitState
 public:
 	HelitAttack(HelitData* helit);
 
-	Helit::eHelitState GetState() override;
-	void Update(float dt) override;
+	Helit::eHelitState getState() override;
+	void update(float dt) override;
 
 private:
 	float _count;

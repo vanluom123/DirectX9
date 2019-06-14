@@ -3,15 +3,14 @@
 
 Sound* Sound::_instance = NULL;
 
-Sound* Sound::GetInstance()
+Sound* Sound::getInstance()
 {
 	if (_instance == NULL)
-		_instance = new Sound(GameGlobal::GetHWND());
-
+		_instance = new Sound(GameGlobal::getWnd());
 	return _instance;
 }
 
-Sound::Sound(HWND hWnd)
+Sound::Sound(HWND hWnd) : _volume(75.0f), _isMute(false)
 {
 	_primaryBuffer = NULL;
 
@@ -35,28 +34,26 @@ Sound::Sound(HWND hWnd)
 	result = _pDevice->CreateSoundBuffer(&bufferDesc, &_primaryBuffer, NULL);
 	if (result != S_OK)
 		return;
-
-	_volume = 75.0f;
-	_isMute = false;
+	
 
 	// -----------LOAD SOUND-----------
 
 	// Blast hornet sound
-	LoadSound("Resources/Sound/Blast Hornet.wav", "BlastHornet");
+	loadSound("Resources/Sound/Blast Hornet.wav", "BlastHornet");
 
 	// RockMan sound
-	LoadSound("Resources/Sound/Shooting bullet.wav", "ShootingBullet");
-	LoadSound("Resources/Sound/Absorb energy.wav", "AbsorbShortEnergy");
-	LoadSound("Resources/Sound/Absorb long energy.wav", "AbsorbLongEnergy");
-	LoadSound("Resources/Sound/Give up short energy.wav", "GiveUpShortEnergy");
-	LoadSound("Resources/Sound/Give up long energy.wav", "GiveUpLongEnergy");
-	LoadSound("Resources/Sound/Fall down ground.wav", "FallDownGround");
-	LoadSound("Resources/Sound/Die.wav", "RockmanDie");
-	LoadSound("Resources/Sound/jump.wav", "JumpUp");//Use to jump and to cling
-	LoadSound("Resources/Sound/dash.wav", "dash");
+	loadSound("Resources/Sound/Shooting bullet.wav", "ShootingBullet");
+	loadSound("Resources/Sound/Absorb energy.wav", "AbsorbShortEnergy");
+	loadSound("Resources/Sound/Absorb long energy.wav", "AbsorbLongEnergy");
+	loadSound("Resources/Sound/Give up short energy.wav", "GiveUpShortEnergy");
+	loadSound("Resources/Sound/Give up long energy.wav", "GiveUpLongEnergy");
+	loadSound("Resources/Sound/Fall down ground.wav", "FallDownGround");
+	loadSound("Resources/Sound/Die.wav", "RockmanDie");
+	loadSound("Resources/Sound/jump.wav", "JumpUp");//Use to jump and to cling
+	loadSound("Resources/Sound/dash.wav", "dash");
 
 	// Enemies explosion
-	LoadSound("Resources/Sound/explosions.wav", "explosions");
+	loadSound("Resources/Sound/explosions.wav", "explosions");
 }
 
 Sound::~Sound()
@@ -78,18 +75,18 @@ Sound::~Sound()
 	_primaryBuffer = NULL;
 }
 
-void Sound::Create(HWND hWnd)
+void Sound::create(HWND hWnd)
 {
 	if (_instance == NULL)
 		_instance = new Sound(hWnd);
 }
 
-float Sound::GetVolume() const
+float Sound::getVolume() const
 {
 	return _volume;
 }
 
-void Sound::LoadSound(char* fileName, const std::string& name)
+void Sound::loadSound(char* fileName, const std::string& name)
 {
 	if (_soundBufferMap.find(name) != _soundBufferMap.end())
 		return;
@@ -179,9 +176,9 @@ void Sound::LoadSound(char* fileName, const std::string& name)
 	_soundBufferMap[name] = secondaryBuffer;
 }
 
-void Sound::Play(const std::string& name, bool infiniteLoop, int times)
+void Sound::play(const std::string& name, bool infiniteLoop, int times)
 {
-	if (_isMute == true || IsPlaying(name) == true)
+	if (_isMute == true || isPlaying(name) == true)
 		return;
 
 	std::map<std::string, IDirectSoundBuffer8*>::iterator it;
@@ -198,7 +195,7 @@ void Sound::Play(const std::string& name, bool infiniteLoop, int times)
 	}
 }
 
-void Sound::Stop(const std::string& name)
+void Sound::stop(const std::string& name)
 {
 	if (name.empty() == true)
 	{
@@ -218,7 +215,7 @@ void Sound::Stop(const std::string& name)
 	}
 }
 
-bool Sound::IsPlaying(const std::string & name)
+bool Sound::isPlaying(const std::string & name)
 {
 	std::map<std::string, IDirectSoundBuffer8*>::iterator it;
 
@@ -234,7 +231,7 @@ bool Sound::IsPlaying(const std::string & name)
 	return false;
 }
 
-void Sound::SetVolume(float percentage, const std::string& name)
+void Sound::setVolume(float percentage, const std::string& name)
 {
 	_volume = percentage;
 	if (name.empty() == true)
@@ -255,18 +252,18 @@ void Sound::SetVolume(float percentage, const std::string& name)
 	}
 }
 
-void Sound::Mute()
+void Sound::mute()
 {
 	_isMute = true;
-	GetInstance()->Stop();
+	getInstance()->stop();
 }
 
-void Sound::UnMute()
+void Sound::unMute()
 {
 	_isMute = false;
 }
 
-void Sound::CleanUp() const
+void Sound::cleanUp() const
 {
 	delete this;
 }

@@ -3,7 +3,7 @@
 #include "GameCollision.h"
 #include "GameGlobal.h"
 
-#include "../GameObjects/Boss/BlastHornet/BlastHornet.h"
+#include "../GameObjects/Boss/BlastHornet/Blast.h"
 #include "../GameObjects/Boss/Genjibo-Shurikein/Genjibo.h"
 #include "../GameObjects/Boss/CarryArm/Planet.h"
 #include "../GameObjects/Boss/CarryArm/Box.h"
@@ -21,21 +21,21 @@ GameMap::GameMap(const char* filePath)
 	_pTmxMap = new Tmx::Map();
 	_pTmxMap->ParseFile(filePath);
 
-	_tileMap = new Sprite(Define::WORLD_MAP_PNG, RECT(), this->GetWidth(), this->GetHeight(), D3DCOLOR_XRGB(255, 255, 255));
-	_tileMap->SetWidth(GameGlobal::GetWidth() + 4);
-	_tileMap->SetHeight(GameGlobal::GetHeight() + 4);
+	_tileMap = new Sprite(Define::WORLD_MAP_PNG, RECT(), this->getWidth(), this->getHeight(), D3DCOLOR_XRGB(255, 255, 255));
+	_tileMap->setWidth(GameGlobal::getWidth() + 4);
+	_tileMap->setHeight(GameGlobal::getHeight() + 4);
 
-	_tileMap1 = new Sprite("Resources/Map/Stage.png", RECT(), this->GetWidth(), this->GetHeight(), D3DCOLOR_XRGB(0, 0, 0));
-	_tileMap1->SetWidth(GameGlobal::GetWidth() + 4);
-	_tileMap1->SetHeight(GameGlobal::GetHeight() + 4);
+	_tileMap1 = new Sprite("Resources/Map/Stage.png", RECT(), this->getWidth(), this->getHeight(), D3DCOLOR_XRGB(0, 0, 0));
+	_tileMap1->setWidth(GameGlobal::getWidth() + 4);
+	_tileMap1->setHeight(GameGlobal::getHeight() + 4);
 
 	RECT r;
 	r.left = 0;
 	r.top = 0;
-	r.right = this->GetWidth();
-	r.bottom = this->GetHeight();
+	r.right = this->getWidth();
+	r.bottom = this->getHeight();
 
-	_pQuadTree = new QuadTree(1, r);
+	_quadTree = new QuadTree(1, r);
 }
 
 GameMap::~GameMap()
@@ -47,16 +47,16 @@ GameMap::~GameMap()
 		delete mListBrick;
 	_listEnemies.clear();
 
-	delete _pQuadTree;
+	delete _quadTree;
 }
 
-void GameMap::LoadMap()
+void GameMap::loadMap()
 {
 	// Object static
 	for (size_t i = 0; i < _pTmxMap->GetNumObjectGroups(); i++)
 	{
 		const auto objectGroup = _pTmxMap->GetObjectGroup(i);
-		string name = objectGroup->GetName();
+		std::string name = objectGroup->GetName();
 
 		if (name == "Room")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
@@ -78,17 +78,17 @@ void GameMap::LoadMap()
 					const auto object = objectGroup->GetObjects().at(j);
 
 					auto* boss = new Genjibo();
-					boss->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY());
-					boss->SetPosition(boss->GetPositionStart());
+					boss->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY());
+					boss->setPosition(boss->getPositionStart());
 
-					boss->SetWidth(object->GetWidth());
-					boss->SetHeight(object->GetHeight());
+					boss->setWidth(object->GetWidth());
+					boss->setHeight(object->GetHeight());
 
-					boss->SetObjectType(BaseObject::BOSS);
-					boss->SetId(object->GetId());
+					boss->setObjectType(BaseObject::BOSS);
+					boss->setId(object->GetId());
 
 					_listEnemies.push_back(boss);
-					_pQuadTree->InsertObject(boss);
+					_quadTree->insertObject(boss);
 				}
 			else
 				if (name == "Boss2")
@@ -96,18 +96,18 @@ void GameMap::LoadMap()
 					{
 						const auto object = objectGroup->GetObjects().at(j);
 
-						auto* boss = new Planet(_pPlayer);
-						boss->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-						boss->SetPosition(boss->GetPositionStart().x, boss->GetPositionStart().y - object->GetHeight() + 1);
+						auto boss = new Planet(_player);
+						boss->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+						boss->setPosition(boss->getPositionStart().x, boss->getPositionStart().y - object->GetHeight() + 1);
 
-						boss->SetWidth(object->GetWidth());
-						boss->SetHeight(object->GetHeight());
+						boss->setWidth(object->GetWidth());
+						boss->setHeight(object->GetHeight());
 
-						boss->SetObjectType(BaseObject::BOSS);
-						boss->SetId(object->GetId());
+						boss->setObjectType(BaseObject::BOSS);
+						boss->setId(object->GetId());
 
 						_listEnemies.push_back(boss);
-						_pQuadTree->InsertObject(boss);
+						_quadTree->insertObject(boss);
 					}
 				else
 					if (name == "Boss3")
@@ -115,18 +115,18 @@ void GameMap::LoadMap()
 						{
 							const auto object = objectGroup->GetObjects().at(j);
 
-							auto* boss = new BlastHornet();
-							boss->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-							boss->SetPosition(boss->GetPositionStart());
+							auto* boss = new Blast();
+							boss->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+							boss->setPosition(boss->getPositionStart());
 
-							boss->SetWidth(object->GetWidth());
-							boss->SetHeight(object->GetHeight());
+							boss->setWidth(object->GetWidth());
+							boss->setHeight(object->GetHeight());
 
-							boss->SetObjectType(BaseObject::BOSS);
-							boss->SetId(object->GetId());
+							boss->setObjectType(BaseObject::BOSS);
+							boss->setId(object->GetId());
 
 							_listEnemies.push_back(boss);
-							_pQuadTree->InsertObject(boss);
+							_quadTree->insertObject(boss);
 						}
 					else
 						if (name == "Banger")
@@ -135,17 +135,17 @@ void GameMap::LoadMap()
 								const auto object = objectGroup->GetObjects().at(j);
 
 								auto* banger = new Banger();
-								banger->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + 7);
-								banger->SetPosition(banger->GetPositionStart());
+								banger->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + 7);
+								banger->setPosition(banger->getPositionStart());
 
-								banger->SetWidth(object->GetWidth());
-								banger->SetHeight(object->GetHeight());
+								banger->setWidth(object->GetWidth());
+								banger->setHeight(object->GetHeight());
 
-								banger->SetObjectType(BaseObject::ENEMY);
-								banger->SetId(object->GetId());
+								banger->setObjectType(BaseObject::ENEMY);
+								banger->setId(object->GetId());
 
 								_listEnemies.push_back(banger);
-								_pQuadTree->InsertObject(banger);
+								_quadTree->insertObject(banger);
 							}
 						else
 							if (name == "Gunner")
@@ -154,17 +154,17 @@ void GameMap::LoadMap()
 									const auto object = objectGroup->GetObjects().at(j);
 
 									auto* gunner = new Gunner();
-									gunner->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() - 1 + gunner->GetHeight() / 2.0f);
-									gunner->SetPosition(gunner->GetPositionStart());
+									gunner->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() - 1 + gunner->getHeight() / 2.0f);
+									gunner->setPosition(gunner->getPositionStart());
 
-									gunner->SetWidth(object->GetWidth());
-									gunner->SetHeight(object->GetHeight());
+									gunner->setWidth(object->GetWidth());
+									gunner->setHeight(object->GetHeight());
 
-									gunner->SetObjectType(BaseObject::ENEMY);
-									gunner->SetId(object->GetId());
+									gunner->setObjectType(BaseObject::ENEMY);
+									gunner->setId(object->GetId());
 
 									_listEnemies.push_back(gunner);
-									_pQuadTree->InsertObject(gunner);
+									_quadTree->insertObject(gunner);
 								}
 							else
 								if (name == "Helit")
@@ -173,17 +173,17 @@ void GameMap::LoadMap()
 										const auto object = objectGroup->GetObjects().at(j);
 
 										auto* helit = new Helit();
-										helit->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() - 1 + helit->GetHeight() / 2.0f);
-										helit->SetPosition(helit->GetPositionStart());
+										helit->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() - 1 + helit->getHeight() / 2.0f);
+										helit->setPosition(helit->getPositionStart());
 
-										helit->SetWidth(object->GetWidth());
-										helit->SetHeight(object->GetHeight());
+										helit->setWidth(object->GetWidth());
+										helit->setHeight(object->GetHeight());
 
-										helit->SetObjectType(BaseObject::ENEMY);
-										helit->SetId(object->GetId());
+										helit->setObjectType(BaseObject::ENEMY);
+										helit->setId(object->GetId());
 
 										_listEnemies.push_back(helit);
-										_pQuadTree->InsertObject(helit);
+										_quadTree->insertObject(helit);
 									}
 								else
 									if (name == "Elevator")
@@ -192,16 +192,16 @@ void GameMap::LoadMap()
 											const auto object = objectGroup->GetObjects().at(j);
 
 											auto* elevator = new Elevator();
-											elevator->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f + 1);
-											elevator->SetPosition(elevator->GetPositionStart());
+											elevator->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f + 1);
+											elevator->setPosition(elevator->getPositionStart());
 
-											elevator->SetWidth(object->GetWidth());
-											elevator->SetHeight(object->GetHeight());
+											elevator->setWidth(object->GetWidth());
+											elevator->setHeight(object->GetHeight());
 
-											elevator->SetObjectType(BaseObject::ELEVATOR);
-											elevator->SetId(object->GetId());
+											elevator->setObjectType(BaseObject::ELEVATOR);
+											elevator->setId(object->GetId());
 
-											_pQuadTree->InsertObject(elevator);
+											_quadTree->insertObject(elevator);
 										}
 									else
 										if (name == "ConveyorR")
@@ -210,16 +210,16 @@ void GameMap::LoadMap()
 												const auto object = objectGroup->GetObjects().at(j);
 
 												auto* conveyor = new Conveyor(false);
-												conveyor->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-												conveyor->SetPosition(conveyor->GetPositionStart());
+												conveyor->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+												conveyor->setPosition(conveyor->getPositionStart());
 
-												conveyor->SetWidth(object->GetWidth());
-												conveyor->SetHeight(object->GetHeight());
+												conveyor->setWidth(object->GetWidth());
+												conveyor->setHeight(object->GetHeight());
 
-												conveyor->SetObjectType(BaseObject::CONVEYOR);
-												conveyor->SetId(object->GetId());
+												conveyor->setObjectType(BaseObject::CONVEYOR);
+												conveyor->setId(object->GetId());
 
-												_pQuadTree->InsertObject(conveyor);
+												_quadTree->insertObject(conveyor);
 											}
 										else
 											if (name == "ConveyorL")
@@ -228,16 +228,16 @@ void GameMap::LoadMap()
 													const auto object = objectGroup->GetObjects().at(j);
 
 													auto* conveyor = new Conveyor(true);
-													conveyor->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-													conveyor->SetPosition(conveyor->GetPositionStart());
+													conveyor->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+													conveyor->setPosition(conveyor->getPositionStart());
 
-													conveyor->SetWidth(object->GetWidth());
-													conveyor->SetHeight(object->GetHeight());
+													conveyor->setWidth(object->GetWidth());
+													conveyor->setHeight(object->GetHeight());
 
-													conveyor->SetObjectType(BaseObject::CONVEYOR);
-													conveyor->SetId(object->GetId());
+													conveyor->setObjectType(BaseObject::CONVEYOR);
+													conveyor->setId(object->GetId());
 
-													_pQuadTree->InsertObject(conveyor);
+													_quadTree->insertObject(conveyor);
 												}
 											else
 												if (name == "Port")
@@ -246,16 +246,16 @@ void GameMap::LoadMap()
 														const auto object = objectGroup->GetObjects().at(j);
 
 														auto* port = new Port();
-														port->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-														port->SetPosition(port->GetPositionStart());
+														port->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+														port->setPosition(port->getPositionStart());
 
-														port->SetWidth(object->GetWidth());
-														port->SetHeight(object->GetHeight());
+														port->setWidth(object->GetWidth());
+														port->setHeight(object->GetHeight());
 
-														port->SetObjectType(BaseObject::PORT);
-														port->SetId(object->GetId());
+														port->setObjectType(BaseObject::PORT);
+														port->setId(object->GetId());
 
-														_pQuadTree->InsertObject(port);
+														_quadTree->insertObject(port);
 													}
 												else
 													if (name == "Thorn")
@@ -264,14 +264,14 @@ void GameMap::LoadMap()
 															const auto object = objectGroup->GetObjects().at(j);
 
 															auto* entity = new BaseObject();
-															entity->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-															entity->SetPosition(entity->GetPositionStart());
-															entity->SetWidth(object->GetWidth());
-															entity->SetHeight(object->GetHeight());
+															entity->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+															entity->setPosition(entity->getPositionStart());
+															entity->setWidth(object->GetWidth());
+															entity->setHeight(object->GetHeight());
 
-															entity->SetObjectType(BaseObject::THORN);
-															entity->SetId(object->GetId());
-															_pQuadTree->InsertObject(entity);
+															entity->setObjectType(BaseObject::THORN);
+															entity->setId(object->GetId());
+															_quadTree->insertObject(entity);
 														}
 													else
 														if (name == "Box")
@@ -280,16 +280,16 @@ void GameMap::LoadMap()
 																const auto object = objectGroup->GetObjects().at(j);
 
 																auto* boxx = new Box();
-																boxx->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-																boxx->SetPosition(boxx->GetPositionStart());
+																boxx->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+																boxx->setPosition(boxx->getPositionStart());
 
-																boxx->SetWidth(object->GetWidth());
-																boxx->SetHeight(object->GetHeight());
+																boxx->setWidth(object->GetWidth());
+																boxx->setHeight(object->GetHeight());
 
-																boxx->SetObjectType(BaseObject::BOX);
-																boxx->SetId(object->GetId());
+																boxx->setObjectType(BaseObject::BOX);
+																boxx->setId(object->GetId());
 
-																_pQuadTree->InsertObject(boxx);
+																_quadTree->insertObject(boxx);
 															}
 														else
 															if (name == "Box1")
@@ -298,16 +298,16 @@ void GameMap::LoadMap()
 																	const auto object = objectGroup->GetObjects().at(j);
 
 																	auto* boxx = new Box(true);
-																	boxx->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-																	boxx->SetPosition(boxx->GetPositionStart());
+																	boxx->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+																	boxx->setPosition(boxx->getPositionStart());
 
-																	boxx->SetWidth(object->GetWidth());
-																	boxx->SetHeight(object->GetHeight());
+																	boxx->setWidth(object->GetWidth());
+																	boxx->setHeight(object->GetHeight());
 
-																	boxx->SetObjectType(BaseObject::ENEMY);
-																	boxx->SetId(object->GetId());
-																	boxx->NewEntity();
-																	_pQuadTree->InsertObject(boxx);
+																	boxx->setObjectType(BaseObject::ENEMY);
+																	boxx->setId(object->GetId());
+																	boxx->newObject();
+																	_quadTree->insertObject(boxx);
 																}
 															else
 																if (name == "Blood")
@@ -316,15 +316,15 @@ void GameMap::LoadMap()
 																		const auto object = objectGroup->GetObjects().at(j);
 
 																		auto* item = new BigBloodItem();
-																		item->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f - 1);
-																		item->SetPosition(item->GetPositionStart());
+																		item->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f - 1);
+																		item->setPosition(item->getPositionStart());
 
-																		item->SetWidth(object->GetWidth());
-																		item->SetHeight(object->GetHeight());
+																		item->setWidth(object->GetWidth());
+																		item->setHeight(object->GetHeight());
 
-																		item->SetObjectType(BaseObject::ITEM);
-																		item->SetId(object->GetId());
-																		_pQuadTree->InsertObject(item);
+																		item->setObjectType(BaseObject::ITEM);
+																		item->setId(object->GetId());
+																		_quadTree->insertObject(item);
 																	}
 																else
 																	if (name == "Heart")
@@ -333,12 +333,12 @@ void GameMap::LoadMap()
 																			const auto object = objectGroup->GetObjects().at(j);
 
 																			auto* item = new EnergyItem();
-																			item->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f - 1);
-																			item->SetPosition(item->GetPositionStart());
+																			item->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f - 1);
+																			item->setPosition(item->getPositionStart());
 
-																			item->SetObjectType(BaseObject::ITEM);
-																			item->SetId(object->GetId());
-																			_pQuadTree->InsertObject(item);
+																			item->setObjectType(BaseObject::ITEM);
+																			item->setId(object->GetId());
+																			_quadTree->insertObject(item);
 																		}
 																	else
 																		if (name == "Wall")
@@ -347,114 +347,114 @@ void GameMap::LoadMap()
 																				const auto object = objectGroup->GetObjects().at(j);
 
 																				auto* entity = new BaseObject();
-																				entity->SetPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
-																				entity->SetPosition(entity->GetPositionStart());
-																				entity->SetWidth(object->GetWidth());
-																				entity->SetHeight(object->GetHeight());
+																				entity->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + object->GetHeight() / 2.0f);
+																				entity->setPosition(entity->getPositionStart());
+																				entity->setWidth(object->GetWidth());
+																				entity->setHeight(object->GetHeight());
 
-																				entity->SetObjectType(BaseObject::STATIC);
-																				entity->SetId(object->GetId());
-																				_pQuadTree->InsertObject(entity);
+																				entity->setObjectType(BaseObject::STATIC);
+																				entity->setId(object->GetId());
+																				_quadTree->insertObject(entity);
 																			}
 	}
 }
 
-void GameMap::SetCamera(Camera * camera)
+void GameMap::setViewport(Camera * camera)
 {
-	_pCamera = camera;
+	_viewport = camera;
 }
 
-Tmx::Map* GameMap::GetMap() const
+Tmx::Map* GameMap::getMap() const
 {
 	return _pTmxMap;
 }
 
-RECT GameMap::GetWorldMapBound() const
+RECT GameMap::getWorldMapBound() const
 {
 	RECT bound;
 	bound.left = bound.top = 0;
-	bound.right = GetWidth();
-	bound.bottom = GetHeight();
+	bound.right = getWidth();
+	bound.bottom = getHeight();
 	return bound;
 }
 
-int GameMap::GetWidth() const
+int GameMap::getWidth() const
 {
 	return _pTmxMap->GetWidth() * _pTmxMap->GetTileWidth();
 }
 
-int GameMap::GetHeight() const
+int GameMap::getHeight() const
 {
 	return _pTmxMap->GetHeight() * _pTmxMap->GetTileHeight();
 }
 
-int GameMap::GetTileWidth() const
+int GameMap::getTileWidth() const
 {
 	return _pTmxMap->GetTileWidth();
 }
 
-int GameMap::GetTileHeight() const
+int GameMap::getTileHeight() const
 {
 	return _pTmxMap->GetTileHeight();
 }
 
-bool GameMap::IsBoundLeft() const
+bool GameMap::isBoundLeft() const
 {
-	return (_pCamera->GetBound().left == 0);
+	return (_viewport->getBound().left == 0);
 }
 
-bool GameMap::IsBoundRight() const
+bool GameMap::isBoundRight() const
 {
-	return (_pCamera->GetBound().right == this->GetWidth());
+	return (_viewport->getBound().right == this->getWidth());
 }
 
-bool GameMap::IsBoundTop() const
+bool GameMap::isBoundTop() const
 {
-	return (_pCamera->GetBound().top == 0);
+	return (_viewport->getBound().top == 0);
 }
 
-bool GameMap::IsBoundBottom() const
+bool GameMap::isBoundBottom() const
 {
-	return (_pCamera->GetBound().bottom == this->GetHeight());
+	return (_viewport->getBound().bottom == this->getHeight());
 }
 
-void GameMap::Update(float dt)
+void GameMap::update(float dt)
 {
 
 }
 
-void GameMap::Draw()
+void GameMap::draw()
 {
-	GVec3 position = _pCamera->GetPosition();
-	_sourceRect.top = position.y - _tileMap->GetHeight() / 2;
-	_sourceRect.bottom = position.y + _tileMap->GetHeight() / 2;
-	_sourceRect.left = position.x - _tileMap->GetWidth() / 2;
-	_sourceRect.right = position.x + _tileMap->GetWidth() / 2;
+	GVec3 position = _viewport->getPosition();
+	_srect.top = position.y - _tileMap->getHeight() / 2;
+	_srect.bottom = position.y + _tileMap->getHeight() / 2;
+	_srect.left = position.x - _tileMap->getWidth() / 2;
+	_srect.right = position.x + _tileMap->getWidth() / 2;
 
-	_tileMap->Draw(position, _sourceRect, GVec2(), _pCamera->GetTrans());
+	_tileMap->draw(position, _srect, GVec2(), _viewport->getTrans());
 }
 
-void GameMap::Draw1()
+void GameMap::draw1()
 {
-	_tileMap1->Draw(_pCamera->GetPosition(), _sourceRect, GVec2(), _pCamera->GetTrans());
+	_tileMap1->draw(_viewport->getPosition(), _srect, GVec2(), _viewport->getTrans());
 }
 
-std::vector<BaseObject*> GameMap::GetListEnemies() const
+std::vector<BaseObject*> GameMap::getListEnemies() const
 {
 	return _listEnemies;
 }
 
-std::vector<RECT> GameMap::GetListRoom() const
+std::vector<RECT> GameMap::getListRoom() const
 {
 	return _listRoom;
 }
 
-QuadTree* GameMap::GetQuadTree() const
+QuadTree* GameMap::getQuadTree() const
 {
-	return _pQuadTree;
+	return _quadTree;
 }
 
-void GameMap::SetPlayer(Player* player)
+void GameMap::setPlayer(Player* player)
 {
-	_pPlayer = player;
+	_player = player;
 }

@@ -3,42 +3,46 @@
 
 GameDebugDraw::GameDebugDraw()
 {
-    _spriteHandler = GameGlobal::GetSpriteHandler();
-    _spriteHandler->GetDevice(&_ddv);
-    D3DXCreateLine(_ddv, &_lineDraw);
+    _DXSprite = GameGlobal::getDXSprite();
+    _DXSprite->GetDevice(&_d3ddev);
+    D3DXCreateLine(_d3ddev, &_lineDraw);
     
-    //set size cho line
+    //set size for line
     _lineDraw->SetWidth(1);
 
-    //set mau cho line
+    //set color for line
     _color = D3DCOLOR_XRGB(255, 0, 0);
     
 }
 
 GameDebugDraw::~GameDebugDraw()
-{}
+{
+	// Do nothing
+}
 
-void GameDebugDraw::Draw()
-{}
+void GameDebugDraw::draw()
+{
+	// Do nothing
+}
 
-void GameDebugDraw::SetLineSize(float width)
+void GameDebugDraw::setLineSize(float width)
 {
     _lineDraw->SetWidth(width);
 }
 
-void GameDebugDraw::DrawLine(GVec2 lines[], int count)
+void GameDebugDraw::drawLine(GVec2 lines[], int count)
 {
     _lineDraw->Begin();
     _lineDraw->Draw(lines, count, _color);
     _lineDraw->End();
 }
 
-void GameDebugDraw::DrawRect(RECT bound, Camera *camera)
+void GameDebugDraw::drawRect(RECT bound, Camera *camera)
  {
     GVec3 trans = Gvec3Zero;
 
     if (camera)
-		trans = GVec3(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2, 0) - camera->GetPosition();
+		trans = GVec3(GameGlobal::getWidth() / 2, GameGlobal::getHeight() / 2, 0) - camera->getPosition();
 
     GVec2 lines[] = { GVec2(bound.left + trans.x, bound.top + trans.y),
                             GVec2(bound.right + trans.x, bound.top + trans.y), 
@@ -46,10 +50,10 @@ void GameDebugDraw::DrawRect(RECT bound, Camera *camera)
                             GVec2(bound.left + trans.x, bound.bottom + trans.y), 
                             GVec2(bound.left + trans.x, bound.top + trans.y) };
 
-    DrawLine(lines, 5);
+    drawLine(lines, 5);
 }
 
-void GameDebugDraw::SetColor(D3DCOLOR color)
+void GameDebugDraw::setColor(D3DCOLOR color)
 {
     _color = color;
 }

@@ -6,10 +6,10 @@
 class BleedState : public PlayerState
 {
 public:
-	BleedState(PLAYERDATA* playerData, int direction);
+	BleedState(PlayerData* playerData, int direction);
 
 	void Update(float dt) override;
-	Player::ePlayerState GetState() override;
+	Player::ePlayerState getState() override;
 
 private:
 	float _timeBleed;

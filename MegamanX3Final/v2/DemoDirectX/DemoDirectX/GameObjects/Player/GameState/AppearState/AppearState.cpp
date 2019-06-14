@@ -3,41 +3,43 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-AppearState::AppearState(PLAYERDATA* playerData) : PlayerState(playerData)
+AppearState::AppearState(PlayerData* playerData) : PlayerState(playerData)
 {
 	_accelerateY = 25.0f;
 }
 
 void AppearState::Update(float dt)
 {
-	if (_playerData->player->GetAnimation()->GetCurrentColumn() == 0)
-		_playerData->player->GetAnimation()->SetPause(true);
-	else if (_playerData->player->GetAnimation()->GetCurrentColumn() >= 4)
-		_playerData->player->SetState(new StandState(_playerData));
+	if (_playerData->player->getAnimation()->getCurrentColumn() == 0)
+		_playerData->player->getAnimation()->setPause(true);
+	else if (_playerData->player->getAnimation()->getCurrentColumn() >= 4)
+		_playerData->player->setState(new StandState(_playerData));
 }
 
 void AppearState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 {
-	_playerData->player->SetVx(0);
-	_playerData->player->AddVy(_accelerateY);
+	_playerData->player->setVx(0.0f);
+	_playerData->player->addVy(_accelerateY);
 
-	if (_playerData->player->GetVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
-		_playerData->player->SetVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	if (_playerData->player->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
+		_playerData->player->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 }
 
-void AppearState::OnCollision(BaseObject::eSideCollision side)
+void AppearState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case BaseObject::BOTTOM:
-		_playerData->player->GetAnimation()->SetPause(false);
-		break;
+		case BaseObject::BOTTOM:
+			{
+				_playerData->player->getAnimation()->setPause(false);
+				break;
+			}
 
-	default: break;
+		default: break;
 	}
 }
 
-Player::ePlayerState AppearState::GetState()
+Player::ePlayerState AppearState::getState()
 {
 	return Player::APPEAR;
 }

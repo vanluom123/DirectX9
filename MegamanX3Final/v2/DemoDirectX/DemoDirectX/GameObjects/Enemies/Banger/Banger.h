@@ -5,7 +5,7 @@
 #include "../../../GameComponents/Animation.h"
 #include "BangerBullet/BangerBullet.h"
 #include "../../../GameComponents/Camera.h"
-#include "../../../BangerData.h"
+#include "BangerData.h"
 
 class Banger :
 	public BaseObject
@@ -16,7 +16,7 @@ public:
 	Banger();
 	~Banger();
 
-	void NewEntity() override;
+	void newObject() override;
 
 	enum eBangerState
 	{
@@ -28,24 +28,24 @@ public:
 		BANGER_NONE
 	};
 
-	void ChangeAnimation(eBangerState state);
+	void changeAnimation(eBangerState state);
 
-	Animation* GetAnim() const { return _pCurrentAnim; }
+	Animation* getAnimation() const { return _current_anim; }
 
-	void SetState(BangerState* newState);
-	RECT GetBound() override;
+	void setState(BangerState* newState);
+	RECT getBound() override;
 
-	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR transColor = D3DCOLOR_XRGB(255, 255, 255))override;
+	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR transColor = D3DCOLOR_XRGB(255, 255, 255))override;
 
-	void Update(float gameTime) override;
-	void OnCollision(eSideCollision side) override;
-	void OnCollision(BaseObject* obj) override;
-	void OnNoCollisionWithBottom() override;
+	void update(float gameTime) override;
+	void onCollision(eSideCollision side) override;
+	void onCollision(BaseObject* obj) override;
+	void onNoCollisionWithBottom() override;
 
 private:
 	BangerData* _pBangerData;
-	Animation* _pCurrentAnim;
-	Animation* _pAnimationDie;
+	Animation* _current_anim;
+	Animation* _anim_die;
 
 	eBangerState _currentState;
 };

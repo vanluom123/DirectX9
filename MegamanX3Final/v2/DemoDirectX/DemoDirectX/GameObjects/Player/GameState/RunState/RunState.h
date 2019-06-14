@@ -5,16 +5,16 @@
 class RunState : public PlayerState
 {
 public:
-	RunState(PLAYERDATA* playerData);
+	RunState(PlayerData* playerData);
 
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
 
-	void OnCollision(BaseObject::eSideCollision side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	Player::ePlayerState GetState() override;
+	Player::ePlayerState getState() override;
 
-protected:
-	bool boot;
+private:
+	bool _isBoot;
 
 };
 #endif

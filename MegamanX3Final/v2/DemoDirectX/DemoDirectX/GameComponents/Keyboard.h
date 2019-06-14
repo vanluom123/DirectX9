@@ -7,12 +7,12 @@ public:
 	Keyboard(HWND);
 	~Keyboard();
 
-	bool Init();					//Cài đặt bàn phím
-	void GetKeyState();				//Lấy trạng thái bàn phím
-	bool IsKeyDown(int key);		//Nhận diện phím nhấn
-	bool GIsKeyDown(int key);		//Kiểm tra trạng thái phím có đang down
-	bool GIsKeyUp(int key);			//Kiểm tra trạng thái phím có đang up
-	void KillKeyBoard();			//Hủy phím
+	bool createKeyboard();					//Cài đặt bàn phím
+	void getKeyState();				//Lấy trạng thái bàn phím
+	bool isKeyDown(int key);		//Nhận diện phím nhấn
+	bool gIsKeyDown(int key);		//Kiểm tra trạng thái phím có đang down
+	bool gIsKeyUp(int key);			//Kiểm tra trạng thái phím có đang up
+	void releaseKeyboard();			//Hủy phím
 
 private:
 

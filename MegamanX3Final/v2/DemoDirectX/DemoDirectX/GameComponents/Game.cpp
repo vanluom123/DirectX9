@@ -1,47 +1,43 @@
 ﻿#include "Game.h"
 #include "GameGlobal.h"
 #include "../GameControllers/SceneManager.h"
-#include "../Scenes/BeginScene.h"
-#include "GameTime.h"
 
 Game::Game(int fps)
 {
 	_FPS = fps;
-	SceneManager::GetInstance()->ReplaceScene(new BeginScene());
-	InitLoop();
+	SceneManager::getInstance()->setScene(SceneManager::BEGIN_SCENE);
+	initLoop();
 }
 
-void Game::Update(float dt)
+void Game::update(float dt)
 {
-	SceneManager::GetInstance()->GetCurrentScene()->Update(dt);
-	Render();
+	SceneManager::getInstance()->getCurrentScene()->update(dt);
+	render();
 }
 
-void Game::Render()
+void Game::render()
 {
-	auto device = GameGlobal::GetDevice();
-	auto scene = SceneManager::GetInstance()->GetCurrentScene();
-	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackColor(), 0.0f, 0);
+	auto device = GameGlobal::getDevice();
+	auto scene = SceneManager::getInstance()->getCurrentScene();
+	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->getBackColor(), 0.0f, 0);
 
-	{
-		device->BeginScene();
+	device->BeginScene();
 
-		//Starting draw
-		GameGlobal::GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
+	//Starting draw
+	GameGlobal::getDXSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
-		//draw here
-		scene->Draw();
+	//draw here
+	scene->draw();
 
-		//Ending draw
-		GameGlobal::GetSpriteHandler()->End();
+	//Ending draw
+	GameGlobal::getDXSprite()->End();
 
-		device->EndScene();
-	}
+	device->EndScene();
 
 	device->Present(NULL, NULL, NULL, NULL);
 }
 
-void Game::InitLoop() const
+void Game::initLoop()
 {
 	MSG Msg;
 	ZeroMemory(&Msg, sizeof(MSG));
@@ -72,12 +68,10 @@ void Game::InitLoop() const
 			if (gameTime >= frame_rate)
 			{
 				startTime = endTime;
-				Update(gameTime);
+				update(gameTime);
 			}
 			else
-			{
 				Sleep(DWORD((frame_rate - gameTime) * 100));
-			}
 		}
 	}
 }

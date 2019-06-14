@@ -6,20 +6,19 @@ Items::Items()
 Items::~Items()
 {}
 
-RECT Items::GetBound()
+RECT Items::getBound()
 {
 	return RECT();
 }
 
-void Items::Update(float dt)
-{
-}
-
-void Items::Draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
+void Items::update(float dt)
 {}
 
-void Items::OnCollision(eSideCollision side)
+void Items::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {}
 
-void Items::OnCollision(BaseObject *obj)
+void Items::onCollision(eSideCollision side)
+{}
+
+void Items::onCollision(BaseObject* obj)
 {}

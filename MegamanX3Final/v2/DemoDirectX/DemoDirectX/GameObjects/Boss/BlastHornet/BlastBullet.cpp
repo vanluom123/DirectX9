@@ -9,7 +9,7 @@ BlastBullet::BlastBullet()
 	_MaxHP = 4;
 	_HP = _MaxHP;
 
-	this->ChangeState(eBulletState::BULLET_FIRE);
+	this->setState(eBulletState::BULLET_FIRE);
 }
 
 BlastBullet::~BlastBullet()
@@ -17,7 +17,7 @@ BlastBullet::~BlastBullet()
 	delete _pAnim;
 }
 
-RECT BlastBullet::GetBound()
+RECT BlastBullet::getBound()
 {
 	RECT bound;
 	bound.left = _posX - _width / 2;
@@ -27,90 +27,79 @@ RECT BlastBullet::GetBound()
 	return bound;
 }
 
-void BlastBullet::NewEntity()
+void BlastBullet::newObject()
 {
-	if (_isReverse == false)
+	if (!_isReverse)
 	{
-		SetReverse(true);
-		SetVx(-80);
+		setReverse(true);
+		setVx(-80.0f);
 	}
 	else
 	{
-		SetReverse(false);
-		SetVx(80);
+		setReverse(false);
+		setVx(80.0f);
 	}
 
-	//isBurst = false;
 	_isAllowDraw = true;
-	ChangeState(eBulletState::BULLET_FIRE);
+	setState(eBulletState::BULLET_FIRE);
 }
 
-void BlastBullet::Update(float dt)
+void BlastBullet::update(float dt)
 {
-	if (_isAllowDraw == false)
-		return;
-
-	//if (!isBurst)
-	//{
-	//	//vx += accelerateX;
-	//	if (vx > 300)
-	//		vx = 300;
-	//	else if (vx < -300)
-	//		vx = -300;
-	//}
-	//else if (anim->getPause())
-	//	allowDraw = false;
-
-	_pAnim->Update(dt);
-	BaseObject::Update(dt);
+	if (_isAllowDraw)
+	{
+		_pAnim->update(dt);
+		BaseObject::update(dt);
+	}
 }
 
-void BlastBullet::OnCollision(eSideCollision side)
+void BlastBullet::onCollision(eSideCollision side)
 {
-	_vx = 0;
-	_vy = 0;
-	//isBurst = true;
-	ChangeState(eBulletState::BULLET_EXPLOSION);
+	_vx = 0.0f;
+	_vy = 0.0f;
+	setState(eBulletState::BULLET_EXPLOSION);
 }
 
-void BlastBullet::OnCollision(BaseObject* obj)
+void BlastBullet::onCollision(BaseObject* obj)
 {
-	OnCollision(eSideCollision::NONE);
+	onCollision(eSideCollision::NONE);
 }
 
-void BlastBullet::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
+void BlastBullet::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (_isAllowDraw == false)
-		return;
-
-	_pAnim->SetPosition(GetPosition());
-	_pAnim->SetReverse(_isReverse);
-	if (camera)
-		_pAnim->Draw(GetPosition(), rect, scale, camera->GetTrans(), 0, rotationCenter, color);
-	else
-		_pAnim->Draw(GetPosition());
+	if (_isAllowDraw)
+	{
+		_pAnim->setPosition(getPosition());
+		_pAnim->setReverse(_isReverse);
+		if (camera)
+			_pAnim->draw(getPosition(), rect, scale, camera->getTrans(), 0, rotationCenter, color);
+		else
+			_pAnim->draw(getPosition());
+	}
 }
 
-void BlastBullet::ChangeState(eBulletState state)
+void BlastBullet::setState(eBulletState state)
 {
+	_bulletState = state;
+
 	switch (state)
 	{
 	case BULLET_EXPLOSION:
-		_pAnim = new Animation("Resources/Enemies/BlastHornet/Burst/BurstAnimation.png", 1, 6, 34, 34, 0.05, D3DCOLOR_XRGB(6, 113, 158));
-		_pAnim->SetAnimation(0, 6, 0.05, false);
+		_pAnim = new Animation("Resources/Enemies/BlastHornet/Burst/BurstAnimation.png", 1, 6, 34, 34, 0.05f, D3DCOLOR_XRGB(6, 113, 158));
+		_pAnim->setAnimation(0, 6, 0.05f, false);
 		break;
 
 	case BULLET_FIRE:
-		_pAnim = new Animation("Resources/Enemies/BlastHornet/Bullet/BulletAnim.png", 1, 3, 24, 22, 0.05, D3DCOLOR_XRGB(6, 113, 158));
-		_pAnim->SetAnimation(0, 3);
+		_pAnim = new Animation("Resources/Enemies/BlastHornet/Bullet/BulletAnim.png", 1, 3, 24, 22, 0.05f, D3DCOLOR_XRGB(6, 113, 158));
+		_pAnim->setAnimation(0, 3);
 		break;
 
-	default:break;
+	default:
+		break;
 	}
 
-	_width = _pAnim->GetWidth();
-	_height = _pAnim->GetHeight();
+	_width = _pAnim->getWidth();
+	_height = _pAnim->getHeight();
 
-	_bulletState = state;
 }

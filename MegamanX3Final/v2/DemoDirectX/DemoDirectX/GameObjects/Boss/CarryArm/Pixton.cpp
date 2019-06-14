@@ -6,8 +6,8 @@ Pixton::Pixton()
 {
 	_isBottom = false;
 	_pAnim = new Animation("Resources/Enemies/CarryArm/x3_subboss_carryarm_39.png", 1, 1, 144, 88);
-	this->SetWidth(_pAnim->GetWidth());
-	this->SetHeight(_pAnim->GetHeight());
+	this->setWidth(_pAnim->getWidth());
+	this->setHeight(_pAnim->getHeight());
 	_pixtonPosY = 0;
 }
 
@@ -16,7 +16,7 @@ Pixton::~Pixton()
 	delete _pAnim;
 }
 
-RECT Pixton::GetBound()
+RECT Pixton::getBound()
 {
 	RECT bound;
 	bound.left = _posX - _width / 2;
@@ -26,29 +26,29 @@ RECT Pixton::GetBound()
 	return bound;
 }
 
-void Pixton::Draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
+void Pixton::draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
 	if (!_isAllowDraw)
 		return;
 
-	_pAnim->SetPosition(GetPosition());
+	_pAnim->setPosition(getPosition());
 	if (camera)
-		_pAnim->Draw(_pAnim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+		_pAnim->draw(_pAnim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 	else
-		_pAnim->Draw(_pAnim->GetPosition());
+		_pAnim->draw(_pAnim->getPosition());
 }
 
-void Pixton::OnCollision(eSideCollision side)
+void Pixton::onCollision(eSideCollision side)
 {
 }
 
-void Pixton::Update(float gameTime)
+void Pixton::update(float gameTime)
 {
 	if (!_isAllowDraw)
 		return;
 
-	_pAnim->Update(gameTime);
-	BaseObject::Update(gameTime);
+	_pAnim->update(gameTime);
+	BaseObject::update(gameTime);
 }
 
 bool Pixton::MoveDown(float gameTime, float x, float y)
@@ -61,7 +61,7 @@ bool Pixton::MoveDown(float gameTime, float x, float y)
 			_isBottom = true;
 			_pixtonPosY = 88;
 		}
-		SetPosition(x + 55, y + _pixtonPosY);
+		setPosition(x + 55, y + _pixtonPosY);
 	}
 	return !_isBottom;
 }
@@ -77,7 +77,7 @@ bool Pixton::MoveUp(float gameTime, float x, float y)
 			_pixtonPosY = 0;
 			_vy = -40;
 		}
-		SetPosition(x + 56, y + _pixtonPosY);
+		setPosition(x + 56, y + _pixtonPosY);
 	}
 	return _isBottom;
 }

@@ -3,8 +3,8 @@
 
 SmallSubtankItem::SmallSubtankItem()
 {
-	SetItemType(SMALL_SUBTANK);
-	_small_item = new Animation("Resources/Items/sub-tanks_small.bmp", 1, 3, 8, 8, 0.15, D3DCOLOR_XRGB(6, 113, 158));
+	setItemType(SMALL_SUBTANK);
+	_animationItem = new Animation("Resources/Items/sub-tanks_small.bmp", 1, 3, 8, 8, 0.15, D3DCOLOR_XRGB(6, 113, 158));
 	_width = 10;
 	_height = 8;
 	_vy = 200;
@@ -12,10 +12,10 @@ SmallSubtankItem::SmallSubtankItem()
 
 SmallSubtankItem::~SmallSubtankItem()
 {
-	SAFE_DELETE(_small_item);
+	SAFE_DELETE(_animationItem);
 }
 
-RECT SmallSubtankItem::GetBound()
+RECT SmallSubtankItem::getBound()
 {
 	RECT bound;
 
@@ -27,35 +27,34 @@ RECT SmallSubtankItem::GetBound()
 	return bound;
 }
 
-void SmallSubtankItem::Update(float dt)
+void SmallSubtankItem::update(float dt)
 {
 	if (_isAllowDraw == false)
 		return;
-	_small_item->Update(dt);
-	BaseObject::Update(dt);
+	_animationItem->update(dt);
+	BaseObject::update(dt);
 }
 
-void SmallSubtankItem::Draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
+void SmallSubtankItem::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {
 	if (_isAllowDraw == false)
 		return;
-	_small_item->SetPosition(GetPosition());
+	_animationItem->setPosition(getPosition());
 	if (camera != NULL)
-		_small_item->Draw(GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 	else
-		_small_item->Draw(GetPosition());
+		_animationItem->draw(getPosition());
 }
 
-void SmallSubtankItem::OnCollision(BaseObject *obj)
+void SmallSubtankItem::onCollision(BaseObject* obj)
 {
-	if (obj->GetObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
 		_isDie = true;
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType SmallSubtankItem::GetItemsType()
+Items::eItemType SmallSubtankItem::getItemType()
 {
 	return SMALL_SUBTANK;
 }
-

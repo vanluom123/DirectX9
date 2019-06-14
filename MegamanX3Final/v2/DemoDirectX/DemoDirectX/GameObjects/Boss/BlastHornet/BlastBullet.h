@@ -8,15 +8,15 @@ public:
 	BlastBullet();
 	~BlastBullet();
 
-	RECT GetBound() override;
-	void NewEntity() override;
-	void Update(float dt) override;
-	void OnCollision(eSideCollision side) override;
-	void OnCollision(BaseObject* obj) override;
-	void Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
+	RECT getBound() override;
+	void newObject() override;
+	void update(float dt) override;
+	void onCollision(eSideCollision side) override;
+	void onCollision(BaseObject* obj) override;
+	void draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 		D3DCOLOR color) override;
 
-	void ChangeState(eBulletState state) override;
+	void setState(eBulletState state) override;
 };
 
 #endif

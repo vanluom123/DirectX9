@@ -46,15 +46,15 @@ public:
 	Genjibo();
 	~Genjibo();
 
-	RECT GetBound() override;
-	void Update(float dt) override;
-	void OnCollision(BaseObject* obj) override;
-	void OnCollision(eSideCollision side) override;
+	RECT getBound() override;
+	void update(float dt) override;
+	void onCollision(BaseObject* obj) override;
+	void onCollision(eSideCollision side) override;
 
-	void Draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = NULL) override;
-	void SetState(Shurikein keinState);
+	void draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = NULL) override;
+	void setState(Shurikein keinState);
 
-	void UpdateState(float dt);
+	void updateState(float dt);
 };
 
 #endif // !GENJIBO_H

@@ -6,12 +6,12 @@ class ClingState : public PlayerState
 {
 
 public:
-	ClingState(PLAYERDATA* playerData, bool dash = false);
+	ClingState(PlayerData* playerData, bool dash = false);
 
 	void Update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
-	void OnCollision(BaseObject::eSideCollision side) override;
-	Player::ePlayerState GetState() override;
+	void onCollision(BaseObject::eSideCollision side) override;
+	Player::ePlayerState getState() override;
 
 private:
 	float _accelerateY;

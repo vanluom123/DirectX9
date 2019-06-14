@@ -1,26 +1,29 @@
 #ifndef __INTRO_SCENE_H__
 #define __INTRO_SCENE_H__
-#include "../GameComponents/Scene.h"
 #include "../GameComponents/Animation.h"
+#include <map>
+#include <memory>
 
+#include "Scene.h"
 class IntroScene : public Scene
 {
 public:
 	IntroScene();
 	~IntroScene();
 
-	void Draw() override;
+	void draw() override;
 
-	void OnKeyDown(int keyCode) override;
+	void onKeyDown(int keyCode) override;
 
-	void OnKeyUp(int keyCode) override;
+	void onKeyUp(int keyCode) override;
 
 	void OnMouseDown(float x, float y);
 
-	void Update(float dt) override;
+	void update(float dt) override;
 
 private:
-	Animation* backGround;
+	Animation* _animation_background;
+	std::map<bool, int> _keys;
 };
 
 #endif

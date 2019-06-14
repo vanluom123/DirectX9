@@ -5,7 +5,7 @@
 #include "../../../GameComponents/Animation.h"
 #include "../../../GameComponents/Camera.h"
 #include "GunnerBullet/GunnerBullet.h"
-#include "../../../GunnerData.h"
+#include "GunnerData.h"
 
 class Gunner :public BaseObject
 {
@@ -24,16 +24,16 @@ public:
 	Gunner();	
 	~Gunner();
 
-	void NewEntity() override;
-	RECT GetBound() override;
-	void Update(float dt) override;
-	void OnCollision(eSideCollision side) override;
-	void OnCollision(BaseObject* obj) override;
-	void OnNoCollisionWithBottom() override;
+	void newObject() override;
+	RECT getBound() override;
+	void update(float dt) override;
+	void onCollision(eSideCollision side) override;
+	void onCollision(BaseObject* obj) override;
+	void onNoCollisionWithBottom() override;
 
-	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(100, 100, 100)) override;
+	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(100, 100, 100)) override;
 	void ChangeAnimation(eGunnerState stateName);
-	void SetState(GunnerState *state);
+	void setState(GunnerState *state);
 
 private:
 	Animation* _pAnim;

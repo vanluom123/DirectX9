@@ -8,64 +8,75 @@ int GameGlobal::_height = 256;
 LPDIRECT3DDEVICE9 GameGlobal::_d3ddv = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
+Keyboard* GameGlobal::_keyboard = nullptr;
 
 
-void GameGlobal::SetDevice(LPDIRECT3DDEVICE9 device)
+void GameGlobal::setDevice(LPDIRECT3DDEVICE9 device)
 {
 	_d3ddv = device;
 }
 
-LPDIRECT3DDEVICE9 GameGlobal::GetDevice()
+LPDIRECT3DDEVICE9 GameGlobal::getDevice()
 {
 	return _d3ddv;
 }
 
-HINSTANCE GameGlobal::GetHINSTANCE()
+HINSTANCE GameGlobal::getHinstance()
 {
 	return _hInstance;
 }
 
-HWND GameGlobal::GetHWND()
+HWND GameGlobal::getWnd()
 {
 	return _hWnd;
 }
 
-void GameGlobal::SetHINSTANCE(HINSTANCE hInstance)
+void GameGlobal::setHinstance(HINSTANCE hInstance)
 {
 	GameGlobal::_hInstance = hInstance;
 }
 
-void GameGlobal::SetHWND(HWND hWnd)
+void GameGlobal::setWnd(HWND hWnd)
 {
 	GameGlobal::_hWnd = hWnd;
 }
 
-void GameGlobal::SetSpriteHandler(LPD3DXSPRITE spriteHandler)
+void GameGlobal::setDXSprite(LPD3DXSPRITE spriteHandler)
 {
 	GameGlobal::_spriteHandler = spriteHandler;
 }
 
-LPD3DXSPRITE GameGlobal::GetSpriteHandler()
+LPD3DXSPRITE GameGlobal::getDXSprite()
 {
 	return _spriteHandler;
 }
 
-void GameGlobal::SetWidth(int width)
+void GameGlobal::setWidth(int width)
 {
 	GameGlobal::_width = width;
 }
 
-int GameGlobal::GetWidth()
+int GameGlobal::getWidth()
 {
 	return _width;
 }
 
-void GameGlobal::SetHeight(int height)
+void GameGlobal::setHeight(int height)
 {
 	GameGlobal::_height = height;
 }
 
-int GameGlobal::GetHeight()
+int GameGlobal::getHeight()
 {
 	return _height;
+}
+
+void GameGlobal::setKeyboard(Keyboard* keyboard)
+{
+	_keyboard = keyboard;
+}
+
+Keyboard* GameGlobal::getKeyboard()
+{
+	return _keyboard;
 }

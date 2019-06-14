@@ -3,31 +3,35 @@
 #include <d3dx9.h>
 #include <d3d9.h>
 #include <Windows.h>
+#include "Keyboard.h"
 
 class GameGlobal
 {
 public:
-	static HINSTANCE GetHINSTANCE();
-	static void SetHINSTANCE(HINSTANCE hInstance);
+	static HINSTANCE getHinstance();
+	static void setHinstance(HINSTANCE hInstance);
 
-	static HWND GetHWND();
-	static void SetHWND(HWND hWnd);
+	static HWND getWnd();
+	static void setWnd(HWND hWnd);
 
-	static void SetSpriteHandler(LPD3DXSPRITE spriteHandler);
-	static LPD3DXSPRITE GetSpriteHandler();
+	static void setDXSprite(LPD3DXSPRITE spriteHandler);
+	static LPD3DXSPRITE getDXSprite();
 
-	static void SetDevice(LPDIRECT3DDEVICE9 device);
-	static LPDIRECT3DDEVICE9 GetDevice();
+	static void setDevice(LPDIRECT3DDEVICE9 device);
+	static LPDIRECT3DDEVICE9 getDevice();
 
-	static void SetWidth(int width);
-	static int GetWidth();
+	static void setWidth(int width);
+	static int getWidth();
 
-	static void SetHeight(int height);
-	static int GetHeight();
+	static void setHeight(int height);
+	static int getHeight();
 
 	static LPDIRECT3DSURFACE9 backSurface;
 
-	static bool isGameRunning; //Game State 
+	static bool isGameRunning; //Game State
+
+	static void setKeyboard(Keyboard* keyboard);
+	static Keyboard* getKeyboard();
 
 private:
 	static HINSTANCE _hInstance; //current Windows HINSTANCE
@@ -35,6 +39,7 @@ private:
 	static LPD3DXSPRITE _spriteHandler; //Current SpriteHandler
 	static int _width, _height; //Size of windows
 	static LPDIRECT3DDEVICE9 _d3ddv; //Current direct device
+	static Keyboard* _keyboard;
 };
 
 #endif

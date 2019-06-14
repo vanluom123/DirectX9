@@ -22,13 +22,13 @@ public:
 	~CarryArm();
 
 	Box* boxC;
-	void Draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotateCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
-	RECT GetBound() override;
-	void Update(float dt) override;
-	void OnCollision(BaseObject* obj) override;
-	void SetState(eCarryArmState state);
-	eCarryArmState GetState() { return _curState; }
-	void UpdateState(float dt);
+	void draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotateCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	RECT getBound() override;
+	void update(float dt) override;
+	void onCollision(BaseObject* obj) override;
+	void setState(eCarryArmState state);
+	eCarryArmState getState() { return _curState; }
+	void updateState(float dt);
 
 private:
 	Animation* _pAnim;

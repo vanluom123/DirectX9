@@ -6,10 +6,10 @@
 class DieState : public PlayerState
 {
 public:
-	DieState(PLAYERDATA* playerData);
+	DieState(PlayerData* playerData);
 
 	void Update(float dt) override;
-	Player::ePlayerState GetState() override;
+	Player::ePlayerState getState() override;
 
 private:
 	float _timeDie;

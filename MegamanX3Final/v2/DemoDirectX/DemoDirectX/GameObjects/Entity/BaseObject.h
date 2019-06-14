@@ -45,142 +45,159 @@ public:
 		RECT regionCollision;
 	};
 
-	virtual void NewEntity() {}
+	virtual void newObject() {	}
 
-	void CheckTimeCollision(float collisionTime, eSideCollision side, BaseObject* other);
+	void checkTimeCollision(float collisionTime, eSideCollision side, BaseObject* other);
 
-	virtual void Update(float dt);
-	virtual void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) {};
+	virtual void update(float dt);
 
-	//Control collision
-	//When entity collide, this function will be called
-	virtual void OnCollision(eSideCollision side);
-	virtual void OnCollision(BaseObject* obj);
-	virtual void OnNoCollisionWithBottom();
+	virtual void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) {  }
+
+	// Control collision
+	// When entity collide, this function will be called
+	virtual void onCollision(eSideCollision side);
+	virtual void onCollision(BaseObject* obj) {  }
+	virtual void onNoCollisionWithBottom() {  }
 
 	// SUB-FUNCTION
 public:
-	virtual RECT GetBound();
+	virtual RECT getBound();
 
-	GVec3 GetPosition() {
-		return GVec3(_posX, _posY, 0);
+	GVec3 getPosition() {
+		return GVec3(_posX, _posY, 0.0f);
 	}
 
-	void SetPosition(float x, float y) {
-		SetPosition(GVec2(x, y));
+	void setPosition(float x, float y) {
+		setPosition(GVec2(x, y));
 	}
 
-	void SetPosition(GVec2 pos) {
-		SetPosition(GVec3(pos.x, pos.y, 0));
+	void setPosition(GVec2 pos) {
+		setPosition(GVec3(pos.x, pos.y, 0.0f));
 	}
 
-	void SetPosition(GVec3 pos) {
+	void setPosition(GVec3 pos) {
 		this->_posX = pos.x;
 		this->_posY = pos.y;
-		OnSetPosition(pos);
+		onSetPosition(pos);
 	}
 
-	GVec3 GetPositionStart() {
+	GVec3 getPositionStart() {
 		return GVec3(this->_startx, this->_starty, 0);
 	}
 
-	void SetPositionStart(float x, float y) {
-		SetPositionStart(GVec2(x, y));
+	void setPositionStart(float x, float y) {
+		setPositionStart(GVec2(x, y));
 	}
 
-	void SetPositionStart(GVec2 pos) {
-		SetPositionStart(GVec3(pos.x, pos.y, 0));
+	void setPositionStart(GVec2 pos) {
+		setPositionStart(GVec3(pos.x, pos.y, 0));
 	}
 
-	void SetPositionStart(GVec3 pos) {
+	void setPositionStart(GVec3 pos) {
 		this->_startx = pos.x;
 		this->_starty = pos.y;
-		OnSetPosition(pos);
+		onSetPosition(pos);
 	}
 
-	void AddPosition(float x, float y) {
-		AddPosition(GVec2(x, y));
+	void addPosition(float x, float y) {
+		addPosition(GVec2(x, y));
 	}
 
-	void AddPosition(GVec2 pos) {
-		AddPosition(GVec3(pos.x, pos.y, 0));
+	void addPosition(GVec2 pos) {
+		addPosition(GVec3(pos.x, pos.y, 0));
 	}
 
-	void AddPosition(GVec3 pos) {
-		SetPosition(this->GetPosition() + pos);
+	void addPosition(GVec3 pos) {
+		setPosition(this->getPosition() + pos);
 	}
 
-	void SetWidth(int width) { this->_width = width; }
-	int GetWidth() { return this->_width; }
+	void setWidth(int width) { this->_width = width; }
+	int getWidth() { return this->_width; }
 
-	void SetHeight(int height) { this->_height = height; }
-	int GetHeight() { return this->_height; }
+	void setHeight(int height) { this->_height = height; }
+	int getHeight() { return this->_height; }
 
-	void SetHP(int hp) { this->_HP = hp; }
-	int GetHP() { return this->_HP; }
+	void setHP(int hp) { this->_HP = hp; }
+	int getHP() { return this->_HP; }
 
-	void SetMaxHP(int hp) { this->_MaxHP = hp; }
-	int GetMaxHP() { return this->_MaxHP; }
+	void setMaxHP(int hp) { this->_MaxHP = hp; }
+	int getMaxHP() { return this->_MaxHP; }
 
-	void SetDamage(int dame) { this->_Damage = dame; }
-	int GetDamage() { return this->_Damage; }
+	void setDamage(int dame) { this->_Damage = dame; }
+	int getDamage() { return this->_Damage; }
 
-	float GetVx() { return this->_vx; }
-	void SetVx(float vx) { this->_vx = vx; }
-	void AddVx(float vx) { this->_vx += vx; }
+	float getVx() { return this->_vx; }
+	void setVx(float vx) { this->_vx = vx; }
+	void addVx(float vx) { this->_vx += vx; }
 
-	float GetVy() { return this->_vy; }
-	void SetVy(float vy) { this->_vy = vy; }
-	void AddVy(float vy) { this->_vy += vy; }
+	float getVy() { return this->_vy; }
+	void setVy(float vy) { this->_vy = vy; }
+	void addVy(float vy) { this->_vy += vy; }
 
-	void SetDraw(bool isDraw) { this->_isAllowDraw = isDraw; }
-	bool GetDraw() { return this->_isAllowDraw; }
+	void setDraw(bool isDraw) { this->_isAllowDraw = isDraw; }
+	bool getDraw() { return this->_isAllowDraw; }
 
-	void SetObjectType(eObjectType objectType) { this->_objectType = objectType; }
-	eObjectType GetObjectType() { return this->_objectType; }
+	void setObjectType(eObjectType objectType) { this->_objectType = objectType; }
+	eObjectType getObjectType() { return this->_objectType; }
 
-	void SetReverse(bool reverse) { _isReverse = reverse; }
-	bool GetReverse() { return _isReverse; }
+	void setReverse(bool reverse) { _isReverse = reverse; }
+	bool getReverse() { return _isReverse; }
 
-	void SetDie(bool die) { _isDie = die; }
-	bool GetDie() { return _isDie; }
+	void setDie(bool die) { _isDie = die; }
+	bool getDie() { return _isDie; }
 
-	std::vector<BaseObject*>* GetListBullet();
+	std::vector<BaseObject*>* getListBullet() { return &_listBullet; }
 
-	void SetId(int id);
-	int GetId() const;
+	void setId(int id) { _id = id; }
+	int getId() const { return _id; }
 
 protected:
+	// setting up the position of object
+	virtual void onSetPosition(GVec3 pos) { }
 
-	//duoc goi khi set position cua Entity, dung cho ke thua
-	virtual void OnSetPosition(GVec3 pos) { }
-
-	//vi tri tam position x va y
+	// The position of object
 	float _posX, _posY, _startx, _starty;
 
-	//phan toc vx, vy
+	// The velocity of object
 	float _vx, _vy;
+
 	int _HP, _Damage, _MaxHP;
-	//size cua entity
+
+	// size of object
 	float _width, _height;
 
-	float _collisionTimeMinX;
-	float _collisionTimeMinY;
+	// allow to draw the sprite when the Camera contain Enemies
+	bool _isAllowDraw;	
 
-	bool _isAllowDraw;	// allow to draw the sprite when the Camera contain Enemies
-
-	eSideCollision _sideX;
-	eSideCollision _sideY;
-	BaseObject* _entityX;
-	BaseObject* _entityY;
+	// Object type
 	eObjectType _objectType;
 
+	// List bullet
 	std::vector<BaseObject*> _listBullet;
 
+	// Check out direction face of object
 	bool _isReverse;
+
+	// Check out object die
 	bool _isDie;
 
+	// setting up identity for object
 	int _id;
+
+	// collision minimum time to coordinate x
+	float _collision_time_min_x;
+
+	// collision minimum time to coordinate y
+	float _collision_time_min_y;
+
+	// collision side to coordinate x
+	eSideCollision _side_x;
+
+	// collision side to coordinate x
+	eSideCollision _side_y;
+
+	BaseObject* _entity_x;
+	BaseObject* _entity_y;
 };
 
 #endif // !ENTITIES_H

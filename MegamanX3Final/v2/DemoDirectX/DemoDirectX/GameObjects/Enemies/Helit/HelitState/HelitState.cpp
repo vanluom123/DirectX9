@@ -5,5 +5,5 @@ HelitState::HelitState(HelitData* helit)
 	this->_pHelitData = helit;
 }
 
-void HelitState::Update(float dt)
+void HelitState::update(float dt)
 {}

@@ -5,17 +5,17 @@ BaseObject::BaseObject()
 	_objectType = TAG_NONE;
 	_vx = 0;
 	_vy = 0;
-	_collisionTimeMinX = 1.0f;
-	_collisionTimeMinY = 1.0f;
-	_sideX = NONE;
-	_sideY = NONE;
+	_collision_time_min_x = 1.0f;
+	_collision_time_min_y = 1.0f;
+	_side_x = NONE;
+	_side_y = NONE;
 	_isAllowDraw = true;
 	_isDie = false;
 	_HP = 0;
 	_Damage = 0;
 }
 
-RECT BaseObject::GetBound()
+RECT BaseObject::getBound()
 {
 	RECT bound;
 
@@ -27,93 +27,76 @@ RECT BaseObject::GetBound()
 	return bound;
 }
 
-void BaseObject::OnCollision(eSideCollision side)
+void BaseObject::onCollision(eSideCollision side)
 {
-	_vx = 0, _vy = 0;
+	_vx = 0.0f;
+	_vy = 0.0f;
 }
 
-void BaseObject::OnCollision(BaseObject* obj)
-{}
-
-void BaseObject::OnNoCollisionWithBottom()
-{}
-
-std::vector<BaseObject*>* BaseObject::GetListBullet()
-{
-	return &_listBullet;
-}
-
-void BaseObject::SetId(int id)
-{
-	_id = id;
-}
-
-int BaseObject::GetId() const
-{
-	return _id;
-}
-
-void BaseObject::Update(float dt)
+void BaseObject::update(float dt)
 {
 	if (_HP > _MaxHP)
 		_HP = _MaxHP;
 
-	if (_sideX != NONE)
+	if (_side_x != NONE)
 	{
-		if (_collisionTimeMinY == 0.0f)
+		if (_collision_time_min_y == 0.0f)
 		{
-			if (GetBound().bottom <= _entityX->GetBound().top || GetBound().top >= _entityX->GetBound().bottom)
+			if (getBound().bottom <= _entity_x->getBound().top || getBound().top >= _entity_x->getBound().bottom)
 			{
-				_collisionTimeMinX = 1.0f;
-				_sideX = NONE;
+				_collision_time_min_x = 1.0f;
+				_side_x = NONE;
 			}
 		}
-		OnCollision(_sideX);
+		onCollision(_side_x);
 	}
-	if (_sideY != NONE)
+	if (_side_y != NONE)
 	{
-		if (_collisionTimeMinX == 0.0f)
+		if (_collision_time_min_x == 0.0f)
 		{
-			if (GetBound().right <= _entityY->GetBound().left || GetBound().left >= _entityY->GetBound().right)
+			if (getBound().right <= _entity_y->getBound().left || getBound().left >= _entity_y->getBound().right)
 			{
-				_collisionTimeMinY = 1.0f;
-				_sideY = NONE;
+				_collision_time_min_y = 1.0f;
+				_side_y = NONE;
 			}
 		}
-		OnCollision(_sideY);
+		onCollision(_side_y);
 	}
-	_posX += _vx * dt * _collisionTimeMinX;
-	_collisionTimeMinX = 1.0f;
-	_sideX = NONE;
 
-	_posY += _vy * dt * _collisionTimeMinY;
-	_collisionTimeMinY = 1.0f;
-	_sideY = NONE;
+	_posX += _vx * dt * _collision_time_min_x;
+	_collision_time_min_x = 1.0f;
+	_side_x = NONE;
+
+	_posY += _vy * dt * _collision_time_min_y;
+	_collision_time_min_y = 1.0f;
+	_side_y = NONE;
 }
 
-void BaseObject::CheckTimeCollision(float collisionTime, eSideCollision side, BaseObject* other)
+void BaseObject::checkTimeCollision(float collisionTime, eSideCollision side, BaseObject* other)
 {
 	switch (side)
 	{
 	case LEFT:
 	case RIGHT:
-		if (collisionTime >= _collisionTimeMinX)
+	{
+		if (collisionTime >= _collision_time_min_x)
 			return;
-		_collisionTimeMinX = collisionTime;
-		_sideX = side;
-		_entityX = other;
-		break;
-
+		_collision_time_min_x = collisionTime;
+		_side_x = side;
+		_entity_x = other;
+	}
+	break;
 
 	case TOP:
 	case BOTTOM:
-		if (collisionTime >= _collisionTimeMinY)
+	{
+		if (collisionTime >= _collision_time_min_y)
 			return;
-		_collisionTimeMinY = collisionTime;
-		_sideY = side;
-		_entityY = other;
-		break;
-
+		_collision_time_min_y = collisionTime;
+		_side_y = side;
+		_entity_y = other;
+	}
+	break;
 
 	default: break;
 	}

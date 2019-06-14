@@ -1,10 +1,10 @@
 #include "FinishState.h"
 
-FinishState::FinishState(PLAYERDATA* playerData) :PlayerState(playerData)
+FinishState::FinishState(PlayerData* playerData) :PlayerState(playerData)
 {
 }
 
-Player::ePlayerState FinishState::GetState()
+Player::ePlayerState FinishState::getState()
 {
 	return Player::WIN;
 }

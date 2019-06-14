@@ -7,7 +7,8 @@
 #include "PlayerBullet\PlayerBullet.h"
 #include "../Bar/HPBar.h"
 #include "../../GameComponents/Sound.h"
-#include "../../tagPlayerData.h"
+#include "PlayerData.h"
+#include <memory>
 
 class Player : public BaseObject
 {
@@ -17,64 +18,56 @@ public:
 
 	enum ePlayerState
 	{
-		APPEAR,
-		STAND,
-		RUN,
-		FALL,
-		JUMP,
-		CLING,
-		CLIMB,
-		SLIP_DOWN,
-		DASH,
-		BLEED,
-		WIN,
-		DIE
+		APPEAR = 0,
+		STAND = 1,
+		RUN = 2,
+		FALL = 3,
+		JUMP = 4,
+		CLING = 5,
+		CLIMB = 6,
+		SLIP_DOWN = 7,
+		DASH = 8,
+		BLEED = 9,
+		WIN = 10,
+		DIE = 11
 	};
 
-	void ChangeAnimation(ePlayerState state);
+	void changeAnimation(ePlayerState state);
 
 	void KeyBoardEventHandler(const std::map<int, bool>& keys, float dt);
 	void OnKeyDown(std::map<int, bool> keys, int Key);
 	void OnKeyUp(int Key);
 
-	RECT GetBound() override;
+	RECT getBound() override;
 
-	void Update(float dt) override;
-	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void update(float dt) override;
+	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
 	void DrawHP();
 
-	void OnCollision(eSideCollision side) override;
-	void OnNoCollisionWithBottom() override;
-	void OnCollision(BaseObject* enemies) override;
+	void onCollision(eSideCollision side) override;
+	void onNoCollisionWithBottom() override;
+	void onCollision(BaseObject* enemies) override;
 
-	void PlayerShoot(PlayerBullet::eBulletType bulletType);
+	void playerShoot(PlayerBullet::eBulletType bulletType);
 
 	// SUB-FUNCTION
 public:
-
-	void SetState(PlayerState* newState);
-
-	Animation* GetAnimation() const;
-
-	float GetHP() const;
-
-	void SetHP(float hp);
-
+	void setState(PlayerState* newState);
+	Animation* getAnimation() const;
+	float getHP() const;
+	void setHP(float hp);
 	void addHP(float hp);
-
-	std::vector<PlayerBullet*>* GetPlayerBullet();
-
-	void SetLock(bool lock);
-
-	PLAYERDATA* GetPlayerData() const;
-
-	ePlayerState GetCurrentState() const;
+	void setLock(bool lock);
+	PlayerData* getPlayerData() const;
+	ePlayerState getCurrentState() const;
+	std::vector<PlayerBullet*>* getPlayerBullet();
 
 private:
 
 	// STRUCT PLAYER DATA
-	PLAYERDATA* _playerData;
+	PlayerData* _playerData;
 
+	HPBar* _hpbar;
 	Animation* _pAnimation;
 	Animation* _pAniEfectCharge;
 	Animation* _pAniEfectDash;
@@ -94,7 +87,6 @@ private:
 	float _posSlideDown;
 
 	ePlayerState _currentState;
-	HPBar* _hpbar;
 	std::vector<PlayerBullet*> _listBullet;
 };
 

@@ -12,23 +12,23 @@ public:
 	Animation(const char* filePath, int rows, int columns, int frameWidth, int frameHeight,
 		float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
 
-	void Update(float dt);
-	void Draw(GVec3 position = GVec3(), RECT sourceRect = RECT(),
+	void update(float dt);
+	void draw(GVec3 position = GVec3(), RECT sourceRect = RECT(),
 		GVec2 scale = GVec2(), GVec2 transform = GVec2(), float angle = 0,
 		GVec2 rotationCenter = GVec2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
-	void Draw(GVec2 translate);
+	void draw(GVec2 translate);
 
 	// SUB-FUNCTION
 public:
-	int GetCurrentRow() const { return _currentRow; }
-	int GetCurrentColumn() const { return _currentIndex; }
-	void SetShoot(bool shoot) { this->_isShoot = shoot; }
-	void SetPause(bool pause) { this->_isPause = pause; }
-	bool GetPause() const { return this->_isPause; }
-	void SetLoop(bool isLoop) { this->_isLoop = isLoop; }
+	int getCurrentRow() const { return _currentRow; }
+	int getCurrentColumn() const { return _currentIndex; }
+	void setShoot(bool shoot) { this->_isShoot = shoot; }
+	void setPause(bool pause) { this->_isPause = pause; }
+	bool getPause() const { return this->_isPause; }
+	void setLoop(bool isLoop) { this->_isLoop = isLoop; }
 
-	void SetFrame(int frameW, int frameH);
-	void SetAnimation(int currentRow, int framePerRow, float timePerFrame = 0.1f, bool isLoop = true);
+	void setFrame(int frameW, int frameH);
+	void setAnimation(int currentRow, int framePerRow, float timePerFrame = 0.1f, bool isLoop = true);
 
 private:
 

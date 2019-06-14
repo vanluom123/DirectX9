@@ -3,35 +3,34 @@
 IntroScene::IntroScene()
 {
 	_backColor = 0x000000;
-	backGround = new Animation("Resources/IntroBackground/2342tilescreen.png", 1, 1, 256, 224);
+	_animation_background = new Animation("Resources/IntroBackground/2342tilescreen.png", 1, 1, 256, 224);
 }
 
 IntroScene::~IntroScene()
 {
-	delete backGround;
+	delete _animation_background;
 }
 
-void IntroScene::Draw()
+void IntroScene::draw()
 {
-	backGround->Draw();
+	_animation_background->draw();
 }
 
-void IntroScene::OnKeyDown(int keyCode)
+void IntroScene::onKeyDown(int keyCode)
 {
-	if (keyCode == 0xd)
-	{
-	}
+	_keys[keyCode] = true;
 }
 
-void IntroScene::OnKeyUp(int keyCode)
+void IntroScene::onKeyUp(int keyCode)
 {
+	_keys[keyCode] = false;
 }
 
 void IntroScene::OnMouseDown(float x, float y)
 {
 }
 
-void IntroScene::Update(float dt)
+void IntroScene::update(float dt)
 {
-	backGround->Update(dt);
+	_animation_background->update(dt);
 }

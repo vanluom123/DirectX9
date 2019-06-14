@@ -15,7 +15,7 @@ using namespace std;
 #define KEYBOARD_BUFFERED_SIZE 1024
 
 int initWindow(int cmdShow);
-int InitDevice();
+int initDevice();
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 LPDIRECT3D9 mDirect3D9;
@@ -25,10 +25,10 @@ LPDIRECT3DDEVICE9 mDevice;
 HINSTANCE mHInstance;
 int mCmdShow;
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
 	mHInstance = hInstance;
-	initWindow(cmdShow);
+	initWindow(nShowCmd);
 	return 0;
 }
 
@@ -60,26 +60,28 @@ int initWindow(int cmdShow)
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		GameGlobal::GetWidth() * 2,
-		GameGlobal::GetHeight() * 2,
+		GameGlobal::getWidth() * 2,
+		GameGlobal::getHeight() * 2,
 		NULL,
 		NULL,
 		mHInstance,
 		NULL);
 
-	GameGlobal::SetHINSTANCE(mHInstance);
-	GameGlobal::SetHWND(hWnd);
+	GameGlobal::setHinstance(mHInstance);
+	GameGlobal::setWnd(hWnd);
+
+	GameGlobal::setKeyboard(new Keyboard(hWnd));
 
 	ShowWindow(hWnd, SW_NORMAL);
 	UpdateWindow(hWnd);
 
-	if (InitDevice())
+	if (initDevice())
 		Game game(FPS);
 
 	return 0;
 }
 
-int InitDevice()
+int initDevice()
 {
 	mD3d = Direct3DCreate9(D3D_SDK_VERSION);
 	D3DPRESENT_PARAMETERS d3dpp;
@@ -90,31 +92,32 @@ int InitDevice()
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 	d3dpp.BackBufferCount = 1;
-	d3dpp.BackBufferWidth = GameGlobal::GetWidth();
-	d3dpp.BackBufferHeight = GameGlobal::GetHeight();
+	d3dpp.BackBufferWidth = GameGlobal::getWidth();
+	d3dpp.BackBufferHeight = GameGlobal::getHeight();
 
 	const auto result = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
-		GameGlobal::GetHWND(),
+		GameGlobal::getWnd(),
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp,
 		&mDevice);
 	if (FAILED(result))
 		return 0;
 
-	GameGlobal::SetDevice(mDevice);
+	if (!GameGlobal::getKeyboard()->createKeyboard())
+		return 0;
 
-	D3DXCreateSprite(GameGlobal::GetDevice(), &mSpriteHandler);
-	GameGlobal::SetSpriteHandler(mSpriteHandler);
+	GameGlobal::setDevice(mDevice);
+
+	D3DXCreateSprite(GameGlobal::getDevice(), &mSpriteHandler);
+	GameGlobal::setDXSprite(mSpriteHandler);
 
 	return 1;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	/*
-	su dung cac event cua window
-	*/
+	//su dung cac event cua window
 	switch (message)
 	{
 	case WM_DESTROY:
@@ -123,15 +126,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_LBUTTONDOWN:
-		SceneManager::GetInstance()->GetCurrentScene()->onMouseDown(float(GET_X_LPARAM(lParam)), float(GET_Y_LPARAM(lParam)));
+		SceneManager::getInstance()->getCurrentScene()->onMouseDown(float(GET_X_LPARAM(lParam)), float(GET_Y_LPARAM(lParam)));
 		break;
 
 	case WM_KEYDOWN:
-		SceneManager::GetInstance()->GetCurrentScene()->OnKeyDown(wParam);
+		SceneManager::getInstance()->getCurrentScene()->onKeyDown(wParam);
 		break;
 
 	case WM_KEYUP:
-		SceneManager::GetInstance()->GetCurrentScene()->OnKeyUp(wParam);
+		SceneManager::getInstance()->getCurrentScene()->onKeyUp(wParam);
 		break;
 
 

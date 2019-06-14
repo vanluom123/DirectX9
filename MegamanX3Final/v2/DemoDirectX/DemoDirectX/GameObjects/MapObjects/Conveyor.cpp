@@ -5,11 +5,11 @@
 Conveyor::Conveyor(bool direction): BaseObject()
 {
 	_objectType = BaseObject::CONVEYOR;
-	_pAnim = new Animation("Resources/MapObject/Conveyor.png", 1, 4, 128, 32, 0.1);
-	_pAnim2 = new Animation("Resources/MapObject/Conveyor1.png", 1, 4, 32, 32, 0.1);
+	_pAnim = new Animation("Resources/MapObject/Conveyor.png", 1, 4, 128, 32, 0.1f);
+	_pAnim2 = new Animation("Resources/MapObject/Conveyor1.png", 1, 4, 32, 32, 0.1f);
 
-	_pAnim->SetAnimation(0, 4, 0.1);
-	_pAnim2->SetAnimation(0, 4, 0.1);
+	_pAnim->setAnimation(0, 4, 0.1f);
+	_pAnim2->setAnimation(0, 4, 0.1f);
 
 	_isReverse = direction;
 	_isDie = false;
@@ -28,26 +28,26 @@ Conveyor::~Conveyor()
 	delete _pAnim;
 }
 
-void Conveyor::Update(float dt)
+void Conveyor::update(float dt)
 {
-	_pAnim->Update(dt);
-	_pAnim2->Update(dt);
+	_pAnim->update(dt);
+	_pAnim2->update(dt);
 }
 
-void Conveyor::OnCollision(eSideCollision side)
+void Conveyor::onCollision(eSideCollision side)
 {}
 
-void Conveyor::OnCollision(BaseObject* obj)
+void Conveyor::onCollision(BaseObject* obj)
 {
-	if (obj->GetObjectType() != ROCK_MAN && obj->GetObjectType() != ENEMY)
+	if (obj->getObjectType() != ROCK_MAN && obj->getObjectType() != ENEMY)
 		return;
-	if (obj->GetObjectType() == ROCK_MAN)
-		obj->AddVx(_velocityX);
-	else if (obj->GetObjectType() == ENEMY)
-		obj->AddVx(_velocityX/2);
+	if (obj->getObjectType() == ROCK_MAN)
+		obj->addVx(_velocityX);
+	else if (obj->getObjectType() == ENEMY)
+		obj->addVx(_velocityX/2);
 }
 
-void Conveyor::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
+void Conveyor::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
 	if (!_isAllowDraw)
@@ -55,9 +55,9 @@ void Conveyor::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 r
 
 	int i = 64;
 
-	_pAnim->SetReverse(_isReverse);
-	_pAnim->SetPosition(GetBound().left + i, _posY + 8);
-	_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+	_pAnim->setReverse(_isReverse);
+	_pAnim->setPosition(getBound().left + i, _posY + 8);
+	_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
 	
 
@@ -67,12 +67,12 @@ void Conveyor::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 r
 		if (i >= _width)
 			return;
 
-		_pAnim->SetReverse(_isReverse);
-		_pAnim->SetPosition(GetBound().left + i, _posY + 8);
-		_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		_pAnim->setReverse(_isReverse);
+		_pAnim->setPosition(getBound().left + i, _posY + 8);
+		_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
-		_pAnim2->SetReverse(_isReverse);
-		_pAnim2->SetPosition(GetBound().left + i - 64, _posY + 8);
-		_pAnim2->Draw(_pAnim2->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		_pAnim2->setReverse(_isReverse);
+		_pAnim2->setPosition(getBound().left + i - 64, _posY + 8);
+		_pAnim2->draw(_pAnim2->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 	}
 }

@@ -3,26 +3,26 @@
 
 HelitStand::HelitStand(HelitData* helit) :HelitState(helit)
 {
-	_pHelitData->helit->SetVx(0);
-	_pHelitData->helit->SetVy(-60);
+	_pHelitData->helit->setVx(0);
+	_pHelitData->helit->setVy(-60);
 	_timeAttack = 0;
 }
 
-Helit::eHelitState HelitStand::GetState()
+Helit::eHelitState HelitStand::getState()
 {
 	return Helit::HELIT_STAND;
 }
 
-void HelitStand::Update(float dt)
+void HelitStand::update(float dt)
 {
 	_timeAttack += dt;
 
 	if (_timeAttack > 2.0f)
-		_pHelitData->helit->SetState(new HelitAttack(_pHelitData));
+		_pHelitData->helit->setState(new HelitAttack(_pHelitData));
 	else
 	{
 		if (_timeAttack > 1.0f)
-			_pHelitData->helit->SetVy(60);
+			_pHelitData->helit->setVy(60);
 	}
 
 }

@@ -2,23 +2,23 @@
 #include "../StandState/StandState.h"
 
 
-BleedState::BleedState(PLAYERDATA* playerData, int direction) : PlayerState(playerData)
+BleedState::BleedState(PlayerData* playerData, int direction) : PlayerState(playerData)
 {
-	_playerData->player->SetVx(30.0f * direction);
-	_playerData->player->SetVy(5.0f);
+	_playerData->player->setVx(30.0f * direction);
+	_playerData->player->setVy(5.0f);
 	_timeBleed = 0.0f;
 }
 
 void BleedState::Update(float dt)
 {
-	_playerData->player->SetVx(0);
-	_playerData->player->GetAnimation()->SetPause(false);
+	_playerData->player->setVx(0.0f);
+	_playerData->player->getAnimation()->setPause(false);
 
-	if (_playerData->player->GetAnimation()->GetCurrentColumn() >= 8)
-		_playerData->player->SetState(new StandState(_playerData));
+	if (_playerData->player->getAnimation()->getCurrentColumn() >= 8)
+		_playerData->player->setState(new StandState(_playerData));
 }
 
-Player::ePlayerState BleedState::GetState()
+Player::ePlayerState BleedState::getState()
 {
 	return Player::BLEED;
 }

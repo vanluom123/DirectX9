@@ -4,7 +4,7 @@
 Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3DCOLOR colorKey)
 {
 	_isReverseX = false;
-	_spriteHandler = GameGlobal::GetSpriteHandler();
+	_spriteHandler = GameGlobal::getDXSprite();
 	_position = Gvec3Zero;
 	_rotation = 0;
 	_rotationCenter = GVec2(_position.x, _position.y);
@@ -19,7 +19,7 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 
 	if (width == 0)
 	{
-		if (!IsCheckRect(sourceRect))
+		if (!isCheckRect(sourceRect))
 			this->_width = _imageInfo.Width;
 		else
 			this->_width = sourceRect.right - sourceRect.left;
@@ -29,7 +29,7 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 
 	if (height == 0)
 	{
-		if (!IsCheckRect(sourceRect))
+		if (!isCheckRect(sourceRect))
 			this->_height = _imageInfo.Height;
 		else
 			this->_height = sourceRect.bottom - sourceRect.top;
@@ -37,7 +37,7 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 	else
 		this->_height = height;
 
-	if (!IsCheckRect(sourceRect))
+	if (!isCheckRect(sourceRect))
 	{
 		this->_sourceRect.left = 0;
 		this->_sourceRect.right = this->_width;
@@ -72,7 +72,7 @@ Sprite::~Sprite()
 	SAFE_RELEASE(_spriteHandler);
 }
 
-void Sprite::Draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
+void Sprite::draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
 	float Angle, GVec2 RotationCenter, D3DXCOLOR transColor)
 {
 	GVec3 inPosition = _position;
@@ -91,7 +91,7 @@ void Sprite::Draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
 	inPosition.y = int(inPosition.y);
 	inPosition.z = int(inPosition.z);
 
-	if (IsCheckRect(SourceRect))
+	if (isCheckRect(SourceRect))
 		inSourceRect = SourceRect;
 
 	if (Scale != GVec2())
@@ -130,9 +130,6 @@ void Sprite::Draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
 	else
 		center = GVec3(_width / 2, _height / 2, 0.0f);
 
-
-	//GVec3 center(float(_width) / 2, float(_height) / 2, 0);
-
 	_spriteHandler->Draw(
 		_texture,
 		&inSourceRect,
@@ -143,82 +140,82 @@ void Sprite::Draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
 	_spriteHandler->SetTransform(&oldMatrix);
 }
 
-void Sprite::SetSourceRect(const RECT& rect)
+void Sprite::setSourceRect(const RECT& rect)
 {
 	_sourceRect = rect;
 }
 
-LPDIRECT3DTEXTURE9 Sprite::GetTexture() const
+LPDIRECT3DTEXTURE9 Sprite::getTexture() const
 {
 	return _texture;
 }
 
-GVec3 Sprite::GetPosition() const
+GVec3 Sprite::getPosition() const
 {
 	return _position;
 }
 
-void Sprite::SetPosition(float x, float y)
+void Sprite::setPosition(float x, float y)
 {
-	SetPosition(GVec2(x, y));
+	setPosition(GVec2(x, y));
 }
 
-void Sprite::SetPosition(const GVec2& pos)
+void Sprite::setPosition(const GVec2& pos)
 {
-	SetPosition(GVec3(pos.x, pos.y, 0));
+	setPosition(GVec3(pos.x, pos.y, 0));
 }
 
-void Sprite::SetPosition(const GVec3& pos)
+void Sprite::setPosition(const GVec3& pos)
 {
 	_position = pos;
 }
 
-GVec2 Sprite::GetScale() const
+GVec2 Sprite::getScale() const
 {
 	return _scale;
 }
 
-void Sprite::SetScale(const GVec2& scale)
+void Sprite::setScale(const GVec2& scale)
 {
 	this->_scale = scale;
 }
 
-GVec2 Sprite::GetTranslation() const
+GVec2 Sprite::getTranslation() const
 {
 	return _translation;
 }
 
-void Sprite::SetTranslation(const GVec2& translation)
+void Sprite::setTranslation(const GVec2& translation)
 {
 	this->_translation = translation;
 }
 
-GVec2 Sprite::GetRotationCenter() const
+GVec2 Sprite::getRotationCenter() const
 {
 	return _rotationCenter;
 }
 
-void Sprite::SetRotationCenter(const GVec2& rotationCenter)
+void Sprite::setRotationCenter(const GVec2& rotationCenter)
 {
 	this->_rotationCenter = rotationCenter;
 }
 
-float Sprite::GetRotation() const
+float Sprite::getRotation() const
 {
 	return _rotation;
 }
 
-void Sprite::SetRotation(float rotation)
+void Sprite::setRotation(float rotation)
 {
 	this->_rotation = rotation;
 }
 
-D3DXIMAGE_INFO Sprite::GetImageInfo() const
+D3DXIMAGE_INFO Sprite::getImageInfo() const
 {
 	return _imageInfo;
 }
 
-void Sprite::SetReverse(bool reverse)
+void Sprite::setReverse(bool reverse)
 {
 	if (_isReverseX != reverse)
 	{
@@ -227,32 +224,32 @@ void Sprite::SetReverse(bool reverse)
 	}
 }
 
-bool Sprite::IsAnchorPoint() const
+bool Sprite::isAnchorPoint() const
 {
 	return _isAnchorPoint;
 }
 
-void Sprite::IsAnchorPoint(bool val)
+void Sprite::isAnchorPoint(bool val)
 {
 	_isAnchorPoint = val;
 }
 
-GVec2 Sprite::GetAnchorPoint() const
+GVec2 Sprite::getAnchorPoint() const
 {
 	return _anchorPoint;
 }
 
-void Sprite::SetAnchorPoint(const GVec2& val)
+void Sprite::setAnchorPoint(const GVec2& val)
 {
 	_anchorPoint = val;
 }
 
-void Sprite::SetAnchorPoint(float x, float y)
+void Sprite::setAnchorPoint(float x, float y)
 {
-	SetAnchorPoint(GVec2(x, y));
+	setAnchorPoint(GVec2(x, y));
 }
 
-bool Sprite::IsCheckRect(const RECT& bound)
+bool Sprite::isCheckRect(const RECT& bound)
 {
 	if (bound.left == bound.right)
 		return false;
@@ -261,22 +258,22 @@ bool Sprite::IsCheckRect(const RECT& bound)
 	return true;
 }
 
-int Sprite::GetWidth() const
+int Sprite::getWidth() const
 {
 	return _width;
 }
 
-void Sprite::SetWidth(int width)
+void Sprite::setWidth(int width)
 {
 	this->_width = width;
 }
 
-int Sprite::GetHeight() const
+int Sprite::getHeight() const
 {
 	return _height;
 }
 
-void Sprite::SetHeight(int height)
+void Sprite::setHeight(int height)
 {
 	this->_height = height;
 }

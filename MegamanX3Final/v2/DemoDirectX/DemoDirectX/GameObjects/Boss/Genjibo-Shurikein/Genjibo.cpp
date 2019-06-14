@@ -21,7 +21,7 @@ Genjibo::Genjibo()
 	sideGen = NONE;
 	change = false;
 	shurikeinState = Shurikein::STAND;
-	SetState(Shurikein::APPEAR);
+	setState(Shurikein::APPEAR);
 }
 
 
@@ -32,7 +32,7 @@ Genjibo::~Genjibo()
 	delete animDie;
 }
 
-RECT Genjibo::GetBound()
+RECT Genjibo::getBound()
 {
 	RECT bound;
 	bound.left = _posX - _width / 2.0f;
@@ -42,39 +42,39 @@ RECT Genjibo::GetBound()
 	return bound;
 }
 
-void Genjibo::Update(float dt)
+void Genjibo::update(float dt)
 {
 	for (auto& bullet : _listBullet)
-		bullet->Update(dt);
+		bullet->update(dt);
 
 	if (_isDie == true)
 	{
-		if (animDie->GetPause() == true)
+		if (animDie->getPause() == true)
 			return;
-		animDie->Update(dt);
+		animDie->update(dt);
 	}
 	else
-		anim->Update(dt);
+		anim->update(dt);
 
-	animGenjinbo->Update(dt);
-	UpdateState(dt);
-	BaseObject::Update(dt);
+	animGenjinbo->update(dt);
+	updateState(dt);
+	BaseObject::update(dt);
 }
 
-void Genjibo::OnCollision(BaseObject * obj)
+void Genjibo::onCollision(BaseObject * obj)
 {
-	if (obj->GetObjectType() == eObjectType::ROCK_MAN_BULLET)
+	if (obj->getObjectType() == eObjectType::ROCK_MAN_BULLET)
 	{
 		_HP -= 2;
 		if (_HP < 0)
 		{
 			_isDie = true;
-			SetState(Shurikein::DIE);
+			setState(Shurikein::DIE);
 
-			auto* item = new BigBloodItem();
+			auto item = new BigBloodItem();
 			_listBullet.push_back(item);
-			item->SetPosition(_posX, _posY);
-			item->SetObjectType(BaseObject::ITEM);
+			item->setPosition(_posX, _posY);
+			item->setObjectType(BaseObject::ITEM);
 			return;
 		}
 
@@ -86,7 +86,7 @@ void Genjibo::OnCollision(BaseObject * obj)
 	}
 }
 
-void Genjibo::OnCollision(eSideCollision side)
+void Genjibo::onCollision(eSideCollision side)
 {
 	switch (shurikeinState)
 	{
@@ -95,7 +95,7 @@ void Genjibo::OnCollision(eSideCollision side)
 	case Shurikein::ATTACK_1:
 	{
 		//Attack Around
-		if (_sideX == BaseObject::NONE && _sideY != BaseObject::NONE)
+		if (_side_x == BaseObject::NONE && _side_y != BaseObject::NONE)
 		{
 			change = true;
 			if (_vy > 0)
@@ -103,7 +103,7 @@ void Genjibo::OnCollision(eSideCollision side)
 			else
 				sideGen = BaseObject::TOP;
 		}
-		else if (_sideX != BaseObject::NONE && _sideY == BaseObject::NONE)
+		else if (_side_x != BaseObject::NONE && _side_y == BaseObject::NONE)
 		{
 			change = true;
 			if (_vx > 0)
@@ -111,7 +111,7 @@ void Genjibo::OnCollision(eSideCollision side)
 			else
 				sideGen = BaseObject::LEFT;
 		}
-		else if (_sideX != BaseObject::NONE && _sideY != BaseObject::NONE && change)
+		else if (_side_x != BaseObject::NONE && _side_y != BaseObject::NONE && change)
 		{
 			change = false;
 			if (sideGen == TOP || sideGen == BOTTOM)
@@ -119,7 +119,7 @@ void Genjibo::OnCollision(eSideCollision side)
 			else
 				_vx *= -1;
 		}
-		else if (_sideX == BaseObject::NONE && _sideY == BaseObject::NONE && change)
+		else if (_side_x == BaseObject::NONE && _side_y == BaseObject::NONE && change)
 		{
 			change = false;
 			if (sideGen == TOP || sideGen == BOTTOM)
@@ -146,34 +146,34 @@ void Genjibo::OnCollision(eSideCollision side)
 	}
 }
 
-void Genjibo::Draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
+void Genjibo::draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
 	if (shurikeinState == Shurikein::APPEAR)
 	{
-		animGenjinbo->SetPosition(_posX, posY);
-		animGenjinbo->Draw(animGenjinbo->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+		animGenjinbo->setPosition(_posX, posY);
+		animGenjinbo->draw(animGenjinbo->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 	}
 
 	for (auto& bullet : _listBullet)
-		bullet->Draw(camera);
+		bullet->draw(camera);
 
 	if (_isAllowDraw == false) return;
 
 	if (_isDie == true)
 	{
-		if (animDie->GetPause() == true)
+		if (animDie->getPause() == true)
 			return;
-		animDie->SetPosition(GetPosition());
-		animDie->Draw(animDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+		animDie->setPosition(getPosition());
+		animDie->draw(animDie->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 	}
 	else
 	{
-		anim->SetPosition(GetPosition());
-		anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+		anim->setPosition(getPosition());
+		anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 	}
 }
 
-void Genjibo::SetState(Shurikein keinState)
+void Genjibo::setState(Shurikein keinState)
 {
 	if (shurikeinState == keinState)
 		return;
@@ -186,8 +186,8 @@ void Genjibo::SetState(Shurikein keinState)
 	{
 		_vx = 0;
 		_vy = 150;
-		anim->SetAnimation(1, 10, 0.05);
-		animGenjinbo->SetAnimation(0, 2, 0.05);
+		anim->setAnimation(1, 10, 0.05);
+		animGenjinbo->setAnimation(0, 2, 0.05);
 		posY = 920;
 		break;
 	}
@@ -195,7 +195,7 @@ void Genjibo::SetState(Shurikein keinState)
 	{
 		_vx = 0;
 		_vy = 150;
-		anim->SetAnimation(7, 17, 0.005);
+		anim->setAnimation(7, 17, 0.005);
 		break;
 	}
 	case Shurikein::ATTACK_1:
@@ -204,13 +204,13 @@ void Genjibo::SetState(Shurikein keinState)
 		_vy = 150;
 		sideGen = BaseObject::BOTTOM;
 		currentState = GenjiboState::NONE;
-		anim->SetAnimation(5, 10, 0.03);
+		anim->setAnimation(5, 10, 0.03);
 		break;
 	}
 	case Shurikein::ATTACK_2:
 	{
 		currentState = GenjiboState::MOVE;
-		anim->SetAnimation(6, 10, 0.03);
+		anim->setAnimation(6, 10, 0.03);
 		_vx = -150;
 		_vy = 150;
 		break;
@@ -218,13 +218,13 @@ void Genjibo::SetState(Shurikein keinState)
 	case Shurikein::ATTACK_3:
 	{
 		currentState = GenjiboState::MOVE;
-		anim->SetAnimation(7, 17, 0.01);
+		anim->setAnimation(7, 17, 0.01);
 		_vx = -80;
 		_vy = 150;
 		break;
 	}
 	case Shurikein::DIE:
-		animDie->SetAnimation(0, 8, 0.05, false);
+		animDie->setAnimation(0, 8, 0.05, false);
 		_vx = 0;
 		_vy = 0;
 		break;
@@ -232,11 +232,11 @@ void Genjibo::SetState(Shurikein keinState)
 		break;
 	}
 
-	_width = anim->GetWidth();
-	_height = anim->GetHeight();
+	_width = anim->getWidth();
+	_height = anim->getHeight();
 }
 
-void Genjibo::UpdateState(float dt)
+void Genjibo::updateState(float dt)
 {
 	switch (shurikeinState)
 	{
@@ -245,16 +245,16 @@ void Genjibo::UpdateState(float dt)
 		if (posY >= _posY - 8)
 		{
 			posY = _posY - 8;
-			if (animGenjinbo->GetCurrentRow() != 1)
+			if (animGenjinbo->getCurrentRow() != 1)
 			{
-				animGenjinbo->SetAnimation(1, 2, 0.05);
+				animGenjinbo->setAnimation(1, 2, 0.05);
 				_isAllowDraw = true;
 			}
 			timeMove += dt;
 			if (timeMove > 2)
 			{
 				timeMove = 0;
-				SetState(Shurikein::STAND);
+				setState(Shurikein::STAND);
 				return;
 			}
 		}
@@ -274,11 +274,11 @@ void Genjibo::UpdateState(float dt)
 			int Num = count % 3;
 			count++;
 			if (Num == 0)
-				SetState(Shurikein::ATTACK_1);
+				setState(Shurikein::ATTACK_1);
 			else if (Num == 1)
-				SetState(Shurikein::ATTACK_2);
+				setState(Shurikein::ATTACK_2);
 			else
-				SetState(Shurikein::ATTACK_3);
+				setState(Shurikein::ATTACK_3);
 		}
 		break;
 	}
@@ -288,7 +288,7 @@ void Genjibo::UpdateState(float dt)
 		if (timeMove > 6)
 		{
 			timeMove = 0;
-			SetState(Shurikein::STAND);
+			setState(Shurikein::STAND);
 			return;
 		}
 		break;
@@ -300,7 +300,7 @@ void Genjibo::UpdateState(float dt)
 		if (timeMove > 6)
 		{
 			timeMove = 0;
-			SetState(Shurikein::STAND);
+			setState(Shurikein::STAND);
 			return;
 		}
 		switch (currentState)
@@ -316,7 +316,7 @@ void Genjibo::UpdateState(float dt)
 			break;
 		case GenjiboState::JUMP:
 		{
-			AddVy(transY);
+			addVy(transY);
 			if (_vy > Define::ENEMY_MAX_JUMP_VELOCITY)
 				_vy = Define::ENEMY_MAX_JUMP_VELOCITY;
 		}

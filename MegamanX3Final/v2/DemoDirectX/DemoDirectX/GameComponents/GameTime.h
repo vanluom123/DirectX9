@@ -7,21 +7,27 @@ class GameTime
 {
 public:
 	~GameTime();
+	static GameTime* getInstance();
+	static void release();
 
-	void StartCounter();
-	void EndCounter();
-	float GetCounter();
-	
-	static GameTime* GetInstance();
+	void init();
+	void resetLastTick();
+	void updateGameTime();
+
+	float getElapsedGameTime();
+	float getTotalGameTime();
 
 private:
 	GameTime();
 	static GameTime* _instance;
 
-	LARGE_INTEGER _startTime;
-	LARGE_INTEGER _endTime;
-	LARGE_INTEGER _gameTime;
-	LARGE_INTEGER _clockRate;
+	LARGE_INTEGER _Query;
+	float _freQuery;
+	
+	LONGLONG _startTicks;
+	LONGLONG _lastTicks;
+	LONGLONG _curTicks;
+
 };
 
 #endif

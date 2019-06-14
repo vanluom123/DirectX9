@@ -6,8 +6,8 @@
 class ClimbState : public PlayerState
 {
 public:
-	ClimbState(PLAYERDATA* playerData);
-	Player::ePlayerState GetState() override;
+	ClimbState(PlayerData* playerData);
+	Player::ePlayerState getState() override;
 };
 
 #endif

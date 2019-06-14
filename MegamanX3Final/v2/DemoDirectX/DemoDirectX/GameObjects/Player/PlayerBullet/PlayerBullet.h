@@ -3,9 +3,7 @@
 
 #include "../../Entity/BaseObject.h"
 #include "../../../GameComponents/Animation.h"
-#include "../../../GameComponents/GameDebugDraw.h"
-
-class Camera;
+#include "../../../GameComponents/Camera.h"
 
 class PlayerBullet :public BaseObject
 {
@@ -29,29 +27,27 @@ public:
 	PlayerBullet();
 	~PlayerBullet();
 
-	bool GetExplosion() const { return _isExplosions; }
-	void SetBulletX(float bulletX) { this->_bulletX = bulletX; }
+	bool getExplosion() const { return _isExplosion; }
+	void setBulletX(float bulletX) { this->_bulletX = bulletX; }
 
-	void NewBullet(float bx, float by, bool direction, eBulletType type);
-	void ChangeBullet(eBulletState state, eBulletType type);
+	void newBullet(float bx, float by, bool direction, eBulletType type);
+	void changeBullet(eBulletState state, eBulletType type);
 
-	RECT GetBound() override;
+	RECT getBound() override;
 
-	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
-	void Update(float dt) override;
-	void OnCollision(eSideCollision side) override;
-	void OnCollision(BaseObject* obj) override;
+	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void update(float dt) override;
+	void onCollision(eSideCollision side) override;
+	void onCollision(BaseObject* obj) override;
 
 private:
 
 	float			_bulletX;
-	bool			_isExplosions;
+	bool			_isExplosion;
 
 	eBulletType		_bulletType;
 	eBulletState	_bulletState;
 
-	Animation*		_pAnim;
-
-	GameDebugDraw* _gameDebug;
+	Animation*		_animation_bullet;
 };
 #endif // !PLAYER_BULLET_H

@@ -24,29 +24,29 @@ void GunnerAttackBullet::Update(float dt)
 
 		if (_count > 4)
 		{
-			_pGunnerData->gunner->SetState(new GunnerStand(_pGunnerData));
+			_pGunnerData->gunner->setState(new GunnerStand(_pGunnerData));
 			return;
 		}
 
-		if (_pGunnerData->gunner->GetListBullet()->size() < 5)
+		if (_pGunnerData->gunner->getListBullet()->size() < 5)
 		{
 			auto* ebullet = new BangerBullet();
-			_pGunnerData->gunner->GetListBullet()->push_back(ebullet);
+			_pGunnerData->gunner->getListBullet()->push_back(ebullet);
 		}
 
 		float posX = 0;
-		float posY = _pGunnerData->gunner->GetBound().top;
+		float posY = _pGunnerData->gunner->getBound().top;
 
 		if (_count < 5)
 		{
-			if (_pGunnerData->gunner->GetReverse())
-				posX = _pGunnerData->gunner->GetBound().right - 16;
+			if (_pGunnerData->gunner->getReverse())
+				posX = _pGunnerData->gunner->getBound().right - 16;
 			else
-				posX = _pGunnerData->gunner->GetBound().left + 16;
+				posX = _pGunnerData->gunner->getBound().left + 16;
 		}
 
-		_pGunnerData->gunner->GetListBullet()->at(_count)->SetPosition(posX, posY);
-		_pGunnerData->gunner->GetListBullet()->at(_count)->SetReverse(_pGunnerData->gunner->GetReverse());
-		_pGunnerData->gunner->GetListBullet()->at(_count)->NewEntity();
+		_pGunnerData->gunner->getListBullet()->at(_count)->setPosition(posX, posY);
+		_pGunnerData->gunner->getListBullet()->at(_count)->setReverse(_pGunnerData->gunner->getReverse());
+		_pGunnerData->gunner->getListBullet()->at(_count)->newObject();
 	}
 }

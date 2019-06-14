@@ -3,11 +3,11 @@
 using namespace std;
 
 
-BaseObject::CollisionReturn GameCollision::RectCollision(const RECT& bound1, const RECT& bound2)
+BaseObject::CollisionReturn GameCollision::rectCollision(const RECT& bound1, const RECT& bound2)
 {
 	BaseObject::CollisionReturn result = BaseObject::CollisionReturn();
 
-	if (!IsCollision(bound1, bound2))
+	if (!isCollision(bound1, bound2))
 	{
 		result.isCollision = false;
 		return result;
@@ -23,15 +23,15 @@ BaseObject::CollisionReturn GameCollision::RectCollision(const RECT& bound1, con
 	return result;
 }
 
-bool GameCollision::PointCollision(float x, float y, const RECT& bound)
+bool GameCollision::pointCollision(float x, float y, const RECT& bound)
 {
-	return !(x < bound.left 
-		|| x > bound.right 
-		|| y < bound.top 
+	return !(x < bound.left
+		|| x > bound.right
+		|| y < bound.top
 		|| y > bound.bottom);
 }
 
-bool GameCollision::CircleCollision(const RECT& bound, int circle_x, int circle_y, int circleRadius)
+bool GameCollision::circleCollision(const RECT& bound, int circle_x, int circle_y, int circleRadius)
 {
 	int px = circle_x;
 	int py = circle_y;
@@ -52,23 +52,23 @@ bool GameCollision::CircleCollision(const RECT& bound, int circle_x, int circle_
 	return (dx * dx + dy * dy) <= circleRadius * circleRadius;
 }
 
-bool GameCollision::IntersectRect(const RECT& obj, const RECT& other)
+bool GameCollision::intersectRect(const RECT& obj, const RECT& other)
 {
-	return !(obj.left >= other.right 
-		|| obj.right <= other.left 
-		|| obj.top >= other.bottom 
+	return !(obj.left >= other.right
+		|| obj.right <= other.left
+		|| obj.top >= other.bottom
 		|| obj.bottom <= other.top);
 }
 
 GVec2 GameCollision::Distance(BaseObject* e1, BaseObject* e2, float dt)
 {
 	GVec2 distance;
-	distance.x = (e1->GetVx() - e2->GetVx()) * dt;
-	distance.y = (e1->GetVy() - e2->GetVy()) * dt;
+	distance.x = (e1->getVx() - e2->getVx()) * dt;
+	distance.y = (e1->getVy() - e2->getVy()) * dt;
 	return distance;
 }
 
-RECT GameCollision::GetBroad(const RECT& object, const GVec2& distance)
+RECT GameCollision::getBroadphase(const RECT& object, const GVec2& distance)
 {
 	RECT broad = object;
 
@@ -85,7 +85,7 @@ RECT GameCollision::GetBroad(const RECT& object, const GVec2& distance)
 	return broad;
 }
 
-float GameCollision::SweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, BaseObject::eSideCollision& sideCollision)
+float GameCollision::sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, BaseObject::eSideCollision& sideCollision)
 {
 	float dxEntry, dxExit;
 	float dyEntry, dyExit;
@@ -172,29 +172,29 @@ float GameCollision::SweptAABB(const RECT& obj, const RECT& other, const GVec2& 
 	return entryTime;
 }
 
-bool GameCollision::IsCollision(const RECT& bound1, const RECT& bound2)
+bool GameCollision::isCollision(const RECT& bound1, const RECT& bound2)
 {
-	return !(bound1.left > bound2.right 
-		|| bound1.right < bound2.left 
-		|| bound1.top > bound2.bottom 
+	return !(bound1.left > bound2.right
+		|| bound1.right < bound2.left
+		|| bound1.top > bound2.bottom
 		|| bound1.bottom < bound2.top);
 }
 
-BaseObject::eSideCollision GameCollision::SetSideCollision(BaseObject* e1, BaseObject* e2)
+BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseObject* e2)
 {
-	RECT rect1 = e1->GetBound();
-	RECT rect2 = e2->GetBound();
-	const float w = (e1->GetWidth() + e2->GetWidth()) / 2.0f;
-	const float h = (e1->GetHeight() + e2->GetHeight()) / 2.0f;
+	RECT rect1 = e1->getBound();
+	RECT rect2 = e2->getBound();
+	float w = (e1->getWidth() + e2->getWidth()) / 2.0f;
+	float h = (e1->getHeight() + e2->getHeight()) / 2.0f;
 
-	const float dx = e1->GetPosition().x - e2->GetPosition().y;
-	const float dy = e1->GetPosition().x - e2->GetPosition().y;
+	float dx = e1->getPosition().x - e2->getPosition().y;
+	float dy = e1->getPosition().x - e2->getPosition().y;
 
 	if (abs(int(dx)) <= w && abs(int(dy)) <= h)
 	{
 		// Has a collision
-		const float wy = w * dy;
-		const float hx = h * dx;
+		float wy = w * dy;
+		float hx = h * dx;
 
 		if (wy > hx)
 		{
@@ -219,15 +219,15 @@ BaseObject::eSideCollision GameCollision::SetSideCollision(BaseObject* e1, BaseO
 	return BaseObject::NONE;
 }
 
-BaseObject::eSideCollision GameCollision::SetSideCollision(BaseObject* e1, BaseObject::CollisionReturn data)
+BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data)
 {
-	const float xCenter = data.regionCollision.left + (data.regionCollision.right - data.regionCollision.left) / 2.0f;
-	const float yCenter = data.regionCollision.top + (data.regionCollision.bottom - data.regionCollision.top) / 2.0f;
+	float xCenter = data.regionCollision.left + (data.regionCollision.right - data.regionCollision.left) / 2.0f;
+	float yCenter = data.regionCollision.top + (data.regionCollision.bottom - data.regionCollision.top) / 2.0f;
 
-	const GVec2 cCenter = GVec2(xCenter, yCenter);
+	GVec2 cCenter = GVec2(xCenter, yCenter);
 	GVec2 eCenter;
-	eCenter.x = e1->GetPosition().x;
-	eCenter.y = e1->GetPosition().y;
+	eCenter.x = e1->getPosition().x;
+	eCenter.y = e1->getPosition().y;
 
 	//Get centered vector between Entity and CollisionRect
 	GVec2 vec = cCenter - eCenter;

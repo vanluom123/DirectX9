@@ -1,11 +1,13 @@
-#pragma once
+#ifndef _GAME_MAP_H
+#define _GAME_MAP_H
+
 #include <vector>
 #include "../GameComponents/Sprite.h"
-#include <Tmx.h.in>
 #include "Camera.h"
 #include "QuadTree.h"
 #include "../GameObjects/Player/Player.h"
-using namespace std;
+#include <iostream>
+#include "../MapReader/Tmx.h.in"
 
 class GameMap
 {
@@ -13,54 +15,44 @@ public:
 	GameMap(const char* filePath);
 	~GameMap();
 
-	void LoadMap();
-	void Update(float dt);
-	void Draw();
-	void Draw1();
+	void loadMap();
+	void update(float dt);
+	void draw();
+	void draw1();
 
 
 	// SUB-FUNCTION
 public:
-	int GetWidth() const;
-	int GetHeight() const;
+	int getWidth() const;
+	int getHeight() const;
 
-	int GetTileWidth() const;
-	int GetTileHeight() const;
+	int getTileWidth() const;
+	int getTileHeight() const;
 
-	bool IsBoundLeft() const; //Check this camera on the left side with the world map
-	bool IsBoundRight() const; //Check this camera on the right side with the world map
-	bool IsBoundTop() const; //Check this camera on the Top side with the world map
-	bool IsBoundBottom() const; //Check this camera on the bottom side with the world map
+	bool isBoundLeft() const; //Check this camera on the left side with the world map
+	bool isBoundRight() const; //Check this camera on the right side with the world map
+	bool isBoundTop() const; //Check this camera on the Top side with the world map
+	bool isBoundBottom() const; //Check this camera on the bottom side with the world map
 
-	void SetCamera(Camera* camera);
-	void SetPlayer(Player* player);
+	void setViewport(Camera* camera);
+	void setPlayer(Player* player);
 
-	std::vector<BaseObject*> GetListEnemies() const;
-
-	std::vector<RECT> GetListRoom() const;
-
-	QuadTree* GetQuadTree() const;
-
-	Tmx::Map* GetMap() const;
-
-	RECT GetWorldMapBound() const;
+	std::vector<BaseObject*> getListEnemies() const;
+	std::vector<RECT> getListRoom() const;
+	QuadTree* getQuadTree() const;
+	Tmx::Map* getMap() const;
+	RECT getWorldMapBound() const;
 
 private:
 	Sprite* _tileMap;
 	Sprite* _tileMap1;
-
 	Tmx::Map* _pTmxMap;
-
-	Camera* _pCamera;
-
-	QuadTree* _pQuadTree;
-
+	Camera* _viewport;
+	QuadTree* _quadTree;
 	std::vector<BaseObject*> _listEnemies;
-
 	std::vector<RECT> _listRoom;
-
-	RECT _sourceRect;
-
-	Player* _pPlayer;
+	RECT _srect;
+	Player* _player;
 
 };
+#endif // _GAME_MAP_H

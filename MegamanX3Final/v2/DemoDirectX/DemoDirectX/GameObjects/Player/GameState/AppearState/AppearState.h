@@ -5,15 +5,15 @@
 class AppearState : public PlayerState
 {
 public:
-	AppearState(PLAYERDATA* playerData);
+	AppearState(PlayerData* playerData);
 
 	void Update(float dt) override;
 
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
 
-	void OnCollision(BaseObject::eSideCollision side) override;
+	void onCollision(BaseObject::eSideCollision side) override;
 
-	Player::ePlayerState GetState() override;
+	Player::ePlayerState getState() override;
 
 private:
 	float _accelerateY;

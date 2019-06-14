@@ -3,8 +3,8 @@
 
 EnergyItem::EnergyItem()
 {
-	SetItemType(ENERGY);
-	_bigItem = new Animation("Resources/Items/energy-hearts.bmp", 1, 4, 14, 15, 0.15);
+	setItemType(ENERGY);
+	_animationItem = new Animation("Resources/Items/energy-hearts.bmp", 1, 4, 14, 15, 0.15);
 	_width = 14;
 	_height = 14;
 	_vy = 200;
@@ -12,10 +12,10 @@ EnergyItem::EnergyItem()
 
 EnergyItem::~EnergyItem()
 {
-	delete _bigItem;
+	delete _animationItem;
 }
 
-RECT EnergyItem::GetBound()
+RECT EnergyItem::getBound()
 {
 	RECT bound;
 
@@ -27,36 +27,36 @@ RECT EnergyItem::GetBound()
 	return bound;
 }
 
-void EnergyItem::Update(float dt)
+void EnergyItem::update(float dt)
 {
 	if (_isAllowDraw == false)
 		return;
-	_bigItem->Update(dt);
-	BaseObject::Update(dt);
+	_animationItem->update(dt);
+	BaseObject::update(dt);
 }
 
-void EnergyItem::Draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
+void EnergyItem::draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
 {
 	if (_isAllowDraw == false)
 		return;
 
-	_bigItem->SetPosition(GetPosition());
+	_animationItem->setPosition(getPosition());
 	if (camera != NULL)
-		_bigItem->Draw(GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 	else
-		_bigItem->Draw(GetPosition());
+		_animationItem->draw(getPosition());
 }
 
-void EnergyItem::OnCollision(BaseObject *obj)
+void EnergyItem::onCollision(BaseObject *obj)
 {
-	if (obj->GetObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
 		_isDie = true;
-		obj->SetMaxHP(obj->GetMaxHP() + 2);
+		obj->setMaxHP(obj->getMaxHP() + 2);
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType EnergyItem::GetItemsType()
+Items::eItemType EnergyItem::getItemType()
 {
 	return ENERGY;
 }

@@ -10,14 +10,14 @@ public:
 	BangerBullet();
 	~BangerBullet();
 
-	RECT GetBound() override;
-	void NewEntity() override;
-	void Update(float dt) override;
-	void OnCollision(eSideCollision side) override;
-	void OnCollision(BaseObject* obj) override;
+	RECT getBound() override;
+	void newObject() override;
+	void update(float dt) override;
+	void onCollision(eSideCollision side) override;
+	void onCollision(BaseObject* obj) override;
 
 protected:
-	void ChangeState(eBulletState state) override;
+	void setState(eBulletState state) override;
 
 private:
 	float _bulletY;	// The bullet translate to y axis

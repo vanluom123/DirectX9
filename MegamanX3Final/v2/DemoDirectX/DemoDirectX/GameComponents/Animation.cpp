@@ -22,19 +22,19 @@ Animation::Animation(const char* filePath, int rows, int columns, int frameWidth
 
 	// INIT CURRENT TOTAL TIME
 	// INIT RECT
-	_currentTotalTime = 0;
-	_rect = RECT();
+	this->_currentTotalTime = 0.0f;
+	this->_rect = RECT();
 }
 
-void Animation::SetFrame(int frameW, int frameH)
+void Animation::setFrame(int frameW, int frameH)
 {
 	this->_frameWidth = frameW;
 	this->_frameHeight = frameH;
-	this->SetWidth(frameW);
-	this->SetHeight(frameH);
+	this->setWidth(frameW);
+	this->setHeight(frameH);
 }
 
-void Animation::SetAnimation(int currentRow, int framePerRow, float timePerFrame, bool loopAnimation)
+void Animation::setAnimation(int currentRow, int framePerRow, float timePerFrame, bool loopAnimation)
 {
 	this->_currentRow = currentRow;
 	this->_framePerRow = framePerRow;
@@ -43,19 +43,19 @@ void Animation::SetAnimation(int currentRow, int framePerRow, float timePerFrame
 
 	this->_isLoop = loopAnimation;
 
-	_currentTotalTime = 0;
+	this->_currentTotalTime = 0.0f;
 	this->_currentIndex = 0;
-	_isPause = false;
+	this->_isPause = false;
 }
 
-void Animation::Update(float dt)
+void Animation::update(float dt)
 {
 	_rect.left = _currentIndex * _frameWidth;
 	_rect.right = _rect.left + _frameWidth;
 	_rect.top = (_currentRow + _isShoot) * _frameHeight;
 	_rect.bottom = _rect.top + _frameHeight;
 
-	this->SetSourceRect(_rect);
+	this->setSourceRect(_rect);
 
 	if (_framePerRow <= 1 || _isPause)
 		return;
@@ -63,7 +63,7 @@ void Animation::Update(float dt)
 	_currentTotalTime += dt;
 	if (_currentTotalTime >= _timePerFrame)
 	{
-		_currentTotalTime = 0;
+		_currentTotalTime = 0.0f;
 		_currentIndex++;
 		if (_currentIndex >= _framePerRow)
 		{
@@ -78,13 +78,13 @@ void Animation::Update(float dt)
 	}
 }
 
-void Animation::Draw(GVec3 position, RECT sourceRect, GVec2 scale, GVec2 transform,
+void Animation::draw(GVec3 position, RECT sourceRect, GVec2 scale, GVec2 transform,
 	float angle, GVec2 rotationCenter, D3DXCOLOR colorKey)
 {
-	Sprite::Draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
+	Sprite::draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
 }
 
-void Animation::Draw(GVec2 translate)
+void Animation::draw(GVec2 translate)
 {
-	Sprite::Draw(GVec3(), RECT(), GVec2(), translate);
+	Sprite::draw(GVec3(), RECT(), GVec2(), translate);
 }

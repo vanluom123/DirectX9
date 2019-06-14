@@ -1,4 +1,7 @@
 #include "SceneManager.h"
+#include "../GameDefines/GameDefine.h"
+#include "../Scenes/IntroScene.h"
+#include "../Scenes/BeginScene.h"
 
 SceneManager* SceneManager::_instance = nullptr;
 
@@ -9,14 +12,10 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-	if(_instance)
-	{
-		delete _instance;
-		_instance = nullptr;
-	}
+	// Do nothing
 }
 
-SceneManager* SceneManager::GetInstance()
+SceneManager* SceneManager::getInstance()
 {
 	if (!_instance)
 		_instance = new SceneManager();
@@ -24,18 +23,31 @@ SceneManager* SceneManager::GetInstance()
 	return _instance;
 }
 
-Scene* SceneManager::GetCurrentScene() const
+Scene* SceneManager::getCurrentScene() const
 {
 	return _currentScene;
 }
 
-void SceneManager::Update(float dt) const
+void SceneManager::update(float dt) const
 {
-	_currentScene->Update(dt);
+	_currentScene->update(dt);
 }
 
-void SceneManager::ReplaceScene(Scene* scene)
+void SceneManager::setScene(eSceneType sceneType)
 {
-	delete _currentScene;
-	_currentScene = scene;
+	SAFE_DELETE(_currentScene);
+
+	switch (sceneType)
+	{
+		case SceneManager::INTRO_SCENE:
+			_currentScene = new IntroScene();
+			break;
+
+		case SceneManager::BEGIN_SCENE:
+			_currentScene = new BeginScene();
+			break;
+
+		default:
+			break;
+	}
 }

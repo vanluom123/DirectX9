@@ -8,9 +8,9 @@ Planet::Planet(Player* gp)
 	_pAnim = new Animation("Resources/Enemies/CarryArm/x3_subboss_carryarm_01.png", 1, 1, 256, 88);
 	_pAnimAttack = new Animation("Resources/Enemies/CarryArm/attack.png", 2, 10, 32, 32);
 	_pAnimBullet = new Animation("Resources/Enemies/CarryArm/bullet.png", 1, 3, 16, 16);
-	_pAnimAttack->SetAnimation(0, 1);
-	_pAnimAttack->SetPause(1);
-	_pAnimBullet->SetAnimation(0, 3, 0.1);
+	_pAnimAttack->setAnimation(0, 1);
+	_pAnimAttack->setPause(1);
+	_pAnimBullet->setAnimation(0, 3, 0.1);
 
 	_HP = 1;
 	_Damage = 3;
@@ -21,10 +21,10 @@ Planet::Planet(Player* gp)
 	_pCarryArm = new CarryArm();
 	_pBox1 = new Box();
 	_pBox2 = new Box();
-	_pBox1->SetObjectType(ENEMY);
-	_pBox2->SetObjectType(ENEMY);
-	_pBox1->SetDie(true);
-	_pBox2->SetDie(true);
+	_pBox1->setObjectType(ENEMY);
+	_pBox2->setObjectType(ENEMY);
+	_pBox1->setDie(true);
+	_pBox2->setDie(true);
 	_isAttack = false;
 	_timeAttack = 0;
 }
@@ -40,27 +40,27 @@ Planet::~Planet()
 	delete _pBox2;
 }
 
-void Planet::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
+void Planet::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate, D3DCOLOR color)
 {
 	if (!_isAllowDraw)
 		return;
 
-	_pPixton->Draw(camera);
+	_pPixton->draw(camera);
 
-	_pAnimBullet->Draw(_pAnimBullet->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+	_pAnimBullet->draw(_pAnimBullet->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 
-	_pAnim->SetPosition(GetPosition());
-	_pAnim->Draw(_pAnim->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+	_pAnim->setPosition(getPosition());
+	_pAnim->draw(_pAnim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 
-	_pAnimAttack->SetPosition(_posX - 40, _posY + 32);
-	_pAnimAttack->Draw(_pAnimAttack->GetPosition(), r, scale, camera->GetTrans(), angle, rotate, color);
+	_pAnimAttack->setPosition(_posX - 40, _posY + 32);
+	_pAnimAttack->draw(_pAnimAttack->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 
-	_pCarryArm->Draw(camera);
-	_pBox1->Draw(camera);
-	_pBox2->Draw(camera);
+	_pCarryArm->draw(camera);
+	_pBox1->draw(camera);
+	_pBox2->draw(camera);
 }
 
-RECT Planet::GetBound()
+RECT Planet::getBound()
 {
 	RECT bound;
 	bound.left = _posX + _width / 4;
@@ -70,29 +70,29 @@ RECT Planet::GetBound()
 
 	return bound;
 }
-void Planet::Update(float gameTime)
+void Planet::update(float gameTime)
 {
 	if (!_isAllowDraw)
 		return;
 
-	_pPixton->Update(gameTime);
-	_pAnim->Update(gameTime);
-	_pAnimAttack->Update(gameTime);
-	_pAnimBullet->Update(gameTime);
+	_pPixton->update(gameTime);
+	_pAnim->update(gameTime);
+	_pAnimAttack->update(gameTime);
+	_pAnimBullet->update(gameTime);
 
 	MoveDown(gameTime);
 	///Update
-	_pBox1->Update(gameTime);
-	_pBox2->Update(gameTime);
-	_pCarryArm->Update(gameTime);
+	_pBox1->update(gameTime);
+	_pBox2->update(gameTime);
+	_pCarryArm->update(gameTime);
 }
 
 void Planet::MoveDown(float gameTime)
 {
 	if (_isMove)
 	{
-		_pRockMan->SetState(new StandState(_pRockMan->GetPlayerData()));
-		_pRockMan->SetLock(true);
+		_pRockMan->setState(new StandState(_pRockMan->getPlayerData()));
+		_pRockMan->setLock(true);
 		_posY += 40 * gameTime;
 		if (_posY > _starty)
 		{
@@ -101,9 +101,9 @@ void Planet::MoveDown(float gameTime)
 			if (_isMove)
 			{
 				_timeplay = 30;
-				_pBox1->SetPositionStart(_posX + 32, _posY - _height);
-				_pBox2->SetPositionStart(_posX + 88, _posY - _height);
-				_pCarryArm->SetPositionStart(_posX + 160, _posY + _height);
+				_pBox1->setPositionStart(_posX + 32, _posY - _height);
+				_pBox2->setPositionStart(_posX + 88, _posY - _height);
+				_pCarryArm->setPositionStart(_posX + 160, _posY + _height);
 			}
 		}
 	}
@@ -111,34 +111,34 @@ void Planet::MoveDown(float gameTime)
 	{
 		//Check EndGame
 		_timeplay -= gameTime;
-		if (_timeplay < 0 && _pBox1->GetDie() && _pBox2->GetDie())
+		if (_timeplay < 0 && _pBox1->getDie() && _pBox2->getDie())
 		{
 			if (!_pPixton->MoveUp(gameTime, _posX, _posY))
 				_posY -= 40 * gameTime;
-			_pRockMan->SetState(new StandState(_pRockMan->GetPlayerData()));
-			_pRockMan->SetLock(true);
+			_pRockMan->setState(new StandState(_pRockMan->getPlayerData()));
+			_pRockMan->setLock(true);
 			return;
 		}
 
 		//Planet attack when have 2 box on the pixton
-		if (_pBox1->GetBottom() && _pBox2->GetBottom())
-			if (!_isAttack && _pAnimAttack->GetPause())
+		if (_pBox1->getIsBottom() && _pBox2->getIsBottom())
+			if (!_isAttack && _pAnimAttack->getPause())
 			{
 				_isAttack = true;
-				_pAnimAttack->SetAnimation(0, 10, 0.15, false);
+				_pAnimAttack->setAnimation(0, 10, 0.15, false);
 			}
 
-		if (_isAttack && _pAnimAttack->GetPause())
+		if (_isAttack && _pAnimAttack->getPause())
 		{
 			_planetPosY += 50 * gameTime;
-			if (_pRockMan->GetPosition().x > _pAnimBullet->GetPosition().x)
+			if (_pRockMan->getPosition().x > _pAnimBullet->getPosition().x)
 				_planetPosX += 20 * gameTime;
 			else
 				_planetPosX -= 20 * gameTime;
 			if (_planetPosY > 76)
 			{
 				_planetPosY = 76;
-				if (_pRockMan->GetPosition().x > _pAnimAttack->GetPosition().x)
+				if (_pRockMan->getPosition().x > _pAnimAttack->getPosition().x)
 					_planetPosX += 150 * gameTime;
 				else
 					_planetPosX -= 150 * gameTime;
@@ -149,86 +149,86 @@ void Planet::MoveDown(float gameTime)
 					_planetPosY = 0;
 					_planetPosX = 0;
 					_isAttack = false;
-					_pAnimAttack->SetAnimation(1, 10, 0.15, false);
-					_pAnimBullet->SetPosition(0, 0);
+					_pAnimAttack->setAnimation(1, 10, 0.15, false);
+					_pAnimBullet->setPosition(0, 0);
 					_timeAttack = 0;
 				}
 			}
-			_pAnimBullet->SetPosition(_pAnimAttack->GetPosition().x + _planetPosX, _posY + 48 + _planetPosY);
+			_pAnimBullet->setPosition(_pAnimAttack->getPosition().x + _planetPosX, _posY + 48 + _planetPosY);
 
 			BaseObject * e = new BaseObject();
-			e->SetPosition(_pAnimBullet->GetPosition());
-			e->SetHeight(16);
-			e->SetWidth(16);
-			e->SetDamage(3);
-			e->SetObjectType(BaseObject::ENEMY_BULLET);
-			if (GameCollision::IsCollision(e->GetBound(), _pRockMan->GetBound()))
-				_pRockMan->OnCollision(e);
+			e->setPosition(_pAnimBullet->getPosition());
+			e->setHeight(16);
+			e->setWidth(16);
+			e->setDamage(3);
+			e->setObjectType(BaseObject::ENEMY_BULLET);
+			if (GameCollision::isCollision(e->getBound(), _pRockMan->getBound()))
+				_pRockMan->onCollision(e);
 
 			delete e;
 		}
 		else
-			_pAnimBullet->SetPosition(0, 0);
+			_pAnimBullet->setPosition(0, 0);
 		//Select Box
-		if (_pCarryArm->GetState() == eCarryArmState::CARRY_ARM_STAND)
+		if (_pCarryArm->getState() == eCarryArmState::CARRY_ARM_STAND)
 		{
-			if (_pBox1->GetDie())
+			if (_pBox1->getDie())
 			{
-				_pBox1->NewEntity();
-				_pBox1->SetVy(80);
-				_pCarryArm->SetPosition(_posX + 32, _posY - _height - 48);
-				_pCarryArm->SetState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
+				_pBox1->newObject();
+				_pBox1->setVy(80);
+				_pCarryArm->setPosition(_posX + 32, _posY - _height - 48);
+				_pCarryArm->setState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
 			}
-			else if (_pBox2->GetDie())
+			else if (_pBox2->getDie())
 			{
-				_pBox2->NewEntity();
-				_pBox2->SetVy(80);
-				_pCarryArm->SetPosition(_posX + 88, _posY - _height - 48);
-				_pCarryArm->SetState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
+				_pBox2->newObject();
+				_pBox2->setVy(80);
+				_pCarryArm->setPosition(_posX + 88, _posY - _height - 48);
+				_pCarryArm->setState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
 			}
 		}
 
 		///Box Collision with pixton
-		if (GameCollision::IsCollision(_pBox1->GetBound(), _pPixton->GetBound()))
+		if (GameCollision::isCollision(_pBox1->getBound(), _pPixton->getBound()))
 		{
-			_pBox1->SetPosition(_posX + 32, _pPixton->GetBound().top - 25);
-			_pBox1->SetVy(0);
-			_pBox1->SetBottom(true);
-			_pCarryArm->SetState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
+			_pBox1->setPosition(_posX + 32, _pPixton->getBound().top - 25);
+			_pBox1->setVy(0);
+			_pBox1->setIsBottom(true);
+			_pCarryArm->setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
 		}
-		if (GameCollision::IsCollision(_pBox2->GetBound(), _pPixton->GetBound()))
+		if (GameCollision::isCollision(_pBox2->getBound(), _pPixton->getBound()))
 		{
-			_pBox2->SetPosition(_posX + 88, _pPixton->GetBound().top - 25);
-			_pBox2->SetVy(0);
-			_pBox2->SetBottom(true);
-			_pCarryArm->SetState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
+			_pBox2->setPosition(_posX + 88, _pPixton->getBound().top - 25);
+			_pBox2->setVy(0);
+			_pBox2->setIsBottom(true);
+			_pCarryArm->setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
 		}
 
 		///Box Collision with rockman
-		if (!_pBox1->GetDie())
-			if (GameCollision::IsCollision(_pBox1->GetBound(), _pRockMan->GetBound()))
-				_pRockMan->OnCollision(_pBox1);
-		if (!_pBox2->GetDie())
-			if (GameCollision::IsCollision(_pBox2->GetBound(), _pRockMan->GetBound()))
-				_pRockMan->OnCollision(_pBox2);
+		if (!_pBox1->getDie())
+			if (GameCollision::isCollision(_pBox1->getBound(), _pRockMan->getBound()))
+				_pRockMan->onCollision(_pBox1);
+		if (!_pBox2->getDie())
+			if (GameCollision::isCollision(_pBox2->getBound(), _pRockMan->getBound()))
+				_pRockMan->onCollision(_pBox2);
 
 		///Box Collision with rockmanBullet
-		for (auto& rockmanBullet : *_pRockMan->GetPlayerBullet())
+		for (auto& rockmanBullet : *_pRockMan->getPlayerBullet())
 		{
-			if (rockmanBullet->GetExplosion())
+			if (rockmanBullet->getExplosion())
 				continue;
 
-			if (!_pBox1->GetDie())
-				if (GameCollision::IsCollision(_pBox1->GetBound(), rockmanBullet->GetBound()))
+			if (!_pBox1->getDie())
+				if (GameCollision::isCollision(_pBox1->getBound(), rockmanBullet->getBound()))
 				{
-					_pBox1->OnCollision(rockmanBullet);
-					rockmanBullet->OnCollision(_pBox1);
+					_pBox1->onCollision(rockmanBullet);
+					rockmanBullet->onCollision(_pBox1);
 				}
-			if (!_pBox2->GetDie())
-				if (GameCollision::IsCollision(_pBox2->GetBound(), rockmanBullet->GetBound()))
+			if (!_pBox2->getDie())
+				if (GameCollision::isCollision(_pBox2->getBound(), rockmanBullet->getBound()))
 				{
-					_pBox2->OnCollision(rockmanBullet);
-					rockmanBullet->OnCollision(_pBox2);
+					_pBox2->onCollision(rockmanBullet);
+					rockmanBullet->onCollision(_pBox2);
 				}
 		}
 	}

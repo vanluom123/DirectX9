@@ -9,11 +9,11 @@ private:
 	bool _isMove;
 
 public:
-	StandState(PLAYERDATA* playerData);
+	StandState(PlayerData* playerData);
 
 	void Update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
-	void OnCollision(BaseObject::eSideCollision side) override;
-	Player::ePlayerState GetState() override;
+	void onCollision(BaseObject::eSideCollision side) override;
+	Player::ePlayerState getState() override;
 };
 #endif

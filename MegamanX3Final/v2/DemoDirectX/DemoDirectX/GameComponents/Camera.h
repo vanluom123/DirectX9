@@ -8,19 +8,19 @@ public:
 	Camera(int width, int height);
 
 	//center of camera
-	GVec3 GetPosition() const;
-	void SetPosition(float x, float y);
-	void SetPosition(GVec3 pos);
+	GVec3 getPosition() const;
+	void setPosition(float x, float y);
+	void setPosition(GVec3 pos);
 
-	GVec2 GetTrans() const;
+	GVec2 getTrans() const;
 
-	RECT GetBound() const;
+	RECT getBound() const;
 
-	int GetWidth() const { return _width; }
-	void SetWidth(int val) { _width = val; }
+	int getWidth() const { return _width; }
+	void setWidth(int val) { _width = val; }
 
-	int GetHeight() const { return _height; }
-	void SetHeight(int val) { _height = val; }
+	int getHeight() const { return _height; }
+	void setHeight(int val) { _height = val; }
 
 private:
 	int _width, _height;

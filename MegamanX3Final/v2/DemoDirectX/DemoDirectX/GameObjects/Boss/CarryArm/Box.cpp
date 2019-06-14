@@ -10,13 +10,13 @@ Box::Box(bool isr)
 	_HP		= _MaxHP;
 	anim    = new Animation("Resources/Enemies/CarryArm/box.png", 2, 1, 48, 48);
 	pAnimationDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
-	pAnimationDie->SetPause(true);
-	_width    = anim->GetWidth();
-	_height   = anim->GetHeight();
+	pAnimationDie->setPause(true);
+	_width    = anim->getWidth();
+	_height   = anim->getHeight();
 	_vx = 0;
 	_vy = 0;
 }
-void Box::NewEntity()
+void Box::newObject()
 {
 	if (isR)
 	{
@@ -42,25 +42,25 @@ Box::~Box()
 	delete pAnimationDie;
 }
 
-void Box::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCenter, D3DCOLOR color)
+void Box::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCenter, D3DCOLOR color)
 {
 	if (!_isAllowDraw) return;
 
-	if (!GameCollision::IsCollision(camera->GetBound(), GetBound()))
+	if (!GameCollision::isCollision(camera->getBound(), getBound()))
 		if (isR)
-			NewEntity();
+			newObject();
 
-	if (!pAnimationDie->GetPause())
+	if (!pAnimationDie->getPause())
 	{
-		pAnimationDie->Draw(pAnimationDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+		pAnimationDie->draw(pAnimationDie->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 		if (_height > 48)
 		{
 			int i = 24;
 			while (true)
 			{
-				pAnimationDie->SetPosition(_posX, GetBound().top + i);
-				pAnimationDie->Draw(pAnimationDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+				pAnimationDie->setPosition(_posX, getBound().top + i);
+				pAnimationDie->draw(pAnimationDie->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 				i += 48;
 				if (i > _height)
@@ -74,12 +74,12 @@ void Box::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCen
 		int i = 24;
 		while (true)
 		{
-			anim->SetPosition(_posX, GetBound().top + i);
-			anim->Draw(anim->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+			anim->setPosition(_posX, getBound().top + i);
+			anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 			if (isR)
-				if (!pAnimationDie->GetPause())
-					pAnimationDie->Draw(pAnimationDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+				if (!pAnimationDie->getPause())
+					pAnimationDie->draw(pAnimationDie->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 			i += 48;
 			if (i > _height)
@@ -88,7 +88,7 @@ void Box::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCen
 	}
 }
 
-RECT Box::GetBound()
+RECT Box::getBound()
 {
 	RECT bound;
 
@@ -100,40 +100,40 @@ RECT Box::GetBound()
 	return bound;
 }
 
-void Box::Update(float dt)
+void Box::update(float dt)
 {
 	if (!_isAllowDraw) return;
 
-	anim->Update(dt);
-	pAnimationDie->Update(dt);
-	BaseObject::Update(dt);
+	anim->update(dt);
+	pAnimationDie->update(dt);
+	BaseObject::update(dt);
 }
 
-void Box::OnCollision(eSideCollision side)
+void Box::onCollision(eSideCollision side)
 {
-	if (_sideY == BaseObject::BOTTOM && isR)
+	if (_side_y == BaseObject::BOTTOM && isR)
 	{
 		_HP = 1;
 		isBottom = false;
 		_isDie = true;
-		pAnimationDie->SetPosition(GetPosition());
-		pAnimationDie->SetAnimation(0, 10, 0.05, false);
+		pAnimationDie->setPosition(getPosition());
+		pAnimationDie->setAnimation(0, 10, 0.05, false);
 	}
 }
 
-void Box::OnCollision(BaseObject* obj)
+void Box::onCollision(BaseObject* obj)
 {
 	
-	if (obj->GetObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
+	if (obj->getObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
 	{
-		_HP -= obj->GetDamage();
+		_HP -= obj->getDamage();
 		if (_HP <= 0)
 		{
 			_HP = 1;
 			isBottom = false;
 			_isDie = true;
-			pAnimationDie->SetPosition(GetPosition());
-			pAnimationDie->SetAnimation(0, 8, 0.05, false);
+			pAnimationDie->setPosition(getPosition());
+			pAnimationDie->setAnimation(0, 8, 0.05, false);
 		}
 	}
 }

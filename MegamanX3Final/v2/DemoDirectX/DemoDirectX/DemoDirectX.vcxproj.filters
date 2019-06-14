@@ -97,30 +97,6 @@
     <Filter Include="FrameWork\Objects\Boss">
       <UniqueIdentifier>{b59be9fc-6109-4f28-ad5f-73bec3580463}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet">
-      <UniqueIdentifier>{6aa4d2ac-f654-4ee2-a062-d681231032ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState">
-      <UniqueIdentifier>{eef74296-d97e-487e-a114-fd0da9e952a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAppear">
-      <UniqueIdentifier>{a6dd577d-3b9a-412c-ab0e-a66cafb2f4b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAttack">
-      <UniqueIdentifier>{c45c294f-d6a5-4c8a-b8c3-b86bcefd707a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastDie">
-      <UniqueIdentifier>{3bcfa470-b71f-4022-9041-4373528d2d13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastStand">
-      <UniqueIdentifier>{d441c3a2-3275-48b4-9299-9e99c8d15ec0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastBullet">
-      <UniqueIdentifier>{da48bbca-2d90-46e1-8f0d-d48069a4ed7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastShooter">
-      <UniqueIdentifier>{93168d22-890d-4444-a402-b371b4fec939}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrameWork\Objects\Boss\Genjibo">
       <UniqueIdentifier>{d8d7eaf5-6923-41a0-9714-18b585526b3b}</UniqueIdentifier>
     </Filter>
@@ -178,8 +154,35 @@
     <Filter Include="FrameWork\Objects\Player\PlayerState\SlipDownState">
       <UniqueIdentifier>{27d577f2-73cf-4355-8b00-07943d286a5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\Objects\Boss\BlastHornet\BlastHornetState\SineMovement">
+    <Filter Include="FrameWork\MapReader">
+      <UniqueIdentifier>{8becec59-6128-4ddf-bd4c-06819bdcba33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast">
+      <UniqueIdentifier>{6aa4d2ac-f654-4ee2-a062-d681231032ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState">
+      <UniqueIdentifier>{eef74296-d97e-487e-a114-fd0da9e952a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\BlastAppear">
+      <UniqueIdentifier>{a6dd577d-3b9a-412c-ab0e-a66cafb2f4b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\BlastAttack">
+      <UniqueIdentifier>{c45c294f-d6a5-4c8a-b8c3-b86bcefd707a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\BlastStand">
+      <UniqueIdentifier>{d441c3a2-3275-48b4-9299-9e99c8d15ec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\SineMovement">
       <UniqueIdentifier>{04ef21b1-5948-4c32-83ea-5cfaf352d3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\BlastShoot">
+      <UniqueIdentifier>{93168d22-890d-4444-a402-b371b4fec939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastState\BlastDeath">
+      <UniqueIdentifier>{3bcfa470-b71f-4022-9041-4373528d2d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Objects\Boss\Blast\BlastBullet">
+      <UniqueIdentifier>{da48bbca-2d90-46e1-8f0d-d48069a4ed7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +193,6 @@
       <Filter>FrameWork\Components</Filter>
     </ClCompile>
     <ClCompile Include="GameComponents\Sprite.cpp">
-      <Filter>FrameWork\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameComponents\Scene.cpp">
       <Filter>FrameWork\Components</Filter>
     </ClCompile>
     <ClCompile Include="GameControllers\SceneManager.cpp">
@@ -352,12 +352,6 @@
     <ClCompile Include="GameObjects\Boss\CarryArm\Planet.cpp">
       <Filter>FrameWork\Objects\Boss\CarryArm</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastHornet.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastHornetState.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjects\Item\Items.cpp">
       <Filter>FrameWork\Objects\Items</Filter>
     </ClCompile>
@@ -380,25 +374,16 @@
       <Filter>FrameWork\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss\BlastHornet\BlastBullet.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastShooter.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastShooter</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastBullet</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss\BlastHornet\BlastAppear.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAppear</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastAppear</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss\BlastHornet\BlastAttack.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastDie.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastDie</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastAttack</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss\BlastHornet\BlastStand.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastStand</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Boss\BlastHornet\Move.cpp">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\SineMovement</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastStand</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Entity\BaseObject.cpp">
       <Filter>FrameWork\Objects\BaseObject</Filter>
@@ -412,16 +397,87 @@
     <ClCompile Include="GameObjects\Item\EnergyItem.cpp">
       <Filter>FrameWork\Objects\Items\EnergyItem</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Player\GameState\PlayerState.cpp">
-      <Filter>FrameWork\Objects\Player\PlayerState</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjects\Player\Player.cpp">
       <Filter>FrameWork\Objects\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Boss\CarryArm\CarryArm.cpp">
       <Filter>FrameWork\Objects\Boss\CarryArm</Filter>
     </ClCompile>
-    <ClCompile Include="GJK.cpp" />
+    <ClCompile Include="MapReader\base64.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\miniz.c">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\tinyxml2.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxEllipse.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxImage.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxImageLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxMap.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxObject.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxObjectGroup.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPolygon.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPolyline.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxPropertySet.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTerrain.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTerrainArray.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTile.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileLayer.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileOffset.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxTileset.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapReader\TmxUtil.cpp">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Boss\BlastHornet\SinWaveMovement.cpp">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\SineMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene.cpp">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastShoot.cpp">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastShoot</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Boss\BlastHornet\BlastDeath.cpp">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastDeath</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Boss\BlastHornet\Blast.cpp">
+      <Filter>FrameWork\Objects\Boss\Blast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameComponents\Game.h">
@@ -431,9 +487,6 @@
       <Filter>FrameWork\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameComponents\Sprite.h">
-      <Filter>FrameWork\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponents\Scene.h">
       <Filter>FrameWork\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameControllers\SceneManager.h">
@@ -592,12 +645,6 @@
     <ClInclude Include="GameObjects\Boss\CarryArm\Planet.h">
       <Filter>FrameWork\Objects\Boss\CarryArm</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastHornet.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastHornetState.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\Item\Items.h">
       <Filter>FrameWork\Objects\Items</Filter>
     </ClInclude>
@@ -619,44 +666,20 @@
     <ClInclude Include="Scenes\IntroScene.h">
       <Filter>FrameWork\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="HelitData.h">
-      <Filter>FrameWork\Objects\Enemies\Helit</Filter>
-    </ClInclude>
-    <ClInclude Include="BangerData.h">
-      <Filter>FrameWork\Objects\Enemies\Banger</Filter>
-    </ClInclude>
-    <ClInclude Include="GunnerData.h">
-      <Filter>FrameWork\Objects\Enemies\Gunner</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\Enemies\Gunner\GunnerBullet\GunnerBullet.h">
       <Filter>FrameWork\Objects\Enemies\Gunner\GunnerBullet</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Boss\BlastHornet\BlastBullet.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastShooter.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastShooter</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastBullet</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Boss\BlastHornet\BlastAppear.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAppear</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastAppear</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Boss\BlastHornet\BlastAttack.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastDie.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastDie</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastAttack</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Boss\BlastHornet\BlastStand.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\BlastStand</Filter>
-    </ClInclude>
-    <ClInclude Include="BlastHornetData.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Boss\BlastHornet\Move.h">
-      <Filter>FrameWork\Objects\Boss\BlastHornet\BlastHornetState\SineMovement</Filter>
-    </ClInclude>
-    <ClInclude Include="tagPlayerData.h">
-      <Filter>FrameWork\Objects\Player</Filter>
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastStand</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Entity\BaseObject.h">
       <Filter>FrameWork\Objects\BaseObject</Filter>
@@ -679,6 +702,112 @@
     <ClInclude Include="GameObjects\Boss\CarryArm\CarryArm.h">
       <Filter>FrameWork\Objects\Boss\CarryArm</Filter>
     </ClInclude>
-    <ClInclude Include="GJK.h" />
+    <ClInclude Include="MapReader\base64.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\tinyxml2.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxEllipse.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxImage.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxImageLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxMap.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxMapTile.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxObject.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxObjectGroup.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPoint.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPolygon.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPolyline.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxPropertySet.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTerrain.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTerrainArray.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTile.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileLayer.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileOffset.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxTileset.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\TmxUtil.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\zconf.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="MapReader\zlib.h">
+      <Filter>FrameWork\MapReader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\SinWaveMovement.h">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\SineMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Enemies\Helit\HelitData.h">
+      <Filter>FrameWork\Objects\Enemies\Helit</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Enemies\Gunner\GunnerData.h">
+      <Filter>FrameWork\Objects\Enemies\Gunner</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Enemies\Banger\BangerData.h">
+      <Filter>FrameWork\Objects\Enemies\Banger</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene.h">
+      <Filter>FrameWork\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastShoot.h">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastShoot</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastDeath.h">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState\BlastDeath</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastState.h">
+      <Filter>FrameWork\Objects\Boss\Blast\BlastState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\Blast.h">
+      <Filter>FrameWork\Objects\Boss\Blast</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Boss\BlastHornet\BlastData.h">
+      <Filter>FrameWork\Objects\Boss\Blast</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Player\PlayerData.h">
+      <Filter>FrameWork\Objects\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MapReader\Tmx.h.in">
+      <Filter>FrameWork\MapReader</Filter>
+    </None>
   </ItemGroup>
 </Project>

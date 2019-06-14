@@ -11,30 +11,29 @@ public:
 
 	enum eItemType
 	{
-		BIG_BLOOD,
-		SMALL_BLOOD,
-		ENERGY,
-		SUBTANK,
-		SMALL_SUBTANK
+		BIG_BLOOD = 0,
+		SMALL_BLOOD = 1,
+		ENERGY = 2,
+		SUBTANK = 3,
+		SMALL_SUBTANK = 4
 	};
 
-	RECT GetBound() override;
+	RECT getBound() override;
 
-	void Update(float dt) override;
+	void update(float dt) override;
 
-	void Draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
 
-	void OnCollision(eSideCollision side) override;
+	void onCollision(eSideCollision side) override;
 
-	void OnCollision(BaseObject* obj) override;
+	void onCollision(BaseObject* obj) override;
 
-	virtual Items::eItemType GetItemsType() = 0;
+	virtual Items::eItemType getItemType() = 0;
 
-	void SetItemType(Items::eItemType val) { _itemsType = val; }
+	void setItemType(Items::eItemType val) { _itemsType = val; }
 
 protected:
-	Animation* _bigItem;
-	Animation* _small_item;
+	Animation* _animationItem;
 
 private:
 	eItemType _itemsType;

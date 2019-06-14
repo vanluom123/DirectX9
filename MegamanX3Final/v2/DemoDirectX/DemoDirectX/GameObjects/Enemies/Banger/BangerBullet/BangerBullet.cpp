@@ -9,7 +9,7 @@ BangerBullet::BangerBullet()
 	_objectType = ENEMY_BULLET;
 	_pAnim = new Animation(Define::NOTOR_BANGER_BULLET, 2, 3, 8, 8, D3DCOLOR_XRGB(0, 100, 100));
 	_pAnimExplosion = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30, 0.1f);
-	this->ChangeState(BULLET_FIRE);
+	this->setState(BULLET_FIRE);
 	_HP = 3;
 	_Damage = 2;
 	_bulletY = 25.0f;
@@ -22,9 +22,9 @@ BangerBullet::~BangerBullet()
 	delete _pAnimExplosion;
 }
 
-RECT BangerBullet::GetBound()
+RECT BangerBullet::getBound()
 {
-	RECT bound{};
+	RECT bound;
 
 	switch (_bulletState)
 	{
@@ -43,13 +43,14 @@ RECT BangerBullet::GetBound()
 		bound.bottom = _posY + 4;
 		break;
 
-	default: break;
+	default:
+		break;
 	}
 
 	return bound;
 }
 
-void BangerBullet::NewEntity()
+void BangerBullet::newObject()
 {
 	_objectType = ENEMY_BULLET;
 	_vy = -450;
@@ -65,12 +66,12 @@ void BangerBullet::NewEntity()
 		_vx = -100;
 
 	}
-	ChangeState(BULLET_FIRE);
+	setState(BULLET_FIRE);
 	_isDie = false;
 	_isAllowDraw = true;
 }
 
-void BangerBullet::Update(float dt)
+void BangerBullet::update(float dt)
 {
 	if (_isAllowDraw == false)
 		return;
@@ -82,46 +83,46 @@ void BangerBullet::Update(float dt)
 			_vy = 300;
 
 	}
-	else if (_pAnim->GetPause() == true || _pAnimExplosion->GetPause() == true)// da chay xong animation no
+	else if (_pAnim->getPause() == true || _pAnimExplosion->getPause() == true)// da chay xong animation no
 		_isAllowDraw = false;
 
 	if (_bulletState == BULLET_EXPLOSION)
-		_pAnimExplosion->Update(dt);
+		_pAnimExplosion->update(dt);
 	else
-		_pAnim->Update(dt);
+		_pAnim->update(dt);
 
-	BaseObject::Update(dt);
+	BaseObject::update(dt);
 }
 
-void BangerBullet::OnCollision(eSideCollision side)
+void BangerBullet::onCollision(eSideCollision side)
 {}
 
-void BangerBullet::OnCollision(BaseObject * obj)
+void BangerBullet::onCollision(BaseObject * obj)
 {
-	if (obj->GetObjectType() == ENEMY)
+	if (obj->getObjectType() == ENEMY)
 		return;
 	_vx = 0;
 	_vy = 0;
 	_isDie = true;
-	ChangeState(BULLET_EXPLOSION);
+	setState(BULLET_EXPLOSION);
 }
 
-void BangerBullet::ChangeState(eBulletState state)
+void BangerBullet::setState(eBulletState state)
 {
 	_bulletState = state;
 
 	switch (state)
 	{
 	case BULLET_EXPLOSION:
-		_pAnimExplosion->SetAnimation(0, 8, 0.05, false);
-		this->SetWidth(_pAnimExplosion->GetWidth());
-		this->SetHeight(_pAnimExplosion->GetHeight());
+		_pAnimExplosion->setAnimation(0, 8, 0.05, false);
+		this->setWidth(_pAnimExplosion->getWidth());
+		this->setHeight(_pAnimExplosion->getHeight());
 		break;
 
 	case BULLET_FIRE:
-		_pAnim->SetAnimation(0, 1);
-		this->SetWidth(_pAnim->GetWidth());
-		this->SetHeight(_pAnim->GetHeight());
+		_pAnim->setAnimation(0, 1);
+		this->setWidth(_pAnim->getWidth());
+		this->setHeight(_pAnim->getHeight());
 		break;
 
 	default: break;

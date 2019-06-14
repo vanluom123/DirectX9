@@ -5,8 +5,8 @@
 class FinishState : public PlayerState
 {
 public:
-	FinishState(PLAYERDATA* playerData);
-	Player::ePlayerState GetState() override;
+	FinishState(PlayerData* playerData);
+	Player::ePlayerState getState() override;
 };
 
 #endif

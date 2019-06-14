@@ -1,19 +1,18 @@
-#ifndef BLAST_STAND_H
-#define BLAST_STAND_H
+#ifndef _BLAST_STAND_H
+#define _BLAST_STAND_H
 
-#include "BlastHornetState.h"
+#include "BlastState.h"
 
-class BlastStand :
-	public BlastHornetState
+class BlastStand : public BlastState
 {
-	float timeStand;
 public:
-	BlastStand(BlastHornetData *b);
+	BlastStand(BlastData *b);
 	~BlastStand();
 
-	void Update(float dt) override;
-	eBlastState GetState() override;
-	void OnCollision(BaseObject::eSideCollision side) override;
+	void update(float dt) override;
+	eBlastState getState() override;
 
+private:
+	float _timeStand;
 };
-#endif
+#endif // _BLAST_STAND_H

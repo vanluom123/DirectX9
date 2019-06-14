@@ -9,9 +9,9 @@
 Port::Port()
 {
 	_objectType = BaseObject::PORT;
-	_pAnim = new Animation("Resources/MapObject/Port.png", 1, 17, 16, 48, 0.1);
+	_pAnim = new Animation("Resources/MapObject/Port.png", 1, 17, 16, 48, 0.1f);
 
-	_pAnim->SetAnimation(0, 1);
+	_pAnim->setAnimation(0, 1);
 	_isReverse = false;
 	_isDie = false;
 	_isAllowDraw = true;
@@ -32,10 +32,10 @@ Port::~Port()
 	delete _pAnim;
 }
 
-RECT Port::GetBound()
+RECT Port::getBound()
 {
 	if (!_isOpen)
-		return BaseObject::GetBound();
+		return BaseObject::getBound();
 
 	RECT bound;
 	bound.left = _posX - _width;
@@ -45,9 +45,9 @@ RECT Port::GetBound()
 	return bound;
 }
 
-void Port::Update(float dt)
+void Port::update(float dt)
 {
-	if (_pAnim->GetPause() && _isOpen)
+	if (_pAnim->getPause() && _isOpen)
 	{
 		if (_isClose)
 		{
@@ -55,7 +55,7 @@ void Port::Update(float dt)
 			_Damage = 1;
 			_isOpen = false;
 			_isMove = false;
-			_pAnim->SetAnimation(0, 1);
+			_pAnim->setAnimation(0, 1);
 			
 		}
 		else
@@ -65,17 +65,17 @@ void Port::Update(float dt)
 		}
 	}
 
-	_pAnim->Update(dt);
+	_pAnim->update(dt);
 }
 
-void Port::OnCollision(eSideCollision side)
+void Port::onCollision(eSideCollision side)
 {}
 
-void Port::OnCollision(BaseObject* obj)
+void Port::onCollision(BaseObject* obj)
 {
-	if ((obj->GetObjectType() != ROCK_MAN)
+	if ((obj->getObjectType() != ROCK_MAN)
 		|| (_HP > 0)
-		|| (obj->GetBound().top < GetBound().top))
+		|| (obj->getBound().top < getBound().top))
 	{
 		return;
 	}
@@ -86,48 +86,48 @@ void Port::OnCollision(BaseObject* obj)
 		_isOpen = true;
 		_isMove = false;
 		_Damage = 0;
-		_pAnim->SetAnimation(0, 17, 0.1f, false);
+		_pAnim->setAnimation(0, 17, 0.1f, false);
 	}
 
 	if (_isMove)
 	{
-		if (obj->GetReverse())
-			obj->SetVx(-40);
+		if (obj->getReverse())
+			obj->setVx(-40.0f);
 		else
-			obj->SetVx(40);
+			obj->setVx(40.0f);
 
 		_bound.top = _posY - _height / 2;
 		_bound.bottom = _posY + _height / 2;
 		_bound.left = _posX - 20;
 		_bound.right = _posX + 20;
 
-		if (!GameCollision::IsCollision(_bound, obj->GetBound()))
+		if (!GameCollision::isCollision(_bound, obj->getBound()))
 		{
 			_isClose = true;
-			_pAnim->SetAnimation(1, 17, 0.1f, false);
+			_pAnim->setAnimation(1, 17, 0.1f, false);
 			_isMove = false;
 			_Damage = 0;
 
 			// Improved DashState of Player when Player was dashing though Port
 			Player* player = (Player*)obj;
-			player->SetState(new StandState(player->GetPlayerData()));
+			player->setState(new StandState(player->getPlayerData()));
 		}
 	}
 	else
-		obj->SetVx(0);
+		obj->setVx(0.0f);
 }
 
-void Port::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
+void Port::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (_pAnim->GetPause())
+	if (_pAnim->getPause())
 		return;
 
-	_pAnim->SetReverse(_isReverse);
+	_pAnim->setReverse(_isReverse);
 
-	_pAnim->SetPosition(_startx - 8, _starty);
-	_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+	_pAnim->setPosition(_startx - 8, _starty);
+	_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
-	_pAnim->SetPosition(_startx + 8, _starty);
-	_pAnim->Draw(_pAnim->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+	_pAnim->setPosition(_startx + 8, _starty);
+	_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 }

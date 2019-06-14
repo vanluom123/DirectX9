@@ -3,18 +3,18 @@
 
 HelitAttack::HelitAttack(HelitData* helit) :HelitState(helit)
 {
-	_pHelitData->helit->SetVy(0);
-	_pHelitData->helit->SetVx(0);
+	_pHelitData->helit->setVy(0);
+	_pHelitData->helit->setVx(0);
 	_timeAttack = 0.0f;
 	_count = -1;
 }
 
-Helit::eHelitState HelitAttack::GetState()
+Helit::eHelitState HelitAttack::getState()
 {
 	return Helit::HELIT_ATTACK;
 }
 
-void HelitAttack::Update(float dt)
+void HelitAttack::update(float dt)
 {
 	_timeAttack += dt;
 	if (_timeAttack >= 0.4f)
@@ -24,27 +24,27 @@ void HelitAttack::Update(float dt)
 
 		if (_count > 1)
 		{
-			_pHelitData->helit->SetState(new HelitStand(_pHelitData));
+			_pHelitData->helit->setState(new HelitStand(_pHelitData));
 			return;
 		}
 
-		if (_pHelitData->helit->GetListBullet()->size() < 2)
+		if (_pHelitData->helit->getListBullet()->size() < 2)
 		{
 			auto* bullet = new HelitBullet();
-			_pHelitData->helit->GetListBullet()->push_back(bullet);
+			_pHelitData->helit->getListBullet()->push_back(bullet);
 		}
 
 		float posX = 0;
-		float posY = _pHelitData->helit->GetBound().top + 35;
+		float posY = _pHelitData->helit->getBound().top + 35;
 
-		if (_pHelitData->helit->GetReverse())
-			posX = _pHelitData->helit->GetBound().right - 10;
+		if (_pHelitData->helit->getReverse())
+			posX = _pHelitData->helit->getBound().right - 10;
 		else
-			posX = _pHelitData->helit->GetBound().left + 10;
+			posX = _pHelitData->helit->getBound().left + 10;
 
 
-		_pHelitData->helit->GetListBullet()->at(_count)->SetPosition(posX, posY);
-		_pHelitData->helit->GetListBullet()->at(_count)->SetReverse(_pHelitData->helit->GetReverse());
-		_pHelitData->helit->GetListBullet()->at(_count)->NewEntity();
+		_pHelitData->helit->getListBullet()->at(_count)->setPosition(posX, posY);
+		_pHelitData->helit->getListBullet()->at(_count)->setReverse(_pHelitData->helit->getReverse());
+		_pHelitData->helit->getListBullet()->at(_count)->newObject();
 	}
 }

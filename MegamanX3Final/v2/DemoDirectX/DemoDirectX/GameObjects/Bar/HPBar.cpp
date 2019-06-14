@@ -35,18 +35,18 @@ void HPBar::draw(int Hp, int MaxHp)
 	int MaxHP = MaxHp;
 	GVec3 pos = position;
 
-	Hpbar->Draw(pos);
+	Hpbar->draw(pos);
 	pos.y -= 9;
 	while (MaxHP > 0)
 	{
 		if (HP > 0)
-			blood->Draw(pos);
+			blood->draw(pos);
 		else
-			noblood->Draw(pos);
+			noblood->draw(pos);
 
 		pos.y -= 2;
 		HP--;
 		MaxHP--;
 	}
-	Top->Draw(pos);
+	Top->draw(pos);
 }

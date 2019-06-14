@@ -30,29 +30,29 @@ public:
 	};
 
 	~Sound();
-	static Sound* GetInstance();
+	static Sound* getInstance();
 
-	void static Create(HWND hWnd);
-	void SetVolume(float percentage, const std::string& name = "");
-	void LoadSound(char* fileName, const std::string& name);
-	void Play(const std::string& name, bool infiniteLoop, int times);
-	void Stop(const std::string& name = "");
-	bool IsPlaying(const std::string& name);
+	void static create(HWND hWnd);
+	void setVolume(float percentage, const std::string& name = "");
+	void loadSound(char* fileName, const std::string& name);
+	void play(const std::string& name, bool infiniteLoop, int times);
+	void stop(const std::string& name = "");
+	bool isPlaying(const std::string& name);
 
-	float GetVolume() const;
-	void Mute();
-	void UnMute();
-	void CleanUp() const;
+	float getVolume() const;
+	void mute();
+	void unMute();
+	void cleanUp() const;
 
 private:
 	Sound(HWND hWnd);
 	static Sound* _instance;
 
+	bool _isMute;
+	float _volume;
 	IDirectSound8* _pDevice;
 	IDirectSoundBuffer* _primaryBuffer;
 	std::map<std::string, IDirectSoundBuffer8*> _soundBufferMap;
-	bool _isMute;
-
-	float _volume;
+	
 
 };

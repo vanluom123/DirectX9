@@ -3,8 +3,8 @@
 
 SmallBloodItem::SmallBloodItem()
 {
-	SetItemType(SMALL_BLOOD);
-	_small_item = new Animation("Resources/Items/small_blood.bmp", 1, 4, 10, 8, 0.07, D3DCOLOR_XRGB(6, 113, 158));
+	setItemType(SMALL_BLOOD);
+	_animationItem = new Animation("Resources/Items/small_blood.bmp", 1, 4, 10, 8, 0.07, D3DCOLOR_XRGB(6, 113, 158));
 	_width = 10;
 	_height = 8;
 	_vy = 200;
@@ -12,10 +12,10 @@ SmallBloodItem::SmallBloodItem()
 
 SmallBloodItem::~SmallBloodItem()
 {
-	delete _small_item;
+	delete _animationItem;
 }
 
-RECT SmallBloodItem::GetBound()
+RECT SmallBloodItem::getBound()
 {
 	RECT bound;
 
@@ -27,36 +27,35 @@ RECT SmallBloodItem::GetBound()
 	return bound;
 }
 
-void SmallBloodItem::Update(float dt)
+void SmallBloodItem::update(float dt)
 {
 	if (_isAllowDraw == false)
 		return;
-	_small_item->Update(dt);
-	BaseObject::Update(dt);
+	_animationItem->update(dt);
+	BaseObject::update(dt);
 }
 
-void SmallBloodItem::Draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
+void SmallBloodItem::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {
 	if (_isAllowDraw == false)
 		return;
-	_small_item->SetPosition(GetPosition());
+	_animationItem->setPosition(getPosition());
 	if (camera != NULL)
-		_small_item->Draw(GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 	else
-		_small_item->Draw(GetPosition());
+		_animationItem->draw(getPosition());
 }
 
-void SmallBloodItem::OnCollision(BaseObject *obj)
+void SmallBloodItem::onCollision(BaseObject* obj)
 {
-	if (obj->GetObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
 		_isDie = true;
-		obj->SetHP(obj->GetHP() + 3);
+		obj->setHP(obj->getHP() + 3);
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType SmallBloodItem::GetItemsType()
+Items::eItemType SmallBloodItem::getItemType()
 {
 	return SMALL_BLOOD;
 }
-

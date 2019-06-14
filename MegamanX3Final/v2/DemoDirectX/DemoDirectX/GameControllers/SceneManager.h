@@ -1,17 +1,23 @@
 #ifndef __SCENE_MANAGER_H__
 #define __SCENE_MANAGER_H__
+#include "../Scenes/Scene.h"
 
-#include "../GameComponents/Scene.h"
 
 class SceneManager
 {
 public:
-	static SceneManager* GetInstance();
+	static SceneManager* getInstance();
 	~SceneManager();
 
-	Scene* GetCurrentScene() const;
-	void Update(float dt) const;
-	void ReplaceScene(Scene* scene);
+	enum eSceneType
+	{
+		INTRO_SCENE = 0,
+		BEGIN_SCENE = 1
+	};
+
+	Scene* getCurrentScene() const;
+	void update(float dt) const;
+	void setScene(eSceneType sceneType);
 
 private:
 	SceneManager();

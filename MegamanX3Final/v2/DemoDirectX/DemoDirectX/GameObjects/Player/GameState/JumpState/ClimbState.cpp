@@ -1,10 +1,10 @@
 #include "ClimbState.h"
 
-ClimbState::ClimbState(PLAYERDATA* playerData) :PlayerState(playerData)
+ClimbState::ClimbState(PlayerData* playerData) :PlayerState(playerData)
 {
 }
 
-Player::ePlayerState ClimbState::GetState()
+Player::ePlayerState ClimbState::getState()
 {
 	return Player::CLIMB;
 }

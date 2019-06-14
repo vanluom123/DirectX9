@@ -6,8 +6,8 @@ class HelitState
 {
 public:
 	HelitState(HelitData* helit);
-	virtual Helit::eHelitState GetState() = 0;
-	virtual void Update(float dt);
+	virtual Helit::eHelitState getState() = 0;
+	virtual void update(float dt);
 
 protected:
 	HelitData* _pHelitData;

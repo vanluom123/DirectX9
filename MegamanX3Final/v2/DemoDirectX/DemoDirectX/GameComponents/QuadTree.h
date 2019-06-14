@@ -10,9 +10,9 @@ class QuadTree
 {
 private:
 	//thuc hien chia ra cac node
-	void Split(); 
+	void split(); 
 
-	bool IsContain(RECT r);
+	bool isContain(RECT r);
 
 	//danh sach cac phan tu co trong vung va cham (Bound)
 	std::vector<BaseObject*> _listObject;
@@ -28,15 +28,15 @@ public:
 	QuadTree(int level, RECT bound);
 	~QuadTree();
 
-	void Clear();
-	void InsertObject(BaseObject *entity);
+	void clear();
+	void insertObject(BaseObject *entity);
 
-	int GetTotalObject();
-	void GetAllObject(std::vector<BaseObject*> &ObjectOut, RECT rect);
-	void GetObjectCollide(std::vector<BaseObject*> &EntityStatic, RECT rect);
-	void GetObjectCamera(std::vector<BaseObject*> &EntityOut, RECT rect);
+	int getTotalObject();
+	void getAllObject(std::vector<BaseObject*> &ObjectOut, RECT rect);
+	void getObjectCollide(std::vector<BaseObject*> &EntityStatic, RECT rect);
+	void getObjectCamera(std::vector<BaseObject*> &EntityOut, RECT rect);
 
-	RECT GetBound() const;
-	int GetLevel() const;
-	std::vector<BaseObject*>* GetListObject();
+	RECT getBound() const;
+	int getLevel() const;
+	std::vector<BaseObject*>* getListObject();
 };

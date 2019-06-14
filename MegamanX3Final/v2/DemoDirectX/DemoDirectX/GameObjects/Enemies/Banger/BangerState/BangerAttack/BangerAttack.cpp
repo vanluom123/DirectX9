@@ -9,7 +9,7 @@ BangerAttack::BangerAttack(BangerData* banger) : BangerState(banger)
 
 void BangerAttack::Update(float dt)
 {
-	_pBangerData->banger->SetVx(0);
+	_pBangerData->banger->setVx(0);
 	_timeAttack += dt;
 
 	if (_timeAttack >= 0.45f)
@@ -19,27 +19,27 @@ void BangerAttack::Update(float dt)
 
 		if (_count >= 3)
 		{
-			_pBangerData->banger->SetState(new BangerJump(_pBangerData));
+			_pBangerData->banger->setState(new BangerJump(_pBangerData));
 			return;
 		}
 
-		if (_pBangerData->banger->GetListBullet()->size() < 4)
+		if (_pBangerData->banger->getListBullet()->size() < 4)
 		{
 			auto* ebullet = new BangerBullet();
-			_pBangerData->banger->GetListBullet()->push_back(ebullet);
+			_pBangerData->banger->getListBullet()->push_back(ebullet);
 		}
 
 		float posX;
-		float posY = _pBangerData->banger->GetBound().top + 8;
+		float posY = _pBangerData->banger->getBound().top + 8;
 
-		if (_pBangerData->banger->GetReverse())
-			posX = _pBangerData->banger->GetBound().right - 8;
+		if (_pBangerData->banger->getReverse())
+			posX = _pBangerData->banger->getBound().right - 8;
 		else
-			posX = _pBangerData->banger->GetBound().left + 8;
+			posX = _pBangerData->banger->getBound().left + 8;
 
-		_pBangerData->banger->GetListBullet()->at(_count)->SetPosition(posX, posY);
-		_pBangerData->banger->GetListBullet()->at(_count)->SetReverse(_pBangerData->banger->GetReverse());
-		_pBangerData->banger->GetListBullet()->at(_count)->NewEntity();
+		_pBangerData->banger->getListBullet()->at(_count)->setPosition(posX, posY);
+		_pBangerData->banger->getListBullet()->at(_count)->setReverse(_pBangerData->banger->getReverse());
+		_pBangerData->banger->getListBullet()->at(_count)->newObject();
 	}
 }
 

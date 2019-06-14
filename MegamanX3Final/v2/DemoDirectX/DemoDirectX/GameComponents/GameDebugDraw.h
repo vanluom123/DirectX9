@@ -9,17 +9,17 @@ public:
     GameDebugDraw();
 	~GameDebugDraw();
 
-    void Draw();
-    void DrawLine(GVec2 lines[], int count);
-    void DrawRect(RECT bound, Camera *camera = nullptr);
+    void draw();
+    void drawLine(GVec2 lines[], int count);
+    void drawRect(RECT bound, Camera *camera = nullptr);
 
-    //set do rong cua duong ve, mac dinh = 10
-    void SetLineSize(float width);
-    void SetColor(D3DCOLOR color);
+    //set width for line, default = 10
+    void setLineSize(float width);
+    void setColor(D3DCOLOR color);
 
 private:
-    LPD3DXSPRITE _spriteHandler;
-    LPDIRECT3DDEVICE9 _ddv;
+    LPD3DXSPRITE _DXSprite;
+    LPDIRECT3DDEVICE9 _d3ddev;
     D3DCOLOR _color;
 	LPD3DXLINE _lineDraw;
 

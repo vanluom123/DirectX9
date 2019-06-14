@@ -5,11 +5,11 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-ClingState::ClingState(PLAYERDATA* playerData, bool dash) :PlayerState(playerData)
+ClingState::ClingState(PlayerData* playerData, bool dash) :PlayerState(playerData)
 {
 	_speed = 0.0f;
-	_countPress = 0;
-	_playerData->player->SetVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+	_countPress = 0.0f;
+	_playerData->player->setVy(Define::PLAYER_MIN_JUMP_VELOCITY);
 	_accelerateY = 15.0f;
 
 	_pressed = dash;
@@ -17,8 +17,8 @@ ClingState::ClingState(PLAYERDATA* playerData, bool dash) :PlayerState(playerDat
 
 void ClingState::Update(float dt)
 {
-	if (_playerData->player->GetVy() > 0)
-		_playerData->player->SetState(new FallState(_playerData, _pressed));
+	if (_playerData->player->getVy() > 0)
+		_playerData->player->setState(new FallState(_playerData, _pressed));
 }
 
 void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
@@ -26,7 +26,7 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	_countPress += dt;
 	if (_countPress < 0.25f)
 	{
-		if (_playerData->player->GetReverse())
+		if (_playerData->player->getReverse())
 		{
 			_speed = Define::PLAYER_MAX_CLING_SPEED;
 
@@ -40,14 +40,14 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 			if (keys[VK_LEFT])
 				_countPress = 0.25;
 		}
-		_playerData->player->SetVx(_speed);
-		_playerData->player->AddVy(_accelerateY);
+		_playerData->player->setVx(_speed);
+		_playerData->player->addVy(_accelerateY);
 		return;
 	}
 
 	if (keys[VK_RIGHT])
 	{
-		_playerData->player->SetReverse(false);
+		_playerData->player->setReverse(false);
 
 		if (_pressed)
 			_speed = Define::PLAYER_MAX_SLIDE_SPEED;
@@ -56,44 +56,45 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	}
 	else if (keys[VK_LEFT])
 	{
-		_playerData->player->SetReverse(true);
+		_playerData->player->setReverse(true);
 		if (_pressed)
 			_speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			_speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
-	_playerData->player->SetVx(_speed);
-	_playerData->player->AddVy(_accelerateY);
+	_playerData->player->setVx(_speed);
+	_playerData->player->addVy(_accelerateY);
 }
 
-void ClingState::OnCollision(BaseObject::eSideCollision side)
+void ClingState::onCollision(BaseObject::eSideCollision side)
 {
 	switch (side)
 	{
-	case BaseObject::LEFT:
-	case BaseObject::RIGHT:
-	{
-		Sound::GetInstance()->Play("JumpUp", false, 1);
-		Sound::GetInstance()->SetVolume(95);
+		case BaseObject::LEFT:
+		case BaseObject::RIGHT:
+			{
+				Sound::getInstance()->play("JumpUp", false, 1);
+				Sound::getInstance()->setVolume(95);
 
-		_playerData->player->SetState(new SlipDownState(_playerData));
-		break;
-	}
-	case BaseObject::TOP:
-	{
-		_playerData->player->SetState(new FallState(_playerData, _pressed));
-		break;
-	}
-	case BaseObject::BOTTOM:
-	{
-		_playerData->player->SetState(new StandState(_playerData));
-		break;
-	}
-	default: break;
+				_playerData->player->setState(new SlipDownState(_playerData));
+				break;
+			}
+		case BaseObject::TOP:
+			{
+				_playerData->player->setState(new FallState(_playerData, _pressed));
+				break;
+			}
+		case BaseObject::BOTTOM:
+			{
+				_playerData->player->setState(new StandState(_playerData));
+				break;
+			}
+		default:
+			break;
 	}
 }
 
-Player::ePlayerState ClingState::GetState()
+Player::ePlayerState ClingState::getState()
 {
 	return Player::CLING;
 }

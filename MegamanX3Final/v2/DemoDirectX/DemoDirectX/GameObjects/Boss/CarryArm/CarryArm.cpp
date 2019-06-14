@@ -5,13 +5,15 @@
 CarryArm::CarryArm()
 {
 	_objectType = eObjectType::ENEMY;
-	_vx = 0;
-	_vy = 0;
-	_pAnim = new Animation(Define::CARRY_ARM, 3, 10, 44, 65, 0.15, D3DCOLOR_XRGB(255, 0, 220));
+	_vx = 0.0f;
+	_vy = 0.0f;
+	_pAnim = new Animation(Define::CARRY_ARM, 3, 10, 44, 65, 0.15f, D3DCOLOR_XRGB(255, 0, 220));
+	this->setWidth(_pAnim->getWidth());
+	this->setHeight(_pAnim->getHeight());
 	_pAnimDie = new Animation(Define::BURST, 1, 9, 50, 45);
-	_pAnimDie->SetPause(true);
+	_pAnimDie->setPause(true);
 	_curState = eCarryArmState::CARRY_ARM_NONE;
-	SetState(eCarryArmState::CARRY_ARM_STAND);
+	setState(eCarryArmState::CARRY_ARM_STAND);
 	_MaxHP = 5;
 	_HP = _MaxHP;
 	_Damage = 3;
@@ -23,97 +25,97 @@ CarryArm::~CarryArm()
 	delete _pAnimDie;
 }
 
-void CarryArm::Draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCenter, D3DCOLOR color)
+void CarryArm::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCenter, D3DCOLOR color)
 {
 	if (!_isAllowDraw)
 		return;
 
 	if (!_isDie)
 	{
-		_pAnim->SetPosition(GetPosition());
-		_pAnim->Draw(_pAnim->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+		_pAnim->setPosition(getPosition());
+		_pAnim->draw(_pAnim->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 	}
-	if (!_pAnimDie->GetPause())
-		_pAnimDie->Draw(_pAnimDie->GetPosition(), r, scale, camera->GetTrans(), angle, rotateCenter, color);
+	if (!_pAnimDie->getPause())
+		_pAnimDie->draw(_pAnimDie->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 }
 
-RECT CarryArm::GetBound()
+RECT CarryArm::getBound()
 {
-	RECT bound;
+	RECT boundingBox;
 
-	if (_curState == eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2)
+	switch (_curState)
 	{
-		bound.left = _posX - 43 / 2.0f;
-		bound.right = 43 + bound.left;
-		bound.top = _posY - 59 / 2.0f;
-		bound.bottom = 59 + bound.top;
-	}
-	else
-	{
-		bound.left = _posX - 36 / 2.0f;
-		bound.right = bound.left + 36;
-		bound.top = _posY - 57 / 2.0f;
-		bound.bottom = bound.top + 57;
+	case eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2:
+		boundingBox.left = _posX - 43 / 2.0f;
+		boundingBox.right = 43 + boundingBox.left;
+		boundingBox.top = _posY - 59 / 2.0f;
+		boundingBox.bottom = 59 + boundingBox.top;
+		break;
+
+	default:
+		boundingBox.left = _posX - 36 / 2.0f;
+		boundingBox.right = boundingBox.left + 36;
+		boundingBox.top = _posY - 57 / 2.0f;
+		boundingBox.bottom = boundingBox.top + 57;
+		break;
 	}
 
-	return bound;
+	return boundingBox;
 }
 
-void CarryArm::Update(float dt)
+void CarryArm::update(float dt)
 {
-	_pAnim->Update(dt);
-	BaseObject::Update(dt);
-	_pAnimDie->Update(dt);
-	UpdateState(dt);
+	_pAnim->update(dt);
+	BaseObject::update(dt);
+	_pAnimDie->update(dt);
+	updateState(dt);
 }
 
-void CarryArm::OnCollision(BaseObject* obj)
+void CarryArm::onCollision(BaseObject* obj)
 {
-	if (obj->GetObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
+	if (obj->getObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
 	{
-		_HP -= obj->GetDamage();
+		_HP -= obj->getDamage();
 		if (_HP <= 0)
 		{
 			_HP = _MaxHP;
 			_isDie = true;
-			_pAnimDie->SetPosition(GetPosition());
-			_pAnimDie->SetAnimation(0, 10, 0.05, false);
-			SetState(eCarryArmState::CARRY_ARM_STAND);
+			_pAnimDie->setPosition(getPosition());
+			_pAnimDie->setAnimation(0, 10, 0.05f, false);
+			setState(eCarryArmState::CARRY_ARM_STAND);
 		}
 	}
 }
 
-void CarryArm::SetState(eCarryArmState state)
+void CarryArm::setState(eCarryArmState state)
 {
 	if (_curState == state)
 		return;
+
+	_curState = state;
 
 	switch (state)
 	{
 	case eCarryArmState::CARRY_ARM_STAND:
 	case eCarryArmState::CARRY_ARM_MOVE_DOWN:
 	case eCarryArmState::CARRY_ARM_MOVE_UP:
-		_pAnim->SetAnimation(0, 10, 0.05f);
+		_pAnim->setAnimation(0, 10, 0.05f);
 		break;
 
 	case eCarryArmState::CARRY_ARM_EVENT_MOVE_UP:
-		_pAnim->SetAnimation(1, 5, 0.05f, false);
+		_pAnim->setAnimation(1, 5, 0.05f, false);
 		break;
 
 	case eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2:
-		_pAnim->SetAnimation(2, 5, 0.05f, false);
+		_pAnim->setAnimation(2, 5, 0.05f, false);
 		break;
 
-	default:break;
+	default:
+		break;
 	}
-
-	SetWidth(_pAnim->GetWidth());
-	SetHeight(_pAnim->GetHeight());
-
-	_curState = state;
 }
 
-void CarryArm::UpdateState(float dt)
+void CarryArm::updateState(float dt)
 {
 	switch (_curState)
 	{
@@ -128,28 +130,28 @@ void CarryArm::UpdateState(float dt)
 		_vx = 0;
 		_vy = 80;
 		if (_posY > _starty)
-			SetState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
+			setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
 		break;
 
 	case eCarryArmState::CARRY_ARM_MOVE_UP:
 		_vx = 80;
 		_vy = -30;
 		if (_posX > _startx)
-			SetState(eCarryArmState::CARRY_ARM_STAND);
+			setState(eCarryArmState::CARRY_ARM_STAND);
 		break;
 
 	case eCarryArmState::CARRY_ARM_EVENT_MOVE_UP:
 		_vx = 0;
 		_vy = 0;
-		if (_pAnim->GetPause())
-			SetState(eCarryArmState::CARRY_ARM_MOVE_UP);
+		if (_pAnim->getPause())
+			setState(eCarryArmState::CARRY_ARM_MOVE_UP);
 		break;
 
 	case eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2:
 		_vx = 0;
 		_vy = 0;
-		if (_pAnim->GetPause())
-			SetState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP);
+		if (_pAnim->getPause())
+			setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP);
 		break;
 
 	default: break;

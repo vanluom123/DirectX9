@@ -8,33 +8,33 @@ Camera::Camera(int width, int height)
 	_posWorld = Gvec3Zero;
 }
 
-void Camera::SetPosition(float x, float y)
+void Camera::setPosition(float x, float y)
 {
-	SetPosition(GVec3((int)x, (int)y, 0));
+	setPosition(GVec3((int)x, (int)y, 0));
 }
 
-void Camera::SetPosition(GVec3 pos)
+void Camera::setPosition(GVec3 pos)
 {
 	_posWorld.x = (int)pos.x;
 	_posWorld.y = (int)pos.y;
 }
 
-GVec2 Camera::GetTrans() const
+GVec2 Camera::getTrans() const
 {
-	int xT = (GameGlobal::GetWidth() / 2.0f) - _posWorld.x;
-	int yT = (GameGlobal::GetHeight() / 2.0f) - _posWorld.y;
+	int xT = (GameGlobal::getWidth() / 2.0f) - _posWorld.x;
+	int yT = (GameGlobal::getHeight() / 2.0f) - _posWorld.y;
 
 	GVec2 vec2Translation = GVec2((float)xT, (float)yT);
 
 	return vec2Translation;
 }
 
-GVec3 Camera::GetPosition() const
+GVec3 Camera::getPosition() const
 {
 	return _posWorld;
 }
 
-RECT Camera::GetBound() const
+RECT Camera::getBound() const
 {
 	RECT bound;
 

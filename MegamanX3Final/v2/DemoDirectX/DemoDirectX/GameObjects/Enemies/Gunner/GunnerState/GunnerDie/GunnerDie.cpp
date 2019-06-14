@@ -4,9 +4,9 @@
 
 GunnerDie::GunnerDie(GunnerData* headGunner) :GunnerState(headGunner)
 {
-	Sound::GetInstance()->Play("explosions", false, 1);
+	Sound::getInstance()->play("explosions", false, 1);
 
-	_pGunnerData->gunner->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
+	_pGunnerData->gunner->setVy(Define::ENEMY_MIN_JUMP_VELOCITY);
 	_timeDie = 0;
 	_accelerateY = 25.0f;
 }
@@ -18,12 +18,12 @@ Gunner::eGunnerState GunnerDie::GetState()
 
 void GunnerDie::Update(float dt)
 {
-	_pGunnerData->gunner->AddVy(_accelerateY);
+	_pGunnerData->gunner->addVy(_accelerateY);
 	
 	_timeDie += dt;
 	if (_timeDie >= 0.45f)
 	{
-		_pGunnerData->gunner->SetDraw(false);
+		_pGunnerData->gunner->setDraw(false);
 		return;
 	}
 }

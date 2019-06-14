@@ -4,9 +4,9 @@
 
 BangerJump::BangerJump(BangerData* banger) :BangerState(banger)
 {
-	_pBangerData->banger->SetVy(Define::ENEMY_MIN_JUMP_VELOCITY);
+	_pBangerData->banger->setVy(Define::ENEMY_MIN_JUMP_VELOCITY);
 
-	if (_pBangerData->banger->GetReverse())
+	if (_pBangerData->banger->getReverse())
 		_bangerVx = 100;
 	else
 		_bangerVx = -100;
@@ -24,7 +24,7 @@ void BangerJump::OnCollision(BaseObject::eSideCollision side)
 	case BaseObject::BOTTOM:
 		break;
 	case BaseObject::TOP:
-		_pBangerData->banger->SetState(new BangerFall(_pBangerData));
+		_pBangerData->banger->setState(new BangerFall(_pBangerData));
 		break;
 	default: break;
 	}
@@ -32,11 +32,11 @@ void BangerJump::OnCollision(BaseObject::eSideCollision side)
 
 void BangerJump::Update(float dt)
 {	
-	_pBangerData->banger->SetVx(_bangerVx);
-	_pBangerData->banger->AddVy(_accelerateY);
+	_pBangerData->banger->setVx(_bangerVx);
+	_pBangerData->banger->addVy(_accelerateY);
 
-	if (_pBangerData->banger->GetVy() > 0)
-		_pBangerData->banger->SetState(new BangerFall(_pBangerData));
+	if (_pBangerData->banger->getVy() > 0)
+		_pBangerData->banger->setState(new BangerFall(_pBangerData));
 }
 
 Banger::eBangerState BangerJump::GetStateName()

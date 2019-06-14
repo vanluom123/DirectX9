@@ -13,17 +13,17 @@
 Player::Player()
 {
 	_objectType = ROCK_MAN;
-	this->SetId(0);
-	_pAnimation = new Animation(Define::ANIMATION_ROCKMAN, 21, 10, 49, 49, 0.15, D3DCOLOR_XRGB(100, 100, 100));
-	_pAniEfectCharge = new Animation(Define::ANIMATION_CHARGE, 2, 12, 55, 65, 0.02);
-	_pAniEfectDash = new Animation(Define::ANIMATION_DASH, 1, 11, 75, 35, 0.15);
-	_pAniEfectSlide = new Animation(Define::ANIMATION_SLIDE, 1, 2, 30, 30, 0.15);
+	setId(0);
+	_pAnimation = new Animation(Define::ANIMATION_ROCKMAN, 21, 10, 49, 49, 0.15f, D3DCOLOR_XRGB(100, 100, 100));
+	_pAniEfectCharge = new Animation(Define::ANIMATION_CHARGE, 2, 12, 55, 65, 0.02f);
+	_pAniEfectDash = new Animation(Define::ANIMATION_DASH, 1, 11, 75, 35, 0.15f);
+	_pAniEfectSlide = new Animation(Define::ANIMATION_SLIDE, 1, 2, 30, 30, 0.15f);
 	_hpbar = new HPBar(_objectType);
 
-	_pAniEfectCharge->SetPause(true);
-	_pAniEfectDash->SetPause(true);
-	_pAniEfectSlide->SetAnimation(0, 2, 0.1);
-	_pAniEfectSlide->SetPause(true);
+	_pAniEfectCharge->setPause(true);
+	_pAniEfectDash->setPause(true);
+	_pAniEfectSlide->setAnimation(0, 2, 0.1f);
+	_pAniEfectSlide->setPause(true);
 
 	_allowJump = true;
 	_allowShoot = true;
@@ -39,19 +39,19 @@ Player::Player()
 	_timeChangeShoot = 0.0f;
 	_timeAlive = 0.0f;
 
-	_vx = 0;
-	_vy = 0;
+	_vx = 0.0f;
+	_vy = 0.0f;
 	_MaxHP = 15;
 	_HP = _MaxHP;
 	_Damage = 0;
 
 	_currentState = FALL;
 
-	_playerData = new PLAYERDATA;
+	_playerData = new PlayerData;
 	_playerData->player = this;
-	_playerData->state = NULL;
+	_playerData->state = nullptr;
 
-	this->SetState(new AppearState(_playerData));
+	setState(new AppearState(_playerData));
 }
 
 Player::~Player()
@@ -62,54 +62,56 @@ Player::~Player()
 
 	for (auto& bullet : _listBullet)
 		delete bullet;
-	_listBullet.clear();
+
+	if (!_listBullet.empty())
+		_listBullet.clear();
 }
 
-void Player::ChangeAnimation(ePlayerState state)
+void Player::changeAnimation(ePlayerState state)
 {
 	switch (state)
 	{
 	case APPEAR:
-		_pAnimation->SetAnimation(0, 5, 0.15, false);
+		_pAnimation->setAnimation(0, 5, 0.15f, false);
 		break;
 
 	case STAND:
-		_pAnimation->SetAnimation(1, 4, 0.1, false);
+		_pAnimation->setAnimation(1, 4, 0.1f, false);
 		break;
 
 	case RUN:
-		_pAnimation->SetAnimation(3, 10, 0.05);
+		_pAnimation->setAnimation(3, 10, 0.05f);
 		break;
 
 	case JUMP:
-		_pAnimation->SetAnimation(5, 3, 0.05, false);
+		_pAnimation->setAnimation(5, 3, 0.05f, false);
 		break;
 
 	case FALL:
-		_pAnimation->SetAnimation(7, 3, 0.05, false);
+		_pAnimation->setAnimation(7, 3, 0.05f, false);
 		break;
 
 	case CLING:
-		_pAnimation->SetAnimation(9, 4, 0.03, false);
+		_pAnimation->setAnimation(9, 4, 0.03f, false);
 		break;
 
 	case SLIP_DOWN:
-		_pAnimation->SetAnimation(11, 3, 0.05, false);
+		_pAnimation->setAnimation(11, 3, 0.05f, false);
 		break;
 
 	case DASH:
-		_pAnimation->SetAnimation(16, 2, 0.05, false);
+		_pAnimation->setAnimation(16, 2, 0.05f, false);
 		break;
 
 	case CLIMB:
 		break;
 
 	case BLEED:
-		_pAnimation->SetAnimation(18, 9, 0.05);
+		_pAnimation->setAnimation(18, 9, 0.05f);
 		break;
 
 	case DIE:
-		_pAnimation->SetAnimation(20, 3, 0.3f);
+		_pAnimation->setAnimation(20, 3, 0.3f);
 		break;
 
 	case WIN: break;
@@ -117,46 +119,46 @@ void Player::ChangeAnimation(ePlayerState state)
 	default: break;
 	}
 
-	this->SetWidth(_pAnimation->GetWidth());
-	this->SetHeight(_pAnimation->GetHeight());
+	setWidth(_pAnimation->getWidth());
+	setHeight(_pAnimation->getHeight());
 }
 
-void Player::SetState(PlayerState* newState)
+void Player::setState(PlayerState* newState)
 {
-	if (_currentState == newState->GetState())
-		return;
+	if (_currentState != newState->getState())
+	{
+		SAFE_DELETE(_playerData->state);
+		_playerData->state = newState;
 
-	SAFE_DELETE(_playerData->state);
-	_playerData->state = newState;
+		changeAnimation(newState->getState());
+		_currentState = newState->getState();
 
-	ChangeAnimation(newState->GetState());
-	_currentState = newState->GetState();
+		if (_currentState != DASH && _currentState != CLING)
+			_pAniEfectDash->setPause(true);
 
-	if (_currentState != DASH && _currentState != CLING)
-		_pAniEfectDash->SetPause(true);
+		if (_currentState == SLIP_DOWN)
+			_posSlideDown = _posY;
 
-	if (_currentState == SLIP_DOWN)
-		_posSlideDown = _posY;
-
-	else
-		_posSlideDown = std::numeric_limits<float>::infinity();
+		else
+			_posSlideDown = std::numeric_limits<float>::infinity();
+	}
 }
 
 
 
 #pragma region GETTER, SETTER
 
-Animation* Player::GetAnimation() const
+Animation* Player::getAnimation() const
 {
 	return _pAnimation;
 }
 
-float Player::GetHP() const
+float Player::getHP() const
 {
 	return this->_HP;
 }
 
-void Player::SetHP(float hp)
+void Player::setHP(float hp)
 {
 	this->_HP = hp;
 }
@@ -166,22 +168,22 @@ void Player::addHP(float hp)
 	this->_HP += hp;
 }
 
-std::vector<PlayerBullet*>* Player::GetPlayerBullet()
+std::vector<PlayerBullet*>* Player::getPlayerBullet()
 {
 	return &_listBullet;
 }
 
-void Player::SetLock(bool lock)
+void Player::setLock(bool lock)
 {
 	_islock = lock;
 }
 
-PLAYERDATA* Player::GetPlayerData() const
+PlayerData* Player::getPlayerData() const
 {
 	return _playerData;
 }
 
-Player::ePlayerState Player::GetCurrentState() const
+Player::ePlayerState Player::getCurrentState() const
 {
 	return _currentState;
 }
@@ -217,26 +219,26 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 		{
 		case STAND: case RUN: case DASH:
 		{
-			SetState(new JumpState(_playerData));
+			setState(new JumpState(_playerData));
 			break;
 		}
 		case SLIP_DOWN:
 		{
-
-			_pAniEfectDash->SetReverse(!_isReverse);
+			_pAniEfectDash->setReverse(!_isReverse);
 			if (_isReverse)
-				_pAniEfectDash->SetPosition(_posX, _posY + 12);
+				_pAniEfectDash->setPosition(_posX, _posY + 12);
 			else
-				_pAniEfectDash->SetPosition(_posX, _posY + 12);
+				_pAniEfectDash->setPosition(_posX, _posY + 12);
 
-			_pAniEfectDash->SetAnimation(1, 1, 0.005, false);
+			_pAniEfectDash->setAnimation(1, 1, 0.005f, false);
 			if (keys[VK_SLIDE])
-				SetState(new ClingState(_playerData, true));
+				setState(new ClingState(_playerData, true));
 			else
-				SetState(new ClingState(_playerData));
+				setState(new ClingState(_playerData));
 			break;
 		}
-		default: break;
+		default:
+			break;
 		}
 	}
 
@@ -248,11 +250,12 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 		if (!_isShoot)
 		{
 			_isShoot = true;
-			_pAnimation->SetShoot(_isShoot);
+			_pAnimation->setShoot(_isShoot);
 
 		}
-		PlayerShoot(PlayerBullet::BULLET_TYPE_NORMAL);
-		Sound::GetInstance()->Play("ShootingBullet", false, 1);
+
+		playerShoot(PlayerBullet::BULLET_TYPE_NORMAL);
+		Sound::getInstance()->play("ShootingBullet", false, 1);
 
 		_allowShoot = false;
 		_timeCurrentShoot = 0.0f;
@@ -265,12 +268,15 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 		switch (_currentState)
 		{
 		case STAND: case RUN:
-			_pAniEfectDash->SetReverse(_isReverse);
-			_pAniEfectDash->SetPosition(_posX, _posY + 12);
-			_pAniEfectDash->SetAnimation(0, 11, 0.05, false);
-			SetState(new DashState(_playerData));
+		{
+			_pAniEfectDash->setReverse(_isReverse);
+			_pAniEfectDash->setPosition(_posX, _posY + 12);
+			_pAniEfectDash->setAnimation(0, 11, 0.05f, false);
+			setState(new DashState(_playerData));
 			break;
-		default: break;
+		}
+		default:
+			break;
 		}
 	}
 }
@@ -292,7 +298,7 @@ void Player::OnKeyUp(int Key)
 	case VK_SHOOT:
 	{
 		_allowShoot = true;
-		_pAniEfectCharge->SetPause(true);
+		_pAniEfectCharge->setPause(true);
 
 		if (_currentState == BLEED)
 			return;
@@ -300,22 +306,26 @@ void Player::OnKeyUp(int Key)
 		if (_timeChangeShoot > _timeShoot * 4)
 		{
 			_isShoot = true;
-			_pAnimation->SetShoot(_isShoot);
-			//The second level
-			PlayerShoot(PlayerBullet::BULLET_TYPE_SECOND_LEVEL);
-			Sound::GetInstance()->Stop("AbsorbLongEnergy");
-			Sound::GetInstance()->Play("GiveUpLongEnergy", false, 1);
+			_pAnimation->setShoot(_isShoot);
+
+			// The second level
+			playerShoot(PlayerBullet::BULLET_TYPE_SECOND_LEVEL);
+
+			Sound::getInstance()->stop("AbsorbLongEnergy");
+			Sound::getInstance()->play("GiveUpLongEnergy", false, 1);
 		}
 		else
 		{
 			if (_timeChangeShoot > _timeShoot * 2)
 			{
 				_isShoot = true;
-				_pAnimation->SetShoot(_isShoot);
+				_pAnimation->setShoot(_isShoot);
+
 				//The first level
-				PlayerShoot(PlayerBullet::BULLET_TYPE_FIRST_LEVEL);
-				Sound::GetInstance()->Stop("AbsorbShortEnergy");
-				Sound::GetInstance()->Play("GiveUpShortEnergy", false, 1);
+				playerShoot(PlayerBullet::BULLET_TYPE_FIRST_LEVEL);
+
+				Sound::getInstance()->stop("AbsorbShortEnergy");
+				Sound::getInstance()->play("GiveUpShortEnergy", false, 1);
 			}
 		}
 
@@ -326,7 +336,8 @@ void Player::OnKeyUp(int Key)
 	case VK_SLIDE:
 	{
 		if (_currentState == DASH)
-			SetState(new StandState(_playerData));
+			setState(new StandState(_playerData));
+
 		_allowDash = true;
 		break;
 	}
@@ -334,7 +345,7 @@ void Player::OnKeyUp(int Key)
 	}
 }
 
-RECT Player::GetBound()
+RECT Player::getBound()
 {
 	RECT bound;
 	bound.left = _posX - 13;
@@ -345,12 +356,12 @@ RECT Player::GetBound()
 	return bound;
 }
 
-void Player::Update(float dt)
+void Player::update(float dt)
 {
-	OnNoCollisionWithBottom();
+	onNoCollisionWithBottom();
 
 	for (auto& bullet : _listBullet)
-		bullet->Update(dt);
+		bullet->update(dt);
 
 	if (_isShoot)
 	{
@@ -358,30 +369,30 @@ void Player::Update(float dt)
 		if (_timeCurrentShoot > _timeShoot)
 		{
 			_isShoot = false;
-			_pAnimation->SetShoot(_isShoot);
+			_pAnimation->setShoot(_isShoot);
 			_timeCurrentShoot = 0;
 		}
 	}
 
-	//Animation Charge Bullet
+	// Animation Charge Bullet
 	if (!_allowShoot)
 	{
 		_timeChangeShoot += dt;
 
 		if (_timeChangeShoot > _timeShoot * 4)
 		{
-			Sound::GetInstance()->Stop("AbsorbShortEnergy");
-			Sound::GetInstance()->Play("AbsorbLongEnergy", true, 0);
-			_pAniEfectCharge->SetPause(false);
-			if (_pAniEfectCharge->GetCurrentRow() != 1)
-				_pAniEfectCharge->SetAnimation(1, 12, 0.017);
+			Sound::getInstance()->stop("AbsorbShortEnergy");
+			Sound::getInstance()->play("AbsorbLongEnergy", true, 0);
+			_pAniEfectCharge->setPause(false);
+			if (_pAniEfectCharge->getCurrentRow() != 1)
+				_pAniEfectCharge->setAnimation(1, 12, 0.017f);
 		}
 		else if (_timeChangeShoot > _timeShoot * 2)
 		{
-			Sound::GetInstance()->Play("AbsorbShortEnergy", true, 0);
-			_pAniEfectCharge->SetPause(false);
-			if (_pAniEfectCharge->GetCurrentRow() != 0)
-				_pAniEfectCharge->SetAnimation(0, 12, 0.02);
+			Sound::getInstance()->play("AbsorbShortEnergy", true, 0);
+			_pAniEfectCharge->setPause(false);
+			if (_pAniEfectCharge->getCurrentRow() != 0)
+				_pAniEfectCharge->setAnimation(0, 12, 0.02f);
 		}
 	}
 
@@ -408,15 +419,15 @@ void Player::Update(float dt)
 	}
 
 	if (_posY - _posSlideDown > 8)
-		_pAniEfectSlide->SetPause(false);
+		_pAniEfectSlide->setPause(false);
 	else
-		_pAniEfectSlide->SetPause(true);
+		_pAniEfectSlide->setPause(true);
 
-	BaseObject::Update(dt);
-	_pAnimation->Update(dt);
-	_pAniEfectCharge->Update(dt);
-	_pAniEfectDash->Update(dt);
-	_pAniEfectSlide->Update(dt);
+	BaseObject::update(dt);
+	_pAnimation->update(dt);
+	_pAniEfectCharge->update(dt);
+	_pAniEfectDash->update(dt);
+	_pAniEfectSlide->update(dt);
 
 	if (_playerData->state)
 		_playerData->state->Update(dt);
@@ -427,81 +438,84 @@ void Player::DrawHP()
 	_hpbar->draw(_HP, _MaxHP);
 }
 
-void Player::Draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
+void Player::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
 	for (auto& bullet : _listBullet)
-		bullet->Draw(camera);
+		bullet->draw(camera);
 
 	if (!_isAllowDraw)
 		return;
 
-	_pAnimation->SetReverse(_isReverse);
-	_pAnimation->SetPosition(GetPosition());
+	_pAnimation->setReverse(_isReverse);
+	_pAnimation->setPosition(getPosition());
 
 	if (camera)
 	{
-		_pAnimation->Draw(_pAnimation->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
-		if (!_pAniEfectCharge->GetPause())
+		_pAnimation->draw(_pAnimation->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		if (!_pAniEfectCharge->getPause())
 		{
-			_pAniEfectCharge->SetReverse(_isReverse);
-			_pAniEfectCharge->SetPosition(_posX, _posY + 6);
-			_pAniEfectCharge->Draw(_pAniEfectCharge->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+			_pAniEfectCharge->setReverse(_isReverse);
+			_pAniEfectCharge->setPosition(_posX, _posY + 6);
+			_pAniEfectCharge->draw(_pAniEfectCharge->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 		}
 
-		if (!_pAniEfectDash->GetPause())
-			_pAniEfectDash->Draw(_pAniEfectDash->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+		if (!_pAniEfectDash->getPause())
+			_pAniEfectDash->draw(_pAniEfectDash->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
-		if (!_pAniEfectSlide->GetPause())
+		if (!_pAniEfectSlide->getPause())
 		{
-			_pAniEfectSlide->SetReverse(_isReverse);
+			_pAniEfectSlide->setReverse(_isReverse);
 			if (_isReverse)
-				_pAniEfectSlide->SetPosition(_posX - 15, _posY);
+				_pAniEfectSlide->setPosition(_posX - 15, _posY);
 			else
-				_pAniEfectSlide->SetPosition(_posX + 15, _posY);
+				_pAniEfectSlide->setPosition(_posX + 15, _posY);
 
-			_pAniEfectSlide->Draw(_pAniEfectSlide->GetPosition(), rect, scale, camera->GetTrans(), angle, rotationCenter, color);
+			_pAniEfectSlide->draw(_pAniEfectSlide->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 		}
 	}
 	else
-		_pAnimation->Draw(_pAnimation->GetPosition());
+		_pAnimation->draw(_pAnimation->getPosition());
 }
 
-void Player::OnCollision(eSideCollision side)
+void Player::onCollision(eSideCollision side)
 {
-	if (_sideX != NONE)
+	if (_side_x != NONE)
 	{
-		if (_entityX->GetObjectType() == PORT)
+		if (_entity_x->getObjectType() == PORT)
 		{
-			if (_entityX->GetHP() <= 0)
+			if (_entity_x->getHP() <= 0)
 			{
-				_sideX = BaseObject::NONE;
-				_collisionTimeMinX = 1.0f;
+				_side_x = BaseObject::NONE;
+				_collision_time_min_x = 1.0f;
 				return;
 			}
 		}
 	}
 	if (_playerData->state)
-		_playerData->state->OnCollision(side);
+		_playerData->state->onCollision(side);
 }
 
-void Player::OnNoCollisionWithBottom()
+void Player::onNoCollisionWithBottom()
 {
-	if (_sideY != BOTTOM)
+	if (_side_y != BOTTOM)
 	{
 		switch (_currentState)
 		{
 		case STAND:case RUN:case DASH:
-			SetState(new FallState(_playerData));
+		{
+			setState(new FallState(_playerData));
 			break;
-		default:break;
+		}
+		default:
+			break;
 		}
 	}
 }
 
-void Player::OnCollision(BaseObject* object)
+void Player::onCollision(BaseObject* object)
 {
-	switch (object->GetObjectType())
+	switch (object->getObjectType())
 	{
 	case BaseObject::ENEMY:
 	case BaseObject::ENEMY_BULLET:
@@ -514,18 +528,18 @@ void Player::OnCollision(BaseObject* object)
 		_alive = true;
 		if (_HP <= 0)
 		{
-			SetState(new DieState(_playerData));
+			setState(new DieState(_playerData));
 			_alive = false;
 			_isDie = true;
 			return;
 		}
 
-		_pAnimation->SetShoot(false);
+		_pAnimation->setShoot(false);
 
-		if (_posX < object->GetPosition().x)
-			SetState(new BleedState(_playerData, 1));
+		if (_posX < object->getPosition().x)
+			setState(new BleedState(_playerData, 1));
 		else
-			SetState(new BleedState(_playerData, -1));
+			setState(new BleedState(_playerData, -1));
 		break;
 	}
 
@@ -533,26 +547,20 @@ void Player::OnCollision(BaseObject* object)
 	{
 		if (_currentState == JUMP || _currentState == CLING)
 			break;
-		_posY = object->GetBound().top - 24.51f;
-		_sideY = BOTTOM;
+		_posY = object->getBound().top - 24.51f;
+		_side_y = BOTTOM;
 		break;
 	}
 
 	case BaseObject::PORT:
 	{
-		if (object->GetHP() <= 0 && GetBound().top > object->GetBound().top)
+		if (object->getHP() <= 0 && getBound().top > object->getBound().top)
 		{
 			_islock = true;
-			if (object->GetDamage() > 0)
-			{
-				// Player standing
-				_pAnimation->SetPause(false);
-			}
+			if (object->getDamage() > 0)
+				_pAnimation->setPause(false);
 			else
-			{
-				// Player moving
-				_pAnimation->SetPause(true);
-			}
+				_pAnimation->setPause(true);
 		}
 
 		break;
@@ -562,21 +570,19 @@ void Player::OnCollision(BaseObject* object)
 	{
 		_HP = 0;
 		_isDie = true;
-		SetState(new DieState(_playerData));
+		setState(new DieState(_playerData));
 		_alive = false;
 		break;
 	}
 
-	case BaseObject::TAG_NONE:
-		break;
 	default:
 		break;
 	}
 }
 
-void Player::PlayerShoot(PlayerBullet::eBulletType bulletType)
+void Player::playerShoot(PlayerBullet::eBulletType bulletType)
 {
-	PlayerBullet* playerBullet = NULL;
+	PlayerBullet* playerBullet = nullptr;
 
 	if (_listBullet.size() < 3)
 	{
@@ -586,34 +592,36 @@ void Player::PlayerShoot(PlayerBullet::eBulletType bulletType)
 	else
 	{
 		for (auto& bullet : _listBullet)
-			if (bullet->GetExplosion())
+		{
+			if (bullet->getExplosion())
 			{
 				playerBullet = bullet;
 				break;
 			}
-		if (playerBullet == NULL)
+		}
+		if (playerBullet == nullptr)
 			return;
 	}
 
 	bool isReverseBullet = _isReverse;
-	float posX = 0;
-	float posY = this->GetBound().bottom - 18;
+	float posX = 0.0f;
+	float posY = this->getBound().bottom - 18;
 
 	if (_currentState == SLIP_DOWN)
 	{
 		isReverseBullet = !_isReverse;
 		if (!_isReverse)
-			posX = this->GetBound().left + playerBullet->GetWidth() / 4.0f;
+			posX = this->getBound().left + playerBullet->getWidth() / 4.0f;
 		else
-			posX = this->GetBound().right - playerBullet->GetWidth() / 4.0f;
+			posX = this->getBound().right - playerBullet->getWidth() / 4.0f;
 	}
 	else
 	{
 		if (!_isReverse)
-			posX = this->GetBound().right - playerBullet->GetWidth() / 4.0f;
+			posX = this->getBound().right - playerBullet->getWidth() / 4.0f;
 		else
-			posX = this->GetBound().left + playerBullet->GetWidth() / 4.0f;
+			posX = this->getBound().left + playerBullet->getWidth() / 4.0f;
 	}
 
-	playerBullet->NewBullet(posX, posY, isReverseBullet, bulletType);
+	playerBullet->newBullet(posX, posY, isReverseBullet, bulletType);
 }
