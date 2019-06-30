@@ -1,23 +1,21 @@
 # Megaman X3 Game
 ![Atom](https://github.com/vanluom123/DirectX9/blob/master/MegamanX3Final/DemoDirectX/DemoDirectX/Resources/IntroBackground/2342titlescreen.png)
 
-Game được viết bằng ngôn ngữ C++ với Engine DirectX 9.0c để viết chương trình cho game.
+The game is written in C ++ language with DirectX 9.0c Engine to write games for games.
 
-Bạn có thể vào đây tải DirectX 9.0c.
+You can download here DirectX 9.0c.
 
-> http://taimienphi.vn/download-directx-90c-32/DirectX-9.0c-phien-ban.
+http://taimienphi.vn/doad-directx-90c-32/DirectX-9.0c-phien-ban.
 
-Nếu bạn là game thủ thuộc thế hệ 8x hoặc 9x, ắt hẳn ít nhiều cũng từng nghe qua cái tên Mega Man (hay còn gọi là Rock Man ở Nhật Bản).
-Theo cốt truyện của series trò chơi chính, Rock là một người máy được tạo ra trong phòng thí nghiệm bởi tiến sĩ Thomas Light.
-Bạn sẽ điều khiển nhân vật Mega Man, sử dụng vũ khí chính là khẩu súng Mega Buster được tích hợp trên cánh tay, để tiêu diệt những kẻ thù ngáng đường. Sau khi đánh bại các Robot Master (mà chúng ta hay gọi là “trùm”) ở mỗi màn chơi, Mega Man sẽ có khả năng sử dụng vũ khí chuyên biệt của nhân vật đó.
+If you are a 8 or 9x generation gamer, you must have heard the name Mega Man (aka Rock Man in Japan). According to the plot of the main game series, Rock is a robot created in the laboratory of Dr. Thomas Light. You will control the character of Mega Man, using the Mega Buster weapon that is integrated on the arm, to destroy the enemy along the way. After defeating Master Robots (which we often call "bosses") in each level, Mega Man will be able to use that character's special weapon.
 
-Các dòng game Mega Man X: Capcom muốn nâng cấp âm thanh và đồ họa của trò chơi từ NES lên SNES, vì vậy họ đã phát hành trò chơi Mega Man X vào năm 1993. Loạt trò chơi này giới thiệu một nhân vật mới với hình ảnh đồ họa được thiết kế trau chuốt hơn. Đặc biệt nhấn mạnh vào anh chàng “Mega Man X”, bản thể được nâng cấp từ Rock bởi tiến sĩ Light. Mega Man X3 cũng nằm trong chuỗi phát triển đó.
+Mega Man X Series: Capcom wants to upgrade the sound and graphics of the game from NES to SNES, so they released the Mega Man X game in 1993. This series introduces a new character with Graphics designed more complex graphics. Special emphasis on the guy "Mega Man X", upgraded from Rock by Dr. Light. Mega Man X3 is also in that development chain.
 
-Mega Man X3 là phần thứ 3 trong series game nổi tiếng về người máy xanh huyền thoại. Lần này, người chơi không chỉ nhập vai Mega Man X mà còn có cả Zero. Ở phiên bản này, người chơi sẽ phải đánh bại Tiến sĩ Doppler cùng với kẻ thù truyền kiếp Sigma.
+Mega Man X3 is the 3rd installment in the famous legendary blue robot series. This time, the player not only plays Mega Man X but also Zero. In this version, the player will have to defeat Dr. Doppler with his Sigma enemy.
 
-Game bắt đầu với cuộc tấn công quy mô lớn của Mavericks nhằm tiêu diệt loài người. Mega Man X và Zero cố gắng phá hủy người máy và bắt Doppler nhằm triệt hạ hoàn toàn đội quân thù. Sau khi bị đánh bại, tiến sĩ thú nhận bị Sigma ép tạo một người máy mới để hắn ta hóa thân vào, thoát khỏi vi rút nguy hiểm đang lan truyền. Nhiệm vụ của bạn là tiêu diệt tên ác quỷ này.
+The game begins with a large-scale Mavericks attack to destroy humanity. Mega Man X and Zero try to destroy the robot and capture Doppler to completely destroy the enemy. After being defeated, the doctor confesses that Sigma has forced a new robot to turn him into a dangerous virus. Your mission is to destroy this demon.
 
-Mega Man X3 có 8 phần, tất nhiên, chạm trán tên trùm sẽ ở phần cuối và cũng là phần khó nhất. Hoàn thành mỗi phần, bạn sẽ nhận được một nâng cấp sức mạnh cùng trang bị tốt hơn cho cuộc chiến cuối cùng. Hãy cố gắng di chuyển thật mau lẹ, nhắm bắn chính xác để thổi bay kẻ thù và chinh phục giải thưởng thú vị cuối cùng nhé.
+Mega Man X3 has 8 parts, of course, encountering the boss will be the last part and also the hardest part. Complete each section, you will get a power upgrade and better equipped for the final battle. Try to move quickly, aim accurately to blow away the enemy and conquer the final prize.
 
 **Blast Hornet Stage**
 
