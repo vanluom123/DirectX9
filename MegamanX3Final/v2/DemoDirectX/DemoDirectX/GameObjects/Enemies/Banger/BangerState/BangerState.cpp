@@ -1,13 +1,20 @@
 #include "BangerState.h"
 
 
-BangerState::BangerState(BangerData* banger)
+BangerState::BangerState(Banger* banger)
 {
-	this->_pBangerData = banger;
+	m_pBanger = banger;
 }
 
-void BangerState::OnCollision(BaseObject::eSideCollision side)
-{}
+Banger_State BangerState::getState()
+{
+	return eBanger_None;
+}
+
+void BangerState::OnCollision(Side_Collision side)
+{
+}
 
 void BangerState::Update(float dt)
-{}
+{
+}

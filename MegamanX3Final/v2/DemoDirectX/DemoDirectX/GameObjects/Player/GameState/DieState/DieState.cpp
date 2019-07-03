@@ -1,14 +1,18 @@
 #include "DieState.h"
 
 
-DieState::DieState(PlayerData* playerData) : PlayerState(playerData)
+DieState::DieState(Player* player) : PlayerState(player)
 {
-	_playerData->player->setVx(0.0f);
-	_playerData->player->setVy(0.0f);
+	m_pPlayer->setVx(0.0f);
+	m_pPlayer->setVy(0.0f);
 	_timeDie = 0.0f;
 }
 
-void DieState::Update(float dt)
+DieState::~DieState()
+{
+}
+
+void DieState::update(float dt)
 {
 	_timeDie += dt;
 
@@ -17,12 +21,12 @@ void DieState::Update(float dt)
 
 	if (_timeDie >= 3.0f)
 	{
-		_playerData->player->getAnimation()->setAnimation(20, 3, 0.3f);
-		_playerData->player->setDraw(false);
+		m_pPlayer->getAnimation()->setAnimation(20, 3, 0.3f);
+		m_pPlayer->setDraw(false);
 	}
 }
 
-Player::ePlayerState DieState::getState()
+Player_State DieState::getState()
 {
-	return Player::DIE;
+	return ePlayer_Death;
 }

@@ -8,7 +8,7 @@
 
 Port::Port()
 {
-	_objectType = BaseObject::PORT;
+	_objectType = eObject_Port;
 	_pAnim = new Animation("Resources/MapObject/Port.png", 1, 17, 16, 48, 0.1f);
 
 	_pAnim->setAnimation(0, 1);
@@ -20,11 +20,8 @@ Port::Port()
 	_isMove = false;
 	_HP = 0;
 	_Damage = 0;
-	_vx = 0;
-	_vy = 0;
-
-	// INITIALIZE BOUNDING BOX
-	_bound = RECT();
+	_vx = 0.0f;
+	_vy = 0.0f;
 }
 
 Port::~Port()
@@ -68,12 +65,12 @@ void Port::update(float dt)
 	_pAnim->update(dt);
 }
 
-void Port::onCollision(eSideCollision side)
+void Port::onCollision(Side_Collision side)
 {}
 
 void Port::onCollision(BaseObject* obj)
 {
-	if ((obj->getObjectType() != ROCK_MAN)
+	if ((obj->getObjectType() != eOject_RockMan)
 		|| (_HP > 0)
 		|| (obj->getBound().top < getBound().top))
 	{
@@ -109,8 +106,8 @@ void Port::onCollision(BaseObject* obj)
 			_Damage = 0;
 
 			// Improved DashState of Player when Player was dashing though Port
-			Player* player = (Player*)obj;
-			player->setState(new StandState(player->getPlayerData()));
+			auto* player = dynamic_cast<Player*>(obj);
+			player->setState(new StandState(player));
 		}
 	}
 	else

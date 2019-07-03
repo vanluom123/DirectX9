@@ -38,7 +38,7 @@ void Pixton::draw(Camera * camera, RECT r, GVec2 scale, float angle, GVec2 rotat
 		_pAnim->draw(_pAnim->getPosition());
 }
 
-void Pixton::onCollision(eSideCollision side)
+void Pixton::onCollision(Side_Collision side)
 {
 }
 

@@ -5,14 +5,14 @@
 class BangerJump :
 	public BangerState
 {
-private:
 	float _bangerVx;
 
 public:
-	 BangerJump(BangerData* banger);
-
-	void OnCollision(BaseObject::eSideCollision side) override;
+	 BangerJump(Banger* banger);
+	 ~BangerJump();
+	void OnCollision(Side_Collision side) override;
 	void Update(float dt) override;
-	Banger::eBangerState GetStateName() override;
+	virtual Banger_State getState() override;
+
 };
 #endif

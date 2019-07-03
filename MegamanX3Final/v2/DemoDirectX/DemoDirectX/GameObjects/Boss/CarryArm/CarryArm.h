@@ -5,15 +5,6 @@
 #include "../../../GameComponents/Camera.h"
 #include "Box.h"
 
-enum class eCarryArmState
-{
-	CARRY_ARM_STAND,
-	CARRY_ARM_MOVE_DOWN,
-	CARRY_ARM_MOVE_UP,
-	CARRY_ARM_EVENT_MOVE_UP,
-	CARRY_ARM_EVENT_MOVE_UP_2,
-	CARRY_ARM_NONE
-};
 
 class CarryArm :public BaseObject
 {
@@ -26,13 +17,13 @@ public:
 	RECT getBound() override;
 	void update(float dt) override;
 	void onCollision(BaseObject* obj) override;
-	void setState(eCarryArmState state);
-	eCarryArmState getState() { return _curState; }
+	void setState(Carry_State state);
+	Carry_State getState();
 	void updateState(float dt);
 
 private:
 	Animation* _pAnim;
-	eCarryArmState _curState;
+	Carry_State _curState;
 	Animation* _pAnimDie;
 };
 

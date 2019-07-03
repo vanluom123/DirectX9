@@ -1,19 +1,19 @@
 #ifndef BLAST_APPEAR_H
 #define BLAST_APPEAR_H
-#include "BlastState.h"
+#include "BlastHornetState.h"
 
 class BlastAppear :
-	public BlastState
+	public BlastHornetState
 {
 public:
-	BlastAppear(BlastData* b);
+	BlastAppear(BlastHornet * b);
 	~BlastAppear();
 
 	void update(float dt) override;
-	eBlastState getState() override;
+	virtual Hornet_State getState() override;
 
 private:
-	float _time_appear;
+	float m_timeAppear;
 
 };
 

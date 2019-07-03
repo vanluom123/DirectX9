@@ -4,7 +4,7 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-DashState::DashState(PlayerData* playerData) :PlayerState(playerData)
+DashState::DashState(Player* player) :PlayerState(player)
 {
 	Sound::getInstance()->play("dash", false, 1);
 	Sound::getInstance()->setVolume(95);
@@ -12,46 +12,50 @@ DashState::DashState(PlayerData* playerData) :PlayerState(playerData)
 	_timePress = 0.0f;
 }
 
+DashState::~DashState()
+{
+}
+
 void DashState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 {
-	_playerData->player->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 
 	_timePress += dt;
 	if (_timePress <= 0.45f)
 	{
-		if (!_playerData->player->getReverse())
+		if (!m_pPlayer->getReverse())
 		{
-			_playerData->player->setVx(Define::PLAYER_MAX_SLIDE_SPEED);
+			m_pPlayer->setVx(Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_LEFT])
-				_playerData->player->setState(new StandState(_playerData));
+				m_pPlayer->setState(new StandState(m_pPlayer));
 		}
 		else
 		{
-			_playerData->player->setVx(-Define::PLAYER_MAX_SLIDE_SPEED);
+			m_pPlayer->setVx(-Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_RIGHT])
-				_playerData->player->setState(new StandState(_playerData));
+				m_pPlayer->setState(new StandState(m_pPlayer));
 		}
 	}
 	else
-		_playerData->player->setState(new StandState(_playerData));
+		m_pPlayer->setState(new StandState(m_pPlayer));
 }
 
-void DashState::onCollision(BaseObject::eSideCollision side)
+void DashState::onCollision(Side_Collision side)
 {
 	switch (side)
 	{
-		case BaseObject::LEFT:
-		case BaseObject::RIGHT:
-			{
-				Sound::getInstance()->stop("dash");
-				_playerData->player->setState(new StandState(_playerData));
-				break;
-			}
+		case eSide_Left:
+		case eSide_Right:
+		{
+			Sound::getInstance()->stop("dash");
+			m_pPlayer->setState(new StandState(m_pPlayer));
+			break;
+		}
 		default: break;
 	}
 }
 
-Player::ePlayerState DashState::getState()
+Player_State DashState::getState()
 {
-	return Player::DASH;
+	return ePlayer_Dash;
 }

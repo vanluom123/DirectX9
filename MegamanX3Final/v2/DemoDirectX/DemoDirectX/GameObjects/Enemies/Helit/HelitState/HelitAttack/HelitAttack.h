@@ -5,9 +5,9 @@
 class HelitAttack :public HelitState
 {
 public:
-	HelitAttack(HelitData* helit);
-
-	Helit::eHelitState getState() override;
+	HelitAttack(Helit* helit);
+	~HelitAttack();
+	Helit_State getState() override;
 	void update(float dt) override;
 
 private:

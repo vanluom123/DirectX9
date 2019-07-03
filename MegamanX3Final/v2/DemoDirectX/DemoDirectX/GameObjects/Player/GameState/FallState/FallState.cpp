@@ -5,11 +5,15 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-FallState::FallState(PlayerData* playerData, bool dash) :PlayerState(playerData)
+FallState::FallState(Player* player, bool dash) :PlayerState(player)
 {
-	_playerData->player->setVy(0.0f);
+	m_pPlayer->setVy(0.0f);
 	_accelerateY = 25.0f;
 	_pressed = dash;
+}
+
+FallState::~FallState()
+{
 }
 
 void FallState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
@@ -17,7 +21,7 @@ void FallState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	float speed = 0.0f;
 	if (keys[VK_RIGHT])
 	{
-		_playerData->player->setReverse(false);
+		m_pPlayer->setReverse(false);
 
 		if (_pressed)
 			speed = Define::PLAYER_MAX_SLIDE_SPEED;
@@ -26,43 +30,43 @@ void FallState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	}
 	else if (keys[VK_LEFT])
 	{
-		_playerData->player->setReverse(true);
+		m_pPlayer->setReverse(true);
 		if (_pressed)
 			speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
-	_playerData->player->setVx(speed);
+	m_pPlayer->setVx(speed);
 
-	_playerData->player->addVy(_accelerateY);
+	m_pPlayer->addVy(_accelerateY);
 
-	if (_playerData->player->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
-		_playerData->player->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	if (m_pPlayer->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
+		m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 }
 
-void FallState::onCollision(BaseObject::eSideCollision side)
+void FallState::onCollision(Side_Collision side)
 {
 	switch (side)
 	{
-		case BaseObject::LEFT:
-		case BaseObject::RIGHT:
-			{
-				_playerData->player->setState(new SlipDownState(_playerData));
-				break;
-			}
-		case BaseObject::BOTTOM:
-			{
-				Sound::getInstance()->play("FallDownGround", false, 1);
-				Sound::getInstance()->setVolume(95);
-				_playerData->player->setState(new StandState(_playerData));
-				break;
-			}
+		case eSide_Left:
+		case eSide_Right:
+		{
+			m_pPlayer->setState(new SlipDownState(m_pPlayer));
+			break;
+		}
+		case eSide_Bottom:
+		{
+			Sound::getInstance()->play("FallDownGround", false, 1);
+			Sound::getInstance()->setVolume(95);
+			m_pPlayer->setState(new StandState(m_pPlayer));
+			break;
+		}
 		default:
 			break;
 	}
 }
 
-Player::ePlayerState FallState::getState()
+Player_State FallState::getState()
 {
-	return Player::FALL;
+	return ePlayer_Fall;
 }

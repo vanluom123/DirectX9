@@ -4,17 +4,16 @@
 #include <iostream>
 #include "GunnerAttackBullet.h"
 
-GunnerAttack::GunnerAttack(GunnerData* headGunner) :GunnerState(headGunner)
+GunnerAttack::GunnerAttack(Gunner* headGunner) :GunnerState(headGunner)
 {
-	_pGunnerData->gunner->setVx(0);
-	_pGunnerData->gunner->setVy(200);
+	m_pGunner->setVx(0);
+	m_pGunner->setVy(200);
 	_timeAttack = 0;
 	_count = 0;
 }
 
-Gunner::eGunnerState GunnerAttack::GetState()
+GunnerAttack::~GunnerAttack()
 {
-	return Gunner::GUNNER_ATTACK;
 }
 
 void GunnerAttack::Update(float dt)
@@ -27,34 +26,39 @@ void GunnerAttack::Update(float dt)
 
 		if (_count > 1)
 		{
-			_pGunnerData->gunner->setState(new GunnerAttackBullet(_pGunnerData));
+			m_pGunner->setState(new GunnerAttackBullet(m_pGunner));
 			return;
 		}
 
-		if (_pGunnerData->gunner->getListBullet()->size() < 3)
+		if (m_pGunner->getListBullet()->size() < 3)
 		{
 			if (_count == 1)
 			{
 				auto* ebullet = new GunnerBullet();
-				_pGunnerData->gunner->getListBullet()->push_back(ebullet);
+				m_pGunner->getListBullet()->push_back(ebullet);
 			}
 			
 		}
 
 		float posX = 0;
-		float posY = _pGunnerData->gunner->getBound().top;
+		float posY = m_pGunner->getBound().top;
 
 		if (_count == 1)
 		{
 			posY += 17;
-			if (_pGunnerData->gunner->getReverse())
-				posX = _pGunnerData->gunner->getBound().right;
+			if (m_pGunner->getReverse())
+				posX = m_pGunner->getBound().right;
 			else
-				posX = _pGunnerData->gunner->getBound().left;
+				posX = m_pGunner->getBound().left;
 		}
 
-		_pGunnerData->gunner->getListBullet()->at(_count)->setPosition(posX, posY);
-		_pGunnerData->gunner->getListBullet()->at(_count)->setReverse(_pGunnerData->gunner->getReverse());
-		_pGunnerData->gunner->getListBullet()->at(_count)->newObject();
+		m_pGunner->getListBullet()->at(_count)->setPosition(posX, posY);
+		m_pGunner->getListBullet()->at(_count)->setReverse(m_pGunner->getReverse());
+		m_pGunner->getListBullet()->at(_count)->newObject();
 	}
+}
+
+Enumerator::Gunner_State GunnerAttack::getState()
+{
+	return eGunner_Attack;
 }

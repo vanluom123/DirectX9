@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "../GameComponents/Sprite.h"
-#include <Tmx.h.in>
+#include "../MapReader/Tmx.h.in"
 #include "Camera.h"
 #include "QuadTree.h"
 #include "../GameObjects/Player/Player.h"

@@ -125,9 +125,7 @@ int QuadTree::getTotalObject()
 	if (_node)
 	{
 		for (size_t i = 0; i < (size_t)4; i++)
-		{
 			total += _node[i]->getTotalObject();
-		}
 	}
 
 	return total;
@@ -136,16 +134,12 @@ int QuadTree::getTotalObject()
 void QuadTree::getAllObject(std::vector<BaseObject*>& EntityOut, RECT rect)
 {
 	for (auto child : _listObject)
-	{
 		EntityOut.push_back(child);
-	}
 
 	if (_node)
 	{
 		for (size_t i = 0; i < 4; i++)
-		{
 			_node[i]->getAllObject(EntityOut, rect);
-		}
 	}
 }
 
@@ -170,18 +164,18 @@ void QuadTree::getObjectCollide(std::vector<BaseObject*>& EntityStatic, RECT rec
 	{
 		for (auto child : _listObject)
 		{
-			bool istrue = true;
+			bool isTrue = true;
 
 			for (auto& entity : EntityStatic)
 				if (child->getId() == entity->getId())
 				{
-					istrue = false;
+					isTrue = false;
 					break;
 				}
 
-			if (istrue)
+			if (isTrue)
 			{
-				if (child->getObjectType() != BaseObject::ENEMY && child->getObjectType() != BaseObject::BOSS && child->getObjectType() != BaseObject::ITEM)
+				if (child->getObjectType() != eObject_Enemy && child->getObjectType() != eObject_Boss && child->getObjectType() != eObject_Item)
 					EntityStatic.push_back(child);
 			}
 		}
@@ -211,20 +205,20 @@ void QuadTree::getObjectCamera(std::vector<BaseObject*>& EntityOut, RECT rect)
 		{
 			if (GameCollision::isCollision(child->getBound(), rect))
 			{
-				bool istrue = true;
+				bool isTrue = true;
 
 				for (auto& entity : EntityOut)
 				{
 					if (child->getId() == entity->getId())
 					{
-						istrue = false;
+						isTrue = false;
 						break;
 					}
 				}
 
-				if (istrue)
+				if (isTrue)
 				{
-					if (child->getObjectType() != BaseObject::STATIC)
+					if (child->getObjectType() != eObject_Static)
 						EntityOut.push_back(child);
 				}
 			}

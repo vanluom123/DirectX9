@@ -1,17 +1,21 @@
-﻿#ifndef BLAST_DIE_H
-#define BLAST_DIE_H
-#include "BlastState.h"
+﻿#ifndef BLAST_DEATH_H
+#define BLAST_DEATH_H
+#include "BlastHornetState.h"
 
-class BlastDeath :public BlastState
+class BlastDeath :
+	public BlastHornetState
 {
-	float _timeDie;
 
 public:
-	BlastDeath(BlastData* b);
+	BlastDeath(BlastHornet* b);
 	~BlastDeath();
 
 	void update(float dt) override;
-	eBlastState getState() override;
+	virtual Hornet_State getState() override;
+
+private:
+	float m_timeDeath;
+
 };
 
 #endif // !BLAST_DIE_H

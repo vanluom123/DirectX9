@@ -21,8 +21,8 @@ Planet::Planet(Player* gp)
 	_pCarryArm = new CarryArm();
 	_pBox1 = new Box();
 	_pBox2 = new Box();
-	_pBox1->setObjectType(ENEMY);
-	_pBox2->setObjectType(ENEMY);
+	_pBox1->setObjectType(eObject_Enemy);
+	_pBox2->setObjectType(eObject_Enemy);
 	_pBox1->setDie(true);
 	_pBox2->setDie(true);
 	_isAttack = false;
@@ -91,7 +91,7 @@ void Planet::MoveDown(float gameTime)
 {
 	if (_isMove)
 	{
-		_pRockMan->setState(new StandState(_pRockMan->getPlayerData()));
+		_pRockMan->setState(new StandState(_pRockMan));
 		_pRockMan->setLock(true);
 		_posY += 40 * gameTime;
 		if (_posY > _starty)
@@ -115,7 +115,7 @@ void Planet::MoveDown(float gameTime)
 		{
 			if (!_pPixton->MoveUp(gameTime, _posX, _posY))
 				_posY -= 40 * gameTime;
-			_pRockMan->setState(new StandState(_pRockMan->getPlayerData()));
+			_pRockMan->setState(new StandState(_pRockMan));
 			_pRockMan->setLock(true);
 			return;
 		}
@@ -161,7 +161,7 @@ void Planet::MoveDown(float gameTime)
 			e->setHeight(16);
 			e->setWidth(16);
 			e->setDamage(3);
-			e->setObjectType(BaseObject::ENEMY_BULLET);
+			e->setObjectType(eObject_Enemy_Bullet);
 			if (GameCollision::isCollision(e->getBound(), _pRockMan->getBound()))
 				_pRockMan->onCollision(e);
 
@@ -170,21 +170,21 @@ void Planet::MoveDown(float gameTime)
 		else
 			_pAnimBullet->setPosition(0, 0);
 		//Select Box
-		if (_pCarryArm->getState() == eCarryArmState::CARRY_ARM_STAND)
+		if (_pCarryArm->getState() == Carry_State::eCarry_Stand)
 		{
 			if (_pBox1->getDie())
 			{
 				_pBox1->newObject();
 				_pBox1->setVy(80);
 				_pCarryArm->setPosition(_posX + 32, _posY - _height - 48);
-				_pCarryArm->setState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
+				_pCarryArm->setState(Carry_State::eCarry_MoveDown);
 			}
 			else if (_pBox2->getDie())
 			{
 				_pBox2->newObject();
 				_pBox2->setVy(80);
 				_pCarryArm->setPosition(_posX + 88, _posY - _height - 48);
-				_pCarryArm->setState(eCarryArmState::CARRY_ARM_MOVE_DOWN);
+				_pCarryArm->setState(Carry_State::eCarry_MoveDown);
 			}
 		}
 
@@ -194,14 +194,14 @@ void Planet::MoveDown(float gameTime)
 			_pBox1->setPosition(_posX + 32, _pPixton->getBound().top - 25);
 			_pBox1->setVy(0);
 			_pBox1->setIsBottom(true);
-			_pCarryArm->setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
+			_pCarryArm->setState(Carry_State::eCarry_Event_MoveUp_2);
 		}
 		if (GameCollision::isCollision(_pBox2->getBound(), _pPixton->getBound()))
 		{
 			_pBox2->setPosition(_posX + 88, _pPixton->getBound().top - 25);
 			_pBox2->setVy(0);
 			_pBox2->setIsBottom(true);
-			_pCarryArm->setState(eCarryArmState::CARRY_ARM_EVENT_MOVE_UP_2);
+			_pCarryArm->setState(Carry_State::eCarry_Event_MoveUp_2);
 		}
 
 		///Box Collision with rockman

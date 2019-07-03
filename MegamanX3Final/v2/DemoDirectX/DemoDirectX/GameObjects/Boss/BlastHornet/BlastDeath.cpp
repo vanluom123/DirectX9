@@ -1,23 +1,25 @@
 ﻿#include "BlastDeath.h"
 
-BlastDeath::BlastDeath(BlastData* b) :BlastState(b)
+BlastDeath::BlastDeath(BlastHornet* b) 
+	: BlastHornetState(b)
 {
-	_timeDie = 0.0f;
+	m_timeDeath = 0.0f;
 }
 
 BlastDeath::~BlastDeath()
-{
-	// Do nothing
-}
+{}
 
 void BlastDeath::update(float dt)
 {
-	_timeDie += dt;
-	if (_timeDie > 3.0f)
-		_data->blast->setDraw(false);
+	m_timeDeath += dt;
+	if (m_timeDeath > 1.0f)
+	{
+		m_timeDeath = 0.0f;
+		b->setDraw(false);
+	}
 }
 
-eBlastState BlastDeath::getState()
+Enumerator::Hornet_State BlastDeath::getState()
 {
-	return eBlastState::BLAST_STATE_DEATH;
+	return eHornet_Death;
 }

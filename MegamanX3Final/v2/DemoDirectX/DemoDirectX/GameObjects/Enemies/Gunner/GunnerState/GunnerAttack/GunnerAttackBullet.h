@@ -5,10 +5,11 @@
 class GunnerAttackBullet :public GunnerState
 {
 public:
-	GunnerAttackBullet(GunnerData* pGunner);
-
-	Gunner::eGunnerState GetState() override;
+	GunnerAttackBullet(Gunner* pGunner);
+	~GunnerAttackBullet();
 	void Update(float dt) override;
+	virtual Gunner_State getState() override;
+
 };
 
 #endif // !GUNNER_ATTACK_BULLET_H

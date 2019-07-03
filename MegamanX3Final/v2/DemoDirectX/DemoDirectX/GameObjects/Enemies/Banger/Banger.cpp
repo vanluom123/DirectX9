@@ -2,14 +2,13 @@
 #include "../../../GameDefines/GameDefine.h"
 #include "BangerState/BangerFall/BangerFall.h"
 #include "BangerState/BangerDie/BangerDie.h"
-#include "BangerState/BangerStand/BangerStand.h"
 #include "../../../GameComponents/GameCollision.h"
 #include "../../Item/SmallBlood.h"
 #include "../../Item/SmallSubtankItem.h"
 
 Banger::Banger()
 {
-	_objectType = ENEMY;
+	_objectType = eObject_Enemy;
 	_anim_die = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
 	_current_anim = new Animation(Define::NOTOR_BANGER_SPRITE, 3, 4, 48, 48);
 	_MaxHP = 4;
@@ -18,13 +17,7 @@ Banger::Banger()
 	_isReverse = true;
 	_isAllowDraw = true;
 	_isDie = false;
-	_currentState = BANGER_NONE;
-
-	_pBangerData = new BangerData;
-	_pBangerData->banger = this;
-	_pBangerData->bangerState = NULL;
-
-	this->setState(new BangerFall(_pBangerData));
+	this->setState(new BangerFall(this));
 }
 
 void Banger::newObject()
@@ -35,46 +28,46 @@ void Banger::newObject()
 	_isReverse = true;
 	_isAllowDraw = true;
 	_isDie = false;
-	_currentState = BANGER_NONE;
-	this->setState(new BangerFall(_pBangerData));
+	m_state = eBanger_None;
+	this->setState(new BangerFall(this));
 }
 
 Banger::~Banger()
 {
-	delete _pBangerData;
 	delete _current_anim;
 	delete _anim_die;
 	for (auto& bullet : _listBullet)
 		delete bullet;
-	_listBullet.clear();
+	if (!_listBullet.empty())
+		_listBullet.clear();
 }
 
-void Banger::changeAnimation(eBangerState state)
+void Banger::changeAnimation(Banger_State state)
 {
 	switch (state)
 	{
-	case eBangerState::BANGER_STAND:
-		_current_anim->setAnimation(0, 2, 0.1);
-		break;
+		case eBanger_Stand:
+			_current_anim->setAnimation(0, 2, 0.1f);
+			break;
 
-	case eBangerState::BANGER_JUMP:
-		_current_anim->setAnimation(1, 2, 0.15, false);
-		break;
+		case eBanger_Jump:
+			_current_anim->setAnimation(1, 2, 0.15f, false);
+			break;
 
-	case eBangerState::BANGER_FALL:
-		_current_anim->setAnimation(1, 2, 0.15, false);
-		break;
+		case eBanger_Fall:
+			_current_anim->setAnimation(1, 2, 0.15f, false);
+			break;
 
-	case eBangerState::BANGER_ATTACK:
-		_current_anim->setAnimation(2, 3, 0.15, false);
-		break;
+		case eBanger_Attack:
+			_current_anim->setAnimation(2, 3, 0.15f, false);
+			break;
 
-	case BANGER_DIE:
-		_anim_die->setAnimation(0, 8, 0.05, false);
-		break;
+		case eBanger_Death:
+			_anim_die->setAnimation(0, 8, 0.05f, false);
+			break;
 
-	default: 
-		break;
+		default:
+			break;
 	}
 
 	this->setWidth(_current_anim->getWidth());
@@ -82,16 +75,15 @@ void Banger::changeAnimation(eBangerState state)
 }
 
 
-void Banger::setState(BangerState* newState)
+void Banger::setState(BangerState* new_state)
 {
-	if (_currentState == newState->GetStateName())
+	if (m_state == new_state->getState())
 		return;
 
-	SAFE_DELETE(_pBangerData->bangerState);
-
-	_pBangerData->bangerState = newState;
-	_currentState = newState->GetStateName();
-	changeAnimation(newState->GetStateName());
+	delete m_pState;
+	m_pState = new_state;
+	m_state = new_state->getState();
+	changeAnimation(new_state->getState());
 }
 
 RECT Banger::getBound()
@@ -108,9 +100,9 @@ RECT Banger::getBound()
 
 void Banger::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR transColor)
 {
-	if (_isDie == false)
+	if (!_isDie)
 	{
-		if (GameCollision::isCollision(this->getBound(), camera->getBound()) == false)
+		if (!GameCollision::isCollision(this->getBound(), camera->getBound()))
 			_isAllowDraw = false;
 		else
 			_isAllowDraw = true;
@@ -119,27 +111,27 @@ void Banger::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rot
 	for (auto& bullet : _listBullet)
 		bullet->draw(camera);
 
-	if (_isAllowDraw == false)
-		return;
-
-	if (_isDie == true)
+	if (_isAllowDraw)
 	{
-		_anim_die->setPosition(getPosition());
+		if (_isDie)
+		{
+			_anim_die->setPosition(getPosition());
 
-		if (camera != NULL)
-			_anim_die->draw(_anim_die->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, transColor);
+			if (camera)
+				_anim_die->draw(_anim_die->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, transColor);
+			else
+				_anim_die->draw(_anim_die->getPosition());
+		}
 		else
-			_anim_die->draw(_anim_die->getPosition());
-	}
-	else
-	{
-		_current_anim->setReverse(_isReverse);
-		_current_anim->setPosition(getPosition());
+		{
+			_current_anim->setReverse(_isReverse);
+			_current_anim->setPosition(getPosition());
 
-		if (camera != NULL)
-			_current_anim->draw(_current_anim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, transColor);
-		else
-			_current_anim->draw(_current_anim->getPosition());
+			if (camera)
+				_current_anim->draw(_current_anim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, transColor);
+			else
+				_current_anim->draw(_current_anim->getPosition());
+		}
 	}
 }
 
@@ -150,48 +142,48 @@ void Banger::update(float gameTime)
 	for (auto& bullet : _listBullet)
 		bullet->update(gameTime);
 
-	if (_isAllowDraw == false)
-		return;
+	if (_isAllowDraw)
+	{
+		_current_anim->update(gameTime);
+		_anim_die->update(gameTime);
+		BaseObject::update(gameTime);
 
-	_current_anim->update(gameTime);
-	_anim_die->update(gameTime);
-	BaseObject::update(gameTime);
-
-	if (_pBangerData->bangerState != NULL)
-		_pBangerData->bangerState->Update(gameTime);
+		if (m_pState)
+			m_pState->Update(gameTime);
+	}
 }
 
-void Banger::onCollision(eSideCollision side)
+void Banger::onCollision(Side_Collision side)
 {
-	if (_pBangerData->bangerState != NULL)
-		_pBangerData->bangerState->OnCollision(side);
+	if (m_pState)
+		m_pState->OnCollision(side);
 }
 
 void Banger::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() == BaseObject::ROCK_MAN_BULLET && !_isDie)
+	if (obj->getObjectType() == eObject_RockMan_Bullet && !_isDie)
 	{
 		_HP -= obj->getDamage();
 		if (_HP <= 0)
 		{
 			_isDie = true;
-			this->setState(new BangerDie(_pBangerData));
+			this->setState(new BangerDie(this));
 
-			//
+			// number of enemy throw item
 			int num = (rand() % 999) % 4;
 			if (num == 1)
 			{
 				auto* item = new SmallBloodItem();
 				_listBullet.push_back(item);
 				item->setPosition(_posX, _posY);
-				item->setObjectType(BaseObject::ITEM);
+				item->setObjectType(eObject_Item);
 			}
 			else if (num == 2)
 			{
 				auto* item = new SmallSubtankItem();
 				_listBullet.push_back(item);
 				item->setPosition(_posX, _posY);
-				item->setObjectType(BaseObject::ITEM);
+				item->setObjectType(eObject_Item);
 			}
 		}
 	}
@@ -199,15 +191,11 @@ void Banger::onCollision(BaseObject* obj)
 
 void Banger::onNoCollisionWithBottom()
 {
-	if (_side_y != BOTTOM)
+	if (_side_y != eSide_Bottom)
 	{
-		switch (_currentState)
-		{
-		case BANGER_STAND:
-		case BANGER_ATTACK:
-			this->setState(new BangerFall(_pBangerData));
-			break;
-		default:break;
-		}
+		if(m_state == eBanger_Stand || m_state == eBanger_Attack)
+			this->setState(new BangerFall(this));
 	}
 }
+
+inline Animation* Banger::getAnimation() const { return _current_anim; }

@@ -5,14 +5,14 @@
 Box::Box(bool isr)
 {
 	isR = isr;
-	_objectType     = eObjectType::BOX;
-	_MaxHP	= 6;
-	_HP		= _MaxHP;
-	anim    = new Animation("Resources/Enemies/CarryArm/box.png", 2, 1, 48, 48);
+	_objectType = eObject_Box;
+	_MaxHP = 6;
+	_HP = _MaxHP;
+	anim = new Animation("Resources/Enemies/CarryArm/box.png", 2, 1, 48, 48);
 	pAnimationDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
 	pAnimationDie->setPause(true);
-	_width    = anim->getWidth();
-	_height   = anim->getHeight();
+	_width = anim->getWidth();
+	_height = anim->getHeight();
 	_vx = 0;
 	_vy = 0;
 }
@@ -109,9 +109,9 @@ void Box::update(float dt)
 	BaseObject::update(dt);
 }
 
-void Box::onCollision(eSideCollision side)
+void Box::onCollision(Side_Collision side)
 {
-	if (_side_y == BaseObject::BOTTOM && isR)
+	if (_side_y == eSide_Bottom && isR)
 	{
 		_HP = 1;
 		isBottom = false;
@@ -123,8 +123,8 @@ void Box::onCollision(eSideCollision side)
 
 void Box::onCollision(BaseObject* obj)
 {
-	
-	if (obj->getObjectType() == eObjectType::ROCK_MAN_BULLET && !_isDie)
+
+	if (obj->getObjectType() == eObject_RockMan_Bullet && !_isDie)
 	{
 		_HP -= obj->getDamage();
 		if (_HP <= 0)

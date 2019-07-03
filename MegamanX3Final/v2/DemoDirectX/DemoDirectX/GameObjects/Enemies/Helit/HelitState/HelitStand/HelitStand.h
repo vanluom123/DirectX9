@@ -2,13 +2,16 @@
 #define HELIT_STAND_H
 #include "../HelitState.h"
 
-class HelitStand :public HelitState
+class HelitStand :
+	public HelitState
 {
 public:
-	HelitStand(HelitData* helit);
+	HelitStand(Helit* helit);
+	~HelitStand();
 
-	Helit::eHelitState getState() override;
 	void update(float dt) override;
+	virtual Helit_State getState() override;
+
 };
 
 #endif

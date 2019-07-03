@@ -3,11 +3,11 @@
 
 SmallBloodItem::SmallBloodItem()
 {
-	setItemType(SMALL_BLOOD);
-	_animationItem = new Animation("Resources/Items/small_blood.bmp", 1, 4, 10, 8, 0.07, D3DCOLOR_XRGB(6, 113, 158));
+	setItemType(eItem_Small_Blood);
+	_animationItem = new Animation(Define::BLOOD_IS_SMALL_ITEM, 1, 4, 10, 8, 0.07f, D3DCOLOR_XRGB(6, 113, 158));
 	_width = 10;
 	_height = 8;
-	_vy = 200;
+	_vy = 200.0f;
 }
 
 SmallBloodItem::~SmallBloodItem()
@@ -29,33 +29,35 @@ RECT SmallBloodItem::getBound()
 
 void SmallBloodItem::update(float dt)
 {
-	if (_isAllowDraw == false)
-		return;
-	_animationItem->update(dt);
-	BaseObject::update(dt);
+	if(_isAllowDraw)
+	{
+		_animationItem->update(dt);
+		BaseObject::update(dt);
+	}
 }
 
 void SmallBloodItem::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {
-	if (_isAllowDraw == false)
-		return;
-	_animationItem->setPosition(getPosition());
-	if (camera != NULL)
-		_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
-	else
-		_animationItem->draw(getPosition());
+	if(_isAllowDraw)
+	{
+		_animationItem->setPosition(getPosition());
+		if (camera != NULL)
+			_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		else
+			_animationItem->draw(getPosition());
+	}
 }
 
 void SmallBloodItem::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == eOject_RockMan) {
 		_isDie = true;
 		obj->setHP(obj->getHP() + 3);
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType SmallBloodItem::getItemType()
+Item_Type SmallBloodItem::getItemType()
 {
-	return SMALL_BLOOD;
+	return eItem_Small_Blood;
 }

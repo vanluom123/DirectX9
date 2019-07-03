@@ -1,23 +1,27 @@
 #include "BangerStand.h"
-#include "../../../../../GameDefines/GameDefine.h"
 #include "../BangerAttack/BangerAttack.h"
 
-BangerStand::BangerStand(BangerData* banger) : BangerState(banger)
+BangerStand::BangerStand(Banger* banger) : BangerState(banger)
 {
-	_pBangerData->banger->setVx(0);
-	_pBangerData->banger->setVy(200);
+	m_pBanger->setVx(0.0f);
+	m_pBanger->setVy(200.0f);
 	_timePerShoot = 0.0f;
 }
 
-Banger::eBangerState BangerStand::GetStateName()
+BangerStand::~BangerStand()
 {
-	return Banger::eBangerState::BANGER_STAND;
 }
+
 
 void BangerStand::Update(float dt)
 {
-	_pBangerData->banger->setVx(0);
+	m_pBanger->setVx(0.0f);
 	_timePerShoot += dt;
 	if (_timePerShoot > 1.0f)
-		_pBangerData->banger->setState(new BangerAttack(_pBangerData));
+		m_pBanger->setState(new BangerAttack(m_pBanger));
+}
+
+Enumerator::Banger_State BangerStand::getState()
+{
+	return eBanger_Stand;
 }

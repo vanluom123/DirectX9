@@ -2,26 +2,30 @@
 #include "../../../../../GameDefines/GameDefine.h"
 #include "../GunnerStand/GunnerStand.h"
 
-GunnerFall::GunnerFall(GunnerData* headGunner) :GunnerState(headGunner)
+GunnerFall::GunnerFall(Gunner* headGunner) :GunnerState(headGunner)
 {
-	_pGunnerData->gunner->setVy(0);
+	m_pGunner->setVy(0);
 	_accelerateY = 25.0f;
 }
 
-Gunner::eGunnerState GunnerFall::GetState()
+GunnerFall::~GunnerFall()
 {
-	return Gunner::GUNNER_FALL;
 }
 
-void GunnerFall::OnCollision(BaseObject::eSideCollision side)
+void GunnerFall::OnCollision(Side_Collision side)
 {
-	if (side == BaseObject::BOTTOM)
-		_pGunnerData->gunner->setState(new GunnerStand(_pGunnerData));
+	if (side == eSide_Bottom)
+		m_pGunner->setState(new GunnerStand(m_pGunner));
 }
 
 void GunnerFall::Update(float dt)
 {
-	_pGunnerData->gunner->addVy(_accelerateY);
-	if (_pGunnerData->gunner->getVy() > Define::ENEMY_MAX_JUMP_VELOCITY)
-		_pGunnerData->gunner->setVy(Define::ENEMY_MAX_JUMP_VELOCITY);
+	m_pGunner->addVy(_accelerateY);
+	if (m_pGunner->getVy() > Define::ENEMY_MAX_JUMP_VELOCITY)
+		m_pGunner->setVy(Define::ENEMY_MAX_JUMP_VELOCITY);
+}
+
+Enumerator::Gunner_State GunnerFall::getState()
+{
+	return eGunner_Fall;
 }

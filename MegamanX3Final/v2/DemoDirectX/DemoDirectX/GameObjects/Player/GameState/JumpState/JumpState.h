@@ -5,12 +5,12 @@
 class JumpState : public PlayerState
 {
 public:
-	JumpState(PlayerData* playerData);
-
-	void Update(float dt) override;
+	JumpState(Player* player);
+	~JumpState();
+	void update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
-	void onCollision(BaseObject::eSideCollision side) override;
-	Player::ePlayerState getState() override;
+	void onCollision(Side_Collision side) override;
+	Player_State getState() override;
 
 private:
 	float _accelerateY;

@@ -3,11 +3,11 @@
 
 BigBloodItem::BigBloodItem()
 {
-	setItemType(BIG_BLOOD);
-	_animationItem = new Animation("Resources/Items/big_blood.bmp", 1, 4, 18, 14, 0.15);
+	setItemType(eItem_Big_Blood);
+	_animationItem = new Animation(Define::BLOOD_IS_BIG_ITEM, 1, 4, 18, 14, 0.15f);
 	_width = 18;
 	_height = 14;
-	_vy = 200;
+	_vy = 200.0f;
 }
 
 BigBloodItem::~BigBloodItem()
@@ -29,34 +29,36 @@ RECT BigBloodItem::getBound()
 
 void BigBloodItem::update(float dt)
 {
-	if (_isAllowDraw == false)
-		return;
-	_animationItem->update(dt);
-	BaseObject::update(dt);
+	if(_isAllowDraw)
+	{
+		_animationItem->update(dt);
+		BaseObject::update(dt);
+	}
 }
 
 void BigBloodItem::draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
 {
-	if (_isAllowDraw == false)
-		return;
-	_animationItem->setPosition(getPosition());
-	if (camera != NULL)
-		_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
-	else
-		_animationItem->draw(getPosition());
+	if(_isAllowDraw)
+	{
+		_animationItem->setPosition(getPosition());
+		if (camera != NULL)
+			_animationItem->draw(getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		else
+			_animationItem->draw(getPosition());
+	}
 }
 
 void BigBloodItem::onCollision(BaseObject *obj)
 {
-	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == eOject_RockMan) {
 		_isDie = true;
 		obj->setHP(obj->getHP() + 8);
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType BigBloodItem::getItemType()
+Item_Type BigBloodItem::getItemType()
 {
-	return BIG_BLOOD;
+	return eItem_Big_Blood;
 }
 

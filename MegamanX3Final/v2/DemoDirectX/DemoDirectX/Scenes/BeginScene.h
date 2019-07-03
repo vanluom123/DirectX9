@@ -6,8 +6,6 @@
 #include "../GameComponents/Camera.h"
 #include "../GameObjects/Player/Player.h"
 #include "../GameObjects/Enemies/Banger/Banger.h"
-#include "../GameObjects/Enemies/Gunner/Gunner.h"
-#include "../GameObjects/Enemies/Helit/Helit.h"
 #include "Scene.h"
 
 class BeginScene : public Scene

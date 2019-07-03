@@ -6,10 +6,10 @@ class BangerAttack :
 	public BangerState
 {
 public:
-	 BangerAttack(BangerData* banger);
-
+	 BangerAttack(Banger* banger);
+	 ~BangerAttack();
 	void Update(float dt) override;
-	Banger::eBangerState GetStateName() override;
+	virtual Banger_State getState() override;
 
 private:
 	float _timeAttack;

@@ -104,7 +104,6 @@ void Sound::loadSound(char* fileName, const std::string& name)
 		return;
 
 	fread(&waveHeaderStruct, sizeof(WaveHeaderStruct), 1, filePtr);
-	//fread(&waveFileHeader, sizeof(waveFileHeader), 1, filePtr);
 
 	if ((waveHeaderStruct.format[0] != 'W') || (waveHeaderStruct.format[1] != 'A') ||
 		(waveHeaderStruct.format[2] != 'V') || (waveHeaderStruct.format[3] != 'E'))
@@ -127,9 +126,6 @@ void Sound::loadSound(char* fileName, const std::string& name)
 
 	IDirectSoundBuffer8* secondaryBuffer = NULL;
 	IDirectSoundBuffer8** pSecondaryBuffer = &secondaryBuffer;
-	//IDirectSoundBuffer8
-
-	//long result = pDevice->CreateSoundBuffer(&bufferDesc, &secondaryBuffer, NULL);
 
 	_pDevice->CreateSoundBuffer(&bufferDesc, &tempBuffer, NULL);
 
@@ -140,8 +136,6 @@ void Sound::loadSound(char* fileName, const std::string& name)
 
 	if (FAILED(result))
 		return;
-
-	//fseek(filePtr, sizeof(WaveHeaderStruct), SEEK_SET); // move the filePointer cursor to data section
 
 	fseek(filePtr, sizeof(WaveHeaderStruct), SEEK_SET);
 

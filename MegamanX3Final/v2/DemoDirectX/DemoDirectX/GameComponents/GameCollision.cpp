@@ -85,7 +85,7 @@ RECT GameCollision::getBroadphase(const RECT& object, const GVec2& distance)
 	return broad;
 }
 
-float GameCollision::sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, BaseObject::eSideCollision& sideCollision)
+float GameCollision::sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, Side_Collision& sideCollision)
 {
 	float dxEntry, dxExit;
 	float dyEntry, dyExit;
@@ -137,36 +137,28 @@ float GameCollision::sweptAABB(const RECT& obj, const RECT& other, const GVec2& 
 		tyExit = dyExit / (distance.y);
 	}
 
-	const float entryTime = max(txEntry, tyEntry);
-	const float exitTime = min(txExit, tyExit);
+	float entryTime = max(txEntry, tyEntry);
+	float exitTime = min(txExit, tyExit);
 
 	if (entryTime > exitTime || (txEntry < 0.0f && tyEntry < 0.0f) || txEntry > 1.0f || tyEntry > 1.0f)
 	{
-		sideCollision = BaseObject::NONE;
+		sideCollision = eSide_None;
 		return 1.0f;
 	}
 
 	if (txEntry < tyEntry)
 	{
 		if (dyEntry < 0.0f)
-		{
-			sideCollision = BaseObject::TOP;
-		}
+			sideCollision = eSide_Top;
 		else
-		{
-			sideCollision = BaseObject::BOTTOM;
-		}
+			sideCollision = eSide_Bottom;
 	}
 	else
 	{
 		if (dxEntry < 0.0f)
-		{
-			sideCollision = BaseObject::LEFT;
-		}
+			sideCollision = eSide_Left;
 		else
-		{
-			sideCollision = BaseObject::RIGHT;
-		}
+			sideCollision = eSide_Right;
 	}
 
 	return entryTime;
@@ -180,12 +172,12 @@ bool GameCollision::isCollision(const RECT& bound1, const RECT& bound2)
 		|| bound1.bottom < bound2.top);
 }
 
-BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseObject* e2)
+Side_Collision GameCollision::getSideCollision(BaseObject* e1, BaseObject* e2)
 {
 	RECT rect1 = e1->getBound();
 	RECT rect2 = e2->getBound();
-	float w = (e1->getWidth() + e2->getWidth()) / 2.0f;
-	float h = (e1->getHeight() + e2->getHeight()) / 2.0f;
+	int w = (e1->getWidth() + e2->getWidth()) / 2;
+	int h = (e1->getHeight() + e2->getHeight()) / 2;
 
 	float dx = e1->getPosition().x - e2->getPosition().y;
 	float dy = e1->getPosition().x - e2->getPosition().y;
@@ -201,30 +193,30 @@ BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseO
 			if (wy > -hx)
 			{
 				//Collision Top e1
-				return BaseObject::TOP;
+				return eSide_Top;
 			}
 			//Collision Right e1
-			return BaseObject::RIGHT;
+			return eSide_Right;
 		}
 		if (wy > -hx)
 		{
 			//Collision Left e1
-			return BaseObject::LEFT;
+			return eSide_Left;
 		}
 
 		//Collision Bottom e1
-		return BaseObject::BOTTOM;
+		return eSide_Bottom;
 	}
 	//Don't collide
-	return BaseObject::NONE;
+	return eSide_None;
 }
 
-BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data)
+Side_Collision GameCollision::getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data)
 {
-	float xCenter = data.regionCollision.left + (data.regionCollision.right - data.regionCollision.left) / 2.0f;
-	float yCenter = data.regionCollision.top + (data.regionCollision.bottom - data.regionCollision.top) / 2.0f;
+	long xCenter = data.regionCollision.left + (data.regionCollision.right - data.regionCollision.left) / 2;
+	long yCenter = data.regionCollision.top + (data.regionCollision.bottom - data.regionCollision.top) / 2;
 
-	GVec2 cCenter = GVec2(xCenter, yCenter);
+	GVec2 cCenter = GVec2(float(xCenter), float(yCenter));
 	GVec2 eCenter;
 	eCenter.x = e1->getPosition().x;
 	eCenter.y = e1->getPosition().y;
@@ -250,24 +242,24 @@ BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseO
 		 */
 		if (vec.x <= 0.35f && vec.x >= -0.35f)
 		{
-			return BaseObject::TOP;
+			return eSide_Top;
 		}
 		if (vec.x > 0.35f && vec.x < 0.8f)
 		{
 			//The angle is between 35 -> 70 on the top - right side
-			return BaseObject::TOP_RIGHT;
+			return eSide_TopRight;
 		}
 		if (vec.x >= 0.8f)
 		{
-			return BaseObject::RIGHT;
+			return eSide_Right;
 		}
 		if (vec.x < -0.35f && vec.x >= -0.8f)
 		{
 			//Top - Left collision
-			return BaseObject::TOP_LEFT;
+			return eSide_TopLeft;
 		}
 
-		return BaseObject::LEFT;
+		return eSide_Left;
 	}
 
 	/*
@@ -276,22 +268,22 @@ BaseObject::eSideCollision GameCollision::getSideCollision(BaseObject* e1, BaseO
 	*/
 	if (vec.x <= 0.35f && vec.x >= -0.35)
 	{
-		return BaseObject::BOTTOM;
+		return eSide_Bottom;
 	}
 	if (vec.x > 0.35 && vec.x < 0.8)
 	{
 		//The angle is between 35 -> 70 on the Bottom - right side
-		return BaseObject::BOTTOM_RIGHT;
+		return eSide_BottomRight;
 	}
 	if (vec.x >= 0.8)
 	{
-		return BaseObject::RIGHT;
+		return eSide_Right;
 	}
 	if (vec.x < -0.35f && vec.x > -0.8f)
 	{
 		//Bottom - Left collision
-		return BaseObject::BOTTOM_LEFT;
+		return eSide_BottomLeft;
 	}
 
-	return BaseObject::LEFT;
+	return eSide_Left;
 }

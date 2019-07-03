@@ -2,13 +2,15 @@
 #define _HEAD_GUNNER_STAND_STATE_H
 #include "../GunnerState.h"
 
-class GunnerStand :public GunnerState
+class GunnerStand :
+	public GunnerState
 {
 public:
-	GunnerStand(GunnerData* headGunner);
-
-	Gunner::eGunnerState GetState() override;
+	GunnerStand(Gunner* headGunner);
+	~GunnerStand();
 	void Update(float dt) override;
+	virtual Gunner_State getState() override;
+
 };
 
 #endif

@@ -1,15 +1,20 @@
 #include "BangerAttack.h"
 #include "../BangerJump/BangerJump.h"
+#include "..//..//BangerBullet/BangerBullet.h"
 
-BangerAttack::BangerAttack(BangerData* banger) : BangerState(banger)
+BangerAttack::BangerAttack(Banger* banger) : BangerState(banger)
 {
 	_timeAttack = 0.0f;
 	_count = -1;
 }
 
+BangerAttack::~BangerAttack()
+{
+}
+
 void BangerAttack::Update(float dt)
 {
-	_pBangerData->banger->setVx(0);
+	m_pBanger->setVx(0.0f);
 	_timeAttack += dt;
 
 	if (_timeAttack >= 0.45f)
@@ -19,31 +24,31 @@ void BangerAttack::Update(float dt)
 
 		if (_count >= 3)
 		{
-			_pBangerData->banger->setState(new BangerJump(_pBangerData));
+			m_pBanger->setState(new BangerJump(m_pBanger));
 			return;
 		}
 
-		if (_pBangerData->banger->getListBullet()->size() < 4)
+		if (m_pBanger->getListBullet()->size() < 4)
 		{
-			auto* ebullet = new BangerBullet();
-			_pBangerData->banger->getListBullet()->push_back(ebullet);
+			auto* banger_bullet = new BangerBullet();
+			m_pBanger->getListBullet()->push_back(banger_bullet);
 		}
 
 		float posX;
-		float posY = _pBangerData->banger->getBound().top + 8;
+		float posY = m_pBanger->getBound().top + 8;
 
-		if (_pBangerData->banger->getReverse())
-			posX = _pBangerData->banger->getBound().right - 8;
+		if (m_pBanger->getReverse())
+			posX = m_pBanger->getBound().right - 8;
 		else
-			posX = _pBangerData->banger->getBound().left + 8;
+			posX = m_pBanger->getBound().left + 8;
 
-		_pBangerData->banger->getListBullet()->at(_count)->setPosition(posX, posY);
-		_pBangerData->banger->getListBullet()->at(_count)->setReverse(_pBangerData->banger->getReverse());
-		_pBangerData->banger->getListBullet()->at(_count)->newObject();
+		m_pBanger->getListBullet()->at(_count)->setPosition(posX, posY);
+		m_pBanger->getListBullet()->at(_count)->setReverse(m_pBanger->getReverse());
+		m_pBanger->getListBullet()->at(_count)->newObject();
 	}
 }
 
-Banger::eBangerState BangerAttack::GetStateName()
+Enumerator::Banger_State BangerAttack::getState()
 {
-	return Banger::eBangerState::BANGER_ATTACK;
+	return eBanger_Attack;
 }

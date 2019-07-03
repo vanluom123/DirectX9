@@ -6,14 +6,14 @@
 class GunnerState
 {
 public:
-	GunnerState(GunnerData* headGunner);
-
-	virtual Gunner::eGunnerState GetState() = 0;
-	virtual void OnCollision(BaseObject::eSideCollision side);
+	GunnerState(Gunner* headGunner);
+	virtual ~GunnerState();
+	virtual void OnCollision(Side_Collision side);
 	virtual void Update(float dt);
+	virtual Gunner_State getState();
 
 protected:
-	GunnerData* _pGunnerData;
+	Gunner* m_pGunner;
 	int _count;
 	float _timeAttack;
 	float _accelerateY;

@@ -1,35 +1,30 @@
 #include "BlastAppear.h"
-#include "BlastStand.h"
+#include "BlastIdle.h"
 
 
-BlastAppear::BlastAppear(BlastData* b) :BlastState(b)
+BlastAppear::BlastAppear(BlastHornet* b)
+	: BlastHornetState(b)
 {
-	_data->blast->setVx(0.0f);
-	_data->blast->setVy(50.0f);
-	_time_appear = 0.0f;
+	m_timeAppear = 0.0f;
+	b->setVx(0.0f);
+	b->setVy(0.0f);
 }
 
 BlastAppear::~BlastAppear()
-{
-	// Do nothing
-}
+{}
 
 void BlastAppear::update(float dt)
 {
-	_time_appear += dt;
-	if (_time_appear > 2.0f)
-	{
-		_data->blast->setVy(-50.0f);
-	}
+	m_timeAppear += dt;
 
-	if (_time_appear > 5.0f)
+	if (m_timeAppear > 1.8f)
 	{
-		_time_appear = 0.0f;
-		_data->blast->setState(new BlastStand(_data));
+		m_timeAppear = 0.0f;
+		b->setState(new BlastIdle(b));
 	}
 }
 
-eBlastState BlastAppear::getState()
+Enumerator::Hornet_State BlastAppear::getState()
 {
-	return eBlastState::BLAST_STATE_APPEAR;
+	return eHornet_Appear;
 }

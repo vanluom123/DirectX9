@@ -1,8 +1,8 @@
 #include "HPBar.h"
 
-HPBar::HPBar(BaseObject::eObjectType tag)
+HPBar::HPBar(Object_Type tag)
 {
-	if (tag == BaseObject::ROCK_MAN)
+	if (tag == eOject_RockMan)
 	{
 		Hpbar = new Sprite("Resources/Bar/0.png", RECT(), 14, 16);
 		position.x = 26;

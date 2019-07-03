@@ -51,10 +51,10 @@ BeginScene::BeginScene()
 
 BeginScene::~BeginScene()
 {
-	SAFE_DELETE(_pMap);
-	SAFE_DELETE(_pCamera);
-	SAFE_DELETE(_pPlayer);
-	SAFE_DELETE(_pAniBackground);
+	delete _pMap;
+	delete _pCamera;
+	delete _pPlayer;
+	delete _pAniBackground;
 }
 
 void BeginScene::update(float dt)
@@ -123,7 +123,7 @@ void BeginScene::draw()
 	_pMap->draw1();
 
 	// Drawing the HP of Player
-	_pPlayer->DrawHP();
+	_pPlayer->drawHP();
 }
 
 void BeginScene::onKeyDown(int keyCode)
@@ -160,6 +160,7 @@ void BeginScene::checkCameraAndWorldMap(float dt)
 	{
 		bool noRoom = true;
 		for (auto& Room : _pMap->getListRoom())
+		{
 			if (GameCollision::pointCollision(_pPlayer->getPosition().x, _pPlayer->getPosition().y, Room))
 			{
 				noRoom = false;
@@ -183,8 +184,9 @@ void BeginScene::checkCameraAndWorldMap(float dt)
 				}
 				break;
 			}
+		}
 		if (noRoom)
-			_pPlayer->setState(new DieState(_pPlayer->getPlayerData()));
+			_pPlayer->setState(new DieState(_pPlayer));
 	}
 
 	if (_direction == 1)
@@ -225,7 +227,7 @@ void BeginScene::checkCameraAndEnemies()
 {
 	for (auto& entity : _listEntityOut)
 	{
-		if (entity->getObjectType() == BaseObject::ENEMY)
+		if (entity->getObjectType() == eObject_Enemy)
 		{
 			if (_pPlayer->getPosition().x > entity->getPosition().x)
 				entity->setReverse(true);
@@ -247,14 +249,14 @@ void BeginScene::checkCollision(float dt)
 	_isBoss = false;
 	for (auto& entity : _listEntityOut)
 	{
-		if (entity->getObjectType() == BaseObject::BOSS)
+		if (entity->getObjectType() == eObject_Boss)
 		{
 			if (entity->getHP() > 0)
 			{
 				_isBoss = true;
 				for (auto& obj : _listEntityOut)
 				{
-					if (obj->getObjectType() == BaseObject::PORT)
+					if (obj->getObjectType() == eObject_Port)
 					{
 						if (obj->getHP() == 0)
 						{
@@ -268,7 +270,7 @@ void BeginScene::checkCollision(float dt)
 			{
 				for (auto& obj : _listEntityOut)
 				{
-					if (obj->getObjectType() == BaseObject::PORT)
+					if (obj->getObjectType() == eObject_Port)
 					{
 						if (obj->getHP() == 1)
 						{
@@ -284,7 +286,7 @@ void BeginScene::checkCollision(float dt)
 
 	// Player with Object
 	checkCollision(_pPlayer, dt);
-	for (auto& playerBullet : (*_pPlayer->getPlayerBullet()))
+	for (auto& playerBullet : *_pPlayer->getPlayerBullet())
 	{
 		if (playerBullet->getExplosion())
 			continue;
@@ -299,14 +301,14 @@ void BeginScene::checkCollision(float dt)
 		checkCollision(entity, dt);
 
 		// CheckCollision Enemy and EnemyBullet
-		if (entity->getObjectType() == BaseObject::ENEMY || entity->getObjectType() == BaseObject::BOSS)
+		if (entity->getObjectType() == eObject_Enemy || entity->getObjectType() == eObject_Boss)
 		{
 			for (auto& bullet : *entity->getListBullet())
 			{
 				if (bullet->getDie())
 					continue;
 
-				if (bullet->getObjectType() == BaseObject::ITEM)
+				if (bullet->getObjectType() == eObject_Item)
 				{
 					checkCollision(bullet, dt);
 					checkCollision(_pPlayer, bullet, dt);
@@ -319,9 +321,7 @@ void BeginScene::checkCollision(float dt)
 				_pMap->getQuadTree()->getObjectCollide(listStaticEntity, bullet->getBound());
 
 				for (auto& obj : listStaticEntity)
-				{
 					checkCollision(obj, bullet, dt);
-				}
 			}
 		}
 	}
@@ -350,7 +350,7 @@ void BeginScene::checkCollision(BaseObject* obj, float dt)
 
 			if (GameCollision::isCollision(broad, entity->getBound()))
 			{
-				BaseObject::eSideCollision other_with_entity;
+				Side_Collision other_with_entity;
 				float collision_time = GameCollision::sweptAABB(obj->getBound(), entity->getBound(), distance, other_with_entity);
 
 				if (collision_time < 1.0f)
@@ -376,7 +376,8 @@ void BeginScene::checkCollision(BaseObject* obj, BaseObject* other, float dt)
 			other->onCollision(obj);
 			return;
 		}
-		BaseObject::eSideCollision other_with_entity;
+
+		Side_Collision other_with_entity;
 		float collision_time = GameCollision::sweptAABB(obj->getBound(), other->getBound(), distance, other_with_entity);
 
 		if (collision_time < 1.0f)

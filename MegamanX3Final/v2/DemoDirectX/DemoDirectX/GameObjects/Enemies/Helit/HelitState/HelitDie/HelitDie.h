@@ -5,9 +5,9 @@
 class HelitDie :public HelitState
 {
 public:
-	HelitDie(HelitData* helit);
-
-	Helit::eHelitState getState() override;
+	HelitDie(Helit* helit);
+	~HelitDie();
+	Helit_State getState() override;
 	void update(float dt) override;
 
 private:

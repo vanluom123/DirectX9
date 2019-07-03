@@ -3,21 +3,25 @@
 #include "../GunnerAttack/GunnerAttackRocket.h"
 #include "../../../Banger/BangerBullet/BangerBullet.h"
 
-GunnerStand::GunnerStand(GunnerData* headGunner) :GunnerState(headGunner)
+GunnerStand::GunnerStand(Gunner* headGunner) :GunnerState(headGunner)
 {
-	_pGunnerData->gunner->setVx(0);
-	_pGunnerData->gunner->setVy(200);
+	m_pGunner->setVx(0);
+	m_pGunner->setVy(200);
 	_timeAttack = 0;
 }
 
-Gunner::eGunnerState GunnerStand::GetState()
+GunnerStand::~GunnerStand()
 {
-	return Gunner::GUNNER_STAND;
 }
 
 void GunnerStand::Update(float dt)
 {
 	_timeAttack += dt;
 	if (_timeAttack > 1.0f)
-		_pGunnerData->gunner->setState(new GunnerAttackRocket(_pGunnerData));
+		m_pGunner->setState(new GunnerAttackRocket(m_pGunner));
+}
+
+Enumerator::Gunner_State GunnerStand::getState()
+{
+	return eGunner_Stand;
 }

@@ -3,15 +3,14 @@
 #include "../../../Banger/BangerBullet/BangerBullet.h"
 
 
-GunnerAttackBullet::GunnerAttackBullet(GunnerData* pGunner) :GunnerState(pGunner)
+GunnerAttackBullet::GunnerAttackBullet(Gunner* pGunner) :GunnerState(pGunner)
 {
 	_timeAttack = 0;
 	_count = 1;
 }
 
-Gunner::eGunnerState GunnerAttackBullet::GetState()
+GunnerAttackBullet::~GunnerAttackBullet()
 {
-	return Gunner::GUNNER_ATTACK_BULLET;
 }
 
 void GunnerAttackBullet::Update(float dt)
@@ -24,29 +23,34 @@ void GunnerAttackBullet::Update(float dt)
 
 		if (_count > 4)
 		{
-			_pGunnerData->gunner->setState(new GunnerStand(_pGunnerData));
+			m_pGunner->setState(new GunnerStand(m_pGunner));
 			return;
 		}
 
-		if (_pGunnerData->gunner->getListBullet()->size() < 5)
+		if (m_pGunner->getListBullet()->size() < 5)
 		{
 			auto* ebullet = new BangerBullet();
-			_pGunnerData->gunner->getListBullet()->push_back(ebullet);
+			m_pGunner->getListBullet()->push_back(ebullet);
 		}
 
 		float posX = 0;
-		float posY = _pGunnerData->gunner->getBound().top;
+		float posY = m_pGunner->getBound().top;
 
 		if (_count < 5)
 		{
-			if (_pGunnerData->gunner->getReverse())
-				posX = _pGunnerData->gunner->getBound().right - 16;
+			if (m_pGunner->getReverse())
+				posX = m_pGunner->getBound().right - 16;
 			else
-				posX = _pGunnerData->gunner->getBound().left + 16;
+				posX = m_pGunner->getBound().left + 16;
 		}
 
-		_pGunnerData->gunner->getListBullet()->at(_count)->setPosition(posX, posY);
-		_pGunnerData->gunner->getListBullet()->at(_count)->setReverse(_pGunnerData->gunner->getReverse());
-		_pGunnerData->gunner->getListBullet()->at(_count)->newObject();
+		m_pGunner->getListBullet()->at(_count)->setPosition(posX, posY);
+		m_pGunner->getListBullet()->at(_count)->setReverse(m_pGunner->getReverse());
+		m_pGunner->getListBullet()->at(_count)->newObject();
 	}
+}
+
+Enumerator::Gunner_State GunnerAttackBullet::getState()
+{
+	return eGunner_Attack_Bullet;
 }

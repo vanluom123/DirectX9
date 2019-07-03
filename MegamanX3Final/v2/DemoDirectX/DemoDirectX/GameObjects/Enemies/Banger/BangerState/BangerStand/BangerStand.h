@@ -7,10 +7,10 @@ class BangerStand :
 	public BangerState
 {
 public:
-	 BangerStand(BangerData* banger);
-
-	Banger::eBangerState GetStateName() override;
+	 BangerStand(Banger* banger);
+	 ~BangerStand();
 	void Update(float dt) override;
+	virtual Banger_State getState() override;
 
 private:
 	float _timePerShoot;

@@ -3,14 +3,9 @@
 #include "../../../Entity/BaseObject.h"
 #include "../../../../GameComponents/Animation.h"
 
-class GunnerBullet :public BaseObject
+class GunnerBullet : public BaseObject
 {
 public:
-	enum eBulletState
-	{
-		BULLET_FIRE,
-		BULLET_EXPLOSION
-	};
 
 	GunnerBullet();
 	~GunnerBullet();
@@ -18,18 +13,18 @@ public:
 	RECT getBound() override;
 	void newObject()override;
 	void update(float dt) override;
-	void onCollision(eSideCollision side) override;
+	void onCollision(Side_Collision side) override;
 	void onCollision(BaseObject* obj) override;
 	void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
-	void SetBulletX(float bulletX) { this->_bulletX = bulletX; }
+	void setBulletX(float bulletX) { this->_bulletX = bulletX; }
 
 protected:
-	virtual void setState(eBulletState state);
+	virtual void setState(EnemyBullet_State state);
 
 	Animation* _pAnim;
 	Animation* _pAnimExplosion;
 	float _bulletX, _timeFire;
-	eBulletState _bulletState;
+	EnemyBullet_State _bulletState;
 };
 
 #endif

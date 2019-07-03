@@ -1,12 +1,23 @@
 #include "GunnerState.h"
 
-GunnerState::GunnerState(GunnerData* headGunner)
+GunnerState::GunnerState(Gunner* headGunner)
 {
-	this->_pGunnerData = headGunner;
+	m_pGunner = headGunner;
 }
 
-void GunnerState::OnCollision(BaseObject::eSideCollision side)
-{}
+GunnerState::~GunnerState()
+{
+}
+
+void GunnerState::OnCollision(Side_Collision side)
+{
+}
 
 void GunnerState::Update(float dt)
-{}
+{
+}
+
+Gunner_State GunnerState::getState()
+{
+	return eGunner_None;
+}

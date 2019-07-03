@@ -6,11 +6,12 @@
 class GunnerFall :public GunnerState
 {
 public:
-	GunnerFall(GunnerData* headGunner);
-
-	Gunner::eGunnerState GetState() override;
-	void OnCollision(BaseObject::eSideCollision side) override;
+	GunnerFall(Gunner* headGunner);
+	~GunnerFall();
+	void OnCollision(Side_Collision side) override;
 	void Update(float dt) override;
+	virtual Gunner_State getState() override;
+
 };
 
 #endif

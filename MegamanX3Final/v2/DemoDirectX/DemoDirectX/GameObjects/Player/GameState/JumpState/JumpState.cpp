@@ -5,24 +5,28 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-JumpState::JumpState(PlayerData* playerData) :PlayerState(playerData)
+JumpState::JumpState(Player* player) :PlayerState(player)
 {
 	Sound::getInstance()->play("JumpUp", false, 1);
 	Sound::getInstance()->setVolume(95);
 
-	_playerData->player->setVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+	m_pPlayer->setVy(Define::PLAYER_MIN_JUMP_VELOCITY);
 	_accelerateY = 15.0f;
 	_timePress = 0;
 	_pressed = false;
 
-	if (_playerData->state->getState() == Player::DASH)
+	if (m_pPlayer->getPlayerState()->getState() == ePlayer_Dash)
 		_pressed = true;
 }
 
-void JumpState::Update(float dt)
+JumpState::~JumpState()
 {
-	if (_playerData->player->getVy() > 0)
-		_playerData->player->setState(new FallState(_playerData, _pressed));
+}
+
+void JumpState::update(float dt)
+{
+	if (m_pPlayer->getVy() > 0)
+		m_pPlayer->setState(new FallState(m_pPlayer, _pressed));
 }
 
 void JumpState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
@@ -33,7 +37,7 @@ void JumpState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 
 	if (keys[VK_RIGHT])
 	{
-		_playerData->player->setReverse(false);
+		m_pPlayer->setReverse(false);
 
 		if (_pressed)
 			speed = Define::PLAYER_MAX_SLIDE_SPEED;
@@ -42,45 +46,45 @@ void JumpState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	}
 	else if (keys[VK_LEFT])
 	{
-		_playerData->player->setReverse(true);
+		m_pPlayer->setReverse(true);
 		if (_pressed)
 			speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
 
-	_playerData->player->setVx(speed);
-	_playerData->player->addVy(_accelerateY);
+	m_pPlayer->setVx(speed);
+	m_pPlayer->addVy(_accelerateY);
 }
 
-void JumpState::onCollision(BaseObject::eSideCollision side)
+void JumpState::onCollision(Side_Collision side)
 {
 	switch (side)
 	{
-		case BaseObject::LEFT:
-		case BaseObject::RIGHT:
-			{
-				if (_timePress < 0.3f)
-					break;
-				_playerData->player->setState(new SlipDownState(_playerData));
+		case eSide_Left:
+		case eSide_Right:
+		{
+			if (_timePress < 0.3f)
 				break;
-			}
-		case BaseObject::TOP:
-			{
-				_playerData->player->setState(new FallState(_playerData, _pressed));
-				break;
-			}
-		case BaseObject::BOTTOM:
-			{
-				_playerData->player->setState(new StandState(_playerData));
-				break;
-			}
+			m_pPlayer->setState(new SlipDownState(m_pPlayer));
+			break;
+		}
+		case eSide_Top:
+		{
+			m_pPlayer->setState(new FallState(m_pPlayer, _pressed));
+			break;
+		}
+		case eSide_Bottom:
+		{
+			m_pPlayer->setState(new StandState(m_pPlayer));
+			break;
+		}
 		default:
 			break;
 	}
 }
 
-Player::ePlayerState JumpState::getState()
+Player_State JumpState::getState()
 {
-	return Player::JUMP;
+	return ePlayer_Jump;
 }

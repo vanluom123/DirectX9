@@ -1,9 +1,15 @@
 #include "HelitState.h"
 
-HelitState::HelitState(HelitData* helit)
+HelitState::HelitState(Helit* helit)
 {
-	this->_pHelitData = helit;
+	m_pHelit = helit;
 }
 
 void HelitState::update(float dt)
-{}
+{
+}
+
+Helit_State HelitState::getState()
+{
+	return eHelit_None;
+}

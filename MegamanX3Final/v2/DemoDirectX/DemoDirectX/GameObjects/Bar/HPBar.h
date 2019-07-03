@@ -2,6 +2,7 @@
 #define HPBAR_H
 #include "../../GameComponents/Sprite.h"
 #include "../../GameObjects/Entity/BaseObject.h"
+
 class HPBar
 {
 protected:
@@ -11,7 +12,7 @@ protected:
 	Sprite* Top;
 	GVec3 position;
 public:
-	HPBar(BaseObject::eObjectType tag);
+	HPBar(Object_Type tag);
 	~HPBar();
 
 	void draw(int Hp, int MaxHp);

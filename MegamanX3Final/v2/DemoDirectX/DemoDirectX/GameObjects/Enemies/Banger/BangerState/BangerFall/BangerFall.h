@@ -9,11 +9,12 @@ private:
 	float _bangerVx;
 
 public:
-	 BangerFall(BangerData* banger);
-
-	void OnCollision(BaseObject::eSideCollision side) override;
+	 BangerFall(Banger* banger);
+	 ~BangerFall();
+	void OnCollision(Side_Collision side) override;
 	void Update(float dt) override;
-	Banger::eBangerState GetStateName() override;
+	virtual Banger_State getState() override;
+
 };
 
 #endif // !BANGER_FALL_H

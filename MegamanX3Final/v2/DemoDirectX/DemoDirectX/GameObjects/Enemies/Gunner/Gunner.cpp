@@ -9,7 +9,7 @@
 
 Gunner::Gunner()
 {
-	_objectType = ENEMY;
+	_objectType = eObject_Enemy;
 	_pAnim = new Animation(Define::HEAD_GUNNER_SPRITE, 4, 4, 51, 45, 0.15f, D3DCOLOR_XRGB(100, 100, 100));
 	_pAnimDie = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
 	_isReverse = false;
@@ -18,13 +18,7 @@ Gunner::Gunner()
 	_MaxHP = 6;
 	_Damage = 3;
 	_HP = _MaxHP;
-	_curState = GUNNER_NONE;
-
-	_pGunnerData = new GunnerData;
-	_pGunnerData->gunner = this;
-	_pGunnerData->gunnerState = NULL;
-
-	this->setState(new GunnerFall(_pGunnerData));
+	setState(new GunnerFall(this));
 }
 
 void Gunner::newObject()
@@ -35,18 +29,19 @@ void Gunner::newObject()
 	_isAllowDraw = true;
 	_isDie = false;
 	_HP = _MaxHP;
-	_curState = GUNNER_NONE;
-	setState(new GunnerFall(_pGunnerData));
+	_curState = eGunner_None;
+	setState(new GunnerFall(this));
 }
 
 Gunner::~Gunner()
 {
 	delete _pAnim;
 	delete _pAnimDie;
-	delete _pGunnerData;
+	delete m_pState;
 	for (auto& bullet : _listBullet)
 		delete bullet;
-	_listBullet.clear();
+	if (!_listBullet.empty())
+		_listBullet.clear();
 }
 
 RECT Gunner::getBound()
@@ -68,35 +63,35 @@ void Gunner::update(float dt)
 	for (auto& bullet : _listBullet)
 		bullet->update(dt);
 
-	if (_isAllowDraw == false)
-		return;
+	if (_isAllowDraw)
+	{
+		if (!_isDie)
+			_pAnim->update(dt);
+		else
+			_pAnimDie->update(dt);
 
-	if (_isDie == false)
-		_pAnim->update(dt);
-	else
-		_pAnimDie->update(dt);
+		BaseObject::update(dt);
 
-	BaseObject::update(dt);
-
-	if (_pGunnerData->gunnerState != NULL)
-		_pGunnerData->gunnerState->Update(dt);
+		if (m_pState)
+			m_pState->Update(dt);
+	}
 }
 
-void Gunner::onCollision(eSideCollision side)
+void Gunner::onCollision(Side_Collision side)
 {
-	if (_pGunnerData->gunnerState != NULL)
-		_pGunnerData->gunnerState->OnCollision(side);
+	if (m_pState)
+		m_pState->OnCollision(side);
 }
 
 void Gunner::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() == BaseObject::ROCK_MAN_BULLET && !_isDie)
+	if (obj->getObjectType() == eObject_RockMan_Bullet && !_isDie)
 	{
 		_HP -= obj->getDamage();
 		if (_HP <= 0)
 		{
 			_isDie = true;
-			this->setState(new GunnerDie(_pGunnerData));
+			this->setState(new GunnerDie(this));
 
 			int num = (rand() % 999) % 4;
 			if (num == 1)
@@ -104,14 +99,14 @@ void Gunner::onCollision(BaseObject* obj)
 				auto* item = new SmallBloodItem();
 				_listBullet.push_back(item);
 				item->setPosition(_posX, _posY);
-				item->setObjectType(BaseObject::ITEM);
+				item->setObjectType(eObject_Item);
 			}
 			else if (num == 2)
 			{
 				auto* item = new SmallSubtankItem();
 				_listBullet.push_back(item);
 				item->setPosition(_posX, _posY);
-				item->setObjectType(BaseObject::ITEM);
+				item->setObjectType(eObject_Item);
 			}
 		}
 	}
@@ -119,15 +114,15 @@ void Gunner::onCollision(BaseObject* obj)
 
 void Gunner::onNoCollisionWithBottom()
 {
-	if (_side_y != BOTTOM)
+	if (_side_y != eSide_Bottom)
 	{
 		switch (_curState)
 		{
-			case GUNNER_STAND:
-			case GUNNER_ATTACK:
-			case GUNNER_ATTACK_ROCKET:
-			case GUNNER_ATTACK_BULLET:
-				setState(new GunnerFall(_pGunnerData));
+			case eGunner_Stand:
+			case eGunner_Attack:
+			case eGunner_Attack_Rocket:
+			case eGunner_Attack_Bullet:
+				setState(new GunnerFall(this));
 				break;
 			default:
 				break;
@@ -138,9 +133,9 @@ void Gunner::onNoCollisionWithBottom()
 void Gunner::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (_isDie == false)
+	if (!_isDie)
 	{
-		if (GameCollision::isCollision(this->getBound(), camera->getBound()) == false)
+		if (!GameCollision::isCollision(this->getBound(), camera->getBound()))
 			_isAllowDraw = false;
 		else
 			_isAllowDraw = true;
@@ -149,70 +144,58 @@ void Gunner::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rot
 	for (auto& bullet : _listBullet)
 		bullet->draw(camera);
 
-	if (_isAllowDraw == false)
-		return;
-
-	if (_isDie == true)
+	if (_isAllowDraw)
 	{
-		_pAnimDie->setPosition(this->getPosition());
-		_pAnimDie->setReverse(_isReverse);
+		if (_isDie)
+		{
+			_pAnimDie->setPosition(this->getPosition());
+			_pAnimDie->setReverse(_isReverse);
 
-		if (camera != NULL)
-			_pAnimDie->draw(_pAnimDie->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			if (camera)
+				_pAnimDie->draw(_pAnimDie->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			else
+				_pAnimDie->draw(_pAnimDie->getPosition());
+		}
 		else
-			_pAnimDie->draw(_pAnimDie->getPosition());
+		{
+			_pAnim->setPosition(this->getPosition());
+			_pAnim->setReverse(_isReverse);
 
-		return;
+			if (camera)
+				_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+			else
+				_pAnim->draw(_pAnim->getPosition());
+		}
 	}
-
-	_pAnim->setPosition(this->getPosition());
-	_pAnim->setReverse(_isReverse);
-
-	if (camera != NULL)
-		_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
-	else
-		_pAnim->draw(_pAnim->getPosition());
 }
 
-void Gunner::ChangeAnimation(eGunnerState stateName)
+void Gunner::changeAnimation(Gunner_State stateName)
 {
 	switch (stateName)
 	{
-		case GUNNER_STAND:
-			{
-				_pAnim->setAnimation(0, 1);
-				break;
-			}
+		case eGunner_Stand:
+			_pAnim->setAnimation(0, 1);
+			break;
 
-		case GUNNER_ATTACK:
-			{
-				_pAnim->setAnimation(2, 3, 0.15f, false);
-				break;
-			}
+		case eGunner_Attack:
+			_pAnim->setAnimation(2, 3, 0.15f, false);
+			break;
 
-		case GUNNER_ATTACK_ROCKET:
-			{
-				_pAnim->setAnimation(1, 3, 0.15f, false);
-				break;
-			}
+		case eGunner_Attack_Rocket:
+			_pAnim->setAnimation(1, 3, 0.15f, false);
+			break;
 
-		case GUNNER_ATTACK_BULLET:
-			{
-				_pAnim->setAnimation(0, 1);
-				break;
-			}
+		case eGunner_Attack_Bullet:
+			_pAnim->setAnimation(0, 1);
+			break;
 
-		case GUNNER_FALL:
-			{
-				_pAnim->setAnimation(0, 1);
-				break;
-			}
+		case eGunner_Fall:
+			_pAnim->setAnimation(0, 1);
+			break;
 
-		case GUNNER_DIE:
-			{
-				_pAnimDie->setAnimation(0, 8, 0.05f, false);
-				break;
-			}
+		case eGunner_Death:
+			_pAnimDie->setAnimation(0, 8, 0.05f, false);
+			break;
 
 		default: break;
 	}
@@ -223,12 +206,11 @@ void Gunner::ChangeAnimation(eGunnerState stateName)
 
 void Gunner::setState(GunnerState* state)
 {
-	if (_curState == state->GetState())
+	if (_curState == state->getState())
 		return;
 
-	SAFE_DELETE(_pGunnerData->gunnerState);
-
-	_pGunnerData->gunnerState = state;
-	_curState = state->GetState();
-	this->ChangeAnimation(state->GetState());
+	delete m_pState;
+	m_pState = state;
+	_curState = state->getState();
+	changeAnimation(state->getState());
 }

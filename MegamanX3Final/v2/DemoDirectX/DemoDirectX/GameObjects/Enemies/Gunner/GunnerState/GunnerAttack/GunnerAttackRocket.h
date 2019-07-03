@@ -5,9 +5,10 @@
 class GunnerAttackRocket :public GunnerState
 {
 public:
-	GunnerAttackRocket(GunnerData* pGunner);
-
-	Gunner::eGunnerState GetState() override;
+	GunnerAttackRocket(Gunner* pGunner);
+	~GunnerAttackRocket();
 	void Update(float dt) override;
+	virtual Gunner_State getState() override;
+
 };
 #endif

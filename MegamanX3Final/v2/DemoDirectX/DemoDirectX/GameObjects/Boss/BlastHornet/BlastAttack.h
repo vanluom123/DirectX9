@@ -1,28 +1,18 @@
 ﻿#ifndef BLAST_ATTACK_H
 #define BLAST_ATTACK_H
-#include "BlastState.h"
+#include "BlastHornetState.h"
 
-class BlastAttack : public BlastState
+class BlastAttack : 
+	public BlastHornetState
 {
 public:
-	BlastAttack(BlastData* b);
+	BlastAttack(BlastHornet* b);
 	~BlastAttack();
 
-	enum eAttackType
-	{
-		MOVE_UP,
-		MOVE_DOWN,
-		DONT_MOVE
-	};
-
 	void update(float dt) override;
-	void onCollision(BaseObject::eSideCollision side) override;
-	eBlastState getState() override;
+	void onCollision(Side_Collision side) override;
+	virtual Hornet_State getState() override;
 
-private:
-	eAttackType _attackType;
-	float _speedX;
-	float _speedY;
 };
 #endif // !BLAST_ATTACK_H
 

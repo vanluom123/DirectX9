@@ -1,20 +1,22 @@
-﻿#ifndef BLAST_SHOOTER
-#define BLAST_SHOOTER
-#include "BlastState.h"
+﻿#ifndef BLAST_SHOOT
+#define BLAST_SHOOT
+#include "BlastHornetState.h"
 
-class BlastShoot : public BlastState
+class BlastShoot
+	: public BlastHornetState
 {
+
 public:
-	BlastShoot(BlastData *b);
+	BlastShoot(BlastHornet* b);
 	~BlastShoot();
 
 	void update(float dt) override;
-	eBlastState getState() override;
-	void shoot() override;
+	void shoot();
+	virtual Hornet_State getState() override;
 
 private:
-	float _timeShoot;
-	int _count;
+	float m_timeShoot;
+	int m_count;
 };
 
 #endif

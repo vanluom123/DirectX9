@@ -25,10 +25,16 @@ LPDIRECT3DDEVICE9 mDevice;
 HINSTANCE mHInstance;
 int mCmdShow;
 
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+//int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+//{
+//	mHInstance = hInstance;
+//	initWindow(nShowCmd);
+//	return 0;
+//}
+
+int main()
 {
-	mHInstance = hInstance;
-	initWindow(nShowCmd);
+	initWindow(mCmdShow);
 	return 0;
 }
 
@@ -117,7 +123,7 @@ int initDevice()
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	//su dung cac event cua window
+	// Using event of windows
 	switch (message)
 	{
 	case WM_DESTROY:

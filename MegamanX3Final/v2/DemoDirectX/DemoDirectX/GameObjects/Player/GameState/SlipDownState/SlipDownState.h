@@ -6,15 +6,13 @@
 class SlipDownState : public PlayerState
 {
 public:
-	SlipDownState(PlayerData* playerData);
+	SlipDownState(Player* player);
+	~SlipDownState();
 
-	void Update(float dt) override;
-
-	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
-
-	void onCollision(BaseObject::eSideCollision side) override;
-
-	Player::ePlayerState getState() override;
+	void update(float dt) override;
+	void KeyBoardEventHandler(map<int, bool> keys, float dt) override;
+	void onCollision(Side_Collision side) override;
+	Player_State getState() override;
 
 private:
 	bool _isSlide;

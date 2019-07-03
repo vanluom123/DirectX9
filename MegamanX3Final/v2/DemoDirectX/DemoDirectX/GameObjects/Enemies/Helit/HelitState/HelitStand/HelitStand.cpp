@@ -1,16 +1,15 @@
 #include "HelitStand.h"
 #include "../HelitAttack/HelitAttack.h"
 
-HelitStand::HelitStand(HelitData* helit) :HelitState(helit)
+HelitStand::HelitStand(Helit* helit) :HelitState(helit)
 {
-	_pHelitData->helit->setVx(0);
-	_pHelitData->helit->setVy(-60);
-	_timeAttack = 0;
+	m_pHelit->setVx(0.0f);
+	m_pHelit->setVy(-60.0f);
+	_timeAttack = 0.0f;
 }
 
-Helit::eHelitState HelitStand::getState()
+HelitStand::~HelitStand()
 {
-	return Helit::HELIT_STAND;
 }
 
 void HelitStand::update(float dt)
@@ -18,11 +17,15 @@ void HelitStand::update(float dt)
 	_timeAttack += dt;
 
 	if (_timeAttack > 2.0f)
-		_pHelitData->helit->setState(new HelitAttack(_pHelitData));
+		m_pHelit->setState(new HelitAttack(m_pHelit));
 	else
 	{
 		if (_timeAttack > 1.0f)
-			_pHelitData->helit->setVy(60);
+			m_pHelit->setVy(60.0f);
 	}
+}
 
+Enumerator::Helit_State HelitStand::getState()
+{
+	return eHelit_Stand;
 }

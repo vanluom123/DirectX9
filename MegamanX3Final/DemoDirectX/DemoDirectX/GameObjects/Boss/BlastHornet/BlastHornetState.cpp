@@ -1,6 +1,6 @@
 #include "BlastHornetState.h"
 
-BlastHornetState::BlastHornetState(BlastHornetData* b): b(b)
+BlastHornetState::BlastHornetState(BlastHornetData* b): _pBlastHornetData(b)
 {
 	accelerateX = 0;
 	accelerateY = 0;

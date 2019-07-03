@@ -5,12 +5,12 @@
 
 HelitBullet::HelitBullet()
 {
-	_objectType = ENEMY_BULLET;
+	_objectType = eObject_Enemy_Bullet;
 	_pAnim = new Animation(Define::HELIT_BULLET, 1, 1, 15, 10);
 	_pAnimExplosion = new Animation(Define::EXPLOSIONS, 1, 8, 35, 30);
 	_HP = 3;
 	_Damage = 2;
-	this->setState(BULLET_FIRE);
+	setState(eEnemyBullet_Fire);
 
 	_isReverse = false;
 	_isDie = false;
@@ -26,20 +26,20 @@ HelitBullet::~HelitBullet()
 
 void HelitBullet::newObject()
 {
-	if (_isReverse == true)
+	if (_isReverse)
 	{
 		setReverse(true);
-		setVx(80);
-		SetBulletX(25.0f);
+		setVx(80.0f);
+		setBulletX(25.0f);
 	}
 	else
 	{
 		setReverse(false);
-		setVx(-80);
-		SetBulletX(-25.0f);
+		setVx(-80.0f);
+		setBulletX(-25.0f);
 	}
 
-	this->setState(BULLET_FIRE);
+	setState(eEnemyBullet_Fire);
 	_isDie = false;
 	_isAllowDraw = true;
 }
@@ -50,23 +50,23 @@ RECT HelitBullet::getBound()
 
 	switch (_bulletState)
 	{
-		case BULLET_FIRE:
-			{
-				bound.left = _posX - 7;
-				bound.right = _posX + 8;
-				bound.top = _posY - 5;
-				bound.bottom = _posY + 5;
-				break;
-			}
+		case eEnemyBullet_Fire:
+		{
+			bound.left = _posX - 7;
+			bound.right = _posX + 8;
+			bound.top = _posY - 5;
+			bound.bottom = _posY + 5;
+			break;
+		}
 
-		case BULLET_EXPLOSION:
-			{
-				bound.left = _posX - 25;
-				bound.right = _posX + 25;
-				bound.top = _posY - 22;
-				bound.bottom = _posY + 23;
-				break;
-			}
+		case eEnemyBullet_Explosion:
+		{
+			bound.left = _posX - 25;
+			bound.right = _posX + 25;
+			bound.top = _posY - 22;
+			bound.bottom = _posY + 23;
+			break;
+		}
 
 		default: break;
 
@@ -77,10 +77,10 @@ RECT HelitBullet::getBound()
 
 void HelitBullet::update(float dt)
 {
-	if (_isAllowDraw == false)
+	if (!_isAllowDraw)
 		return;
 
-	if (_isDie == false)
+	if (!_isDie)
 	{
 		_vx += _bulletX;
 		if (_vx > 300)
@@ -88,10 +88,10 @@ void HelitBullet::update(float dt)
 		else if (_vx < -300)
 			_vx = -300;
 	}
-	else if (_pAnim->getPause() == true || _pAnimExplosion->getPause() == true)
+	else if (_pAnim->getPause() || _pAnimExplosion->getPause())
 		_isAllowDraw = false;
 
-	if (_bulletState == BULLET_EXPLOSION)
+	if (_bulletState == eEnemyBullet_Explosion)
 		_pAnimExplosion->update(dt);
 	else
 		_pAnim->update(dt);
@@ -99,35 +99,34 @@ void HelitBullet::update(float dt)
 	BaseObject::update(dt);
 }
 
-void HelitBullet::onCollision(eSideCollision side)
+void HelitBullet::onCollision(Side_Collision side)
 {}
 
 void HelitBullet::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() == ENEMY)
+	if (obj->getObjectType() == eObject_Enemy)
 		return;
 
-	_vx = 0;
-	_vy = 0;
+	_vx = 0.0f;
+	_vy = 0.0f;
 	_isDie = true;
-	this->setState(BULLET_EXPLOSION);
+	setState(eEnemyBullet_Explosion);
 }
 
 void HelitBullet::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 	D3DCOLOR color)
 {
-	if (GameCollision::isCollision(camera->getBound(), getBound()) == false)
+	if (!GameCollision::isCollision(camera->getBound(), getBound()))
 	{
 		_isAllowDraw = false;
 		_isDie = true;
 	}
 
-	if (_isAllowDraw == false)
-		return;
-
-	switch (_bulletState)
+	if (_isAllowDraw)
 	{
-		case BULLET_FIRE:
+		switch (_bulletState)
+		{
+			case eEnemyBullet_Fire:
 			{
 				_pAnim->setReverse(_isReverse);
 				_pAnim->setPosition(this->getPosition());
@@ -138,7 +137,7 @@ void HelitBullet::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec
 				break;
 			}
 
-		case BULLET_EXPLOSION:
+			case eEnemyBullet_Explosion:
 			{
 				_pAnimExplosion->setPosition(this->getPosition());
 				if (camera)
@@ -148,31 +147,32 @@ void HelitBullet::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec
 				break;
 			}
 
-		default: break;
+			default: break;
+		}
 	}
 }
 
-void HelitBullet::setState(eBulletState state)
+void HelitBullet::setState(EnemyBullet_State state)
 {
 	_bulletState = state;
 
 	switch (state)
 	{
-		case BULLET_FIRE:
-			{
-				_pAnim->setAnimation(0, 1);
-				this->setWidth(_pAnim->getWidth());
-				this->setHeight(_pAnim->getHeight());
-				break;
-			}
+		case eEnemyBullet_Fire:
+		{
+			_pAnim->setAnimation(0, 1);
+			setWidth(_pAnim->getWidth());
+			setHeight(_pAnim->getHeight());
+			break;
+		}
 
-		case BULLET_EXPLOSION:
-			{
-				_pAnimExplosion->setAnimation(0, 8, 0.05f, false);
-				this->setWidth(_pAnimExplosion->getWidth());
-				this->setHeight(_pAnimExplosion->getHeight());
-				break;
-			}
+		case eEnemyBullet_Explosion:
+		{
+			_pAnimExplosion->setAnimation(0, 8, 0.05f, false);
+			setWidth(_pAnimExplosion->getWidth());
+			setHeight(_pAnimExplosion->getHeight());
+			break;
+		}
 
 		default: break;
 	}

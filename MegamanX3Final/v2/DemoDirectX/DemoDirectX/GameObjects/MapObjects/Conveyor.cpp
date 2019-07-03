@@ -4,7 +4,7 @@
 
 Conveyor::Conveyor(bool direction): BaseObject()
 {
-	_objectType = BaseObject::CONVEYOR;
+	_objectType = eObject_Conveyor;
 	_pAnim = new Animation("Resources/MapObject/Conveyor.png", 1, 4, 128, 32, 0.1f);
 	_pAnim2 = new Animation("Resources/MapObject/Conveyor1.png", 1, 4, 32, 32, 0.1f);
 
@@ -34,16 +34,16 @@ void Conveyor::update(float dt)
 	_pAnim2->update(dt);
 }
 
-void Conveyor::onCollision(eSideCollision side)
+void Conveyor::onCollision(Side_Collision side)
 {}
 
 void Conveyor::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() != ROCK_MAN && obj->getObjectType() != ENEMY)
+	if (obj->getObjectType() != eOject_RockMan && obj->getObjectType() != eObject_Enemy)
 		return;
-	if (obj->getObjectType() == ROCK_MAN)
+	if (obj->getObjectType() == eOject_RockMan)
 		obj->addVx(_velocityX);
-	else if (obj->getObjectType() == ENEMY)
+	else if (obj->getObjectType() == eObject_Enemy)
 		obj->addVx(_velocityX/2);
 }
 

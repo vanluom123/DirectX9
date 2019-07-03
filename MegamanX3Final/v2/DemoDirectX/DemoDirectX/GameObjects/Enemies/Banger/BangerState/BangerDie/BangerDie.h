@@ -4,14 +4,15 @@
 #include "../../../../../GameDefines/GameDefine.h"
 #include "../../../../../GameComponents/Sound.h"
 
-class BangerDie :public BangerState
+class BangerDie :
+	public BangerState
 {
 public:
 
-	 BangerDie(BangerData* banger);
-
-	Banger::eBangerState GetStateName() override;
+	BangerDie(Banger* banger);
+	~BangerDie();
 	void Update(float dt) override;
+	virtual Banger_State getState() override;
 
 private:
 	float _timeDie;

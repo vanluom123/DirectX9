@@ -12,7 +12,7 @@ public:
 	~Pixton();
 	
 	void draw(Camera *camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
-	void onCollision(eSideCollision side) override;
+	void onCollision(Side_Collision side) override;
 	void update(float gameTime) override;
 
 	// SUB-FUNCTION

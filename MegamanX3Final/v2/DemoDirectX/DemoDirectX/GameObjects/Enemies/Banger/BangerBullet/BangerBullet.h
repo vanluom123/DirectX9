@@ -13,11 +13,11 @@ public:
 	RECT getBound() override;
 	void newObject() override;
 	void update(float dt) override;
-	void onCollision(eSideCollision side) override;
+	void onCollision(Side_Collision side) override;
 	void onCollision(BaseObject* obj) override;
 
 protected:
-	void setState(eBulletState state) override;
+	void setState(EnemyBullet_State state) override;
 
 private:
 	float _bulletY;	// The bullet translate to y axis

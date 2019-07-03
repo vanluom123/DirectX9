@@ -5,10 +5,10 @@
 class GunnerDie : public GunnerState
 {
 public:
-	GunnerDie(GunnerData* headGunner);
-
-	Gunner::eGunnerState GetState() override;
+	GunnerDie(Gunner* headGunner);
+	~GunnerDie();
 	void Update(float dt) override;
+	virtual Gunner_State getState() override;
 
 private:
 	float _timeDie;

@@ -13,10 +13,10 @@ public:
 	static bool isCollision(const RECT& bound1, const RECT& bound2);
 
 	//if Rectangle is big, it will be errored
-	static BaseObject::eSideCollision getSideCollision(BaseObject* e1, BaseObject* e2);
+	static Side_Collision getSideCollision(BaseObject* e1, BaseObject* e2);
 
 	//Side of collision of Entity
-	static BaseObject::eSideCollision getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data);
+	static Side_Collision getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data);
 
 	//Check collision between Point and Rectangle
 	static bool pointCollision(float x, float y, const RECT& bound);
@@ -32,5 +32,5 @@ public:
 	static RECT getBroadphase(const RECT& object, const GVec2& distance);
 
 	//Axis-Aligned Bounding box collision
-	static float sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, BaseObject::eSideCollision& sideCollision);
+	static float sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, Side_Collision& sideCollision);
 };

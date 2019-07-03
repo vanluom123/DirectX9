@@ -2,7 +2,6 @@
 #define PLANET_H
 #include "../../Entity/BaseObject.h"
 #include "../../../GameComponents/Animation.h"
-#include "../../../GameComponents/Camera.h"
 #include "../../Player/Player.h"
 #include "Pixton.h"
 #include "CarryArm.h"

@@ -2,44 +2,38 @@
 #include "../../../../../GameDefines/GameDefine.h"
 #include "../BangerFall/BangerFall.h"
 
-BangerJump::BangerJump(BangerData* banger) :BangerState(banger)
+BangerJump::BangerJump(Banger* banger) :BangerState(banger)
 {
-	_pBangerData->banger->setVy(Define::ENEMY_MIN_JUMP_VELOCITY);
+	m_pBanger->setVy(Define::ENEMY_MIN_JUMP_VELOCITY);
 
-	if (_pBangerData->banger->getReverse())
-		_bangerVx = 100;
+	if (m_pBanger->getReverse())
+		_bangerVx = 100.0f;
 	else
-		_bangerVx = -100;
+		_bangerVx = -100.0f;
 
 	_accelerateY = 15.0f;
 }
 
-void BangerJump::OnCollision(BaseObject::eSideCollision side)
+BangerJump::~BangerJump()
 {
-	switch (side)
-	{
-	case BaseObject::LEFT:
-	case BaseObject::RIGHT:
-		break;
-	case BaseObject::BOTTOM:
-		break;
-	case BaseObject::TOP:
-		_pBangerData->banger->setState(new BangerFall(_pBangerData));
-		break;
-	default: break;
-	}
+}
+
+void BangerJump::OnCollision(Side_Collision side)
+{
+	if (side == eSide_Top)
+		m_pBanger->setState(new BangerFall(m_pBanger));
 }
 
 void BangerJump::Update(float dt)
-{	
-	_pBangerData->banger->setVx(_bangerVx);
-	_pBangerData->banger->addVy(_accelerateY);
+{
+	m_pBanger->setVx(_bangerVx);
+	m_pBanger->addVy(_accelerateY);
 
-	if (_pBangerData->banger->getVy() > 0)
-		_pBangerData->banger->setState(new BangerFall(_pBangerData));
+	if (m_pBanger->getVy() > 0.0f)
+		m_pBanger->setState(new BangerFall(m_pBanger));
 }
 
-Banger::eBangerState BangerJump::GetStateName()
+Enumerator::Banger_State BangerJump::getState()
 {
-	return Banger::eBangerState::BANGER_JUMP;
+	return eBanger_Jump;
 }

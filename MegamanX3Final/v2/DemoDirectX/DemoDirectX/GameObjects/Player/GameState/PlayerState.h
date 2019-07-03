@@ -1,29 +1,21 @@
 ﻿#ifndef GAME_STATE_H
 #define GAME_STATE_H
 
-#include <map>
-#include "../../Entity/BaseObject.h"
 #include "../Player.h"
 
 class PlayerState
 {
 public:
-	PlayerState(PlayerData* playerData)
-	{
-		_playerData = playerData;
-	}
+	PlayerState(Player* player);
+	virtual ~PlayerState();
 
-	virtual void Update(float dt) { }
-
-	virtual void KeyBoardEventHandler(std::map<int, bool> keys, float dt) { }
-
-	// The side will collide with player
-	virtual void onCollision(BaseObject::eSideCollision side) { }
-
-	virtual Player::ePlayerState getState() = 0;
+	virtual void update(float dt);
+	virtual void KeyBoardEventHandler(map<int, bool> keys, float dt);
+	virtual void onCollision(Side_Collision side);
+	virtual Player_State getState();
 
 protected:
-	PlayerData* _playerData;
+	Player* m_pPlayer;
 
 };
 #endif // !GAME_STATE_H

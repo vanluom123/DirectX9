@@ -3,48 +3,52 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-RunState::RunState(PlayerData* playerData) :PlayerState(playerData)
+RunState::RunState(Player* player) :PlayerState(player)
 {
 	_isBoot = false;
 }
 
-void RunState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
+RunState::~RunState()
 {
-	_playerData->player->getAnimation()->setPause(false);
-	_playerData->player->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+}
+
+void RunState::KeyBoardEventHandler(map<int, bool> keys, float dt)
+{
+	m_pPlayer->getAnimation()->setPause(false);
+	m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 	if (keys[VK_RIGHT])
 	{
-		_playerData->player->setReverse(false);
-		_playerData->player->setVx(Define::PLAYER_MAX_RUNNING_SPEED);
+		m_pPlayer->setReverse(false);
+		m_pPlayer->setVx(Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else if (keys[VK_LEFT])
 	{
-		_playerData->player->setReverse(true);
-		_playerData->player->setVx(-Define::PLAYER_MAX_RUNNING_SPEED);
+		m_pPlayer->setReverse(true);
+		m_pPlayer->setVx(-Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else
 	{
-		_playerData->player->setVx(0.0f);
-		_playerData->player->setState(new StandState(_playerData));
+		m_pPlayer->setVx(0.0f);
+		m_pPlayer->setState(new StandState(m_pPlayer));
 	}
 }
 
-void RunState::onCollision(BaseObject::eSideCollision side)
+void RunState::onCollision(Side_Collision side)
 {
 	switch (side)
 	{
-		case BaseObject::LEFT:
-		case BaseObject::RIGHT:
-			{
-				_playerData->player->setState(new StandState(_playerData));
-				break;
-			}
+		case eSide_Left:
+		case eSide_Right:
+		{
+			m_pPlayer->setState(new StandState(m_pPlayer));
+			break;
+		}
 		default:
 			break;
 	}
 }
 
-Player::ePlayerState RunState::getState()
+Player_State RunState::getState()
 {
-	return Player::RUN;
+	return ePlayer_Run;
 }

@@ -3,8 +3,8 @@
 
 SubtankItem::SubtankItem()
 {
-	setItemType(SUBTANK);
-	_animationItem = new Animation("Resources/Items/sub-tanks.bmp", 1, 3, 14, 14, 0.15, D3DCOLOR_XRGB(6, 113, 158));
+	setItemType(eItem_Subtank);
+	_animationItem = new Animation(Define::SUB_TANK_ITEM, 1, 3, 14, 14, 0.15f, D3DCOLOR_XRGB(6, 113, 158));
 	_width = 14;
 	_height = 14;
 	_vy = 200;
@@ -29,36 +29,36 @@ RECT SubtankItem::getBound()
 
 void SubtankItem::update(float dt)
 {
-	if (_isAllowDraw == false)
-		return;
-
-	_animationItem->update(dt);
-	BaseObject::update(dt);
+	if(_isAllowDraw)
+	{
+		_animationItem->update(dt);
+		BaseObject::update(dt);
+	}
 }
 
 void SubtankItem::draw(Camera* camera, RECT rect /*= RECT()*/, GVec2 scale /*= GVec2()*/, float angle /*= 0*/, GVec2 rotationCenter /*= GVec2()*/, D3DCOLOR color /*= D3DCOLOR_XRGB(255, 255, 255)*/)
 {
-	if (_isAllowDraw == false)
-		return;
+	if(_isAllowDraw)
+	{
+		_animationItem->setPosition(this->getPosition());
 
-	_animationItem->setPosition(this->getPosition());
-
-	if (camera != NULL)
-		_animationItem->draw(this->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
-	else
-		_animationItem->draw(this->getPosition());
+		if (camera != NULL)
+			_animationItem->draw(this->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
+		else
+			_animationItem->draw(this->getPosition());
+	}
 }
 
 void SubtankItem::onCollision(BaseObject *obj)
 {
-	if (obj->getObjectType() == BaseObject::ROCK_MAN) {
+	if (obj->getObjectType() == eOject_RockMan) {
 		_isDie = true;
 		this->_isAllowDraw = false;
 	}
 }
 
-Items::eItemType SubtankItem::getItemType()
+Item_Type SubtankItem::getItemType()
 {
-	return SUBTANK;
+	return eItem_Subtank;
 }
 

@@ -11,12 +11,12 @@ public:
 	RECT getBound() override;
 	void newObject() override;
 	void update(float dt) override;
-	void onCollision(eSideCollision side) override;
+	void onCollision(Side_Collision side) override;
 	void onCollision(BaseObject* obj) override;
 	void draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter,
 		D3DCOLOR color) override;
 
-	void setState(eBulletState state) override;
+	void setState(EnemyBullet_State state) override;
 };
 
 #endif

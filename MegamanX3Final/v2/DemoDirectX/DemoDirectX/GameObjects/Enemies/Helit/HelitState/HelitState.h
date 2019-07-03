@@ -5,12 +5,14 @@
 class HelitState
 {
 public:
-	HelitState(HelitData* helit);
-	virtual Helit::eHelitState getState() = 0;
+	HelitState(Helit* helit);
+	virtual ~HelitState() = default;
+
 	virtual void update(float dt);
+	virtual Helit_State getState();
 
 protected:
-	HelitData* _pHelitData;
+	Helit* m_pHelit;
 	float _timeAttack;
 	float _accelerateY;
 };

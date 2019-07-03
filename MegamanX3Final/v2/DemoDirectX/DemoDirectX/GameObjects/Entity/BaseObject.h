@@ -1,43 +1,17 @@
-#ifndef ENTITIES_H
-#define ENTITIES_H
+#ifndef _BASE_OBJECT_H
+#define _BASE_OBJECT_H
 
 #include <vector>
 #include "../../GameComponents/Camera.h"
+#include "../../GameDefines/GameDefine.h"
+using namespace std;
+using namespace Enumerator;
 
 class BaseObject
 {
 public:
 	BaseObject();
-
-	enum eSideCollision
-	{
-		LEFT,
-		RIGHT,
-		TOP,
-		BOTTOM,
-		TOP_LEFT,
-		TOP_RIGHT,
-		BOTTOM_LEFT,
-		BOTTOM_RIGHT,
-		NONE
-	};
-
-	enum eObjectType
-	{
-		ROCK_MAN,
-		ROCK_MAN_BULLET,
-		ENEMY,
-		ENEMY_BULLET,
-		BOSS,
-		ELEVATOR,
-		CONVEYOR,
-		STATIC,
-		PORT,
-		THORN,
-		BOX,
-		ITEM,
-		TAG_NONE
-	};
+	virtual ~BaseObject();
 
 	struct CollisionReturn
 	{
@@ -45,115 +19,77 @@ public:
 		RECT regionCollision;
 	};
 
-	virtual void newObject() {	}
-
-	void checkTimeCollision(float collisionTime, eSideCollision side, BaseObject* other);
-
+	virtual void newObject();
+	void checkTimeCollision(float collisionTime, Side_Collision side, BaseObject* other);
 	virtual void update(float dt);
-
-	virtual void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) {  }
-
+	virtual void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
 	// Control collision
 	// When entity collide, this function will be called
-	virtual void onCollision(eSideCollision side);
-	virtual void onCollision(BaseObject* obj) {  }
-	virtual void onNoCollisionWithBottom() {  }
+	virtual void onCollision(Side_Collision side);
+	virtual void onCollision(BaseObject* obj);
+	virtual void onNoCollisionWithBottom();
 
 	// SUB-FUNCTION
 public:
 	virtual RECT getBound();
 
-	GVec3 getPosition() {
-		return GVec3(_posX, _posY, 0.0f);
-	}
+	GVec3 getPosition() const;
+	void setPosition(float x, float y);
+	void setPosition(GVec2 pos);
+	void setPosition(GVec3 pos);
 
-	void setPosition(float x, float y) {
-		setPosition(GVec2(x, y));
-	}
+	GVec3 getPositionStart() const;
+	void setPositionStart(float x, float y);
+	void setPositionStart(GVec2 pos);
+	void setPositionStart(GVec3 pos);
 
-	void setPosition(GVec2 pos) {
-		setPosition(GVec3(pos.x, pos.y, 0.0f));
-	}
+	void addPosition(float x, float y);
+	void addPosition(GVec2 pos);
+	void addPosition(GVec3 pos);
 
-	void setPosition(GVec3 pos) {
-		this->_posX = pos.x;
-		this->_posY = pos.y;
-		onSetPosition(pos);
-	}
+	void setWidth(int width);
+	float getWidth() const;
 
-	GVec3 getPositionStart() {
-		return GVec3(this->_startx, this->_starty, 0);
-	}
+	void setHeight(int height);
+	float getHeight() const;
 
-	void setPositionStart(float x, float y) {
-		setPositionStart(GVec2(x, y));
-	}
+	virtual void setHP(int hp);
+	virtual int getHP() const;
 
-	void setPositionStart(GVec2 pos) {
-		setPositionStart(GVec3(pos.x, pos.y, 0));
-	}
+	void setMaxHP(int hp);
+	int getMaxHP() const;
 
-	void setPositionStart(GVec3 pos) {
-		this->_startx = pos.x;
-		this->_starty = pos.y;
-		onSetPosition(pos);
-	}
+	void setDamage(int dame);
+	int getDamage() const;
 
-	void addPosition(float x, float y) {
-		addPosition(GVec2(x, y));
-	}
+	float getVx() const;
+	void setVx(float vx);
+	void addVx(float vx);
 
-	void addPosition(GVec2 pos) {
-		addPosition(GVec3(pos.x, pos.y, 0));
-	}
+	float getVy() const;
+	void setVy(float vy);
+	void addVy(float vy);
 
-	void addPosition(GVec3 pos) {
-		setPosition(this->getPosition() + pos);
-	}
+	void setDraw(bool isDraw);
+	bool getDraw() const;
 
-	void setWidth(int width) { this->_width = width; }
-	int getWidth() { return this->_width; }
+	void setObjectType(Object_Type objectType);
+	Object_Type getObjectType() const;
 
-	void setHeight(int height) { this->_height = height; }
-	int getHeight() { return this->_height; }
+	void setReverse(bool reverse);
+	bool getReverse() const;
 
-	void setHP(int hp) { this->_HP = hp; }
-	int getHP() { return this->_HP; }
+	void setDie(bool die);
+	bool getDie() const;
 
-	void setMaxHP(int hp) { this->_MaxHP = hp; }
-	int getMaxHP() { return this->_MaxHP; }
+	vector<BaseObject*>* getListBullet();
 
-	void setDamage(int dame) { this->_Damage = dame; }
-	int getDamage() { return this->_Damage; }
-
-	float getVx() { return this->_vx; }
-	void setVx(float vx) { this->_vx = vx; }
-	void addVx(float vx) { this->_vx += vx; }
-
-	float getVy() { return this->_vy; }
-	void setVy(float vy) { this->_vy = vy; }
-	void addVy(float vy) { this->_vy += vy; }
-
-	void setDraw(bool isDraw) { this->_isAllowDraw = isDraw; }
-	bool getDraw() { return this->_isAllowDraw; }
-
-	void setObjectType(eObjectType objectType) { this->_objectType = objectType; }
-	eObjectType getObjectType() { return this->_objectType; }
-
-	void setReverse(bool reverse) { _isReverse = reverse; }
-	bool getReverse() { return _isReverse; }
-
-	void setDie(bool die) { _isDie = die; }
-	bool getDie() { return _isDie; }
-
-	std::vector<BaseObject*>* getListBullet() { return &_listBullet; }
-
-	void setId(int id) { _id = id; }
-	int getId() const { return _id; }
+	void setId(int id);
+	int getId() const;
 
 protected:
 	// setting up the position of object
-	virtual void onSetPosition(GVec3 pos) { }
+	virtual void onSetPosition(GVec3 pos);
 
 	// The position of object
 	float _posX, _posY, _startx, _starty;
@@ -167,13 +103,13 @@ protected:
 	float _width, _height;
 
 	// allow to draw the sprite when the Camera contain Enemies
-	bool _isAllowDraw;	
+	bool _isAllowDraw;
 
 	// Object type
-	eObjectType _objectType;
+	Object_Type _objectType;
 
 	// List bullet
-	std::vector<BaseObject*> _listBullet;
+	vector<BaseObject*> _listBullet;
 
 	// Check out direction face of object
 	bool _isReverse;
@@ -191,10 +127,10 @@ protected:
 	float _collision_time_min_y;
 
 	// collision side to coordinate x
-	eSideCollision _side_x;
+	Side_Collision _side_x;
 
 	// collision side to coordinate x
-	eSideCollision _side_y;
+	Side_Collision _side_y;
 
 	BaseObject* _entity_x;
 	BaseObject* _entity_y;

@@ -3,7 +3,7 @@
 #include "../../GameDefines/GameDefine.h"
 Elevator::Elevator()
 {
-	_objectType = BaseObject::ELEVATOR;
+	_objectType = eObject_Elevator;
 	_pAnim = new Animation(Define::Elevator, 1, 3, 96, 45, 0.1f);
 
 	_pAnim->setAnimation(0, 1);
@@ -52,13 +52,13 @@ void Elevator::update(float dt)
 	BaseObject::update(dt);
 }
 
-void Elevator::onCollision(eSideCollision side)
+void Elevator::onCollision(Side_Collision side)
 {
 }
 
 void Elevator::onCollision(BaseObject* obj)
 {
-	if (obj->getObjectType() != ROCK_MAN || _isRun == true)
+	if (obj->getObjectType() != eOject_RockMan || _isRun == true)
 		return;
 
 	_isRun = true;

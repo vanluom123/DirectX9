@@ -5,13 +5,11 @@
 class DashState : public PlayerState
 {
 public:
-	DashState(PlayerData* playerData);
-
-	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
-
-	void onCollision(BaseObject::eSideCollision side) override;
-
-	Player::ePlayerState getState() override;
+	DashState(Player* player);
+	~DashState();
+	void KeyBoardEventHandler(map<int, bool> keys, float dt) override;
+	void onCollision(Side_Collision side) override;
+	Player_State getState() override;
 
 private:
 	float _accelerateX;
