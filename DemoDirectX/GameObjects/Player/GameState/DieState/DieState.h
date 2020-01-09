@@ -1,0 +1,18 @@
+#ifndef __DIE_STATE_H__
+#define __DIE_STATE_H__
+#include "../PlayerState.h"
+
+
+class DieState : public PlayerState
+{
+private:
+	float _timeDie;
+
+public:
+	DieState(Player* player);
+	~DieState();
+	void update(float dt) override;
+	Player_State getState() override;
+};
+
+#endif

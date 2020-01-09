@@ -1,0 +1,23 @@
+﻿#ifndef BLAST_SHOOT
+#define BLAST_SHOOT
+#include "BlastHornetState.h"
+
+class BlastShoot
+	: public BlastHornetState
+{
+private:
+	float m_timeShoot;
+	int m_count;
+
+public:
+	BlastShoot(BlastHornet* b);
+	~BlastShoot() = default;
+
+	void update(float dt) override;
+	void shoot();
+	virtual Hornet_State getState() override;
+
+};
+
+#endif
+
