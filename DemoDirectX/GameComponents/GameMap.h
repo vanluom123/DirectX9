@@ -7,25 +7,29 @@
 #include "QuadTree.h"
 #include "../GameObjects/Player/Player.h"
 #include <iostream>
-#include "../MapReader/Tmx.h.in"
+#include <MapReader/Tmx.h.in>
 
 class GameMap
 {
 private:
-	Sprite* _tileMap;
-	Sprite* _tileMap1;
-	Tmx::Map* _pTmxMap;
-	Camera* _viewport;
-	QuadTree* _quadTree;
-	std::vector<BaseObject*> _listEnemies;
+	Sprite * _tileMap;
+	Sprite * _tileMap1;
+	Tmx::Map * _pTmxMap;
+
+	std::vector<BaseObject *> _listEnemies;
 	std::vector<RECT> _listRoom;
+
 	RECT _srect;
-	Player* _player;
-	BaseObject* _pObjectWall;
+
+	GameMap() { }
+	static GameMap * s_instance;
 
 public:
-	GameMap(const char* filePath);
 	~GameMap();
+	static GameMap * getInstance();
+	static void release();
+
+	void initialize(const char * filePath);
 
 	void loadMap();
 	void update(float dt);
@@ -39,26 +43,7 @@ public:
 	int getTileWidth() const;
 	int getTileHeight() const;
 
-	bool isBoundLeft() const; //Check this camera on the left side with the world map
-	bool isBoundRight() const; //Check this camera on the right side with the world map
-	bool isBoundTop() const; //Check this camera on the Top side with the world map
-	bool isBoundBottom() const; //Check this camera on the bottom side with the world map
-
-	void setViewport(Camera* camera);
-
-	void setPlayer(Player* player);
-
-	std::vector<BaseObject*>* getListEnemies();
-
 	std::vector<RECT> getListRoom() const;
-
-	BaseObject* getObjectWall();
-
-	QuadTree* getQuadTree() const;
-
-	Tmx::Map* getMap() const;
-
-	RECT getWorldMapBound() const;
 
 };
 #endif // _GAME_MAP_H

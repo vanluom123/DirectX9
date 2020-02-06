@@ -10,7 +10,7 @@ private:
 	float _timePress;
 
 public:
-	JumpState(Player* player);
+	JumpState();
 	~JumpState();
 	void update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;

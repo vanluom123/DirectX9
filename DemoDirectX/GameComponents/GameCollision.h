@@ -12,35 +12,22 @@ public:
 	static void release();
 	static GameCollision* getInstance();
 
-	//Check collision Rectangle and Rectangle
-	BaseObject::CollisionReturn rectCollision(const RECT& box1, const RECT& box2);
-
-	bool AABBCheck(const RECT& box1, const RECT& box2);
-
-	bool isCollide(const RECT& box1, const RECT& box2);
-
-	void bounce(GVec2& collisionVector, BaseObject& obj, BaseObject& other);
-
-	bool collideBox(GVec2& collisionVector, const RECT& box1, const RECT& box2);
-
-	//if Rectangle is big, it will be error
-	Side_Collision getSideCollision(BaseObject* e1, BaseObject* e2);
-
-	//Side of collision of Entity
-	Side_Collision getSideCollision(BaseObject* e1, BaseObject::CollisionReturn data);
+	// Axis-Aligned Bounding Box
+	bool AABBCheck(RECT object, RECT other);
+	bool isNested(RECT object, RECT other);
 
 	//Check collision between Point and Rectangle
 	bool pointCollision(float x, float y, const RECT& box);
 
 	//Check collision between Rectangle and Circle
-	bool circleCollision(const RECT& bound, int circle_x, int circle_y, int circleRadius);
+	bool circleCollision(RECT bound, int circle_x, int circle_y, int circleRadius);
 
 	GVec2 Distance(BaseObject* e1, BaseObject* e2, float dt);
 
-	RECT getBroadphase(const RECT& object, const GVec2& distance);
+	RECT getBroadphase(RECT object, GVec2 distance);
 
 	//Axis-Aligned Bounding box collision
-	float sweptAABB(const RECT& obj, const RECT& other, const GVec2& distance, Side_Collision& sideCollision);
+	float sweptAABB(RECT obj, RECT other, GVec2 distance, Side_Collision& sideCollision);
 
 private:
 	GameCollision() = default;

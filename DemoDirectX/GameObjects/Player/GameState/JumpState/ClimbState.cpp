@@ -1,6 +1,6 @@
 #include "ClimbState.h"
 
-ClimbState::ClimbState(Player* player) :PlayerState(player)
+ClimbState::ClimbState()
 {
 	this->m_timeClimb = 0.0f;
 }

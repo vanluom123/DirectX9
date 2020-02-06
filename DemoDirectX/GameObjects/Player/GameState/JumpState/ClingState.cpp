@@ -5,11 +5,11 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-ClingState::ClingState(Player* player, bool dash) :PlayerState(player)
+ClingState::ClingState(bool dash)
 {
 	this->_speed = 0.0f;
 	this->_countPress = 0.0f;
-	this->m_pPlayer->setVy(Define::PLAYER_MIN_JUMP_VELOCITY);
+	Player::getInstance()->setVy(Define::PLAYER_MIN_JUMP_VELOCITY);
 	this->_accelerateY = 15.0f;
 
 	this->_pressed = dash;
@@ -22,8 +22,8 @@ ClingState::~ClingState()
 
 void ClingState::update(float dt)
 {
-	if (this->m_pPlayer->getVy() > 0)
-		this->m_pPlayer->setState(new FallState(this->m_pPlayer, this->_pressed));
+	if (Player::getInstance()->getVy() > 0)
+		Player::getInstance()->setState(new FallState(this->_pressed));
 }
 
 void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
@@ -31,7 +31,7 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	this->_countPress += dt;
 	if (this->_countPress < 0.25f)
 	{
-		if (this->m_pPlayer->getReverse())
+		if (Player::getInstance()->getReverse())
 		{
 			this->_speed = Define::PLAYER_MAX_CLING_SPEED;
 
@@ -45,14 +45,14 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 			if (keys[VK_LEFT])
 				this->_countPress = 0.25;
 		}
-		this->m_pPlayer->setVx(this->_speed);
-		this->m_pPlayer->addVy(this->_accelerateY);
+		Player::getInstance()->setVx(this->_speed);
+		Player::getInstance()->addVy(this->_accelerateY);
 		return;
 	}
 
 	if (keys[VK_RIGHT])
 	{
-		this->m_pPlayer->setReverse(false);
+		Player::getInstance()->setReverse(false);
 
 		if (this->_pressed)
 			this->_speed = Define::PLAYER_MAX_SLIDE_SPEED;
@@ -61,14 +61,14 @@ void ClingState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	}
 	else if (keys[VK_LEFT])
 	{
-		this->m_pPlayer->setReverse(true);
+		Player::getInstance()->setReverse(true);
 		if (this->_pressed)
 			this->_speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			this->_speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
-	this->m_pPlayer->setVx(this->_speed);
-	this->m_pPlayer->addVy(this->_accelerateY);
+	Player::getInstance()->setVx(this->_speed);
+	Player::getInstance()->addVy(this->_accelerateY);
 }
 
 void ClingState::onCollision(Side_Collision side)
@@ -81,17 +81,17 @@ void ClingState::onCollision(Side_Collision side)
 			Sound::getInstance()->play("JumpUp", false, 1);
 			Sound::getInstance()->setVolume(95);
 
-			this->m_pPlayer->setState(new SlipDownState(this->m_pPlayer));
+			Player::getInstance()->setState(new SlipDownState());
 			break;
 		}
 		case Enumerator::Side_Collision::TOP:
 		{
-			this->m_pPlayer->setState(new FallState(this->m_pPlayer, this->_pressed));
+			Player::getInstance()->setState(new FallState(this->_pressed));
 			break;
 		}
 		case Enumerator::Side_Collision::BOTTOM:
 		{
-			this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+			Player::getInstance()->setState(new StandState());
 			break;
 		}
 		default: break;

@@ -20,8 +20,6 @@ public:
 	virtual void changeAnimation(EnemyBullet_State state) override;
 	void loadSprite();
 
-	Player* getPlayer() const;
-	void setPlayer(Player* val);
 private:
 	// Delay time to hornet child explosion
 	float _timeDelay;
@@ -29,7 +27,6 @@ private:
 	// Distance of Hornet child with Player
 	GVec2 m_towardsPlayer;
 
-	Player* m_pPlayer;
 };
 
 #endif

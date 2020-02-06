@@ -9,7 +9,7 @@ private:
 	bool _isSlide;
 
 public:
-	SlipDownState(Player* player);
+	SlipDownState();
 	~SlipDownState();
 
 	void update(float dt) override;

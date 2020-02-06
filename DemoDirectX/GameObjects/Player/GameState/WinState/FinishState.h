@@ -5,7 +5,7 @@
 class FinishState : public PlayerState
 {
 public:
-	FinishState(Player* player);
+	FinishState();
 	~FinishState();
 	void update(float dt) override;
 	Player_State getState() override;

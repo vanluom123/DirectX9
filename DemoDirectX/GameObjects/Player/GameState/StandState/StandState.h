@@ -9,7 +9,7 @@ private:
 	bool _isMove;
 
 public:
-	StandState(Player* player);
+	StandState();
 	~StandState();
 	void update(float dt) override;
 	void KeyBoardEventHandler(map<int, bool> keys, float dt) override;

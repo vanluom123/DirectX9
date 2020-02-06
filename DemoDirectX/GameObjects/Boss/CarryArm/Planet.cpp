@@ -2,9 +2,10 @@
 #include "../../../GameComponents/GameCollision.h"
 #include "../../Player/GameState/StandState/StandState.h"
 
-Planet::Planet(Player* gp)
+Planet::Planet()
 {
 	_pPixton = new Pixton();
+
 	_pAnim = new Animation("Resources/Enemies/CarryArm/x3_subboss_carryarm_01.png", 1, 1, 256, 88);
 	_pAnimAttack = new Animation("Resources/Enemies/CarryArm/attack.png", 2, 10, 32, 32);
 	_pAnimBullet = new Animation("Resources/Enemies/CarryArm/bullet.png", 1, 3, 16, 16);
@@ -13,18 +14,23 @@ Planet::Planet(Player* gp)
 	_pAnimBullet->setAnimation(0, 3, 0.1);
 
 	_HP = 1;
+
 	_Damage = 3;
+
 	_planetPosY = 0;
 	_planetPosX = 0;
+
 	_isMove = true;
-	_pRockMan = gp;
+
 	_pCarryArm = new CarryArm();
+
 	_pBox1 = new Box();
 	_pBox2 = new Box();
 	_pBox1->setObjectType(Enumerator::Object_Type::ENEMY);
 	_pBox2->setObjectType(Enumerator::Object_Type::ENEMY);
 	_pBox1->setDestroy(true);
 	_pBox2->setDestroy(true);
+
 	_isAttack = false;
 	_timeAttack = 0;
 }
@@ -91,8 +97,8 @@ void Planet::MoveDown(float gameTime)
 {
 	if (_isMove)
 	{
-		_pRockMan->setState(new StandState(_pRockMan));
-		_pRockMan->setLock(true);
+		Player::getInstance()->setState(new StandState());
+		Player::getInstance()->setLock(true);
 		_posY += 40 * gameTime;
 		if (_posY > _starty)
 		{
@@ -115,8 +121,8 @@ void Planet::MoveDown(float gameTime)
 		{
 			if (!_pPixton->MoveUp(gameTime, _posX, _posY))
 				_posY -= 40 * gameTime;
-			_pRockMan->setState(new StandState(_pRockMan));
-			_pRockMan->setLock(true);
+			Player::getInstance()->setState(new StandState());
+			Player::getInstance()->setLock(true);
 			return;
 		}
 
@@ -131,14 +137,14 @@ void Planet::MoveDown(float gameTime)
 		if (_isAttack && _pAnimAttack->getPause())
 		{
 			_planetPosY += 50 * gameTime;
-			if (_pRockMan->getPosition().x > _pAnimBullet->getPosition().x)
+			if (Player::getInstance()->getPosition().x > _pAnimBullet->getPosition().x)
 				_planetPosX += 20 * gameTime;
 			else
 				_planetPosX -= 20 * gameTime;
 			if (_planetPosY > 76)
 			{
 				_planetPosY = 76;
-				if (_pRockMan->getPosition().x > _pAnimAttack->getPosition().x)
+				if (Player::getInstance()->getPosition().x > _pAnimAttack->getPosition().x)
 					_planetPosX += 150 * gameTime;
 				else
 					_planetPosX -= 150 * gameTime;
@@ -162,8 +168,8 @@ void Planet::MoveDown(float gameTime)
 			e->setWidth(16);
 			e->setDamage(3);
 			e->setObjectType(Enumerator::Object_Type::ENEMY_BULLET);
-			if (GameCollision::getInstance()->AABBCheck(e->getBound(), _pRockMan->getBound()))
-				_pRockMan->onCollision(e);
+			if (GameCollision::getInstance()->AABBCheck(e->getBound(), Player::getInstance()->getBound()))
+				Player::getInstance()->onCollision(e);
 
 			delete e;
 		}
@@ -206,14 +212,14 @@ void Planet::MoveDown(float gameTime)
 
 		///Box Collision with player
 		if (!_pBox1->IsDestroy())
-			if (GameCollision::getInstance()->AABBCheck(_pBox1->getBound(), _pRockMan->getBound()))
-				_pRockMan->onCollision(_pBox1);
+			if (GameCollision::getInstance()->AABBCheck(_pBox1->getBound(), Player::getInstance()->getBound()))
+				Player::getInstance()->onCollision(_pBox1);
 		if (!_pBox2->IsDestroy())
-			if (GameCollision::getInstance()->AABBCheck(_pBox2->getBound(), _pRockMan->getBound()))
-				_pRockMan->onCollision(_pBox2);
+			if (GameCollision::getInstance()->AABBCheck(_pBox2->getBound(), Player::getInstance()->getBound()))
+				Player::getInstance()->onCollision(_pBox2);
 
 		///Box Collision with playerBullet
-		for (auto playerBullet : _pRockMan->getPlayerBullet())
+		for (auto playerBullet : Player::getInstance()->getPlayerBullet())
 		{
 			if (playerBullet->getExplosion())
 				continue;

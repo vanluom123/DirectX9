@@ -3,7 +3,7 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-AppearState::AppearState(Player* player) : PlayerState(player)
+AppearState::AppearState()
 {
 	this->_accelerateY = 25.0f;
 }
@@ -15,25 +15,25 @@ AppearState::~AppearState()
 
 void AppearState::update(float dt)
 {
-	if (this->m_pPlayer->getAnimation()->getCurrentColumn() == 0)
-		this->m_pPlayer->getAnimation()->setPause(true);
-	else if (this->m_pPlayer->getAnimation()->getCurrentColumn() >= 4)
-		this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+	if (Player::getInstance()->getAnimation()->getCurrentColumn() == 0)
+		Player::getInstance()->getAnimation()->setPause(true);
+	else if (Player::getInstance()->getAnimation()->getCurrentColumn() >= 4)
+		Player::getInstance()->setState(new StandState());
 }
 
 void AppearState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 {
-	this->m_pPlayer->setVx(0.0f);
-	this->m_pPlayer->addVy(this->_accelerateY);
+	Player::getInstance()->setVx(0.0f);
+	Player::getInstance()->addVy(this->_accelerateY);
 
-	if (this->m_pPlayer->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
-		this->m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	if (Player::getInstance()->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
+		Player::getInstance()->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 }
 
 void AppearState::onCollision(Side_Collision side)
 {
 	if (side == Enumerator::Side_Collision::BOTTOM)
-		this->m_pPlayer->getAnimation()->setPause(false);
+		Player::getInstance()->getAnimation()->setPause(false);
 }
 
 Player_State AppearState::getState()

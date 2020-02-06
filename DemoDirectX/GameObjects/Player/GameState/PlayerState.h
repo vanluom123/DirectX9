@@ -5,11 +5,8 @@
 
 class PlayerState
 {
-protected:
-	Player* m_pPlayer;
-
 public:
-	PlayerState(Player* player);
+	PlayerState();
 	virtual ~PlayerState();
 
 	virtual void update(float dt);

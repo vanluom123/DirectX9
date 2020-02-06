@@ -24,9 +24,19 @@ private:
 
 	QuadTree** _node;
 
-public:
+
+	QuadTree();
 	QuadTree(int level, RECT bound);
+
+	static QuadTree * s_instance;
+
+public:
 	~QuadTree();
+
+	static QuadTree * getInstance();
+	static void release();
+
+	void initialize(int level, RECT bound);
 
 	void clear();
 	void insertObject(BaseObject *entity);

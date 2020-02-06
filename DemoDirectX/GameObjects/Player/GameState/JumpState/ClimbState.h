@@ -6,7 +6,7 @@
 class ClimbState : public PlayerState
 {
 public:
-	ClimbState(Player* player);
+	ClimbState();
 	~ClimbState();
 	void update(float dt) override;
 	void onCollision(Side_Collision side) override;

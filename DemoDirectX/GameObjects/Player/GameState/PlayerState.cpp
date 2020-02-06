@@ -1,8 +1,7 @@
 #include "PlayerState.h"
 
-PlayerState::PlayerState(Player * player)
+PlayerState::PlayerState()
 {
-	m_pPlayer = player;
 }
 
 PlayerState::~PlayerState()

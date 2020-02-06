@@ -2,10 +2,10 @@
 #include "../StandState/StandState.h"
 
 
-BleedState::BleedState(Player* player, int direction) : PlayerState(player)
+BleedState::BleedState(int direction)
 {
-	this->m_pPlayer->setVx(30.0f * direction);
-	this->m_pPlayer->setVy(5.0f);
+	Player::getInstance()->setVx(30.0f * direction);
+	Player::getInstance()->setVy(5.0f);
 	this->_timeBleed = 0.0f;
 }
 
@@ -16,11 +16,11 @@ BleedState::~BleedState()
 
 void BleedState::update(float dt)
 {
-	this->m_pPlayer->setVx(0.0f);
-	this->m_pPlayer->getAnimation()->setPause(false);
+	Player::getInstance()->setVx(0.0f);
+	Player::getInstance()->getAnimation()->setPause(false);
 
-	if (this->m_pPlayer->getAnimation()->getCurrentColumn() >= 8)
-		this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+	if (Player::getInstance()->getAnimation()->getCurrentColumn() >= 8)
+		Player::getInstance()->setState(new StandState());
 }
 
 Player_State BleedState::getState()

@@ -1,19 +1,41 @@
 ﻿#include "QuadTree.h"
 #include "GameCollision.h"
 
+QuadTree * QuadTree::s_instance = NULL;
+
+QuadTree::QuadTree()
+{ }
+
 QuadTree::QuadTree(int level, RECT bound)
 {
-	//chia lam 4
-
 	this->_bound = bound;
 	this->_level = level;
-
 	_node = nullptr;
 }
 
 QuadTree::~QuadTree()
 {
 	this->clear();
+}
+
+QuadTree * QuadTree::getInstance()
+{
+	if (!s_instance) s_instance = new QuadTree;
+	return s_instance;
+}
+
+void QuadTree::release()
+{
+	delete s_instance;
+	s_instance = NULL;
+}
+
+void QuadTree::initialize(int level, RECT bound)
+{
+	// Separate to 4
+	_level = level;
+	_bound = bound;
+	_node = NULL;
 }
 
 void QuadTree::clear()
@@ -127,7 +149,7 @@ int QuadTree::getTotalObject()
 
 	if (_node)
 	{
-		for (size_t i = 0; i < static_cast<size_t>(4); i++)
+		for (size_t i = 0; i < 4; i++)
 			total += _node[i]->getTotalObject();
 	}
 

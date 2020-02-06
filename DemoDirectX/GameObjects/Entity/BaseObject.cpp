@@ -8,14 +8,6 @@ BaseObject::BaseObject()
 	_vx = 0;
 	_vy = 0;
 
-	_deltaV.x = 0;
-	_deltaV.y = 0;
-
-	_edge.left = -1;
-	_edge.top = -1;
-	_edge.right = 1;
-	_edge.bottom = 1;
-
 	_colTimeMinX = 1;
 	_colTimeMinY = 1;
 	_side_x = Enumerator::Side_Collision::NONE;
@@ -38,8 +30,6 @@ BaseObject::BaseObject()
 
 	_isReverse = false;
 
-	_mass = 2;
-
 	_startx = 0;
 	_starty = 0;
 
@@ -49,7 +39,7 @@ BaseObject::BaseObject()
 
 BaseObject::~BaseObject()
 {
-	for(int i = 0; i < _listBullet.size(); i++)
+	for (int i = 0; i < _listBullet.size(); i++)
 	{
 		auto bullet = _listBullet.at(i);
 		if (bullet != nullptr)
@@ -91,7 +81,6 @@ void BaseObject::setPosition(GVec3 pos)
 {
 	_posX = pos.x;
 	_posY = pos.y;
-	onSetPosition(pos);
 }
 
 GVec3 BaseObject::getPositionStart() const
@@ -113,7 +102,6 @@ void BaseObject::setPositionStart(GVec3 pos)
 {
 	_startx = pos.x;
 	_starty = pos.y;
-	onSetPosition(pos);
 }
 
 void BaseObject::addPosition(float x, float y)
@@ -254,12 +242,12 @@ bool BaseObject::IsDestroy() const
 	return _isDestroy;
 }
 
-vector<BaseObject*> BaseObject::getListBullet()
+vector<BaseObject *> BaseObject::getListBullet()
 {
 	return _listBullet;
 }
 
-void BaseObject::insertBullet(BaseObject* obj)
+void BaseObject::insertBullet(BaseObject * obj)
 {
 	_listBullet.push_back(obj);
 }
@@ -274,26 +262,17 @@ int BaseObject::getId() const
 	return _id;
 }
 
-void BaseObject::onSetPosition(GVec3 pos)
-{
-	// Do something
-}
-
 void BaseObject::onCollision(Side_Collision side)
 {
 	_vx = 0.0f;
 	_vy = 0.0f;
 }
 
-void BaseObject::onCollision(BaseObject* obj)
-{
-	// Do something
-}
+void BaseObject::onCollision(BaseObject * obj)
+{ }
 
 void BaseObject::onNoCollisionWithBottom()
-{
-	// Do something
-}
+{ }
 
 void BaseObject::update(float dt)
 {
@@ -304,7 +283,8 @@ void BaseObject::update(float dt)
 	{
 		if (_colTimeMinY == 0.0f)
 		{
-			if (this->getBound().bottom <= _entity_x->getBound().top || this->getBound().top >= _entity_x->getBound().bottom)
+			if (this->getBound().bottom <= _entity_x->getBound().top ||
+				this->getBound().top >= _entity_x->getBound().bottom)
 			{
 				_colTimeMinX = 1.0f;
 				_side_x = Enumerator::Side_Collision::NONE;
@@ -316,7 +296,8 @@ void BaseObject::update(float dt)
 	{
 		if (_colTimeMinX == 0.0f)
 		{
-			if (this->getBound().right <= _entity_y->getBound().left || this->getBound().left >= _entity_y->getBound().right)
+			if (this->getBound().right <= _entity_y->getBound().left ||
+				this->getBound().left >= _entity_y->getBound().right)
 			{
 				_colTimeMinY = 1.0f;
 				_side_y = Enumerator::Side_Collision::NONE;
@@ -324,11 +305,6 @@ void BaseObject::update(float dt)
 		}
 		this->onCollision(_side_y);
 	}
-
-	_vx += _deltaV.x;
-	_vy += _deltaV.y;
-	_deltaV.x = 0;
-	_deltaV.y = 0;
 
 	_posX += _vx * dt * _colTimeMinX;
 	_colTimeMinX = 1.0f;
@@ -339,44 +315,34 @@ void BaseObject::update(float dt)
 	_side_y = Enumerator::Side_Collision::NONE;
 }
 
-void BaseObject::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
-{
-	// Do something
-}
-
-void BaseObject::newObject()
-{
-	// Do something
-}
-
-void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, BaseObject* other)
+void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, BaseObject * other)
 {
 	switch (side)
 	{
-	case Enumerator::Side_Collision::LEFT:
-	case Enumerator::Side_Collision::RIGHT:
-	{
-		if (collisionTime < _colTimeMinX)
+		case Enumerator::Side_Collision::LEFT:
+		case Enumerator::Side_Collision::RIGHT:
 		{
-			_colTimeMinX = collisionTime;
-			_side_x = side;
-			_entity_x = other;
+			if (collisionTime < _colTimeMinX)
+			{
+				_colTimeMinX = collisionTime;
+				_side_x = side;
+				_entity_x = other;
+			}
+			break;
 		}
-		break;
-	}
 
-	case Enumerator::Side_Collision::TOP:
-	case Enumerator::Side_Collision::BOTTOM:
-	{
-		if (collisionTime < _colTimeMinY)
+		case Enumerator::Side_Collision::TOP:
+		case Enumerator::Side_Collision::BOTTOM:
 		{
-			_colTimeMinY = collisionTime;
-			_side_y = side;
-			_entity_y = other;
+			if (collisionTime < _colTimeMinY)
+			{
+				_colTimeMinY = collisionTime;
+				_side_y = side;
+				_entity_y = other;
+			}
+			break;
 		}
-		break;
-	}
 
-	default: break;
+		default: break;
 	}
 }

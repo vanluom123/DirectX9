@@ -15,8 +15,8 @@ void BlastAttack::update(float dt)
 	m_timeAttack += dt;
 
 	if (m_timeAttack < 0.9f) {
-		m_distance.x = b->getPlayer()->getPosition().x - b->getPosition().x;
-		m_distance.y = b->getPlayer()->getPosition().y - b->getPosition().y;
+		m_distance.x = Player::getInstance()->getPosition().x - b->getPosition().x;
+		m_distance.y = Player::getInstance()->getPosition().y - b->getPosition().y;
 		D3DXVec2Normalize(&m_distance, &m_distance);
 
 		b->setVx(m_distance.x * 125.0f);

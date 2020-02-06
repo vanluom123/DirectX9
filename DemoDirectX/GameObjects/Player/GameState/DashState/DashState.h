@@ -9,7 +9,7 @@ private:
 	float _timePress;
 
 public:
-	DashState(Player* player);
+	DashState();
 	~DashState();
 	void KeyBoardEventHandler(map<int, bool> keys, float dt) override;
 	void onCollision(Side_Collision side) override;

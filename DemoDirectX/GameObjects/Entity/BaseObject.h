@@ -10,8 +10,6 @@ using namespace Enumerator;
 class BaseObject
 {
 protected:
-	// setting up the position of object
-	virtual void onSetPosition(GVec3 pos);
 
 	// The position of object
 	float _posX, _posY, _startx, _starty;
@@ -31,7 +29,7 @@ protected:
 	Object_Type _objectType;
 
 	// List bullet
-	vector<BaseObject*> _listBullet;
+	vector<BaseObject *> _listBullet;
 
 	// Check out direction face of object
 	bool _isReverse;
@@ -54,36 +52,24 @@ protected:
 	// collision side to coordinate x
 	Side_Collision _side_y;
 
-	BaseObject* _entity_x;
-	BaseObject* _entity_y;
-
-	float _mass;
-
-	GVec2 _deltaV;
-
-	RECT _edge;
+	BaseObject * _entity_x;
+	BaseObject * _entity_y;
 
 public:
 
 	BaseObject();
 	virtual ~BaseObject();
 
-	struct CollisionReturn
-	{
-		bool isCollision;
-		RECT regionCollision;
-	};
-
-	virtual void newObject();
-	void checkTimeCollision(float collisionTime, Side_Collision side, BaseObject* other);
+	virtual void newObject() { }
+	void checkTimeCollision(float collisionTime, Side_Collision side, BaseObject * other);
 
 	virtual void update(float dt);
-	virtual void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
+	virtual void draw(Camera * camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) { }
 
 	// Control collision
 	// When entity collide, this function will be called
 	virtual void onCollision(Side_Collision side);
-	virtual void onCollision(BaseObject* obj);
+	virtual void onCollision(BaseObject * obj);
 	virtual void onNoCollisionWithBottom();
 
 	// SUB-FUNCTION
@@ -138,22 +124,17 @@ public:
 	void setDestroy(bool die);
 	bool IsDestroy() const;
 
-	vector<BaseObject*> getListBullet();
+	vector<BaseObject *> getListBullet();
 
-	BaseObject* getIndexBullet(int index)
+	BaseObject * getIndexBullet(int index)
 	{
 		return _listBullet.at(index);
 	}
 
-	void insertBullet(BaseObject* obj);
+	void insertBullet(BaseObject * obj);
 
 	void setId(int id);
 	int getId() const;
-
-	float getMass() const { return _mass; }
-
-	GVec2 getDeltaV() const { return _deltaV; }
-	void setDeltaV(const GVec2& deltaV) { _deltaV = deltaV; }
 };
 
 #endif // !ENTITIES_H

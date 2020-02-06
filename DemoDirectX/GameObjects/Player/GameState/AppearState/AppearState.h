@@ -8,7 +8,7 @@ private:
 	float _accelerateY;
 
 public:
-	AppearState(Player* player);
+	AppearState();
 	~AppearState();
 	void update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;

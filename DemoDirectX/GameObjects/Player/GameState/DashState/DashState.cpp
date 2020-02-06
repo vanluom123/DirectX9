@@ -4,7 +4,7 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-DashState::DashState(Player* player) :PlayerState(player)
+DashState::DashState()
 {
 	Sound::getInstance()->play("dash", false, 1);
 	Sound::getInstance()->setVolume(95);
@@ -13,31 +13,30 @@ DashState::DashState(Player* player) :PlayerState(player)
 }
 
 DashState::~DashState()
-{
-}
+{ }
 
 void DashState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 {
-	this->m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	Player::getInstance()->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 
 	this->_timePress += dt;
 	if (this->_timePress <= 0.45f)
 	{
-		if (!this->m_pPlayer->getReverse())
+		if (!Player::getInstance()->getReverse())
 		{
-			this->m_pPlayer->setVx(Define::PLAYER_MAX_SLIDE_SPEED);
+			Player::getInstance()->setVx(Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_LEFT])
-				this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+				Player::getInstance()->setState(new StandState());
 		}
 		else
 		{
-			this->m_pPlayer->setVx(-Define::PLAYER_MAX_SLIDE_SPEED);
+			Player::getInstance()->setVx(-Define::PLAYER_MAX_SLIDE_SPEED);
 			if (keys[VK_RIGHT])
-				this->m_pPlayer->setState(new StandState(m_pPlayer));
+				Player::getInstance()->setState(new StandState());
 		}
 	}
 	else
-		this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+		Player::getInstance()->setState(new StandState());
 }
 
 void DashState::onCollision(Side_Collision side)
@@ -48,7 +47,7 @@ void DashState::onCollision(Side_Collision side)
 		case Enumerator::Side_Collision::RIGHT:
 		{
 			Sound::getInstance()->stop("dash");
-			this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+			Player::getInstance()->setState(new StandState());
 			break;
 		}
 		default: break;

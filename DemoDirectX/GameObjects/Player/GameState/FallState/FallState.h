@@ -14,7 +14,7 @@ private:
 	bool _isLeftOrRightKeyPressed;
 
 public:
-	FallState(Player* player, bool dash = false);
+	FallState(bool dash = false);
 	~FallState();
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;
 	void onCollision(Side_Collision side) override;

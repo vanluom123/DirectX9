@@ -9,7 +9,7 @@ private:
 	float _timeBleed;
 
 public:
-	BleedState(Player* player, int direction);
+	BleedState(int direction);
 	~BleedState();
 	void update(float dt) override;
 	Player_State getState() override;

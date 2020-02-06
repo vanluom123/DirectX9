@@ -22,20 +22,14 @@ public:
 	RECT getBound() override;
 	void update(float dt) override;
 	void onCollision(Side_Collision side) override;
-	void onCollision(BaseObject* obj) override;
-	void draw(Camera* camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
-	void setState(BlastHornetState* newState);
+	void onCollision(BaseObject * obj) override;
+	void draw(Camera * camera, RECT r = RECT(), GVec2 scale = GVec2(), float angle = 0, GVec2 rotate = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) override;
+	void setState(BlastHornetState * newState);
 	void loadResource();
 	void changeAnimation(Hornet_State state);
-	
+
 	// GETTER - SETTER
 public:
-	Animation* getAnimBlast();
-
-	Player* getPlayer();
-	void setPlayer(Player* val);
-
-	void setGameMap(GameMap* val);
 
 	float getDx() const;
 	float getDy() const;
@@ -60,17 +54,15 @@ private:
 	float m_tempDxPos_PosStart;
 	float m_tempDyPos_PosStart;
 
-	HPBar* m_HPBar;
-	Player* m_pPlayer;
-	GameMap* m_pGameMap;
-	BlastHornetState* m_pState;
-	Animation* m_pCurrentAnimation;
-	Animation* m_pAppear;
-	Animation* m_pIdle;
-	Animation* m_pAttack;
-	Animation* m_pShoot;
-	Animation* m_pMove;
-	Animation* m_pDeath;
+	HPBar * m_HPBar;
+	BlastHornetState * m_pState;
+	Animation * m_pCurrentAnimation;
+	Animation * m_pAppear;
+	Animation * m_pIdle;
+	Animation * m_pAttack;
+	Animation * m_pShoot;
+	Animation * m_pMove;
+	Animation * m_pDeath;
 	Hornet_State m_currentState;
 };
 

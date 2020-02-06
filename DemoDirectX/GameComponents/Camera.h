@@ -3,14 +3,16 @@
 #include "../GameDefines/GameDefine.h"
 
 class BaseObject;
-class QuadTree;
-class GameMap;
-class Player;
 
 class Camera
 {
 public:
-	Camera(int width, int height);
+	~Camera() = default;
+
+	static Camera * getInstance();
+	static void release();
+
+	void initialize(int width, int height);
 
 	//center of camera
 	GVec3 getPosition() const;
@@ -27,16 +29,18 @@ public:
 	int getHeight() const { return _height; }
 	void setHeight(int val) { _height = val; }
 
-	void checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool isBoss, RECT& currentRoom, RECT& nextRoom,
-	                               int& direction, float dt);
-	
+	void checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & nextRoom,
+								   int & direction, float dt);
+
+	void checkViewportWithEnemies(std::vector<BaseObject *> listEntityOut);
+
 private:
+	Camera();
+	static Camera * s_instance;
+
 	int _width;
 	int _height;
 	GVec3 _posWorld;
-
-	// List objects
-	vector<BaseObject*> _listObject;
 };
 
 #endif // !CAMERA_H

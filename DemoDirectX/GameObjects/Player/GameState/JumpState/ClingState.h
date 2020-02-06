@@ -10,7 +10,7 @@ private:
 	bool _pressed;
 
 public:
-	ClingState(Player* player, bool dash = false);
+	ClingState(bool dash = false);
 	~ClingState();
 	void update(float dt) override;
 	void KeyBoardEventHandler(std::map<int, bool> keys, float dt) override;

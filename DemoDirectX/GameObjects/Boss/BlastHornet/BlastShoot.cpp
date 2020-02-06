@@ -33,7 +33,6 @@ void BlastShoot::shoot()
 	if (b->getListBullet().size() < 5)
 	{
 		auto bullet = new BlastBullet();
-		bullet->setPlayer(b->getPlayer());
 		b->insertBullet(bullet);
 	}
 

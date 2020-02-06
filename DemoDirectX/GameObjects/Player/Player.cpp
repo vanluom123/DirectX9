@@ -9,6 +9,8 @@
 #include "GameState/StandState/StandState.h"
 #include "GameState/BleedState/BleedState.hpp"
 
+Player * Player::s_instance = nullptr;
+
 Player::Player()
 {
 	this->setId(0);
@@ -44,7 +46,7 @@ Player::Player()
 	_HP = _MaxHP;
 	_Damage = 0;
 
-	this->setState(new AppearState(this));
+	this->setState(new AppearState());
 
 }
 
@@ -65,62 +67,74 @@ Player::~Player()
 		_listPlayerBullet.clear();
 }
 
+Player * Player::getInstance()
+{
+	if (!s_instance) s_instance = new Player;
+	return s_instance;
+}
+
+void Player::release()
+{
+	delete s_instance;
+	s_instance = nullptr;
+}
+
 void Player::changeAnimation(Player_State state)
 {
 	switch (state)
 	{
-	case Enumerator::Player_State::APPEAR:
-		_pAnimation->setAnimation(0, 5, 0.15f, false);
-		break;
+		case Enumerator::Player_State::APPEAR:
+			_pAnimation->setAnimation(0, 5, 0.15f, false);
+			break;
 
-	case Enumerator::Player_State::STAND:
-		_pAnimation->setAnimation(1, 4, 0.1f, false);
-		break;
+		case Enumerator::Player_State::STAND:
+			_pAnimation->setAnimation(1, 4, 0.1f, false);
+			break;
 
-	case Enumerator::Player_State::RUN:
-		_pAnimation->setAnimation(3, 10, 0.05f);
-		break;
+		case Enumerator::Player_State::RUN:
+			_pAnimation->setAnimation(3, 10, 0.05f);
+			break;
 
-	case Enumerator::Player_State::JUMP:
-		_pAnimation->setAnimation(5, 3, 0.05f, false);
-		break;
+		case Enumerator::Player_State::JUMP:
+			_pAnimation->setAnimation(5, 3, 0.05f, false);
+			break;
 
-	case Enumerator::Player_State::FALL:
-		_pAnimation->setAnimation(7, 3, 0.05f, false);
-		break;
+		case Enumerator::Player_State::FALL:
+			_pAnimation->setAnimation(7, 3, 0.05f, false);
+			break;
 
-	case Enumerator::Player_State::CLING:
-		_pAnimation->setAnimation(9, 4, 0.03f, false);
-		break;
+		case Enumerator::Player_State::CLING:
+			_pAnimation->setAnimation(9, 4, 0.03f, false);
+			break;
 
-	case Enumerator::Player_State::SLIP_DOWN:
-		_pAnimation->setAnimation(11, 3, 0.05f, false);
-		break;
+		case Enumerator::Player_State::SLIP_DOWN:
+			_pAnimation->setAnimation(11, 3, 0.05f, false);
+			break;
 
-	case Enumerator::Player_State::DASH:
-		_pAnimation->setAnimation(16, 2, 0.05f, false);
-		break;
+		case Enumerator::Player_State::DASH:
+			_pAnimation->setAnimation(16, 2, 0.05f, false);
+			break;
 
-	case Enumerator::Player_State::CLIMB:
-		break;
+		case Enumerator::Player_State::CLIMB:
+			break;
 
-	case Enumerator::Player_State::BLEED:
-		_pAnimation->setAnimation(18, 9, 0.05f);
-		break;
+		case Enumerator::Player_State::BLEED:
+			_pAnimation->setAnimation(18, 9, 0.05f);
+			break;
 
-	case Enumerator::Player_State::DEATH:
-		_pAnimation->setAnimation(20, 3, 0.3f);
-		break;
+		case Enumerator::Player_State::DEATH:
+			_pAnimation->setAnimation(20, 3, 0.3f);
+			break;
 
-	case Enumerator::Player_State::WIN:
-	default: break;
+		case Enumerator::Player_State::WIN:
+		default: break;
 	}
 
 	setWidth(_pAnimation->getWidth());
 	setHeight(_pAnimation->getHeight());
 }
 
-void Player::setState(PlayerState* new_state)
+void Player::setState(PlayerState * new_state)
 {
 	if (_currentState == new_state->getState())
 		return;
@@ -143,7 +157,7 @@ void Player::setState(PlayerState* new_state)
 
 #pragma region GETTER, SETTER
 
-Animation* Player::getAnimation()
+Animation * Player::getAnimation()
 {
 	return _pAnimation;
 }
@@ -163,12 +177,12 @@ void Player::addHP(int hp)
 	_HP += hp;
 }
 
-vector<PlayerBullet*> Player::getPlayerBullet() const
+vector<PlayerBullet *> Player::getPlayerBullet() const
 {
 	return _listPlayerBullet;
 }
 
-PlayerState* Player::getPlayerState()
+PlayerState * Player::getPlayerState()
 {
 	return m_pState;
 }
@@ -186,7 +200,7 @@ Player_State Player::getCurrentState() const
 #pragma endregion
 
 
-void Player::KeyBoardEventHandler(const std::map<int, bool>& keys, float dt)
+void Player::KeyBoardEventHandler(const std::map<int, bool> & keys, float dt)
 {
 	if (!_isLock)
 	{
@@ -212,31 +226,31 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 		_allowJump = false;
 		switch (_currentState)
 		{
-		case Enumerator::Player_State::STAND:
-		case Enumerator::Player_State::RUN:
-		case Enumerator::Player_State::DASH:
-		{
-			setState(new JumpState(this));
-			break;
-		}
-		case Enumerator::Player_State::SLIP_DOWN:
-		{
-			_pAniEffectDash->setReverse(!_isReverse);
-			if (_isReverse)
-				_pAniEffectDash->setPosition(_posX, _posY + 12);
-			else
-				_pAniEffectDash->setPosition(_posX, _posY + 12);
+			case Enumerator::Player_State::STAND:
+			case Enumerator::Player_State::RUN:
+			case Enumerator::Player_State::DASH:
+			{
+				setState(new JumpState());
+				break;
+			}
+			case Enumerator::Player_State::SLIP_DOWN:
+			{
+				_pAniEffectDash->setReverse(!_isReverse);
+				if (_isReverse)
+					_pAniEffectDash->setPosition(_posX, _posY + 12);
+				else
+					_pAniEffectDash->setPosition(_posX, _posY + 12);
 
-			_pAniEffectDash->setAnimation(1, 1, 0.005f, false);
+				_pAniEffectDash->setAnimation(1, 1, 0.005f, false);
 
-			if (keys[VK_SLIDE])
-				setState(new ClingState(this, true));
-			else
-				setState(new ClingState(this));
-			break;
-		}
-		default:
-			break;
+				if (keys[VK_SLIDE])
+					setState(new ClingState(true));
+				else
+					setState(new ClingState());
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -264,16 +278,16 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 
 		switch (_currentState)
 		{
-		case Enumerator::Player_State::STAND:
-		case Enumerator::Player_State::RUN:
-		{
-			_pAniEffectDash->setReverse(_isReverse);
-			_pAniEffectDash->setPosition(_posX, _posY + 12);
-			_pAniEffectDash->setAnimation(0, 11, 0.05f, false);
-			setState(new DashState(this));
-			break;
-		}
-		default: break;
+			case Enumerator::Player_State::STAND:
+			case Enumerator::Player_State::RUN:
+			{
+				_pAniEffectDash->setReverse(_isReverse);
+				_pAniEffectDash->setPosition(_posX, _posY + 12);
+				_pAniEffectDash->setAnimation(0, 11, 0.05f, false);
+				setState(new DashState());
+				break;
+			}
+			default: break;
 		}
 	}
 }
@@ -285,60 +299,60 @@ void Player::OnKeyUp(int Key)
 
 	switch (Key)
 	{
-	case VK_JUMP:
-	{
-		if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
-			_vy = 0.0f;
-		_allowJump = true;
-		break;
-	}
-	case VK_SHOOT:
-	{
-		_allowShoot = true;
-		_pAniEffectCharge->setPause(true);
-
-		if (_currentState == Enumerator::Player_State::BLEED)
-			return;
-
-		if (_timeChangeShoot > _timeShoot * 4)
+		case VK_JUMP:
 		{
-			_isShoot = true;
-			_pAnimation->setShoot(_isShoot);
-
-			// The second level
-			this->playerShoot(Enumerator::PlayerBullet_Type::BULLET_SECOND_LEVEL);
-
-			Sound::getInstance()->stop("AbsorbLongEnergy");
-			Sound::getInstance()->play("GiveUpLongEnergy", false, 1);
+			if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
+				_vy = 0.0f;
+			_allowJump = true;
+			break;
 		}
-		else
+		case VK_SHOOT:
 		{
-			if (_timeChangeShoot > _timeShoot * 2)
+			_allowShoot = true;
+			_pAniEffectCharge->setPause(true);
+
+			if (_currentState == Enumerator::Player_State::BLEED)
+				return;
+
+			if (_timeChangeShoot > _timeShoot * 4)
 			{
 				_isShoot = true;
 				_pAnimation->setShoot(_isShoot);
 
-				//The first level
-				this->playerShoot(Enumerator::PlayerBullet_Type::BULLET_FIRST_LEVEL);
+				// The second level
+				this->playerShoot(Enumerator::PlayerBullet_Type::BULLET_SECOND_LEVEL);
 
-				Sound::getInstance()->stop("AbsorbShortEnergy");
-				Sound::getInstance()->play("GiveUpShortEnergy", false, 1);
+				Sound::getInstance()->stop("AbsorbLongEnergy");
+				Sound::getInstance()->play("GiveUpLongEnergy", false, 1);
 			}
+			else
+			{
+				if (_timeChangeShoot > _timeShoot * 2)
+				{
+					_isShoot = true;
+					_pAnimation->setShoot(_isShoot);
+
+					//The first level
+					this->playerShoot(Enumerator::PlayerBullet_Type::BULLET_FIRST_LEVEL);
+
+					Sound::getInstance()->stop("AbsorbShortEnergy");
+					Sound::getInstance()->play("GiveUpShortEnergy", false, 1);
+				}
+			}
+
+			_timeChangeShoot = 0.0f;
+
+			break;
 		}
+		case VK_SLIDE:
+		{
+			if (_currentState == Enumerator::Player_State::DASH)
+				setState(new StandState());
 
-		_timeChangeShoot = 0.0f;
-
-		break;
-	}
-	case VK_SLIDE:
-	{
-		if (_currentState == Enumerator::Player_State::DASH)
-			setState(new StandState(this));
-
-		_allowDash = true;
-		break;
-	}
-	default: break;
+			_allowDash = true;
+			break;
+		}
+		default: break;
 	}
 }
 
@@ -439,7 +453,7 @@ void Player::drawHP()
 	_pHPBar->draw(_HP, _MaxHP);
 }
 
-void Player::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
+void Player::draw(Camera * camera, RECT rect, GVec2 scale, float angle, GVec2 rotationCenter, D3DCOLOR color)
 {
 	for (auto bullet : _listPlayerBullet)
 		bullet->draw(camera);
@@ -503,89 +517,89 @@ void Player::onNoCollisionWithBottom()
 	{
 		switch (_currentState)
 		{
-		case Enumerator::Player_State::STAND:
-		case Enumerator::Player_State::RUN:
-		case Enumerator::Player_State::DASH:
-		{
-			setState(new FallState(this));
-			break;
-		}
-		default:
-			break;
+			case Enumerator::Player_State::STAND:
+			case Enumerator::Player_State::RUN:
+			case Enumerator::Player_State::DASH:
+			{
+				setState(new FallState());
+				break;
+			}
+			default:
+				break;
 		}
 	}
 }
 
-void Player::onCollision(BaseObject* object)
+void Player::onCollision(BaseObject * object)
 {
 	switch (object->getObjectType())
 	{
-	case Enumerator::Object_Type::ENEMY:
-	case Enumerator::Object_Type::ENEMY_BULLET:
-	case Enumerator::Object_Type::BOSS:
-	{
-		if (_alive)
-			return;
-
-		//HP -= object->getDamage();
-		_alive = true;
-		if (_HP <= 0)
+		case Enumerator::Object_Type::ENEMY:
+		case Enumerator::Object_Type::ENEMY_BULLET:
+		case Enumerator::Object_Type::BOSS:
 		{
-			setState(new DieState(this));
-			_alive = false;
-			_isDestroy = true;
-			return;
-		}
+			if (_alive)
+				return;
 
-		_pAnimation->setShoot(false);
+			//HP -= object->getDamage();
+			_alive = true;
+			if (_HP <= 0)
+			{
+				setState(new DieState());
+				_alive = false;
+				_isDestroy = true;
+				return;
+			}
 
-		if (_posX < object->getPosition().x)
-			setState(new BleedState(this, 1));
-		else
-			setState(new BleedState(this, -1));
-		break;
-	}
+			_pAnimation->setShoot(false);
 
-	case Enumerator::Object_Type::ELEVATOR:
-	{
-		if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
-			break;
-		_posY = object->getBound().top - 24.51f;
-		_side_y = Enumerator::Side_Collision::BOTTOM;
-
-		break;
-	}
-
-	case Enumerator::Object_Type::PORT:
-	{
-		if (object->getHP() <= 0 && getBound().top > object->getBound().top)
-		{
-			_isLock = true;
-			if (object->getDamage() > 0)
-				_pAnimation->setPause(false);
+			if (_posX < object->getPosition().x)
+				setState(new BleedState(1));
 			else
-				_pAnimation->setPause(true);
+				setState(new BleedState(-1));
+			break;
 		}
 
-		break;
-	}
+		case Enumerator::Object_Type::ELEVATOR:
+		{
+			if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
+				break;
+			_posY = object->getBound().top - 24.51f;
+			_side_y = Enumerator::Side_Collision::BOTTOM;
 
-	case Enumerator::Object_Type::THORN:
-	{
-		_HP = 0;
-		_isDestroy = true;
-		setState(new DieState(this));
-		_alive = false;
-		break;
-	}
+			break;
+		}
 
-	default: break;
+		case Enumerator::Object_Type::PORT:
+		{
+			if (object->getHP() <= 0 && getBound().top > object->getBound().top)
+			{
+				_isLock = true;
+				if (object->getDamage() > 0)
+					_pAnimation->setPause(false);
+				else
+					_pAnimation->setPause(true);
+			}
+
+			break;
+		}
+
+		case Enumerator::Object_Type::THORN:
+		{
+			_HP = 0;
+			_isDestroy = true;
+			this->setState(new DieState());
+			_alive = false;
+			break;
+		}
+
+		default: break;
 	}
 }
 
 void Player::playerShoot(PlayerBullet_Type bulletType)
 {
-	PlayerBullet* playerBullet = nullptr;
+	PlayerBullet * playerBullet = nullptr;
 
 	if (_listPlayerBullet.size() < 3)
 	{

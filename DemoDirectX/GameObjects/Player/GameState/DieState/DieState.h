@@ -9,7 +9,7 @@ private:
 	float _timeDie;
 
 public:
-	DieState(Player* player);
+	DieState();
 	~DieState();
 	void update(float dt) override;
 	Player_State getState() override;

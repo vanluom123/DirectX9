@@ -8,7 +8,7 @@ private:
 	bool _isBoot;
 
 public:
-	RunState(Player* player);
+	RunState();
 	~RunState();
 	void KeyBoardEventHandler(map<int, bool> keys, float dt) override;
 	void onCollision(Side_Collision side) override;

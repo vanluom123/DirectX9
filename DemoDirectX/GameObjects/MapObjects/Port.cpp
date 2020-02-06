@@ -107,7 +107,7 @@ void Port::onCollision(BaseObject* obj)
 
 			// Improved DashState of Player when Player was dashing though Port
 			auto* player = dynamic_cast<Player*>(obj);
-			player->setState(new StandState(player));
+			player->setState(new StandState());
 		}
 	}
 	else

@@ -6,8 +6,23 @@
 #include "../GameObjects/Player/Player.h"
 #include "GameMap.h"
 #include "../GameObjects/Player/GameState/DieState/DieState.h"
+#include "../GameObjects/Entity/BaseObject.h"
 
-Camera::Camera(int width, int height)
+Camera * Camera::s_instance = nullptr;
+
+Camera * Camera::getInstance()
+{
+	if (!s_instance) s_instance = new Camera;
+	return s_instance;
+}
+
+void Camera::release()
+{
+	delete s_instance;
+	s_instance = nullptr;
+}
+
+void Camera::initialize(int width, int height)
 {
 	_width = width;
 	_height = height;
@@ -50,31 +65,31 @@ RECT Camera::getBound() const
 	return bound;
 }
 
-void Camera::checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool isBoss, RECT& currentRoom, RECT& nextRoom, int& direction, float dt)
+void Camera::checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & nextRoom, int & direction, float dt)
 {
 	if (isBoss)
 	{
-		if (pPlayer->getBound().left < this->getBound().left)
+		if (Player::getInstance()->getBound().left < this->getBound().left)
 		{
-			if (pPlayer->getVx() < 0)
-				pPlayer->setVx(0.0f);
+			if (Player::getInstance()->getVx() < 0)
+				Player::getInstance()->setVx(0.0f);
 		}
 		else
 		{
-			if (pPlayer->getBound().right > currentRoom.right)
+			if (Player::getInstance()->getBound().right > currentRoom.right)
 			{
-				if (pPlayer->getVx() > 0)
-					pPlayer->setVx(0.0f);
+				if (Player::getInstance()->getVx() > 0)
+					Player::getInstance()->setVx(0.0f);
 			}
 		}
 	}
 
-	if (GameCollision::getInstance()->pointCollision(pPlayer->getPosition().x, pPlayer->getPosition().y, currentRoom) == false)
+	if (GameCollision::getInstance()->pointCollision(Player::getInstance()->getPosition().x, Player::getInstance()->getPosition().y, currentRoom) == false)
 	{
 		bool is_room = true;
-		for (auto room : pGameMap->getListRoom())
+		for (auto room : GameMap::getInstance()->getListRoom())
 		{
-			if (GameCollision::getInstance()->pointCollision(pPlayer->getPosition().x, pPlayer->getPosition().y, room) == true)
+			if (GameCollision::getInstance()->pointCollision(Player::getInstance()->getPosition().x, Player::getInstance()->getPosition().y, room) == true)
 			{
 				is_room = false;
 				nextRoom = room;
@@ -82,7 +97,7 @@ void Camera::checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool 
 
 				auto centerX = currentRoom.left + (currentRoom.right - currentRoom.left) / 2;
 
-				if (pPlayer->getPosition().x < centerX)
+				if (Player::getInstance()->getPosition().x < centerX)
 				{
 					if (this->getBound().left < currentRoom.left)
 					{
@@ -102,7 +117,7 @@ void Camera::checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool 
 			}
 		}
 		if (is_room)
-			pPlayer->setState(new DieState(pPlayer));
+			Player::getInstance()->setState(new DieState());
 	}
 
 	if (direction == 1)
@@ -127,7 +142,7 @@ void Camera::checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool 
 	{
 		// Setting the position of Camera to the position of Player
 		// When Player moved, Camera moved to Player
-		this->setPosition(pPlayer->getPosition());
+		this->setPosition(Player::getInstance()->getPosition());
 	}
 
 	if (this->getBound().left < currentRoom.left)
@@ -139,4 +154,27 @@ void Camera::checkViewportWithMapWorld(Player* pPlayer, GameMap* pGameMap, bool 
 		this->setPosition(this->getPosition().x, currentRoom.top + this->getHeight() / 2);
 	else if (this->getBound().bottom > currentRoom.bottom)
 		this->setPosition(this->getPosition().x, currentRoom.bottom - this->getHeight() / 2);
+}
+
+void Camera::checkViewportWithEnemies(std::vector<BaseObject *> listEntityOut)
+{
+	for (int i = 0; i < listEntityOut.size(); i++)
+	{
+		if (listEntityOut.at(i)->getObjectType() != Enumerator::Object_Type::ENEMY)
+			continue;
+
+		bool isReverse = (Player::getInstance()->getPosition().x > listEntityOut.at(i)->getPosition().x) ? true : false;
+		listEntityOut.at(i)->setReverse(isReverse);
+
+		if (!GameCollision::getInstance()->isNested(Camera::getInstance()->getBound(), listEntityOut.at(i)->getBound())
+			&& !GameCollision::getInstance()->pointCollision(listEntityOut.at(i)->getPositionStart().x, listEntityOut.at(i)->getPositionStart().y, Camera::getInstance()->getBound()))
+			listEntityOut.at(i)->newObject();
+	}
+}
+
+Camera::Camera()
+{ 
+	_width = GameGlobal::getInstance()->getWidth();
+	_height = GameGlobal::getInstance()->getHeight();
+	_posWorld = Gvec3Zero;
 }

@@ -11,6 +11,9 @@ class Player : public BaseObject
 {
 
 private:
+	Player();
+	static Player * s_instance;
+
 	PlayerState* m_pState;
 
 	HPBar* _pHPBar;
@@ -36,8 +39,9 @@ private:
 	vector<PlayerBullet*> _listPlayerBullet;
 
 public:
-	Player();
 	~Player();
+	static Player * getInstance();
+	static void release();
 
 	void changeAnimation(Player_State state);
 

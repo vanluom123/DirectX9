@@ -5,9 +5,9 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-FallState::FallState(Player* player, bool dash) :PlayerState(player)
+FallState::FallState(bool dash)
 {
-	this->m_pPlayer->setVy(0.0f);
+	Player::getInstance()->setVy(0.0f);
 	this->_accelerateY = 25.0f;
 	this->_pressed = dash;
 }
@@ -21,7 +21,7 @@ void FallState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	float speed = 0.0f;
 	if (keys[VK_RIGHT])
 	{
-		this->m_pPlayer->setReverse(false);
+		Player::getInstance()->setReverse(false);
 
 		if (this->_pressed)
 			speed = Define::PLAYER_MAX_SLIDE_SPEED;
@@ -30,18 +30,18 @@ void FallState::KeyBoardEventHandler(std::map<int, bool> keys, float dt)
 	}
 	else if (keys[VK_LEFT])
 	{
-		this->m_pPlayer->setReverse(true);
+		Player::getInstance()->setReverse(true);
 		if (this->_pressed)
 			speed = -Define::PLAYER_MAX_SLIDE_SPEED;
 		else
 			speed = -Define::PLAYER_MAX_RUNNING_SPEED;
 	}
 
-	this->m_pPlayer->setVx(speed);
-	this->m_pPlayer->addVy(_accelerateY);
+	Player::getInstance()->setVx(speed);
+	Player::getInstance()->addVy(_accelerateY);
 
-	if (this->m_pPlayer->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
-		this->m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
+	if (Player::getInstance()->getVy() > Define::PLAYER_MAX_JUMP_VELOCITY)
+		Player::getInstance()->setVy(Define::PLAYER_MAX_JUMP_VELOCITY);
 }
 
 void FallState::onCollision(Side_Collision side)
@@ -51,14 +51,14 @@ void FallState::onCollision(Side_Collision side)
 		case Enumerator::Side_Collision::LEFT:
 		case Enumerator::Side_Collision::RIGHT:
 		{
-			this->m_pPlayer->setState(new SlipDownState(this->m_pPlayer));
+			Player::getInstance()->setState(new SlipDownState());
 			break;
 		}
 		case Enumerator::Side_Collision::BOTTOM:
 		{
 			Sound::getInstance()->play("FallDownGround", false, 1);
 			Sound::getInstance()->setVolume(95);
-			this->m_pPlayer->setState(new StandState(this->m_pPlayer));
+			Player::getInstance()->setState(new StandState());
 			break;
 		}
 		default:

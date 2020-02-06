@@ -4,9 +4,9 @@
 #include "../../../../GameDefines/GameDefine.h"
 
 
-SlipDownState::SlipDownState(Player* player) :PlayerState(player)
+SlipDownState::SlipDownState()
 {
-	this->m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
+	Player::getInstance()->setVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
 	this->_isSlide = true;
 }
 
@@ -17,28 +17,28 @@ SlipDownState::~SlipDownState()
 void SlipDownState::update(float dt)
 {
 	if (!this->_isSlide)
-		this->m_pPlayer->setState(new FallState(this->m_pPlayer));
+		Player::getInstance()->setState(new FallState(Player::getInstance()));
 
 	this->_isSlide = false;
 }
 
 void SlipDownState::KeyBoardEventHandler(map<int, bool> keys, float dt)
 {
-	this->m_pPlayer->setVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
+	Player::getInstance()->setVy(Define::PLAYER_MAX_JUMP_VELOCITY / 4);
 	if (keys[VK_RIGHT])
 	{
-		this->m_pPlayer->setReverse(false);
-		this->m_pPlayer->setVx(Define::PLAYER_MAX_RUNNING_SPEED);
+		Player::getInstance()->setReverse(false);
+		Player::getInstance()->setVx(Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else if (keys[VK_LEFT])
 	{
-		this->m_pPlayer->setReverse(true);
-		this->m_pPlayer->setVx(-Define::PLAYER_MAX_RUNNING_SPEED);
+		Player::getInstance()->setReverse(true);
+		Player::getInstance()->setVx(-Define::PLAYER_MAX_RUNNING_SPEED);
 	}
 	else
 	{
-		this->m_pPlayer->setVx(0.0f);
-		this->m_pPlayer->setState(new FallState(this->m_pPlayer));
+		Player::getInstance()->setVx(0.0f);
+		Player::getInstance()->setState(new FallState());
 	}
 }
 
@@ -54,7 +54,7 @@ void SlipDownState::onCollision(Side_Collision side)
 		}
 		case Enumerator::Side_Collision::BOTTOM:
 		{
-			this->m_pPlayer->setState(new StandState(m_pPlayer));
+			Player::getInstance()->setState(new StandState());
 			break;
 		}
 		default:

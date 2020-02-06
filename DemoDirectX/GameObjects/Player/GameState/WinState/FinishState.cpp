@@ -1,6 +1,6 @@
 #include "FinishState.h"
 
-FinishState::FinishState(Player* player) :PlayerState(player)
+FinishState::FinishState()
 {
 	// Do something
 }

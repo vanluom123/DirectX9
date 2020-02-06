@@ -1,10 +1,10 @@
 #include "DieState.h"
 
 
-DieState::DieState(Player* player) : PlayerState(player)
+DieState::DieState()
 {
-	this->m_pPlayer->setVx(0.0f);
-	this->m_pPlayer->setVy(0.0f);
+	Player::getInstance()->setVx(0.0f);
+	Player::getInstance()->setVy(0.0f);
 	this->_timeDie = 0.0f;
 }
 
@@ -22,8 +22,8 @@ void DieState::update(float dt)
 
 	if (this->_timeDie >= 3.0f)
 	{
-		this->m_pPlayer->getAnimation()->setAnimation(20, 3, 0.3f);
-		this->m_pPlayer->setDraw(false);
+		Player::getInstance()->getAnimation()->setAnimation(20, 3, 0.3f);
+		Player::getInstance()->setDraw(false);
 	}
 }
 
