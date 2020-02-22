@@ -58,7 +58,7 @@ void Planet::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate
 	_pAnim->setPosition(getPosition());
 	_pAnim->draw(_pAnim->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 
-	_pAnimAttack->setPosition(_posX - 40, _posY + 32);
+	_pAnimAttack->setPosition(_position.x - 40, _position.y + 32);
 	_pAnimAttack->draw(_pAnimAttack->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 
 	_pCarryArm->draw(camera);
@@ -69,10 +69,10 @@ void Planet::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotate
 RECT Planet::getBound()
 {
 	RECT bound;
-	bound.left = _posX + _width / 4;
-	bound.right = _posX + _width / 2;
-	bound.top = _posY - _height / 2;
-	bound.bottom = _posY + _height / 2;
+	bound.left = _position.x + _width / 4;
+	bound.right = _position.x + _width / 2;
+	bound.top = _position.y - _height / 2;
+	bound.bottom = _position.y + _height / 2;
 
 	return bound;
 }
@@ -99,17 +99,17 @@ void Planet::MoveDown(float gameTime)
 	{
 		Player::getInstance()->setState(new StandState());
 		Player::getInstance()->setLock(true);
-		_posY += 40 * gameTime;
-		if (_posY > _starty)
+		_position.y += 40 * gameTime;
+		if (_position.y > _startPosition.y)
 		{
-			_posY = _starty;
-			_isMove = _pPixton->MoveDown(gameTime, _posX, _posY);
+			_position.y = _startPosition.y;
+			_isMove = _pPixton->MoveDown(gameTime, _position.x, _position.y);
 			if (_isMove)
 			{
 				_timeplay = 30;
-				_pBox1->setPositionStart(_posX + 32, _posY - _height);
-				_pBox2->setPositionStart(_posX + 88, _posY - _height);
-				_pCarryArm->setPositionStart(_posX + 160, _posY + _height);
+				_pBox1->setPositionStart(_position.x + 32, _position.y - _height);
+				_pBox2->setPositionStart(_position.x + 88, _position.y - _height);
+				_pCarryArm->setPositionStart(_position.x + 160, _position.y + _height);
 			}
 		}
 	}
@@ -119,8 +119,8 @@ void Planet::MoveDown(float gameTime)
 		_timeplay -= gameTime;
 		if (_timeplay < 0 && _pBox1->IsDestroy() && _pBox2->IsDestroy())
 		{
-			if (!_pPixton->MoveUp(gameTime, _posX, _posY))
-				_posY -= 40 * gameTime;
+			if (!_pPixton->MoveUp(gameTime, _position.x, _position.y))
+				_position.y -= 40 * gameTime;
 			Player::getInstance()->setState(new StandState());
 			Player::getInstance()->setLock(true);
 			return;
@@ -160,7 +160,7 @@ void Planet::MoveDown(float gameTime)
 					_timeAttack = 0;
 				}
 			}
-			_pAnimBullet->setPosition(_pAnimAttack->getPosition().x + _planetPosX, _posY + 48 + _planetPosY);
+			_pAnimBullet->setPosition(_pAnimAttack->getPosition().x + _planetPosX, _position.y + 48 + _planetPosY);
 
 			BaseObject * e = new BaseObject();
 			e->setPosition(_pAnimBullet->getPosition());
@@ -182,14 +182,14 @@ void Planet::MoveDown(float gameTime)
 			{
 				_pBox1->newObject();
 				_pBox1->setVy(80);
-				_pCarryArm->setPosition(_posX + 32, _posY - _height - 48);
+				_pCarryArm->setPosition(_position.x + 32, _position.y - _height - 48);
 				_pCarryArm->setState(Carry_State::MOVE_DOWN);
 			}
 			else if (_pBox2->IsDestroy())
 			{
 				_pBox2->newObject();
 				_pBox2->setVy(80);
-				_pCarryArm->setPosition(_posX + 88, _posY - _height - 48);
+				_pCarryArm->setPosition(_position.x + 88, _position.y - _height - 48);
 				_pCarryArm->setState(Carry_State::MOVE_DOWN);
 			}
 		}
@@ -197,14 +197,14 @@ void Planet::MoveDown(float gameTime)
 		///Box Collision with pixton
 		if (GameCollision::getInstance()->AABBCheck(_pBox1->getBound(), _pPixton->getBound()))
 		{
-			_pBox1->setPosition(_posX + 32, _pPixton->getBound().top - 25);
+			_pBox1->setPosition(_position.x + 32, _pPixton->getBound().top - 25);
 			_pBox1->setVy(0);
 			_pBox1->setIsBottom(true);
 			_pCarryArm->setState(Carry_State::EVENT_MOVE_UP_2);
 		}
 		if (GameCollision::getInstance()->AABBCheck(_pBox2->getBound(), _pPixton->getBound()))
 		{
-			_pBox2->setPosition(_posX + 88, _pPixton->getBound().top - 25);
+			_pBox2->setPosition(_position.x + 88, _pPixton->getBound().top - 25);
 			_pBox2->setVy(0);
 			_pBox2->setIsBottom(true);
 			_pCarryArm->setState(Carry_State::EVENT_MOVE_UP_2);

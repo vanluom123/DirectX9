@@ -14,8 +14,8 @@ Conveyor::Conveyor(bool direction): BaseObject()
 	_isReverse = direction;
 	_isDestroy = false;
 	_isAllowDraw = true;
-	_vx = 0;
-	_vy = 0;
+	_velocity.x = 0;
+	_velocity.y = 0;
 
 	if (direction)
 		_velocityX = -50;
@@ -56,7 +56,7 @@ void Conveyor::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 r
 	int i = 64;
 
 	_pAnim->setReverse(_isReverse);
-	_pAnim->setPosition(getBound().left + i, _posY + 8);
+	_pAnim->setPosition(getBound().left + i, _position.y + 8);
 	_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
 	
@@ -68,11 +68,11 @@ void Conveyor::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 r
 			return;
 
 		_pAnim->setReverse(_isReverse);
-		_pAnim->setPosition(getBound().left + i, _posY + 8);
+		_pAnim->setPosition(getBound().left + i, _position.y + 8);
 		_pAnim->draw(_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
 		_pAnim2->setReverse(_isReverse);
-		_pAnim2->setPosition(getBound().left + i - 64, _posY + 8);
+		_pAnim2->setPosition(getBound().left + i - 64, _position.y + 8);
 		_pAnim2->draw(_pAnim2->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 	}
 }

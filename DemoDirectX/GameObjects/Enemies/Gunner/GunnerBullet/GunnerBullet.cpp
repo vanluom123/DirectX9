@@ -27,8 +27,8 @@ GunnerBullet::~GunnerBullet()
 RECT GunnerBullet::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 	return bound;
@@ -55,11 +55,11 @@ void GunnerBullet::update(float dt)
 
 	if (!_isDestroy)
 	{
-		_vx += _bulletX;
-		if (_vx > 300.0f)
-			_vx = 300.0f;
-		else if (_vx < -300.0f)
-			_vx = -300.0f;
+		_velocity.x += _bulletX;
+		if (_velocity.x > 300.0f)
+			_velocity.x = 300.0f;
+		else if (_velocity.x < -300.0f)
+			_velocity.x = -300.0f;
 	}
 	else if (_pCurrentAnim->getPause())
 		_isAllowDraw = false;
@@ -73,8 +73,8 @@ void GunnerBullet::onCollision(BaseObject* obj)
 	if (obj->getObjectType() == Enumerator::Object_Type::ENEMY)
 		return;
 
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 	_isDestroy = true;
 	setState(Enumerator::EnemyBullet_State::EXPLOSION);
 }

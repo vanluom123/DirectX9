@@ -19,8 +19,8 @@ Helit::Helit()
 
 void Helit::newObject()
 {
-	_posX = _startx;
-	_posY = _starty;
+	_position.x = _startPosition.x;
+	_position.y = _startPosition.y;
 	_isReverse = false;
 	_isDestroy = false;
 	_isAllowDraw = true;
@@ -43,10 +43,10 @@ RECT Helit::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 19;
-	bound.right = _posX + 19;
-	bound.top = _posY - 18;
-	bound.bottom = _posY + 37 / 2.0f;
+	bound.left = _position.x - 19;
+	bound.right = _position.x + 19;
+	bound.top = _position.y - 18;
+	bound.bottom = _position.y + 37 / 2.0f;
 
 	return bound;
 }
@@ -86,14 +86,14 @@ void Helit::onCollision(BaseObject* obj)
 			{
 				auto item = new SmallBloodItem();
 				_listBullet.push_back(item);
-				item->setPosition(_posX, _posY);
+				item->setPosition(_position.x, _position.y);
 				item->setObjectType(Enumerator::Object_Type::ITEM);
 			}
 			else if (num == 2)
 			{
 				auto item = new SmallSubtankItem();
 				_listBullet.push_back(item);
-				item->setPosition(_posX, _posY);
+				item->setPosition(_position.x, _position.y);
 				item->setObjectType(Enumerator::Object_Type::ITEM);
 			}
 		}
@@ -192,7 +192,7 @@ void Helit::updateStand(float dt)
 	else
 	{
 		if (_timeStand > 1.0f)
-			_vy = 60.0f;
+			_velocity.y = 60.0f;
 	}
 }
 
@@ -243,14 +243,14 @@ void Helit::updateDeath(float dt)
 void Helit::initStand()
 {
 	_timeStand = 0.0f;
-	_vx = 0.0f;
-	_vy = -60.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = -60.0f;
 }
 
 void Helit::initAttack()
 {
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 	_timeAttack = 0.0f;
 	_count = -1;
 }
@@ -259,7 +259,7 @@ void Helit::initDeath()
 {
 	_timeDie = 0.0f;
 	_accelerateY = 25.0f;
-	_vy = Define::ENEMY_MIN_JUMP_VELOCITY;
+	_velocity.y = Define::ENEMY_MIN_JUMP_VELOCITY;
 }
 
 void Helit::initStatus(Helit_State status)

@@ -11,8 +11,8 @@ Elevator::Elevator()
 	_isDestroy = false;
 	_isRun = false;
 	_isAllowDraw = true;
-	_vx = 0;
-	_vy = 0;
+	_velocity.x = 0;
+	_velocity.y = 0;
 }
 
 Elevator::~Elevator()
@@ -25,26 +25,26 @@ void Elevator::update(float dt)
 	if (!_isAllowDraw)
 		return;
 
-	if (_posY > _starty && _posY < _starty + 2)
+	if (_position.y > _startPosition.y && _position.y < _startPosition.y + 2)
 	{
-		_posY = _starty;
+		_position.y = _startPosition.y;
 		_isRun = false;
 		_pAnim->setAnimation(0, 1);
-		_vx = 0;
-		_vy = 0;
+		_velocity.x = 0;
+		_velocity.y = 0;
 	}
 
 	if (getBound().top < 428.0f)
 	{
 		_isRun = false;
 		_pAnim->setAnimation(0, 1);
-		_vx = 0;
-		_vy = 0;
+		_velocity.x = 0;
+		_velocity.y = 0;
 	}
 		
 	if (_isRun)
 	{
-		_posY -= 35 * dt;
+		_position.y -= 35 * dt;
 	}
 
 	_pAnim->update(dt);
@@ -75,7 +75,7 @@ void Elevator::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 r
 	{
 		_isRun = true;
 		_pAnim->setAnimation(0, 3, 0.05f);
-		_posY = _starty + 65;
+		_position.y = _startPosition.y + 65;
 	}
 
 	_pAnim->setReverse(_isReverse);

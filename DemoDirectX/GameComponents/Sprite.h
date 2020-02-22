@@ -5,15 +5,23 @@
 class Sprite
 {
 public:
-	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = 0, int height = 0,
-		D3DCOLOR colorKey = NULL);
+	Sprite(const char* filePath,
+		   RECT sourceRect = RECT(),
+		   int width = 0,
+		   int height = 0,
+		   D3DCOLOR colorKey = NULL);
+
 	virtual ~Sprite();
 
 	LPDIRECT3DTEXTURE9 getTexture() const;
 
-	virtual void draw(GVec3 Position = GVec3(), RECT SourceRect = RECT(),
-		GVec2 Scale = GVec2(), GVec2 Translate = GVec2(), float Angle = 0,
-		GVec2 RotationCenter = GVec2(), D3DXCOLOR transColor = D3DCOLOR_XRGB(255, 255, 255));
+	virtual void draw(GVec3 Position = GVec3(),
+					  RECT SourceRect = RECT(),
+					  GVec2 Scale = GVec2(),
+					  GVec2 Translate = GVec2(),
+					  float Angle = 0,
+					  GVec2 RotationCenter = GVec2(),
+					  D3DXCOLOR transColor = D3DCOLOR_XRGB(255, 255, 255));
 
 	void setWidth(int width);
 	int getWidth() const;
@@ -26,24 +34,24 @@ public:
 
 	GVec3 getPosition() const;
 	void setPosition(float x, float y);
-	void setPosition(const GVec2& pos);
-	void setPosition(const GVec3& pos);
+	void setPosition(GVec2 pos);
+	void setPosition(GVec3 pos);
 
 	GVec2 getScale() const;
-	void setScale(const GVec2& scale);
+	void setScale(GVec2 scale);
 
 	//The translation from the position of the World to the position of the View
 	GVec2 getTranslation() const;
-	void setTranslation(const GVec2& translation);
+	void setTranslation(GVec2 translation);
 
 	GVec2 getRotationCenter() const;
-	void setRotationCenter(const GVec2& rotationCenter);
+	void setRotationCenter(GVec2 rotationCenter);
 
 	//Rotate by radian
 	float getRotation() const;
 	void setRotation(float rotation);
 
-	void setSourceRect(const RECT& rect);
+	void setSourceRect(RECT rect);
 
 	//True: Flip horizontally
 	//False: Don't flip
@@ -53,12 +61,12 @@ public:
 	void isAnchorPoint(bool val);
 
 	GVec2 getAnchorPoint() const;
-	void setAnchorPoint(const GVec2& val);
+	void setAnchorPoint(GVec2 val);
 	void setAnchorPoint(float x, float y);
 
 	// FUNCTION CHECK RECTANGLE
 private:
-	bool isCheckRect(const RECT& bound);
+	bool isCheckRect(RECT bound);
 
 	// INFORMATION
 private:

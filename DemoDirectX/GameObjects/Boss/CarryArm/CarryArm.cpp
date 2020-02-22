@@ -5,8 +5,8 @@
 CarryArm::CarryArm()
 {
 	this->_objectType = Enumerator::Object_Type::ENEMY;
-	this->_vx = 0.0f;
-	this->_vy = 0.0f;
+	this->_velocity.x = 0.0f;
+	this->_velocity.y = 0.0f;
 	this->_pAnim = new Animation(Define::CARRY_ARM, 3, 10, 44, 65, 0.15f, D3DCOLOR_XRGB(255, 0, 220));
 	this->setWidth(_pAnim->getWidth());
 	this->setHeight(_pAnim->getHeight());
@@ -46,16 +46,16 @@ RECT CarryArm::getBound()
 	switch (this->_curState)
 	{
 		case Enumerator::Carry_State::EVENT_MOVE_UP_2:
-			boundingBox.left = _posX - 43 / 2.0f;
+			boundingBox.left = _position.x - 43 / 2.0f;
 			boundingBox.right = 43 + boundingBox.left;
-			boundingBox.top = _posY - 59 / 2.0f;
+			boundingBox.top = _position.y - 59 / 2.0f;
 			boundingBox.bottom = 59 + boundingBox.top;
 			break;
 
 		default:
-			boundingBox.left = _posX - 36 / 2.0f;
+			boundingBox.left = _position.x - 36 / 2.0f;
 			boundingBox.right = boundingBox.left + 36;
-			boundingBox.top = _posY - 57 / 2.0f;
+			boundingBox.top = _position.y - 57 / 2.0f;
 			boundingBox.bottom = boundingBox.top + 57;
 			break;
 	}
@@ -122,36 +122,36 @@ void CarryArm::updateState(float dt)
 	switch (this->_curState)
 	{
 		case Enumerator::Carry_State::STAND:
-			this->_posX = 4880.0f;
-			this->_posY = 1500.0f;
-			this->_vx = 0.0f;
-			this->_vy = 0.0f;
+			this->_position.x = 4880.0f;
+			this->_position.y = 1500.0f;
+			this->_velocity.x = 0.0f;
+			this->_velocity.y = 0.0f;
 			break;
 
 		case Enumerator::Carry_State::MOVE_DOWN:
-			this->_vx = 0.0f;
-			this->_vy = 80.0f;
-			if (this->_posY > this->_starty)
+			this->_velocity.x = 0.0f;
+			this->_velocity.y = 80.0f;
+			if (this->_position.y > this->_startPosition.y)
 				this->setState(Enumerator::Carry_State::EVENT_MOVE_UP_2);
 			break;
 
 		case Enumerator::Carry_State::MOVE_UP:
-			this->_vx = 80.0f;
-			this->_vy = -30.0f;
-			if (this->_posX > this->_startx)
+			this->_velocity.x = 80.0f;
+			this->_velocity.y = -30.0f;
+			if (this->_position.x > this->_startPosition.x)
 				this->setState(Enumerator::Carry_State::STAND);
 			break;
 
 		case Enumerator::Carry_State::EVENT_MOVE_UP:
-			this->_vx = 0.0f;
-			this->_vy = 0.0f;
+			this->_velocity.x = 0.0f;
+			this->_velocity.y = 0.0f;
 			if (_pAnim->getPause())
 				this->setState(Enumerator::Carry_State::MOVE_UP);
 			break;
 
 		case Enumerator::Carry_State::EVENT_MOVE_UP_2:
-			this->_vx = 0.0f;
-			this->_vy = 0.0f;
+			this->_velocity.x = 0.0f;
+			this->_velocity.y = 0.0f;
 			if (this->_pAnim->getPause())
 				this->setState(Enumerator::Carry_State::EVENT_MOVE_UP);
 			break;

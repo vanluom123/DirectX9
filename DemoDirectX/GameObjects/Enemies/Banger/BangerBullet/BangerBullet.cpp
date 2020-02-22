@@ -26,8 +26,8 @@ BangerBullet::~BangerBullet()
 RECT BangerBullet::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 	return bound;
@@ -36,8 +36,8 @@ RECT BangerBullet::getBound()
 void BangerBullet::newObject()
 {
 	_objectType = Enumerator::Object_Type::ENEMY_BULLET;
-	_vy = -450.0f;
-	_vx = _isReverse ? 100.0f : -100.0f;
+	_velocity.y = -450.0f;
+	_velocity.x = _isReverse ? 100.0f : -100.0f;
 	_isDestroy = false;
 	_isAllowDraw = true;
 	setState(Enumerator::EnemyBullet_State::FIRE);
@@ -50,9 +50,9 @@ void BangerBullet::update(float dt)
 
 	if (!_isDestroy)
 	{
-		_vy += _bulletY;
-		if (_vy > 300.0f)
-			_vy = 300.0f;
+		_velocity.y += _bulletY;
+		if (_velocity.y > 300.0f)
+			_velocity.y = 300.0f;
 	}
 	else if (_pCurrentAnim->getPause()) // The last explosion frame
 		_isAllowDraw = false;
@@ -65,8 +65,8 @@ void BangerBullet::onCollision(BaseObject* obj)
 {
 	if (obj->getObjectType() == Enumerator::Object_Type::ENEMY)
 		return;
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 	_isDestroy = true;
 	setState(Enumerator::EnemyBullet_State::EXPLOSION);
 }

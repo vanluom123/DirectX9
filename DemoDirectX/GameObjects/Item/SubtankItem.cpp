@@ -7,7 +7,7 @@ SubtankItem::SubtankItem()
 	this->_animationItem = new Animation(Define::SUB_TANK_ITEM, 1, 3, 14, 14, 0.15f, D3DCOLOR_XRGB(6, 113, 158));
 	this->_width = 14;
 	this->_height = 14;
-	this->_vy = 200;
+	this->_velocity.y = 200;
 }
 
 SubtankItem::~SubtankItem()
@@ -19,10 +19,10 @@ RECT SubtankItem::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 7;
-	bound.top = _posY - 7;
-	bound.right = _posX + 7;
-	bound.bottom = _posY + 7;
+	bound.left = _position.x - 7;
+	bound.top = _position.y - 7;
+	bound.right = _position.x + 7;
+	bound.bottom = _position.y + 7;
 
 	return bound;
 }

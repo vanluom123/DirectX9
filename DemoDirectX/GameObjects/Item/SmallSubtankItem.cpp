@@ -7,7 +7,7 @@ SmallSubtankItem::SmallSubtankItem()
 	this->_animationItem = new Animation(Define::SMALL_SUB_TANK_ITEM, 1, 3, 8, 8, 0.15f, D3DCOLOR_XRGB(6, 113, 158));
 	this->_width = 10;
 	this->_height = 8;
-	this->_vy = 200.0f;
+	this->_velocity.y = 200.0f;
 }
 
 SmallSubtankItem::~SmallSubtankItem()
@@ -19,8 +19,8 @@ RECT SmallSubtankItem::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 

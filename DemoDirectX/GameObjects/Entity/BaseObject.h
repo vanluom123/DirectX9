@@ -9,70 +9,23 @@ using namespace Enumerator;
 
 class BaseObject
 {
-protected:
-
-	// The position of object
-	float _posX, _posY, _startx, _starty;
-
-	// The velocity of object
-	float _vx, _vy;
-
-	int _HP, _Damage, _MaxHP;
-
-	// size of object
-	int _width, _height;
-
-	// allow to draw the sprite when the Camera contain Enemies
-	bool _isAllowDraw;
-
-	// Object type
-	Object_Type _objectType;
-
-	// List bullet
-	vector<BaseObject *> _listBullet;
-
-	// Check out direction face of object
-	bool _isReverse;
-
-	// Check out object destroy
-	bool _isDestroy;
-
-	// setting up identity for object
-	int _id;
-
-	// collision minimum time to coordinate x
-	float _colTimeMinX;
-
-	// collision minimum time to coordinate y
-	float _colTimeMinY;
-
-	// collision side to coordinate x
-	Side_Collision _side_x;
-
-	// collision side to coordinate x
-	Side_Collision _side_y;
-
-	BaseObject * _entity_x;
-	BaseObject * _entity_y;
-
 public:
-
 	BaseObject();
 	virtual ~BaseObject();
 
 	virtual void newObject() { }
-	void checkTimeCollision(float collisionTime, Side_Collision side, BaseObject * other);
+	void checkTimeCollision(float collisionTime, Side_Collision side, BaseObject* other);
 
 	virtual void update(float dt);
-	virtual void draw(Camera * camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) { }
+	virtual void draw(Camera* camera, RECT rect = RECT(), GVec2 scale = GVec2(), float angle = 0.0f, GVec2 rotationCenter = GVec2(), D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) { }
 
 	// Control collision
 	// When entity collide, this function will be called
 	virtual void onCollision(Side_Collision side);
-	virtual void onCollision(BaseObject * obj);
+	virtual void onCollision(BaseObject* obj);
 	virtual void onNoCollisionWithBottom();
 
-	// SUB-FUNCTION
+public:
 	virtual RECT getBound();
 
 	GVec3 getPosition() const;
@@ -124,17 +77,61 @@ public:
 	void setDestroy(bool die);
 	bool IsDestroy() const;
 
-	vector<BaseObject *> getListBullet();
+	vector<BaseObject*> getListBullet();
 
-	BaseObject * getIndexBullet(int index)
-	{
-		return _listBullet.at(index);
-	}
+	BaseObject* getIndexBullet(int index) { return _listBullet.at(index); }
 
-	void insertBullet(BaseObject * obj);
+	void insertBullet(BaseObject* obj);
 
 	void setId(int id);
 	int getId() const;
+
+protected:
+
+	GVec2 _position;
+	GVec2 _startPosition;
+	GVec2 _velocity;
+
+	int _HP;
+	int _Damage;
+	int _MaxHP;
+
+	// size of object
+	int _width;
+	int _height;
+
+	// allow to draw the sprite when the Camera contain Enemies
+	bool _isAllowDraw;
+
+	// Object type
+	Object_Type _objectType;
+
+	// List bullet
+	vector<BaseObject*> _listBullet;
+
+	// Check out direction face of object
+	bool _isReverse;
+
+	// Check out object destroy
+	bool _isDestroy;
+
+	// setting up identity for object
+	int _id;
+
+	// collision minimum time to coordinate x
+	float _colTimeMinX;
+
+	// collision minimum time to coordinate y
+	float _colTimeMinY;
+
+	// collision side to coordinate x
+	Side_Collision _side_x;
+
+	// collision side to coordinate x
+	Side_Collision _side_y;
+
+	BaseObject* _entity_x;
+	BaseObject* _entity_y;
 };
 
 #endif // !ENTITIES_H

@@ -30,8 +30,8 @@ BlastBullet::~BlastBullet()
 RECT BlastBullet::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 	return bound;
@@ -68,8 +68,8 @@ void BlastBullet::update(float dt)
 	m_towardsPlayer.y = Player::getInstance()->getPosition().y - getPosition().y;
 	D3DXVec2Normalize(&m_towardsPlayer, &m_towardsPlayer);
 
-	_vx = m_towardsPlayer.x * 125.0f;
-	_vy = m_towardsPlayer.y * 125.0f;
+	_velocity.x = m_towardsPlayer.x * 125.0f;
+	_velocity.y = m_towardsPlayer.y * 125.0f;
 
 	if (_isAllowDraw)
 	{
@@ -83,14 +83,14 @@ void BlastBullet::update(float dt)
 
 void BlastBullet::onCollision(Side_Collision side)
 {
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 }
 
 void BlastBullet::onCollision(BaseObject * obj)
 {
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 
 	if (_isDestroy) return;
 

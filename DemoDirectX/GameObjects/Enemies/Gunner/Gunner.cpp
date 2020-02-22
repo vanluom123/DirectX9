@@ -24,8 +24,8 @@ Gunner::Gunner()
 
 void Gunner::newObject()
 {
-	_posX = _startx;
-	_posY = _starty;
+	_position.x = _startPosition.x;
+	_position.y = _startPosition.y;
 	_isReverse = false;
 	_isAllowDraw = true;
 	_isDestroy = false;
@@ -49,10 +49,10 @@ RECT Gunner::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 15;
-	bound.right = _posX + 15;
-	bound.top = _posY - 21;
-	bound.bottom = _posY + 45 / 2.0f;
+	bound.left = _position.x - 15;
+	bound.right = _position.x + 15;
+	bound.top = _position.y - 21;
+	bound.bottom = _position.y + 45 / 2.0f;
 
 	return bound;
 }
@@ -99,14 +99,14 @@ void Gunner::onCollision(BaseObject* obj)
 			{
 				auto* item = new SmallBloodItem();
 				_listBullet.push_back(item);
-				item->setPosition(_posX, _posY);
+				item->setPosition(_position.x, _position.y);
 				item->setObjectType(Enumerator::Object_Type::ITEM);
 			}
 			else if (num == 2)
 			{
 				auto* item = new SmallSubtankItem();
 				_listBullet.push_back(item);
-				item->setPosition(_posX, _posY);
+				item->setPosition(_position.x, _position.y);
 				item->setObjectType(Enumerator::Object_Type::ITEM);
 			}
 		}

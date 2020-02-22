@@ -50,15 +50,15 @@ PlayerBullet_Type PlayerBullet::getPlayerBulletType() const
 void PlayerBullet::newBullet(float bx, float by, bool direction, PlayerBullet_Type type)
 {
 	this->loadSprite();
-	this->_posX = bx;
-	this->_posY = by;
+	this->_position.x = bx;
+	this->_position.y = by;
 	this->_isAllowDraw = true;
 	this->_isExplosion = false;
 	this->_bulletState = Enumerator::PlayerBullet_State::FIRE;
 	this->_bulletType = type;
 
 	this->setReverse(direction);
-	this->_vx = (direction) ? -300.0f : 300.0f;
+	this->_velocity.x = (direction) ? -300.0f : 300.0f;
 
 	this->changeBullet(this->_bulletState, type);
 }
@@ -131,8 +131,8 @@ void PlayerBullet::changeBullet(PlayerBullet_State state, PlayerBullet_Type type
 RECT PlayerBullet::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 	return bound;
@@ -183,8 +183,8 @@ void PlayerBullet::onCollision(BaseObject* obj)
 	if (obj->getHP() <= 0)
 		return;
 
-	this->_vx = 0.0f;
-	this->_vx = 0.0f;
+	this->_velocity.x = 0.0f;
+	this->_velocity.x = 0.0f;
 	this->_isExplosion = true;
 	this->_bulletState = Enumerator::PlayerBullet_State::EXPLOSION;
 

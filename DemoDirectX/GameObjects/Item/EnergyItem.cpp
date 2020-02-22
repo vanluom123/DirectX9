@@ -7,7 +7,7 @@ EnergyItem::EnergyItem()
 	this->_animationItem = new Animation(Define::ENEGY_ITEM, 1, 4, 14, 15, 0.15f);
 	this->_width = 14;
 	this->_height = 14;
-	this->_vy = 200.0f;
+	this->_velocity.y = 200.0f;
 }
 
 EnergyItem::~EnergyItem()
@@ -19,10 +19,10 @@ RECT EnergyItem::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 7;
-	bound.top = _posY - 7;
-	bound.right = _posX + 7;
-	bound.bottom = _posY + 7;
+	bound.left = _position.x - 7;
+	bound.top = _position.y - 7;
+	bound.right = _position.x + 7;
+	bound.bottom = _position.y + 7;
 
 	return bound;
 }

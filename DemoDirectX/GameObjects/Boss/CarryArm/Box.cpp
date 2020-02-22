@@ -13,26 +13,26 @@ Box::Box(bool isr)
 	this->pAnimationDie->setPause(true);
 	this->_width = this->anim->getWidth();
 	this->_height = this->anim->getHeight();
-	this->_vx = 0.0f;
-	this->_vy = 0.0f;
+	this->_velocity.x = 0.0f;
+	this->_velocity.y = 0.0f;
 }
 void Box::newObject()
 {
 	if (this->isR)
 	{
-		this->_vx = 0.0f;
-		this->_vy = 300.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 300.0f;
 		this->_Damage = 4;
 	}
 	else
 	{
-		this->_vx = 0.0f;
-		this->_vy = 0.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 0.0f;
 	}
 	this->_HP = this->_MaxHP;
 	this->_isDestroy = false;
-	this->_posX = this->_startx;
-	this->_posY = this->_starty;
+	this->_position.x = this->_startPosition.x;
+	this->_position.y = this->_startPosition.y;
 
 }
 
@@ -59,7 +59,7 @@ void Box::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCen
 			int i = 24;
 			while (true)
 			{
-				this->pAnimationDie->setPosition(this->_posX, getBound().top + i);
+				this->pAnimationDie->setPosition(this->_position.x, getBound().top + i);
 				this->pAnimationDie->draw(this->pAnimationDie->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 				i += 48;
@@ -74,7 +74,7 @@ void Box::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotateCen
 		int i = 24;
 		while (true)
 		{
-			this->anim->setPosition(_posX, getBound().top + i);
+			this->anim->setPosition(_position.x, getBound().top + i);
 			this->anim->draw(anim->getPosition(), r, scale, camera->getTrans(), angle, rotateCenter, color);
 
 			if (this->isR)
@@ -92,8 +92,8 @@ RECT Box::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - this->_width / 2;
-	bound.top = _posY - this->_height / 2;
+	bound.left = _position.x - this->_width / 2;
+	bound.top = _position.y - this->_height / 2;
 	bound.right = bound.left + this->_width;
 	bound.bottom = bound.top + this->_height;
 

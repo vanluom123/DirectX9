@@ -7,7 +7,7 @@ BigBloodItem::BigBloodItem()
 	_animationItem = new Animation(Define::BLOOD_IS_BIG_ITEM, 1, 4, 18, 14, 0.15f);
 	_width = 18;
 	_height = 14;
-	_vy = 200.0f;
+	_velocity.y = 200.0f;
 }
 
 BigBloodItem::~BigBloodItem()
@@ -19,10 +19,10 @@ RECT BigBloodItem::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 9;
-	bound.top = _posY - 7;
-	bound.right = _posX + 9;
-	bound.bottom = _posY + 7;
+	bound.left = _position.x - 9;
+	bound.top = _position.y - 7;
+	bound.right = _position.x + 9;
+	bound.bottom = _position.y + 7;
 
 	return bound;
 }

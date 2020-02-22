@@ -8,16 +8,25 @@
 class Animation : public Sprite
 {
 public:
-
-	// ham ho tro lay animation voi anh co duy nhat 1 hang
-	Animation(const char* filePath, int rows, int columns, int frameWidth, int frameHeight,
-		float timePerFrame = 0.1f, D3DCOLOR colorKey = NULL);
+	Animation(const char* filePath,
+			  int rows,
+			  int columns,
+			  int frameWidth,
+			  int frameHeight,
+			  float timePerFrame = 0.1f,
+			  D3DCOLOR colorKey = NULL);
 
 	void update(float dt);
 	void fixUpdate(float dt);
-	void draw(GVec3 position = GVec3(), RECT sourceRect = RECT(),
-		GVec2 scale = GVec2(), GVec2 transform = GVec2(), float angle = 0,
-		GVec2 rotationCenter = GVec2(), D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
+
+	void draw(GVec3 position = GVec3(),
+			  RECT sourceRect = RECT(),
+			  GVec2 scale = GVec2(),
+			  GVec2 transform = GVec2(),
+			  float angle = 0,
+			  GVec2 rotationCenter = GVec2(),
+			  D3DXCOLOR colorKey = D3DCOLOR_XRGB(255, 255, 255)) override;
+
 	void draw(GVec2 translate);
 
 	// SUB-FUNCTION

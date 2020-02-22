@@ -20,8 +20,8 @@ Port::Port()
 	this->_isMove = false;
 	this->_HP = 0;
 	this->_Damage = 0;
-	this->_vx = 0.0f;
-	this->_vy = 0.0f;
+	this->_velocity.x = 0.0f;
+	this->_velocity.y = 0.0f;
 }
 
 Port::~Port()
@@ -35,10 +35,10 @@ RECT Port::getBound()
 		return BaseObject::getBound();
 
 	RECT bound;
-	bound.left = this->_posX - this->_width;
-	bound.right = this->_posX + this->_height;
-	bound.top = this->_posY - this->_height/2;
-	bound.bottom = this->_posY + this->_height / 2;
+	bound.left = this->_position.x - this->_width;
+	bound.right = this->_position.x + this->_height;
+	bound.top = this->_position.y - this->_height/2;
+	bound.bottom = this->_position.y + this->_height / 2;
 	return bound;
 }
 
@@ -93,10 +93,10 @@ void Port::onCollision(BaseObject* obj)
 		else
 			obj->setVx(40.0f);
 
-		this->_bound.top = this->_posY - this->_height / 2;
-		this->_bound.bottom = this->_posY + this->_height / 2;
-		this->_bound.left = this->_posX - 20;
-		this->_bound.right = this->_posX + 20;
+		this->_bound.top = this->_position.y - this->_height / 2;
+		this->_bound.bottom = this->_position.y + this->_height / 2;
+		this->_bound.left = this->_position.x - 20;
+		this->_bound.right = this->_position.x + 20;
 
 		if (!GameCollision::getInstance()->AABBCheck(this->_bound, obj->getBound()))
 		{
@@ -122,9 +122,9 @@ void Port::draw(Camera* camera, RECT rect, GVec2 scale, float angle, GVec2 rotat
 
 	this->_pAnim->setReverse(this->_isReverse);
 
-	this->_pAnim->setPosition(this->_startx - 8, this->_starty);
+	this->_pAnim->setPosition(this->_startPosition.x - 8, this->_startPosition.y);
 	this->_pAnim->draw(this->_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 
-	this->_pAnim->setPosition(this->_startx + 8, this->_starty);
+	this->_pAnim->setPosition(this->_startPosition.x + 8, this->_startPosition.y);
 	this->_pAnim->draw(this->_pAnim->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 }

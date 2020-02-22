@@ -40,8 +40,8 @@ Player::Player()
 	_timeChangeShoot = 0.0f;
 	_timeAlive = 0.0f;
 
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 	_MaxHP = 15;
 	_HP = _MaxHP;
 	_Damage = 0;
@@ -148,7 +148,7 @@ void Player::setState(PlayerState * new_state)
 		_pAniEffectDash->setPause(true);
 
 	if (_currentState == Enumerator::Player_State::SLIP_DOWN)
-		_posSlideDown = _posY;
+		_posSlideDown = _position.y;
 	else
 		_posSlideDown = std::numeric_limits<float>::infinity();
 }
@@ -237,9 +237,9 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 			{
 				_pAniEffectDash->setReverse(!_isReverse);
 				if (_isReverse)
-					_pAniEffectDash->setPosition(_posX, _posY + 12);
+					_pAniEffectDash->setPosition(_position.x, _position.y + 12);
 				else
-					_pAniEffectDash->setPosition(_posX, _posY + 12);
+					_pAniEffectDash->setPosition(_position.x, _position.y + 12);
 
 				_pAniEffectDash->setAnimation(1, 1, 0.005f, false);
 
@@ -282,7 +282,7 @@ void Player::OnKeyDown(std::map<int, bool> keys, int Key)
 			case Enumerator::Player_State::RUN:
 			{
 				_pAniEffectDash->setReverse(_isReverse);
-				_pAniEffectDash->setPosition(_posX, _posY + 12);
+				_pAniEffectDash->setPosition(_position.x, _position.y + 12);
 				_pAniEffectDash->setAnimation(0, 11, 0.05f, false);
 				setState(new DashState());
 				break;
@@ -302,7 +302,7 @@ void Player::OnKeyUp(int Key)
 		case VK_JUMP:
 		{
 			if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
-				_vy = 0.0f;
+				_velocity.y = 0.0f;
 			_allowJump = true;
 			break;
 		}
@@ -359,10 +359,10 @@ void Player::OnKeyUp(int Key)
 RECT Player::getBound()
 {
 	RECT bound;
-	bound.left = _posX - 13;
-	bound.right = _posX + 13;
-	bound.top = _posY - 15;
-	bound.bottom = _posY + 49 / 2.0f;
+	bound.left = _position.x - 13;
+	bound.right = _position.x + 13;
+	bound.top = _position.y - 15;
+	bound.bottom = _position.y + 49 / 2.0f;
 	return bound;
 }
 
@@ -433,7 +433,7 @@ void Player::update(float dt)
 		}
 	}
 
-	if (_posY - _posSlideDown > 8)
+	if (_position.y - _posSlideDown > 8)
 		_pAniEffectSlide->setPause(false);
 	else
 		_pAniEffectSlide->setPause(true);
@@ -469,7 +469,7 @@ void Player::draw(Camera * camera, RECT rect, GVec2 scale, float angle, GVec2 ro
 			if (!_pAniEffectCharge->getPause())
 			{
 				_pAniEffectCharge->setReverse(_isReverse);
-				_pAniEffectCharge->setPosition(_posX, _posY + 6);
+				_pAniEffectCharge->setPosition(_position.x, _position.y + 6);
 				_pAniEffectCharge->draw(_pAniEffectCharge->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 			}
 
@@ -480,9 +480,9 @@ void Player::draw(Camera * camera, RECT rect, GVec2 scale, float angle, GVec2 ro
 			{
 				_pAniEffectSlide->setReverse(_isReverse);
 				if (_isReverse)
-					_pAniEffectSlide->setPosition(_posX - 15, _posY);
+					_pAniEffectSlide->setPosition(_position.x - 15, _position.y);
 				else
-					_pAniEffectSlide->setPosition(_posX + 15, _posY);
+					_pAniEffectSlide->setPosition(_position.x + 15, _position.y);
 
 				_pAniEffectSlide->draw(_pAniEffectSlide->getPosition(), rect, scale, camera->getTrans(), angle, rotationCenter, color);
 			}
@@ -553,7 +553,7 @@ void Player::onCollision(BaseObject * object)
 
 			_pAnimation->setShoot(false);
 
-			if (_posX < object->getPosition().x)
+			if (_position.x < object->getPosition().x)
 				setState(new BleedState(1));
 			else
 				setState(new BleedState(-1));
@@ -564,7 +564,7 @@ void Player::onCollision(BaseObject * object)
 		{
 			if (_currentState == Enumerator::Player_State::JUMP || _currentState == Enumerator::Player_State::CLING)
 				break;
-			_posY = object->getBound().top - 24.51f;
+			_position.y = object->getBound().top - 24.51f;
 			_side_y = Enumerator::Side_Collision::BOTTOM;
 
 			break;

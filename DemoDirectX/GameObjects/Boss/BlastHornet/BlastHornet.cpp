@@ -41,10 +41,10 @@ BlastHornet::~BlastHornet()
 RECT BlastHornet::getBound()
 {
 	RECT r;
-	r.left = _posX - 20;
-	r.right = _posX + 30;
-	r.top = _posY - 30;
-	r.bottom = _posY + 45;
+	r.left = _position.x - 20;
+	r.right = _position.x + 30;
+	r.top = _position.y - 30;
+	r.bottom = _position.y + 45;
 	return r;
 }
 

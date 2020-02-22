@@ -7,7 +7,7 @@
 #include "QuadTree.h"
 #include "../GameObjects/Player/Player.h"
 #include <iostream>
-#include <MapReader/Tmx.h.in>
+#include <tmxparser/Tmx.h.in>
 
 class GameMap
 {

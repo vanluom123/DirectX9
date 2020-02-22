@@ -73,7 +73,7 @@ Sprite::~Sprite()
 }
 
 void Sprite::draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
-	float Angle, GVec2 RotationCenter, D3DXCOLOR transColor)
+				  float Angle, GVec2 RotationCenter, D3DXCOLOR transColor)
 {
 	GVec3 inPosition = _position;
 	RECT inSourceRect = _sourceRect;
@@ -140,7 +140,7 @@ void Sprite::draw(GVec3 Position, RECT SourceRect, GVec2 Scale, GVec2 Translate,
 	_spriteHandler->SetTransform(&oldMatrix);
 }
 
-void Sprite::setSourceRect(const RECT& rect)
+void Sprite::setSourceRect(RECT rect)
 {
 	_sourceRect = rect;
 }
@@ -160,12 +160,12 @@ void Sprite::setPosition(float x, float y)
 	setPosition(GVec2(x, y));
 }
 
-void Sprite::setPosition(const GVec2& pos)
+void Sprite::setPosition(GVec2 pos)
 {
 	setPosition(GVec3(pos.x, pos.y, 0));
 }
 
-void Sprite::setPosition(const GVec3& pos)
+void Sprite::setPosition(GVec3 pos)
 {
 	_position = pos;
 }
@@ -175,7 +175,7 @@ GVec2 Sprite::getScale() const
 	return _scale;
 }
 
-void Sprite::setScale(const GVec2& scale)
+void Sprite::setScale(GVec2 scale)
 {
 	_scale = scale;
 }
@@ -185,7 +185,7 @@ GVec2 Sprite::getTranslation() const
 	return _translation;
 }
 
-void Sprite::setTranslation(const GVec2& translation)
+void Sprite::setTranslation(GVec2 translation)
 {
 	_translation = translation;
 }
@@ -195,7 +195,7 @@ GVec2 Sprite::getRotationCenter() const
 	return _rotationCenter;
 }
 
-void Sprite::setRotationCenter(const GVec2& rotationCenter)
+void Sprite::setRotationCenter(GVec2 rotationCenter)
 {
 	_rotationCenter = rotationCenter;
 }
@@ -239,7 +239,7 @@ GVec2 Sprite::getAnchorPoint() const
 	return _anchorPoint;
 }
 
-void Sprite::setAnchorPoint(const GVec2& val)
+void Sprite::setAnchorPoint(GVec2 val)
 {
 	_anchorPoint = val;
 }
@@ -249,7 +249,7 @@ void Sprite::setAnchorPoint(float x, float y)
 	setAnchorPoint(GVec2(x, y));
 }
 
-bool Sprite::isCheckRect(const RECT& bound)
+bool Sprite::isCheckRect(RECT bound)
 {
 	if (bound.left == bound.right)
 		return false;

@@ -1,10 +1,10 @@
 ﻿#include "QuadTree.h"
 #include "GameCollision.h"
 
-QuadTree * QuadTree::s_instance = NULL;
+QuadTree* QuadTree::s_instance = NULL;
 
 QuadTree::QuadTree()
-{ }
+{}
 
 QuadTree::QuadTree(int level, RECT bound)
 {
@@ -18,7 +18,7 @@ QuadTree::~QuadTree()
 	this->clear();
 }
 
-QuadTree * QuadTree::getInstance()
+QuadTree* QuadTree::getInstance()
 {
 	if (!s_instance) s_instance = new QuadTree;
 	return s_instance;

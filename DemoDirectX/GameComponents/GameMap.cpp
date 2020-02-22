@@ -16,7 +16,7 @@
 #include "../GameObjects/Item/BigBloodItem.h"
 #include "../GameObjects/Item/EnergyItem.h"
 
-GameMap * GameMap::s_instance = NULL;
+GameMap* GameMap::s_instance = NULL;
 
 GameMap::~GameMap()
 {
@@ -31,7 +31,7 @@ GameMap::~GameMap()
 		_listEnemies.clear();
 }
 
-GameMap * GameMap::getInstance()
+GameMap* GameMap::getInstance()
 {
 	if (!s_instance) s_instance = new GameMap;
 	return s_instance;
@@ -43,18 +43,26 @@ void GameMap::release()
 	s_instance = NULL;
 }
 
-void GameMap::initialize(const char * filePath)
+void GameMap::initialize(const char* filePath)
 {
 	_pTmxMap = new Tmx::Map();
 	_pTmxMap->ParseFile(filePath);
 
-	_tileMap = new Sprite(Define::WORLD_MAP_PNG, RECT(), this->getWidth(), this->getHeight(),
+	_tileMap = new Sprite(Define::WORLD_MAP_PNG,
+						  RECT(),
+						  this->getWidth(),
+						  this->getHeight(),
 						  D3DCOLOR_XRGB(255, 255, 255));
+
 	_tileMap->setWidth(GameGlobal::getInstance()->getWidth() + 4);
 	_tileMap->setHeight(GameGlobal::getInstance()->getHeight() + 4);
 
-	_tileMap1 = new Sprite("Resources/Map/Stage.png", RECT(), this->getWidth(), this->getHeight(),
+	_tileMap1 = new Sprite("Resources/Map/Stage.png",
+						   RECT(),
+						   this->getWidth(),
+						   this->getHeight(),
 						   D3DCOLOR_XRGB(0, 0, 0));
+
 	_tileMap1->setWidth(GameGlobal::getInstance()->getWidth() + 4);
 	_tileMap1->setHeight(GameGlobal::getInstance()->getHeight() + 4);
 
@@ -69,16 +77,42 @@ void GameMap::initialize(const char * filePath)
 
 void GameMap::loadMap()
 {
+
+	/*for (auto objectGroup : _pTmxMap->GetObjectGroups())
+	{
+		if (!objectGroup->IsVisible())
+			continue;
+
+		for (auto object : objectGroup->GetObjects())
+		{
+			std::string name = object->GetName();
+
+			if (name == "Room")
+			{
+				RECT room;
+				room.left = object->GetX();
+				room.top = object->GetY();
+				room.right = object->GetX() + object->GetWidth();
+				room.bottom = object->GetY() + object->GetHeight();
+				_listRoom.push_back(room);
+			}
+			else if (name == "Boss1")
+			{
+
+			}
+		}
+	}*/
+
 	// Object static
 	for (size_t i = 0; i < _pTmxMap->GetNumObjectGroups(); i++)
 	{
-		const Tmx::ObjectGroup * const objectGroup = _pTmxMap->GetObjectGroup(i);
+		const Tmx::ObjectGroup* const objectGroup = _pTmxMap->GetObjectGroup(i);
 		std::string name = objectGroup->GetName();
 
 		if (name == "Room")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 				RECT room;
 				room.left = object->GetX();
 				room.top = object->GetY();
@@ -89,7 +123,7 @@ void GameMap::loadMap()
 		else if (name == "Boss1")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const obj1 = objectGroup->GetObjects().at(j);
+				Tmx::Object* const obj1 = objectGroup->GetObjects().at(j);
 
 				auto boss = new Genjibo();
 				boss->setPositionStart(obj1->GetX() + obj1->GetWidth() / 2.0f, obj1->GetY());
@@ -105,7 +139,7 @@ void GameMap::loadMap()
 		else if (name == "Boss2")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const obj2 = objectGroup->GetObjects().at(j);
+				Tmx::Object* const obj2 = objectGroup->GetObjects().at(j);
 
 				auto boss2 = new Planet();
 				boss2->setPositionStart(obj2->GetX() + obj2->GetWidth() / 2.0f,
@@ -122,7 +156,7 @@ void GameMap::loadMap()
 		else if (name == "Boss3")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto boss = new BlastHornet();
 				boss->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -139,7 +173,7 @@ void GameMap::loadMap()
 		else if (name == "Banger")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto banger = new Banger();
 				banger->setPositionStart(object->GetX() + object->GetWidth() / 2.0f, object->GetY() + 7);
@@ -155,7 +189,7 @@ void GameMap::loadMap()
 		else if (name == "Gunner")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto gunner = new Gunner();
 				gunner->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -172,7 +206,7 @@ void GameMap::loadMap()
 		else if (name == "Helit")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto helit = new Helit();
 				helit->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -189,7 +223,7 @@ void GameMap::loadMap()
 		else if (name == "Elevator")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto elevator = new Elevator();
 				elevator->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -207,7 +241,7 @@ void GameMap::loadMap()
 		else if (name == "ConveyorR")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto conveyor = new Conveyor(false);
 				conveyor->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -225,7 +259,7 @@ void GameMap::loadMap()
 		else if (name == "ConveyorL")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto conveyor = new Conveyor(true);
 				conveyor->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -243,7 +277,7 @@ void GameMap::loadMap()
 		else if (name == "Port")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto port = new Port();
 				port->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -261,7 +295,7 @@ void GameMap::loadMap()
 		else if (name == "Thorn")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto entity = new BaseObject();
 				entity->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -278,7 +312,7 @@ void GameMap::loadMap()
 		else if (name == "Box")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto boxx = new Box();
 				boxx->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -296,7 +330,7 @@ void GameMap::loadMap()
 		else if (name == "Box1")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto boxx = new Box(true);
 				boxx->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -315,7 +349,7 @@ void GameMap::loadMap()
 		else if (name == "Blood")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto item = new BigBloodItem();
 				item->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -333,7 +367,7 @@ void GameMap::loadMap()
 		else if (name == "Heart")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto item = new EnergyItem();
 				item->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -348,7 +382,7 @@ void GameMap::loadMap()
 		else if (name == "Wall")
 			for (size_t j = 0; j < objectGroup->GetNumObjects(); j++)
 			{
-				Tmx::Object * const object = objectGroup->GetObjects().at(j);
+				Tmx::Object* const object = objectGroup->GetObjects().at(j);
 
 				auto entity = new BaseObject();
 				entity->setPositionStart(object->GetX() + object->GetWidth() / 2.0f,
@@ -387,22 +421,28 @@ int GameMap::getTileHeight() const
 }
 
 void GameMap::update(float dt)
-{ }
+{}
 
 void GameMap::draw()
 {
 	GVec3 position = Camera::getInstance()->getPosition();
-	_srect.top = position.y - _tileMap->getHeight() / 2;
-	_srect.bottom = position.y + _tileMap->getHeight() / 2;
 	_srect.left = position.x - _tileMap->getWidth() / 2;
+	_srect.top = position.y - _tileMap->getHeight() / 2;
 	_srect.right = position.x + _tileMap->getWidth() / 2;
+	_srect.bottom = position.y + _tileMap->getHeight() / 2;
 
-	_tileMap->draw(position, _srect, GVec2(), Camera::getInstance()->getTrans());
+	_tileMap->draw(position,
+				   _srect,
+				   GVec2(),
+				   Camera::getInstance()->getTrans());
 }
 
 void GameMap::draw1()
 {
-	_tileMap1->draw(Camera::getInstance()->getPosition(), _srect, GVec2(), Camera::getInstance()->getTrans());
+	_tileMap1->draw(Camera::getInstance()->getPosition(),
+					_srect, 
+					GVec2(),
+					Camera::getInstance()->getTrans());
 }
 
 std::vector<RECT> GameMap::getListRoom() const

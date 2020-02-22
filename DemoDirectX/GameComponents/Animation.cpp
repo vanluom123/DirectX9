@@ -1,7 +1,14 @@
 #include "Animation.h"
 
 
-Animation::Animation(const char* filePath, int rows, int columns, int frameWidth, int frameHeight, float timePerFrame, D3DCOLOR colorKey) : Sprite(filePath, RECT(), frameWidth, frameHeight, colorKey)
+Animation::Animation(const char* filePath,
+					 int rows,
+					 int columns,
+					 int frameWidth,
+					 int frameHeight,
+					 float timePerFrame,
+					 D3DCOLOR colorKey) :
+	Sprite(filePath, RECT(), frameWidth, frameHeight, colorKey)
 {
 	_row = rows;
 	_cols = columns;
@@ -53,7 +60,7 @@ void Animation::update(float dt)
 
 	if (_currentTotalTime < _timePerFrame)
 		return;
-	
+
 	_currentTotalTime = 0.0f;
 	_currentIndex++;
 
@@ -112,7 +119,7 @@ void Animation::fixUpdate(float dt)
 }
 
 void Animation::draw(GVec3 position, RECT sourceRect, GVec2 scale, GVec2 transform,
-	float angle, GVec2 rotationCenter, D3DXCOLOR colorKey)
+					 float angle, GVec2 rotationCenter, D3DXCOLOR colorKey)
 {
 	Sprite::draw(position, sourceRect, scale, transform, angle, rotationCenter, colorKey);
 }

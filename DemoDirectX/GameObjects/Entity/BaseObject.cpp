@@ -5,8 +5,8 @@
 BaseObject::BaseObject()
 {
 	_objectType = Enumerator::Object_Type::NONE;
-	_vx = 0;
-	_vy = 0;
+	_velocity.x = 0;
+	_velocity.y = 0;
 
 	_colTimeMinX = 1;
 	_colTimeMinY = 1;
@@ -30,33 +30,27 @@ BaseObject::BaseObject()
 
 	_isReverse = false;
 
-	_startx = 0;
-	_starty = 0;
+	_startPosition.x = 0;
+	_startPosition.y = 0;
 
-	_posX = _startx;
-	_posY = _starty;
+	_position.x = _startPosition.x;
+	_position.y = _startPosition.y;
+
 }
 
 BaseObject::~BaseObject()
 {
-	for (int i = 0; i < _listBullet.size(); i++)
-	{
-		auto bullet = _listBullet.at(i);
-		if (bullet != nullptr)
-		{
-			delete bullet;
-			bullet = nullptr;
-		}
-	}
-	if (!_listBullet.empty())
-		_listBullet.clear();
+	for (auto bullet : _listBullet)
+		delete bullet;
+
+	_listBullet.clear();
 }
 
 RECT BaseObject::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.top = _posY - _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.top = _position.y - _height / 2;
 	bound.right = bound.left + _width;
 	bound.bottom = bound.top + _height;
 	return bound;
@@ -64,7 +58,7 @@ RECT BaseObject::getBound()
 
 GVec3 BaseObject::getPosition() const
 {
-	return { _posX, _posY, 0.0f };
+	return { _position.x, _position.y, 0.0f };
 }
 
 void BaseObject::setPosition(float x, float y)
@@ -79,13 +73,13 @@ void BaseObject::setPosition(GVec2 pos)
 
 void BaseObject::setPosition(GVec3 pos)
 {
-	_posX = pos.x;
-	_posY = pos.y;
+	_position.x = pos.x;
+	_position.y = pos.y;
 }
 
 GVec3 BaseObject::getPositionStart() const
 {
-	return { _startx,_starty, 0 };
+	return { _startPosition.x,_startPosition.y, 0 };
 }
 
 void BaseObject::setPositionStart(float x, float y)
@@ -100,8 +94,8 @@ void BaseObject::setPositionStart(GVec2 pos)
 
 void BaseObject::setPositionStart(GVec3 pos)
 {
-	_startx = pos.x;
-	_starty = pos.y;
+	_startPosition.x = pos.x;
+	_startPosition.y = pos.y;
 }
 
 void BaseObject::addPosition(float x, float y)
@@ -171,32 +165,32 @@ int BaseObject::getDamage() const
 
 float BaseObject::getVx() const
 {
-	return _vx;
+	return _velocity.x;
 }
 
 void BaseObject::setVx(float vx)
 {
-	_vx = vx;
+	_velocity.x = vx;
 }
 
 void BaseObject::addVx(float vx)
 {
-	_vx += vx;
+	_velocity.x += vx;
 }
 
 float BaseObject::getVy() const
 {
-	return _vy;
+	return _velocity.y;
 }
 
 void BaseObject::setVy(float vy)
 {
-	_vy = vy;
+	_velocity.y = vy;
 }
 
 void BaseObject::addVy(float vy)
 {
-	_vy += vy;
+	_velocity.y += vy;
 }
 
 void BaseObject::setDraw(bool isDraw)
@@ -264,8 +258,8 @@ int BaseObject::getId() const
 
 void BaseObject::onCollision(Side_Collision side)
 {
-	_vx = 0.0f;
-	_vy = 0.0f;
+	_velocity.x = 0.0f;
+	_velocity.y = 0.0f;
 }
 
 void BaseObject::onCollision(BaseObject * obj)
@@ -306,11 +300,11 @@ void BaseObject::update(float dt)
 		this->onCollision(_side_y);
 	}
 
-	_posX += _vx * dt * _colTimeMinX;
+	_position.x += _velocity.x * dt * _colTimeMinX;
 	_colTimeMinX = 1.0f;
 	_side_x = Enumerator::Side_Collision::NONE;
 
-	_posY += _vy * dt * _colTimeMinY;
+	_position.y += _velocity.y * dt * _colTimeMinY;
 	_colTimeMinY = 1.0f;
 	_side_y = Enumerator::Side_Collision::NONE;
 }

@@ -7,7 +7,7 @@ SmallBloodItem::SmallBloodItem()
 	this->_animationItem = new Animation(Define::BLOOD_IS_SMALL_ITEM, 1, 4, 10, 8, 0.07f, D3DCOLOR_XRGB(6, 113, 158));
 	this->_width = 10;
 	this->_height = 8;
-	this->_vy = 200.0f;
+	this->_velocity.y = 200.0f;
 }
 
 SmallBloodItem::~SmallBloodItem()
@@ -19,10 +19,10 @@ RECT SmallBloodItem::getBound()
 {
 	RECT bound;
 
-	bound.left = _posX - 5;
-	bound.top = _posY - 4;
-	bound.right = _posX + 5;
-	bound.bottom = _posY + 4;
+	bound.left = _position.x - 5;
+	bound.top = _position.y - 4;
+	bound.right = _position.x + 5;
+	bound.bottom = _position.y + 4;
 
 	return bound;
 }

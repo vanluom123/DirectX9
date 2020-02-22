@@ -9,7 +9,7 @@ Genjibo::Genjibo()
 	this->_isAllowDraw = false;
 	this->timeStand = 0.0f;
 	this->timeMove = 0.0f;
-	this->posY = _posY;
+	this->posY = _position.y;
 	this->transY = 15.0f;
 	this->count = 0;
 	this->_MaxHP = 30;
@@ -34,9 +34,9 @@ Genjibo::~Genjibo()
 RECT Genjibo::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2.0f;
+	bound.left = _position.x - _width / 2.0f;
 	bound.right = bound.left + _width;
-	bound.top = _posY - _height / 2.0f;
+	bound.top = _position.y - _height / 2.0f;
 	bound.bottom = bound.top + _height;
 	return bound;
 }
@@ -72,7 +72,7 @@ void Genjibo::onCollision(BaseObject* obj)
 
 			auto item = new BigBloodItem();
 			this->_listBullet.push_back(item);
-			item->setPosition(_posX, _posY);
+			item->setPosition(_position.x, _position.y);
 			item->setObjectType(Enumerator::Object_Type::ITEM);
 			return;
 		}
@@ -80,7 +80,7 @@ void Genjibo::onCollision(BaseObject* obj)
 		if (this->shurikeinState == Enumerator::Shurikein_State::ATTACK_2 && currentState == Enumerator::Genjibo_State::MOVE)
 		{
 			this->currentState = Enumerator::Genjibo_State::JUMP;
-			this->_vy = Define::ENEMY_MIN_JUMP_VELOCITY;
+			this->_velocity.y = Define::ENEMY_MIN_JUMP_VELOCITY;
 		}
 	}
 }
@@ -97,7 +97,7 @@ void Genjibo::onCollision(Side_Collision side)
 		if (this->_side_x == Enumerator::Side_Collision::NONE && _side_y != Enumerator::Side_Collision::NONE)
 		{
 			this->change = true;
-			if (this->_vy > 0.0f)
+			if (this->_velocity.y > 0.0f)
 				this->sideGen = Enumerator::Side_Collision::BOTTOM;
 			else
 				this->sideGen = Enumerator::Side_Collision::TOP;
@@ -105,7 +105,7 @@ void Genjibo::onCollision(Side_Collision side)
 		else if (this->_side_x != Enumerator::Side_Collision::NONE && this->_side_y == Enumerator::Side_Collision::NONE)
 		{
 			this->change = true;
-			if (_vx > 0.0f)
+			if (_velocity.x > 0.0f)
 				this->sideGen = Enumerator::Side_Collision::RIGHT;
 			else
 				this->sideGen = Enumerator::Side_Collision::LEFT;
@@ -114,17 +114,17 @@ void Genjibo::onCollision(Side_Collision side)
 		{
 			this->change = false;
 			if (this->sideGen == Enumerator::Side_Collision::TOP || this->sideGen == Enumerator::Side_Collision::BOTTOM)
-				this->_vy *= -1;
+				this->_velocity.y *= -1;
 			else
-				this->_vx *= -1;
+				this->_velocity.x *= -1;
 		}
 		else if (this->_side_x == Enumerator::Side_Collision::NONE && this->_side_y == Enumerator::Side_Collision::NONE && this->change)
 		{
 			this->change = false;
 			if (this->sideGen == Enumerator::Side_Collision::TOP || this->sideGen == Enumerator::Side_Collision::BOTTOM)
-				this->_vx *= -1;
+				this->_velocity.x *= -1;
 			else
-				this->_vy *= -1;
+				this->_velocity.y *= -1;
 		}
 		break;
 	}
@@ -136,7 +136,7 @@ void Genjibo::onCollision(Side_Collision side)
 			this->currentState = Enumerator::Genjibo_State::MOVE;
 		else
 			if (side == Enumerator::Side_Collision::LEFT || side == Enumerator::Side_Collision::RIGHT)
-				this->_vx = -this->_vx;
+				this->_velocity.x = -this->_velocity.x;
 		break;
 	}
 
@@ -149,7 +149,7 @@ void Genjibo::draw(Camera* camera, RECT r, GVec2 scale, float angle, GVec2 rotat
 {
 	if (this->shurikeinState == Enumerator::Shurikein_State::APPEAR)
 	{
-		this->animGenjinbo->setPosition(this->_posX, this->posY);
+		this->animGenjinbo->setPosition(this->_position.x, this->posY);
 		this->animGenjinbo->draw(this->animGenjinbo->getPosition(), r, scale, camera->getTrans(), angle, rotate, color);
 	}
 
@@ -184,8 +184,8 @@ void Genjibo::setState(Shurikein_State keinState)
 	{
 	case Enumerator::Shurikein_State::APPEAR:
 	{
-		this->_vx = 0.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 150.0f;
 		this->anim->setAnimation(1, 10, 0.05f);
 		this->animGenjinbo->setAnimation(0, 2, 0.05f);
 		this->posY = 920.0f;
@@ -193,15 +193,15 @@ void Genjibo::setState(Shurikein_State keinState)
 	}
 	case Enumerator::Shurikein_State::STAND:
 	{
-		this->_vx = 0.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 150.0f;
 		this->anim->setAnimation(7, 17, 0.005f);
 		break;
 	}
 	case Enumerator::Shurikein_State::ATTACK_1:
 	{
-		this->_vx = -150.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = -150.0f;
+		this->_velocity.y = 150.0f;
 		this->sideGen = Enumerator::Side_Collision::BOTTOM;
 		this->currentState = Enumerator::Genjibo_State::NONE;
 		this->anim->setAnimation(5, 10, 0.03f);
@@ -211,22 +211,22 @@ void Genjibo::setState(Shurikein_State keinState)
 	{
 		this->currentState = Enumerator::Genjibo_State::MOVE;
 		this->anim->setAnimation(6, 10, 0.03f);
-		this->_vx = -150.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = -150.0f;
+		this->_velocity.y = 150.0f;
 		break;
 	}
 	case Enumerator::Shurikein_State::ATTACK_3:
 	{
 		this->currentState = Enumerator::Genjibo_State::MOVE;
 		this->anim->setAnimation(7, 17, 0.01f);
-		this->_vx = -80.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = -80.0f;
+		this->_velocity.y = 150.0f;
 		break;
 	}
 	case Enumerator::Shurikein_State::DEATH:
 		this->animDie->setAnimation(0, 8, 0.05f, false);
-		this->_vx = 0.0f;
-		this->_vy = 0.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 0.0f;
 		break;
 	default:
 		break;
@@ -242,9 +242,9 @@ void Genjibo::updateState(float dt)
 	{
 	case Enumerator::Shurikein_State::APPEAR:
 	{
-		if (this->posY >= this->_posY - 8)
+		if (this->posY >= this->_position.y - 8)
 		{
-			this->posY = this->_posY - 8;
+			this->posY = this->_position.y - 8;
 			if (this->animGenjinbo->getCurrentRow() != 1)
 			{
 				this->animGenjinbo->setAnimation(1, 2, 0.05f);
@@ -265,8 +265,8 @@ void Genjibo::updateState(float dt)
 	}
 	case Enumerator::Shurikein_State::STAND:
 	{
-		this->_vx = 0.0f;
-		this->_vy = 150.0f;
+		this->_velocity.x = 0.0f;
+		this->_velocity.y = 150.0f;
 		this->timeStand += dt;
 		if (this->timeStand > 2.0f)
 		{
@@ -306,19 +306,19 @@ void Genjibo::updateState(float dt)
 		switch (this->currentState)
 		{
 		case Enumerator::Genjibo_State::MOVE:
-			this->_vy = 150.0f;
+			this->_velocity.y = 150.0f;
 			if (this->shurikeinState == Enumerator::Shurikein_State::ATTACK_3)
 			{
 				this->currentState = Enumerator::Genjibo_State::JUMP;
-				this->_vy = Define::ENEMY_MIN_JUMP_VELOCITY;
+				this->_velocity.y = Define::ENEMY_MIN_JUMP_VELOCITY;
 				return;
 			}
 			break;
 		case Enumerator::Genjibo_State::JUMP:
 		{
 			this->addVy(this->transY);
-			if (this->_vy > Define::ENEMY_MAX_JUMP_VELOCITY)
-				this->_vy = Define::ENEMY_MAX_JUMP_VELOCITY;
+			if (this->_velocity.y > Define::ENEMY_MAX_JUMP_VELOCITY)
+				this->_velocity.y = Define::ENEMY_MAX_JUMP_VELOCITY;
 		}
 		default:
 			break;

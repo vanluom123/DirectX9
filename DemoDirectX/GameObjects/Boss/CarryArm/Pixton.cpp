@@ -19,9 +19,9 @@ Pixton::~Pixton()
 RECT Pixton::getBound()
 {
 	RECT bound;
-	bound.left = _posX - _width / 2;
-	bound.right = _posX + _width / 2;
-	bound.bottom = _posY + _height / 2;
+	bound.left = _position.x - _width / 2;
+	bound.right = _position.x + _width / 2;
+	bound.bottom = _position.y + _height / 2;
 	bound.top = bound.bottom -16;
 	return bound;
 }
@@ -75,7 +75,7 @@ bool Pixton::MoveUp(float gameTime, float x, float y)
 		{
 			_isBottom = false;
 			_pixtonPosY = 0;
-			_vy = -40.0f;
+			_velocity.y = -40.0f;
 		}
 		setPosition(x + 56, y + _pixtonPosY);
 	}
