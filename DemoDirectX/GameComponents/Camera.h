@@ -23,24 +23,24 @@ public:
 
 	RECT getBound() const;
 
-	int getWidth() const { return _width; }
-	void setWidth(int val) { _width = val; }
+	int getWidth() const { return m_nWidth; }
+	void setWidth(int val) { m_nWidth = val; }
 
-	int getHeight() const { return _height; }
-	void setHeight(int val) { _height = val; }
+	int getHeight() const { return m_nHeight; }
+	void setHeight(int val) { m_nHeight = val; }
 
-	void checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & nextRoom,
-								   int & direction, float dt);
+	void checkViewportWithMapWorld(bool bIsBoss, RECT & rcCurrentRoom, RECT & rcNextRoom,
+								   int & nDirection, float fDeltaTime);
 
-	void checkViewportWithEnemies(std::vector<BaseObject *> listEntityOut);
+	void checkViewportWithEnemies(std::vector<BaseObject *> l_vObjectOut);
 
 private:
 	Camera();
 	static Camera * s_instance;
 
-	int _width;
-	int _height;
-	GVec3 _posWorld;
+	int m_nWidth;
+	int m_nHeight;
+	GVec3 m_fPosWorld;
 };
 
 #endif // !CAMERA_H

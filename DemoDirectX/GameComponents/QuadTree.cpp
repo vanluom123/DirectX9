@@ -1,10 +1,11 @@
 ﻿#include "QuadTree.h"
 #include "GameCollision.h"
 
-QuadTree* QuadTree::s_instance = NULL;
+QuadTree* QuadTree::s_instance = nullptr;
 
-QuadTree::QuadTree()
-{}
+QuadTree::QuadTree(): _bound(), _level(0), _node(nullptr)
+{
+}
 
 QuadTree::QuadTree(int level, RECT bound)
 {
@@ -27,7 +28,7 @@ QuadTree* QuadTree::getInstance()
 void QuadTree::release()
 {
 	delete s_instance;
-	s_instance = NULL;
+	s_instance = nullptr;
 }
 
 void QuadTree::initialize(int level, RECT bound)
@@ -35,7 +36,7 @@ void QuadTree::initialize(int level, RECT bound)
 	// Separate to 4
 	_level = level;
 	_bound = bound;
-	_node = NULL;
+	_node = nullptr;
 }
 
 void QuadTree::clear()
@@ -99,15 +100,15 @@ void QuadTree::insertObject(BaseObject* entity)
 bool QuadTree::isContain(RECT r)
 {
 	return !(r.left > _bound.right ||
-			 r.right < _bound.left ||
-			 r.top > _bound.bottom ||
-			 r.bottom < _bound.top);
+		r.right < _bound.left ||
+		r.top > _bound.bottom ||
+		r.bottom < _bound.top);
 }
 
 void QuadTree::split()
 {
 	//cat phan region (ranh gioi) ra thanh 4 phan bang nhau
-	_node = new QuadTree * [4];
+	_node = new QuadTree* [4];
 
 	RECT bound;
 
@@ -200,7 +201,8 @@ void QuadTree::getObjectCollide(std::vector<BaseObject*>& EntityStatic, RECT rec
 
 			if (is_true)
 			{
-				if (child->getObjectType() != Enumerator::Object_Type::ENEMY && child->getObjectType() != Enumerator::Object_Type::BOSS && child->getObjectType() != Enumerator::Object_Type::ITEM)
+				if (child->getObjectType() != Object_Type::ENEMY && child->getObjectType() != Object_Type::BOSS && child
+					->getObjectType() != Object_Type::ITEM)
 					EntityStatic.push_back(child);
 			}
 		}
@@ -243,7 +245,7 @@ void QuadTree::getObjectCamera(std::vector<BaseObject*>& EntityOut, RECT rect)
 
 				if (is_true)
 				{
-					if (child->getObjectType() != Enumerator::Object_Type::STATIC)
+					if (child->getObjectType() != Object_Type::STATIC)
 						EntityOut.push_back(child);
 				}
 			}

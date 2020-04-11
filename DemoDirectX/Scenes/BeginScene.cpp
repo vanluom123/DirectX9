@@ -4,6 +4,7 @@
 #include "../GameComponents/GameCollision.h"
 #include "../GameObjects/Player/GameState/DieState/DieState.h"
 #include "../GameComponents/Sound.h"
+#include "../GameComponents/QuadTree.h"
 
 BeginScene::BeginScene()
 {

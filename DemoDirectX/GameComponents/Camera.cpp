@@ -6,7 +6,6 @@
 #include "../GameObjects/Player/Player.h"
 #include "GameMap.h"
 #include "../GameObjects/Player/GameState/DieState/DieState.h"
-#include "../GameObjects/Entity/BaseObject.h"
 
 Camera * Camera::s_instance = nullptr;
 
@@ -24,9 +23,9 @@ void Camera::release()
 
 void Camera::initialize(int width, int height)
 {
-	_width = width;
-	_height = height;
-	_posWorld = Gvec3Zero;
+	m_nWidth = width;
+	m_nHeight = height;
+	m_fPosWorld = Gvec3Zero;
 }
 
 void Camera::setPosition(float x, float y)
@@ -36,38 +35,38 @@ void Camera::setPosition(float x, float y)
 
 void Camera::setPosition(GVec3 pos)
 {
-	_posWorld.x = int(pos.x);
-	_posWorld.y = int(pos.y);
+	m_fPosWorld.x = int(pos.x);
+	m_fPosWorld.y = int(pos.y);
 }
 
 GVec2 Camera::getTrans() const
 {
-	int xT = (GameGlobal::getInstance()->getWidth() / 2.0f) - _posWorld.x;
-	int yT = (GameGlobal::getInstance()->getHeight() / 2.0f) - _posWorld.y;
+	int nXT = (GameGlobal::getInstance()->getWidth() / 2.0f) - m_fPosWorld.x;
+	int nYT = (GameGlobal::getInstance()->getHeight() / 2.0f) - m_fPosWorld.y;
 
-	GVec2 vec2Translation = GVec2(float(xT), float(yT));
+	GVec2 vec2Translation = GVec2(float(nXT), float(nYT));
 
 	return vec2Translation;
 }
 
 GVec3 Camera::getPosition() const
 {
-	return _posWorld;
+	return m_fPosWorld;
 }
 
 RECT Camera::getBound() const
 {
 	RECT bound;
-	bound.left = _posWorld.x - (_width / 2.0f);
-	bound.right = bound.left + _width;
-	bound.top = _posWorld.y - (_height / 2.0f);
-	bound.bottom = bound.top + _height;
+	bound.left = m_fPosWorld.x - (m_nWidth / 2.0f);
+	bound.right = bound.left + m_nWidth;
+	bound.top = m_fPosWorld.y - (m_nHeight / 2.0f);
+	bound.bottom = bound.top + m_nHeight;
 	return bound;
 }
 
-void Camera::checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & nextRoom, int & direction, float dt)
+void Camera::checkViewportWithMapWorld(bool l_bIsBoss, RECT & l_rcCurrentRoom, RECT & l_rcNextRoom, int & l_nDirection, float l_fDeltaTime)
 {
-	if (isBoss)
+	if (l_bIsBoss)
 	{
 		if (Player::getInstance()->getBound().left < this->getBound().left)
 		{
@@ -76,7 +75,7 @@ void Camera::checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & n
 		}
 		else
 		{
-			if (Player::getInstance()->getBound().right > currentRoom.right)
+			if (Player::getInstance()->getBound().right > l_rcCurrentRoom.right)
 			{
 				if (Player::getInstance()->getVx() > 0)
 					Player::getInstance()->setVx(0.0f);
@@ -84,58 +83,59 @@ void Camera::checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & n
 		}
 	}
 
-	if (GameCollision::getInstance()->pointCollision(Player::getInstance()->getPosition().x, Player::getInstance()->getPosition().y, currentRoom) == false)
+	if (GameCollision::getInstance()->pointCollision(Player::getInstance()->getPosition().x, Player::getInstance()->getPosition().y, l_rcCurrentRoom) == false)
 	{
-		bool is_room = true;
-		for (auto room : GameMap::getInstance()->getListRoom())
+		bool l_bIsRoom = true;
+		auto l_vRoom = GameMap::getInstance()->getListRoom();
+		for (auto room : l_vRoom)
 		{
 			if (GameCollision::getInstance()->pointCollision(Player::getInstance()->getPosition().x, Player::getInstance()->getPosition().y, room) == true)
 			{
-				is_room = false;
-				nextRoom = room;
-				currentRoom = room;
+				l_bIsRoom = false;
+				l_rcNextRoom = room;
+				l_rcCurrentRoom = room;
 
-				auto centerX = currentRoom.left + (currentRoom.right - currentRoom.left) / 2;
+				auto l_nCenterX = l_rcCurrentRoom.left + (l_rcCurrentRoom.right - l_rcCurrentRoom.left) / 2;
 
-				if (Player::getInstance()->getPosition().x < centerX)
+				if (Player::getInstance()->getPosition().x < l_nCenterX)
 				{
-					if (this->getBound().left < currentRoom.left)
+					if (this->getBound().left < l_rcCurrentRoom.left)
 					{
-						direction = 1;
-						currentRoom.left = this->getBound().left;
+						l_nDirection = 1;
+						l_rcCurrentRoom.left = this->getBound().left;
 					}
 				}
 				else
 				{
-					if (this->getBound().right > currentRoom.right)
+					if (this->getBound().right > l_rcCurrentRoom.right)
 					{
-						direction = -1;
-						currentRoom.right = this->getBound().right;
+						l_nDirection = -1;
+						l_rcCurrentRoom.right = this->getBound().right;
 					}
 				}
 				break;
 			}
 		}
-		if (is_room)
+		if (l_bIsRoom)
 			Player::getInstance()->setState(new DieState());
 	}
 
-	if (direction == 1)
+	if (l_nDirection == 1)
 	{
-		currentRoom.left += 300 * dt;
-		if (currentRoom.left >= nextRoom.left)
+		l_rcCurrentRoom.left += 300 * l_fDeltaTime;
+		if (l_rcCurrentRoom.left >= l_rcNextRoom.left)
 		{
-			currentRoom.left = nextRoom.left;
-			direction = 0;
+			l_rcCurrentRoom.left = l_rcNextRoom.left;
+			l_nDirection = 0;
 		}
 	}
-	else if (direction == -1)
+	else if (l_nDirection == -1)
 	{
-		currentRoom.right -= 300 * dt;
-		if (currentRoom.right <= nextRoom.right)
+		l_rcCurrentRoom.right -= 300 * l_fDeltaTime;
+		if (l_rcCurrentRoom.right <= l_rcNextRoom.right)
 		{
-			currentRoom.right = nextRoom.right;
-			direction = 0;
+			l_rcCurrentRoom.right = l_rcNextRoom.right;
+			l_nDirection = 0;
 		}
 	}
 	else
@@ -145,36 +145,36 @@ void Camera::checkViewportWithMapWorld(bool isBoss, RECT & currentRoom, RECT & n
 		this->setPosition(Player::getInstance()->getPosition());
 	}
 
-	if (this->getBound().left < currentRoom.left)
-		this->setPosition(currentRoom.left + this->getWidth() / 2, this->getPosition().y);
-	else if (this->getBound().right > currentRoom.right)
-		this->setPosition(currentRoom.right - this->getWidth() / 2, this->getPosition().y);
+	if (this->getBound().left < l_rcCurrentRoom.left)
+		this->setPosition(l_rcCurrentRoom.left + this->getWidth() / 2, this->getPosition().y);
+	else if (this->getBound().right > l_rcCurrentRoom.right)
+		this->setPosition(l_rcCurrentRoom.right - this->getWidth() / 2, this->getPosition().y);
 
-	if (this->getBound().top < currentRoom.top)
-		this->setPosition(this->getPosition().x, currentRoom.top + this->getHeight() / 2);
-	else if (this->getBound().bottom > currentRoom.bottom)
-		this->setPosition(this->getPosition().x, currentRoom.bottom - this->getHeight() / 2);
+	if (this->getBound().top < l_rcCurrentRoom.top)
+		this->setPosition(this->getPosition().x, l_rcCurrentRoom.top + this->getHeight() / 2);
+	else if (this->getBound().bottom > l_rcCurrentRoom.bottom)
+		this->setPosition(this->getPosition().x, l_rcCurrentRoom.bottom - this->getHeight() / 2);
 }
 
-void Camera::checkViewportWithEnemies(std::vector<BaseObject *> listEntityOut)
+void Camera::checkViewportWithEnemies(std::vector<BaseObject *> l_vObjectOut)
 {
-	for (int i = 0; i < listEntityOut.size(); i++)
+	for (int i = 0; i < l_vObjectOut.size(); i++)
 	{
-		if (listEntityOut.at(i)->getObjectType() != Enumerator::Object_Type::ENEMY)
+		if (l_vObjectOut.at(i)->getObjectType() != Enumerator::Object_Type::ENEMY)
 			continue;
 
-		bool isReverse = (Player::getInstance()->getPosition().x > listEntityOut.at(i)->getPosition().x) ? true : false;
-		listEntityOut.at(i)->setReverse(isReverse);
+		bool l_bIsReverse = (Player::getInstance()->getPosition().x > l_vObjectOut.at(i)->getPosition().x) ? true : false;
+		l_vObjectOut.at(i)->setReverse(l_bIsReverse);
 
-		if (!GameCollision::getInstance()->isNested(Camera::getInstance()->getBound(), listEntityOut.at(i)->getBound())
-			&& !GameCollision::getInstance()->pointCollision(listEntityOut.at(i)->getPositionStart().x, listEntityOut.at(i)->getPositionStart().y, Camera::getInstance()->getBound()))
-			listEntityOut.at(i)->newObject();
+		if (!GameCollision::getInstance()->isNested(Camera::getInstance()->getBound(), l_vObjectOut.at(i)->getBound())
+			&& !GameCollision::getInstance()->pointCollision(l_vObjectOut.at(i)->getPositionStart().x, l_vObjectOut.at(i)->getPositionStart().y, Camera::getInstance()->getBound()))
+			l_vObjectOut.at(i)->newObject();
 	}
 }
 
 Camera::Camera()
 { 
-	_width = GameGlobal::getInstance()->getWidth();
-	_height = GameGlobal::getInstance()->getHeight();
-	_posWorld = Gvec3Zero;
+	m_nWidth = GameGlobal::getInstance()->getWidth();
+	m_nHeight = GameGlobal::getInstance()->getHeight();
+	m_fPosWorld = Gvec3Zero;
 }

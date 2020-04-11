@@ -4,14 +4,14 @@
 
 BaseObject::BaseObject()
 {
-	_objectType = Enumerator::Object_Type::NONE;
+	_objectType = Object_Type::NONE;
 	_velocity.x = 0;
 	_velocity.y = 0;
 
 	_colTimeMinX = 1;
 	_colTimeMinY = 1;
-	_side_x = Enumerator::Side_Collision::NONE;
-	_side_y = Enumerator::Side_Collision::NONE;
+	_side_x = Side_Collision::NONE;
+	_side_y = Side_Collision::NONE;
 
 	_isAllowDraw = true;
 	_isDestroy = false;
@@ -35,7 +35,6 @@ BaseObject::BaseObject()
 
 	_position.x = _startPosition.x;
 	_position.y = _startPosition.y;
-
 }
 
 BaseObject::~BaseObject()
@@ -58,7 +57,7 @@ RECT BaseObject::getBound()
 
 GVec3 BaseObject::getPosition() const
 {
-	return { _position.x, _position.y, 0.0f };
+	return {_position.x, _position.y, 0.0f};
 }
 
 void BaseObject::setPosition(float x, float y)
@@ -79,7 +78,7 @@ void BaseObject::setPosition(GVec3 pos)
 
 GVec3 BaseObject::getPositionStart() const
 {
-	return { _startPosition.x,_startPosition.y, 0 };
+	return {_startPosition.x, _startPosition.y, 0};
 }
 
 void BaseObject::setPositionStart(float x, float y)
@@ -236,12 +235,12 @@ bool BaseObject::IsDestroy() const
 	return _isDestroy;
 }
 
-vector<BaseObject *> BaseObject::getListBullet()
+vector<BaseObject*> BaseObject::getListBullet()
 {
 	return _listBullet;
 }
 
-void BaseObject::insertBullet(BaseObject * obj)
+void BaseObject::insertBullet(BaseObject* obj)
 {
 	_listBullet.push_back(obj);
 }
@@ -262,18 +261,22 @@ void BaseObject::onCollision(Side_Collision side)
 	_velocity.y = 0.0f;
 }
 
-void BaseObject::onCollision(BaseObject * obj)
-{ }
+void BaseObject::onCollision(BaseObject* obj)
+{
+	// Do nothing
+}
 
 void BaseObject::onNoCollisionWithBottom()
-{ }
+{
+	// Do nothing
+}
 
 void BaseObject::update(float dt)
 {
 	if (_HP > _MaxHP)
 		_HP = _MaxHP;
 
-	if (_side_x != Enumerator::Side_Collision::NONE)
+	if (_side_x != Side_Collision::NONE)
 	{
 		if (_colTimeMinY == 0.0f)
 		{
@@ -281,12 +284,12 @@ void BaseObject::update(float dt)
 				this->getBound().top >= _entity_x->getBound().bottom)
 			{
 				_colTimeMinX = 1.0f;
-				_side_x = Enumerator::Side_Collision::NONE;
+				_side_x = Side_Collision::NONE;
 			}
 		}
 		this->onCollision(_side_x);
 	}
-	if (_side_y != Enumerator::Side_Collision::NONE)
+	if (_side_y != Side_Collision::NONE)
 	{
 		if (_colTimeMinX == 0.0f)
 		{
@@ -294,7 +297,7 @@ void BaseObject::update(float dt)
 				this->getBound().left >= _entity_y->getBound().right)
 			{
 				_colTimeMinY = 1.0f;
-				_side_y = Enumerator::Side_Collision::NONE;
+				_side_y = Side_Collision::NONE;
 			}
 		}
 		this->onCollision(_side_y);
@@ -302,19 +305,19 @@ void BaseObject::update(float dt)
 
 	_position.x += _velocity.x * dt * _colTimeMinX;
 	_colTimeMinX = 1.0f;
-	_side_x = Enumerator::Side_Collision::NONE;
+	_side_x = Side_Collision::NONE;
 
 	_position.y += _velocity.y * dt * _colTimeMinY;
 	_colTimeMinY = 1.0f;
-	_side_y = Enumerator::Side_Collision::NONE;
+	_side_y = Side_Collision::NONE;
 }
 
-void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, BaseObject * other)
+void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, BaseObject* other)
 {
 	switch (side)
 	{
-		case Enumerator::Side_Collision::LEFT:
-		case Enumerator::Side_Collision::RIGHT:
+	case Side_Collision::LEFT:
+	case Side_Collision::RIGHT:
 		{
 			if (collisionTime < _colTimeMinX)
 			{
@@ -325,8 +328,8 @@ void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, Ba
 			break;
 		}
 
-		case Enumerator::Side_Collision::TOP:
-		case Enumerator::Side_Collision::BOTTOM:
+	case Side_Collision::TOP:
+	case Side_Collision::BOTTOM:
 		{
 			if (collisionTime < _colTimeMinY)
 			{
@@ -337,6 +340,6 @@ void BaseObject::checkTimeCollision(float collisionTime, Side_Collision side, Ba
 			break;
 		}
 
-		default: break;
+	default: break;
 	}
 }

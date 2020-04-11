@@ -191,82 +191,82 @@ namespace Enumerator
 namespace Define
 {
 	// ROCK MAN SPRITE ANIMATION
-	const char ANIMATION_ROCKMAN[] = "Resources/RockMan/rock_man_sprite_sheet.png";
-	const char ANIMATION_CHARGE[] = "Resources/RockMan/Charge.png";
-	const char ANIMATION_DASH[] = "Resources/RockMan/EffectDash.png";
-	const char ANIMATION_SLIDE[] = "Resources/RockMan/EffectSlide.png";
+	const char ANIMATION_ROCKMAN[]         = "Resources/RockMan/rock_man_sprite_sheet.png";
+	const char ANIMATION_CHARGE[]          = "Resources/RockMan/Charge.png";
+	const char ANIMATION_DASH[]            = "Resources/RockMan/EffectDash.png";
+	const char ANIMATION_SLIDE[]           = "Resources/RockMan/EffectSlide.png";
 
 	// ROCK MAN BULLET
-	const char ROCKMAN_BULLET[] = "Resources/RockMan/bullet.png";
-	const char ROCKMAN_BULLET_LEVEL_1[] = "Resources/RockMan/bullet_level_1.png";
-	const char ROCKMAN_BULLET_LEVEL_2[] = "Resources/RockMan/bullet_level_2.png";
-	const char ROCKMAN_EXPLOSION[] = "Resources/RockMan/explosions_bullet.png";
+	const char ROCKMAN_BULLET[]            = "Resources/RockMan/bullet.png";
+	const char ROCKMAN_BULLET_LEVEL_1[]    = "Resources/RockMan/bullet_level_1.png";
+	const char ROCKMAN_BULLET_LEVEL_2[]    = "Resources/RockMan/bullet_level_2.png";
+	const char ROCKMAN_EXPLOSION[]         = "Resources/RockMan/explosions_bullet.png";
 	const char ROCKMAN_EXPLOSION_LEVEL_1[] = "Resources/RockMan/explosion_level_1.png";
 	const char ROCKMAN_EXPLOSION_LEVEL_2[] = "Resources/RockMan/explosion_level_2.png";
 
 	// NOTOR BANGER
-	const char NOTOR_BANGER_BULLET[] = "Resources/Enemies/NotorBanger/NotorBangerBullet.png";
-	const char NOTOR_BANGER_SPRITE[] = "Resources/Enemies/NotorBanger/NotorBangerSprite.png";
-	const char BANGER_DIE[] = "Resources/Enemies/NotorBanger/NotorBangerDie.png";
+	const char NOTOR_BANGER_BULLET[]       = "Resources/Enemies/NotorBanger/NotorBangerBullet.png";
+	const char NOTOR_BANGER_SPRITE[]       = "Resources/Enemies/NotorBanger/NotorBangerSprite.png";
+	const char BANGER_DIE[]                = "Resources/Enemies/NotorBanger/NotorBangerDie.png";
 
 	// HEAD GUNNER
-	const char HEAD_GUNNER_SPRITE[] = "Resources/Enemies/HeadGunnerCustomer/HeadGunnerSpriteSheet.png";
-	const char HEAD_GUNNER_BULLET[] = "Resources/Enemies/HeadGunnerCustomer/HeadGunnerBullet.png";
-	const char GUNNER_DIE[] = "Resources/Enemies/HeadGunnerCustomer/GunnerDie.png";
+	const char HEAD_GUNNER_SPRITE[]        = "Resources/Enemies/HeadGunnerCustomer/HeadGunnerSpriteSheet.png";
+	const char HEAD_GUNNER_BULLET[]        = "Resources/Enemies/HeadGunnerCustomer/HeadGunnerBullet.png";
+	const char GUNNER_DIE[]                = "Resources/Enemies/HeadGunnerCustomer/GunnerDie.png";
 
 	// HELIT
-	const char HELIT_SPRITE_SHEET[] = "Resources/Enemies/Helit/HelitSpriteSheet.png";
-	const char HELIT_BULLET[] = "Resources/Enemies/Helit/HelitBullet.png";
-	const char HELIT_DIE[] = "Resources/Enemies/Helit/HelitDie.png";
+	const char HELIT_SPRITE_SHEET[]        = "Resources/Enemies/Helit/HelitSpriteSheet.png";
+	const char HELIT_BULLET[]              = "Resources/Enemies/Helit/HelitBullet.png";
+	const char HELIT_DIE[]                 = "Resources/Enemies/Helit/HelitDie.png";
 
 	// CARRY ARM
-	const char CARRY_ARM[] = "Resources/Enemies/CarryArm/ArmSpriteSheet.png";
-	const char SUB_BOSS_CARRY_ARM[] = "Resources/Enemies/CarryArm/x3_subboss_carryarm_01.png";
-	const char CARRY_ARM_ATTACK[] = "Resources/Enemies/CarryArm/attack.png";
-	const char CARRY_ARM_BULLET[] = "Resources/Enemies/CarryArm/bullet.png";
+	const char CARRY_ARM[]                 = "Resources/Enemies/CarryArm/ArmSpriteSheet.png";
+	const char SUB_BOSS_CARRY_ARM[]        = "Resources/Enemies/CarryArm/x3_subboss_carryarm_01.png";
+	const char CARRY_ARM_ATTACK[]          = "Resources/Enemies/CarryArm/attack.png";
+	const char CARRY_ARM_BULLET[]          = "Resources/Enemies/CarryArm/bullet.png";
 
 	// GENJIBO AND SHURIKEIN
-	const char GENJIBO_SHURIKEIN[] = "Resources/Enemies/Genjibo/ShurikenSpriteSheet.png";
-	const char SHURIKEN[] = "Resources/Enemies/Genjibo/GenjiboSprite.png";
+	const char GENJIBO_SHURIKEIN[]         = "Resources/Enemies/Genjibo/ShurikenSpriteSheet.png";
+	const char SHURIKEN[]                  = "Resources/Enemies/Genjibo/GenjiboSprite.png";
 
 	// BLAST HORNET
-	const char BLAST_HORNET_IDLE[] = "Resources/Enemies/BlastHornet/State/Stand/animation_stand.png";
-	const char BLAST_HORNET_APPEAR[] = "Resources/Enemies/BlastHornet/State/Appear/animation_appear.png";
-	const char BLAST_HORNET_ATTACK[] = "Resources/Enemies/BlastHornet/State/Attack/animation_attack.png";
-	const char BLAST_HORNET_SHOOT[] = "Resources/Enemies/BlastHornet/State/Shooter/animation_shoot.png";
+	const char BLAST_HORNET_IDLE[]         = "Resources/Enemies/BlastHornet/State/Stand/animation_stand.png";
+	const char BLAST_HORNET_APPEAR[]       = "Resources/Enemies/BlastHornet/State/Appear/animation_appear.png";
+	const char BLAST_HORNET_ATTACK[]       = "Resources/Enemies/BlastHornet/State/Attack/animation_attack.png";
+	const char BLAST_HORNET_SHOOT[]        = "Resources/Enemies/BlastHornet/State/Shooter/animation_shoot.png";
 	// BULLET OF BLAST HORNET
-	const char BULLET_BLAST_HORNET[] = "Resources/Enemies/BlastHornet/Bullet/BulletAnim.png";
+	const char BULLET_BLAST_HORNET[]       = "Resources/Enemies/BlastHornet/Bullet/BulletAnim.png";
 	// THE EXPLOSION OF BLAST HORNET
-	const char EXPLOSION_BLAST_HORNET[] = "Resources/Enemies/BlastHornet/Burst/BurstAnimation.png";
+	const char EXPLOSION_BLAST_HORNET[]    = "Resources/Enemies/BlastHornet/Burst/BurstAnimation.png";
 
-	const char BURST[] = "Resources/Enemies/Burst.png";
-	const char EXPLOSIONS[] = "Resources/Enemies/Explosions/RedExplosionsSpriteSheet.png";
+	const char BURST[]                     = "Resources/Enemies/Burst.png";
+	const char EXPLOSIONS[]                = "Resources/Enemies/Explosions/RedExplosionsSpriteSheet.png";
 
-	const char WORLD_MAP_PNG[] = "Resources/Map/MapStage1.png";
-	const char WORLD_MAP[] = "Resources/Map/Map1.tmx";
-	const char Elevator[] = "Resources/MapObject/Elevator.png";
+	const char WORLD_MAP_PNG[]             = "Resources/Map/MapStage1.png";
+	const char WORLD_MAP[]                 = "Resources/Map/Map1.tmx";
+	const char Elevator[]                  = "Resources/MapObject/Elevator.png";
 
 	// ITEM
-	const char SUB_TANK_ITEM[] = "Resources/Items/sub-tanks.bmp";
-	const char SMALL_SUB_TANK_ITEM[] = "Resources/Items/sub-tanks_small.bmp";
-	const char ENEGY_ITEM[] = "Resources/Items/energy-hearts.bmp";
-	const char BLOOD_IS_SMALL_ITEM[] = "Resources/Items/small_blood.bmp";
-	const char BLOOD_IS_BIG_ITEM[] = "Resources/Items/big_blood.bmp";
+	const char SUB_TANK_ITEM[]             = "Resources/Items/sub-tanks.bmp";
+	const char SMALL_SUB_TANK_ITEM[]       = "Resources/Items/sub-tanks_small.bmp";
+	const char ENEGY_ITEM[]                = "Resources/Items/energy-hearts.bmp";
+	const char BLOOD_IS_SMALL_ITEM[]       = "Resources/Items/small_blood.bmp";
+	const char BLOOD_IS_BIG_ITEM[]         = "Resources/Items/big_blood.bmp";
 
 	// BOX
-	const char BOXX[] = "Resources/Enemies/CarryArm/box.png";
+	const char BOXX[]                      = "Resources/Enemies/CarryArm/box.png";
 
 	// PISTOL
-	const char PISTOL[] = "Resources/Enemies/CarryArm/x3_subboss_carryarm_39.png";
+	const char PISTOL[]                    = "Resources/Enemies/CarryArm/x3_subboss_carryarm_39.png";
 
-	const float PLAYER_MAX_JUMP_VELOCITY = 300.0f;
-	const float PLAYER_MIN_JUMP_VELOCITY = -300.0f;
-	const float PLAYER_MAX_RUNNING_SPEED = 125.0f;
-	const float PLAYER_MAX_CLING_SPEED = 25.0f;
-	const float PLAYER_MAX_SLIDE_SPEED = 230.0f;
+	const float PLAYER_MAX_JUMP_VELOCITY   = 300.0f;
+	const float PLAYER_MIN_JUMP_VELOCITY   = -300.0f;
+	const float PLAYER_MAX_RUNNING_SPEED   = 125.0f;
+	const float PLAYER_MAX_CLING_SPEED     = 25.0f;
+	const float PLAYER_MAX_SLIDE_SPEED     = 230.0f;
 
-	const float ENEMY_MAX_JUMP_VELOCITY = 300.0f;
-	const float ENEMY_MIN_JUMP_VELOCITY = -300.0f;
+	const float ENEMY_MAX_JUMP_VELOCITY    = 300.0f;
+	const float ENEMY_MIN_JUMP_VELOCITY    = -300.0f;
 }
 
 #endif

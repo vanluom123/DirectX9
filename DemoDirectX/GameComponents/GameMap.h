@@ -3,25 +3,21 @@
 
 #include <vector>
 #include "../GameComponents/Sprite.h"
-#include "Camera.h"
-#include "QuadTree.h"
 #include "../GameObjects/Player/Player.h"
-#include <iostream>
-#include <tmxparser/Tmx.h.in>
+#include <tmxparser/Tmx.h>
 
 class GameMap
 {
-private:
-	Sprite * _tileMap;
-	Sprite * _tileMap1;
-	Tmx::Map * _pTmxMap;
+	Sprite * m_pTileMap;
+	Sprite * m_pTileMap1;
+	Tmx::Map * m_pMap;
 
-	std::vector<BaseObject *> _listEnemies;
-	std::vector<RECT> _listRoom;
+	std::vector<BaseObject *> m_lstEnemies;
+	std::vector<RECT> m_lstRoom;
 
-	RECT _srect;
+	RECT m_rc;
 
-	GameMap() { }
+	GameMap();
 	static GameMap * s_instance;
 
 public:
@@ -36,7 +32,6 @@ public:
 	void draw();
 	void draw1();
 
-public:
 	int getWidth() const;
 	int getHeight() const;
 

@@ -38,13 +38,14 @@ private:
 	GameGlobal();
 	static GameGlobal* s_instance;
 
-	HINSTANCE _hInstance; //current Windows HINSTANCE
-	HWND _hWnd; //current HWND
-	LPD3DXSPRITE _spriteHandler; //Current SpriteHandler
-	int _width, _height; //Size of windows
-	LPDIRECT3DDEVICE9 _d3ddv; //Current direct device
-	LPDIRECT3DSURFACE9 _BackSurface;
-	bool _IsGameRunning; //Game State
+	HINSTANCE m_hInstance;          //current Windows HINSTANCE
+	HWND m_hWnd;                    //current HWND
+	LPD3DXSPRITE m_lpSpriteHandler; //Current SpriteHandler
+	int m_width;                    //Size of windows
+	int m_height;
+	LPDIRECT3DDEVICE9 m_lpD3ddv;    //Current direct device
+	LPDIRECT3DSURFACE9 m_lpBackSurface;
+	bool m_bGameRunning;            //Game State
 };
 
 #endif

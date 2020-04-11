@@ -10,111 +10,111 @@ Animation::Animation(const char* filePath,
 					 D3DCOLOR colorKey) :
 	Sprite(filePath, RECT(), frameWidth, frameHeight, colorKey)
 {
-	_row = rows;
-	_cols = columns;
-	_currentRow = 0;
-	_currentIndex = 0;
-	_framePerRow = columns;
-	_frameWidth = frameWidth;
-	_frameHeight = frameHeight;
-	_timePerFrame = timePerFrame;
-	_isLoop = true;
-	_isPause = false;
-	_isShoot = false;
-	_currentTotalTime = 0.0f;
-	_rect = RECT();
+	m_nRow = rows;
+	m_nCols = columns;
+	m_nCurrentRow = 0;
+	m_nCurrentIndex = 0;
+	m_nFramePerRow = columns;
+	m_nFrameWidth = frameWidth;
+	m_nFrameHeight = frameHeight;
+	m_timePerFrame = timePerFrame;
+	m_bLoop = true;
+	m_bPause = false;
+	m_bShoot = false;
+	m_currentTotalTime = 0.0f;
+	m_SrcRect = RECT();
 }
 
 void Animation::setFrame(int frameW, int frameH)
 {
-	_frameWidth = frameW;
-	_frameHeight = frameH;
+	m_nFrameWidth = frameW;
+	m_nFrameHeight = frameH;
 	setWidth(frameW);
 	setHeight(frameH);
 }
 
 void Animation::setAnimation(int currentRow, int framePerRow, float timePerFrame, bool loopAnimation)
 {
-	_currentRow = currentRow;
-	_framePerRow = framePerRow;
-	_timePerFrame = timePerFrame;
-	_isLoop = loopAnimation;
-	_currentTotalTime = 0.0f;
-	_currentIndex = 0;
-	_isPause = false;
+	m_nCurrentRow = currentRow;
+	m_nFramePerRow = framePerRow;
+	m_timePerFrame = timePerFrame;
+	m_bLoop = loopAnimation;
+	m_currentTotalTime = 0.0f;
+	m_nCurrentIndex = 0;
+	m_bPause = false;
 }
 
 void Animation::update(float dt)
 {
-	_rect.left = _currentIndex * _frameWidth;
-	_rect.right = _rect.left + _frameWidth;
-	_rect.top = (_currentRow + _isShoot) * _frameHeight;
-	_rect.bottom = _rect.top + _frameHeight;
+	m_SrcRect.left = m_nCurrentIndex * m_nFrameWidth;
+	m_SrcRect.right = m_SrcRect.left + m_nFrameWidth;
+	m_SrcRect.top = (m_nCurrentRow + m_bShoot) * m_nFrameHeight;
+	m_SrcRect.bottom = m_SrcRect.top + m_nFrameHeight;
 
-	this->setSourceRect(_rect);
+	this->setSourceRect(m_SrcRect);
 
-	if (_framePerRow <= 1 || _isPause)
+	if (m_nFramePerRow <= 1 || m_bPause)
 		return;
 
-	_currentTotalTime += dt;
+	m_currentTotalTime += dt;
 
-	if (_currentTotalTime < _timePerFrame)
+	if (m_currentTotalTime < m_timePerFrame)
 		return;
 
-	_currentTotalTime = 0.0f;
-	_currentIndex++;
+	m_currentTotalTime = 0.0f;
+	m_nCurrentIndex++;
 
-	if (_currentIndex < _framePerRow)
+	if (m_nCurrentIndex < m_nFramePerRow)
 		return;
 
-	if (_isLoop)
-		_currentIndex = 0;
+	if (m_bLoop)
+		m_nCurrentIndex = 0;
 	else
 	{
-		_currentIndex = _framePerRow - 1;
-		_isPause = true;
+		m_nCurrentIndex = m_nFramePerRow - 1;
+		m_bPause = true;
 	}
 }
 
 void Animation::fixUpdate(float dt)
 {
-	_rect.left = _currentIndex * _frameWidth;
-	_rect.right = _rect.left + _frameWidth;
-	_rect.top = (_currentRow + _isShoot) * _frameHeight;
-	_rect.bottom = _rect.top + _frameHeight;
+	m_SrcRect.left = m_nCurrentIndex * m_nFrameWidth;
+	m_SrcRect.right = m_SrcRect.left + m_nFrameWidth;
+	m_SrcRect.top = (m_nCurrentRow + m_bShoot) * m_nFrameHeight;
+	m_SrcRect.bottom = m_SrcRect.top + m_nFrameHeight;
 
-	this->setSourceRect(_rect);
+	this->setSourceRect(m_SrcRect);
 
-	if (_framePerRow <= 1 || _isPause)
+	if (m_nFramePerRow <= 1 || m_bPause)
 		return;
 
-	_currentTotalTime += dt;
+	m_currentTotalTime += dt;
 
-	if (_currentTotalTime < _timePerFrame)
+	if (m_currentTotalTime < m_timePerFrame)
 		return;
 
-	_currentTotalTime = 0.0f;
-	_currentIndex++;
+	m_currentTotalTime = 0.0f;
+	m_nCurrentIndex++;
 
-	if (_currentIndex < _framePerRow)
+	if (m_nCurrentIndex < m_nFramePerRow)
 		return;
 
-	_currentRow++;
-	_currentIndex = 0;
+	m_nCurrentRow++;
+	m_nCurrentIndex = 0;
 
-	if (_currentRow < _row)
+	if (m_nCurrentRow < m_nRow)
 		return;
 
-	if (_isLoop)
+	if (m_bLoop)
 	{
-		_currentIndex = 0;
-		_currentRow = 0;
+		m_nCurrentIndex = 0;
+		m_nCurrentRow = 0;
 	}
 	else
 	{
-		_currentIndex = _framePerRow - 1;
-		_currentRow = _row - 1;
-		_isPause = true;
+		m_nCurrentIndex = m_nFramePerRow - 1;
+		m_nCurrentRow = m_nRow - 1;
+		m_bPause = true;
 	}
 }
 
@@ -131,30 +131,30 @@ void Animation::draw(GVec2 translate)
 
 int Animation::getCurrentRow() const
 {
-	return _currentRow;
+	return m_nCurrentRow;
 }
 
 int Animation::getCurrentColumn() const
 {
-	return _currentIndex;
+	return m_nCurrentIndex;
 }
 
 void Animation::setShoot(bool shoot)
 {
-	_isShoot = shoot;
+	m_bShoot = shoot;
 }
 
 void Animation::setPause(bool pause)
 {
-	_isPause = pause;
+	m_bPause = pause;
 }
 
 bool Animation::getPause() const
 {
-	return _isPause;
+	return m_bPause;
 }
 
 void Animation::setLoop(bool isLoop)
 {
-	_isLoop = isLoop;
+	m_bLoop = isLoop;
 }

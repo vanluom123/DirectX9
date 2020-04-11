@@ -1,14 +1,11 @@
 #pragma once
 
-#include <d3dx9.h>
 #include <d3d9.h>
 #include <vector>
-#include "Camera.h"
 #include "../GameObjects/Entity/BaseObject.h"
 
 class QuadTree
 {
-private:
 	//thuc hien chia ra cac node
 	void split(); 
 

@@ -4,12 +4,12 @@ GameGlobal* GameGlobal::s_instance = nullptr;
 
 void GameGlobal::setDevice(LPDIRECT3DDEVICE9 device)
 {
-	_d3ddv = device;
+	m_lpD3ddv = device;
 }
 
 LPDIRECT3DDEVICE9 GameGlobal::getDevice()
 {
-	return _d3ddv;
+	return m_lpD3ddv;
 }
 
 GameGlobal::~GameGlobal()
@@ -25,82 +25,82 @@ GameGlobal* GameGlobal::getInstance()
 
 HINSTANCE GameGlobal::getHinstance()
 {
-	return _hInstance;
+	return m_hInstance;
 }
 
 HWND GameGlobal::getWnd()
 {
-	return _hWnd;
+	return m_hWnd;
 }
 
 void GameGlobal::setHinstance(HINSTANCE hInstance)
 {
-	_hInstance = hInstance;
+	m_hInstance = hInstance;
 }
 
 void GameGlobal::setWnd(HWND hWnd)
 {
-	_hWnd = hWnd;
+	m_hWnd = hWnd;
 }
 
 void GameGlobal::setDXSprite(LPD3DXSPRITE spriteHandler)
 {
-	_spriteHandler = spriteHandler;
+	m_lpSpriteHandler = spriteHandler;
 }
 
 LPD3DXSPRITE GameGlobal::getDXSprite()
 {
-	return _spriteHandler;
+	return m_lpSpriteHandler;
 }
 
 void GameGlobal::setWidth(int width)
 {
-	_width = width;
+	m_width = width;
 }
 
 int GameGlobal::getWidth()
 {
-	return _width;
+	return m_width;
 }
 
 void GameGlobal::setHeight(int height)
 {
-	_height = height;
+	m_height = height;
 }
 
 int GameGlobal::getHeight()
 {
-	return _height;
+	return m_height;
 }
 
 void GameGlobal::IsGameRunning(bool val)
 {
-	_IsGameRunning = val;
+	m_bGameRunning = val;
 }
 
 bool GameGlobal::IsGameRunning()
 {
-	return _IsGameRunning;
+	return m_bGameRunning;
 }
 
 LPDIRECT3DSURFACE9 GameGlobal::getBackSurface()
 {
-	return _BackSurface;
+	return m_lpBackSurface;
 }
 
 void GameGlobal::setBackSurface(LPDIRECT3DSURFACE9 val)
 {
-	_BackSurface = val;
+	m_lpBackSurface = val;
 }
 
 GameGlobal::GameGlobal()
 {
-	_hInstance = nullptr;
-	_hWnd = nullptr;
-	_spriteHandler = nullptr;
-	_width = 256;
-	_height = 256;
-	_d3ddv = nullptr;
-	_IsGameRunning = true;
-	_BackSurface = nullptr;
+	m_hInstance = nullptr;
+	m_hWnd = nullptr;
+	m_lpSpriteHandler = nullptr;
+	m_width = 256;
+	m_height = 256;
+	m_lpD3ddv = nullptr;
+	m_bGameRunning = true;
+	m_lpBackSurface = nullptr;
 }

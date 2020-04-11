@@ -2,7 +2,6 @@
 #define __ANIMATION_H__
 
 #include <Windows.h>
-#include <vector>
 #include "Sprite.h"
 
 class Animation : public Sprite
@@ -29,7 +28,25 @@ public:
 
 	void draw(GVec2 translate);
 
-	// SUB-FUNCTION
+
+private:
+	int m_nRow;
+	int m_nCols;
+	int m_nFramePerRow;
+	int m_nCurrentIndex;
+	int m_nCurrentRow;
+	int m_nFrameWidth;
+	int m_nFrameHeight;
+
+	bool m_bLoop;
+	bool m_bShoot;
+	bool m_bPause;
+
+	float m_timePerFrame;
+	float m_currentTotalTime;
+
+	RECT m_SrcRect;
+
 public:
 	int getCurrentRow() const;
 	int getCurrentColumn() const;
@@ -41,23 +58,5 @@ public:
 	void setFrame(int frameW, int frameH);
 	void setAnimation(int currentRow, int framePerRow, float timePerFrame = 0.1f, bool isLoop = true);
 
-private:
-
-	int	_row,				// the number of row of sprite sheet
-		_cols,
-		_framePerRow,		// the number of column of sprite sheet
-		_currentIndex,		// The value of current frame - start from 0 -> The total frame - 1
-		_currentRow,		// current row in frame of sprite sheet
-		_frameWidth,		// The width of frame
-		_frameHeight;		// The height of frame
-
-	bool _isLoop,
-		_isShoot,
-		_isPause;
-
-	float _timePerFrame,	// time to translate one frame
-		_currentTotalTime;	// The total current time to execute time per frame
-
-	RECT _rect;
 };
 #endif

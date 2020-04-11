@@ -17,33 +17,33 @@ GameCollision * GameCollision::getInstance()
 	return s_instance;
 }
 
-bool GameCollision::pointCollision(float x, float y, const RECT & box)
+bool GameCollision::pointCollision(float nPositionX, float nPositionY, const RECT & box)
 {
-	return (x >= box.left &&
-			y <= box.bottom &&
-			x <= box.right &&
-			y >= box.top);
+	return (nPositionX >= box.left &&
+			nPositionY <= box.bottom &&
+			nPositionX <= box.right &&
+			nPositionY >= box.top);
 }
 
-bool GameCollision::circleCollision(RECT bound, int circle_x, int circle_y, int circleRadius)
+bool GameCollision::circleCollision(RECT bound, int nCircleX, int nCircleY, int nCircleRadius)
 {
-	int px = circle_x;
-	int py = circle_y;
+	int nPx = nCircleX;
+	int nPy = nCircleY;
 
-	if (px < bound.left)
-		px = bound.left;
-	else if (px > bound.right)
-		px = bound.right;
+	if (nPx < bound.left)
+		nPx = bound.left;
+	else if (nPx > bound.right)
+		nPx = bound.right;
 
-	if (py > bound.bottom)
-		py = bound.bottom;
-	else if (py < bound.top)
-		py = bound.top;
+	if (nPy > bound.bottom)
+		nPy = bound.bottom;
+	else if (nPy < bound.top)
+		nPy = bound.top;
 
-	const int dx = px - circle_x;
-	const int dy = py - circle_y;
+	const int nDistX = nPx - nCircleX;
+	const int nDistY = nPy - nCircleY;
 
-	return (dx * dx + dy * dy) <= circleRadius * circleRadius;
+	return (nDistX * nDistX + nDistY * nDistY) <= nCircleRadius * nCircleRadius;
 }
 
 GVec2 GameCollision::Distance(BaseObject * e1, BaseObject * e2, float dt)
@@ -148,7 +148,6 @@ float GameCollision::sweptAABB(RECT obj, RECT other, GVec2 distance, Side_Collis
 	}
 
 	return entryTime;
-
 }
 
 bool GameCollision::AABBCheck(RECT object, RECT other)
