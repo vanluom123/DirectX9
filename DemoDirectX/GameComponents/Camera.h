@@ -9,7 +9,7 @@ class Camera
 public:
 	~Camera() = default;
 
-	static Camera * getInstance();
+	static Camera* getInstance();
 	static void release();
 
 	void initialize(int width, int height);
@@ -29,14 +29,14 @@ public:
 	int getHeight() const { return m_nHeight; }
 	void setHeight(int val) { m_nHeight = val; }
 
-	void checkViewportWithMapWorld(bool bIsBoss, RECT & rcCurrentRoom, RECT & rcNextRoom,
-								   int & nDirection, float fDeltaTime);
+	void checkMapWorld(bool bIsBoss, RECT& rcCurrentRoom, RECT& rcNextRoom,
+					   int& nDirection, float fDeltaTime);
 
-	void checkViewportWithEnemies(std::vector<BaseObject *> l_vObjectOut);
+	void checkEnemies(std::vector<BaseObject*> l_vObjectOut);
 
 private:
 	Camera();
-	static Camera * s_instance;
+	static Camera* s_instance;
 
 	int m_nWidth;
 	int m_nHeight;

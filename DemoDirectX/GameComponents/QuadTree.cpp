@@ -97,6 +97,15 @@ void QuadTree::insertObject(BaseObject* entity)
 	}
 }
 
+void QuadTree::removeObject(BaseObject* pEntity)
+{
+	auto iter = find(_listObject.begin(), _listObject.end(), pEntity);
+	if (iter != _listObject.end())
+	{
+		_listObject.erase(iter);
+	}
+}
+
 bool QuadTree::isContain(RECT r)
 {
 	return !(r.left > _bound.right ||

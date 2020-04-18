@@ -76,18 +76,13 @@ void BeginScene::update(float dt)
 	Sound::getInstance()->play("BlastHornet", true, 0);
 	Sound::getInstance()->setVolume(90.0f);
 
-	// Getting Object in Camera
-	_listEntityOut.clear();
-	_listEntityOut.swap(_list000);
-	QuadTree::getInstance()->getObjectCamera(_listEntityOut, Camera::getInstance()->getBound());
-
 	//Run KeyBoard play
 	Player::getInstance()->KeyBoardEventHandler(_keys, dt);
 
 	// Check collision all Object in Camera
 	this->checkCollision(dt);
-	Camera::getInstance()->checkViewportWithMapWorld(_isBoss, _curentRoom, _nextRoom, _direction, dt);
-	Camera::getInstance()->checkViewportWithEnemies(_listEntityOut);
+	Camera::getInstance()->checkMapWorld(_isBoss, _curentRoom, _nextRoom, _direction, dt);
+	Camera::getInstance()->checkEnemies(_listEntityOut);
 
 	// -------Update Object-------
 
@@ -97,17 +92,43 @@ void BeginScene::update(float dt)
 	// Updating Player
 	Player::getInstance()->update(dt);
 
+	// Getting Object in Camera
+	_listEntityOut.clear();
+	_listEntityOut.swap(_list000);
+	QuadTree::getInstance()->getObjectCamera(_listEntityOut, Camera::getInstance()->getBound());
+	
 	// Updating the list entity out
-	for (auto entity : _listEntityOut)
+	auto iter = _listEntityOut.begin();
+	while (iter != _listEntityOut.end())
 	{
-		entity->update(dt);
-		if (GameCollision::getInstance()->AABBCheck(entity->getBound(), Camera::getInstance()->getBound()))
-			_list000.push_back(entity);
+		if (GameCollision::getInstance()->AABBCheck((*iter)->getBound(), Camera::getInstance()->getBound()))
+		{
+			(*iter)->setDraw(true);
+			_list000.push_back((*iter));
+		}
+		else
+		{
+			(*iter)->setDraw(false);
+			++iter;
+			continue;
+		}
+
+		if ((*iter)->IsDestroy())
+		{
+			iter = _listEntityOut.erase(iter);
+		}
+		else
+		{
+			(*iter)->update(dt);
+			++iter;
+		}
 	}
 
 	// Background
 	if (Player::getInstance()->getPosition().x > 2600 && Player::getInstance()->getPosition().x < 5632)
+	{
 		_pAniBackground->setAnimation(1, 1);
+	}
 	else
 		_pAniBackground->setAnimation(0, 1);
 
@@ -128,7 +149,12 @@ void BeginScene::draw()
 
 	// Drawing the list entity out
 	for (auto entity : _listEntityOut)
-		entity->draw(Camera::getInstance());
+	{
+		if (entity->IsDraw())
+		{
+			entity->draw(Camera::getInstance());
+		}
+	}
 
 	// Drawing Map
 	GameMap::getInstance()->draw1();
@@ -234,16 +260,16 @@ void BeginScene::checkCollision(float dt)
 
 			this->checkCollision(Player::getInstance(), enemyBullet, dt);
 
-			vector<BaseObject *> listStaticEntity;
-			QuadTree::getInstance()->getObjectCollide(listStaticEntity, enemyBullet->getBound());
+			vector<BaseObject*> l_vStaticEntity;
+			QuadTree::getInstance()->getObjectCollide(l_vStaticEntity, enemyBullet->getBound());
 
-			for (auto staticEntity : listStaticEntity)
+			for (auto staticEntity : l_vStaticEntity)
 				this->checkCollision(staticEntity, enemyBullet, dt);
 		}
 	}
 }
 
-void BeginScene::checkCollision(BaseObject * obj, float dt)
+void BeginScene::checkCollision(BaseObject* obj, float dt)
 {
 	for (auto entityOut : _listEntityOut)
 	{
@@ -251,38 +277,34 @@ void BeginScene::checkCollision(BaseObject * obj, float dt)
 			this->checkCollision(obj, entityOut, dt);
 	}
 
-	vector<BaseObject *> listEntityStatic;
-	QuadTree::getInstance()->getObjectCollide(listEntityStatic, obj->getBound());
+	vector<BaseObject*> l_vStaticEntity;
+	QuadTree::getInstance()->getObjectCollide(l_vStaticEntity, obj->getBound());
 
-	for (auto entityStatic : listEntityStatic)
+	for (auto staticEntity : l_vStaticEntity)
 	{
-		if (obj->getId() == entityStatic->getId())
+		if (obj->getId() == staticEntity->getId())
 			continue;
 
-		if (obj->IsDestroy() ||
-			entityStatic->IsDestroy())
-			continue;
-
-		auto distance = GameCollision::getInstance()->Distance(obj, entityStatic, dt);
+		auto distance = GameCollision::getInstance()->Distance(obj, staticEntity, dt);
 		auto broad = GameCollision::getInstance()->getBroadphase(obj->getBound(), distance);
 
-		if (GameCollision::getInstance()->AABBCheck(broad, entityStatic->getBound()))
+		if (GameCollision::getInstance()->AABBCheck(broad, staticEntity->getBound()))
 		{
-			if (!GameCollision::getInstance()->isNested(obj->getBound(), entityStatic->getBound()))
+			if (!GameCollision::getInstance()->isNested(obj->getBound(), staticEntity->getBound()))
 			{
 				Side_Collision side = Side_Collision::NONE;
-				float colTime = GameCollision::getInstance()->sweptAABB(obj->getBound(), entityStatic->getBound(), distance, side);
+				float colTime = GameCollision::getInstance()->sweptAABB(obj->getBound(), staticEntity->getBound(), distance, side);
 				if (colTime < 1.0f)
-					obj->checkTimeCollision(colTime, side, entityStatic);
+					obj->checkTimeCollision(colTime, side, staticEntity);
 			}
 		}
 	}
 }
 
-void BeginScene::checkCollision(BaseObject * obj, BaseObject * other, float dt)
+void BeginScene::checkCollision(BaseObject* obj, BaseObject* other, float dt)
 {
-	if (obj->IsDestroy() || other->IsDestroy())
-		return;
+	//if (obj->IsDestroy() || other->IsDestroy())
+	//	return;
 
 	GVec2 distance = GameCollision::getInstance()->Distance(obj, other, dt);
 	RECT broad = GameCollision::getInstance()->getBroadphase(obj->getBound(), distance);

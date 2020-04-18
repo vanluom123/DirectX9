@@ -7,9 +7,9 @@
 #include "GameMap.h"
 #include "../GameObjects/Player/GameState/DieState/DieState.h"
 
-Camera * Camera::s_instance = nullptr;
+Camera* Camera::s_instance = nullptr;
 
-Camera * Camera::getInstance()
+Camera* Camera::getInstance()
 {
 	if (!s_instance) s_instance = new Camera;
 	return s_instance;
@@ -64,7 +64,7 @@ RECT Camera::getBound() const
 	return bound;
 }
 
-void Camera::checkViewportWithMapWorld(bool l_bIsBoss, RECT & l_rcCurrentRoom, RECT & l_rcNextRoom, int & l_nDirection, float l_fDeltaTime)
+void Camera::checkMapWorld(bool l_bIsBoss, RECT& l_rcCurrentRoom, RECT& l_rcNextRoom, int& l_nDirection, float l_fDeltaTime)
 {
 	if (l_bIsBoss)
 	{
@@ -146,17 +146,25 @@ void Camera::checkViewportWithMapWorld(bool l_bIsBoss, RECT & l_rcCurrentRoom, R
 	}
 
 	if (this->getBound().left < l_rcCurrentRoom.left)
+	{
 		this->setPosition(l_rcCurrentRoom.left + this->getWidth() / 2, this->getPosition().y);
+	}
 	else if (this->getBound().right > l_rcCurrentRoom.right)
+	{
 		this->setPosition(l_rcCurrentRoom.right - this->getWidth() / 2, this->getPosition().y);
+	}
 
 	if (this->getBound().top < l_rcCurrentRoom.top)
+	{
 		this->setPosition(this->getPosition().x, l_rcCurrentRoom.top + this->getHeight() / 2);
+	}
 	else if (this->getBound().bottom > l_rcCurrentRoom.bottom)
+	{
 		this->setPosition(this->getPosition().x, l_rcCurrentRoom.bottom - this->getHeight() / 2);
+	}
 }
 
-void Camera::checkViewportWithEnemies(std::vector<BaseObject *> l_vObjectOut)
+void Camera::checkEnemies(std::vector<BaseObject*> l_vObjectOut)
 {
 	for (int i = 0; i < l_vObjectOut.size(); i++)
 	{
@@ -168,12 +176,14 @@ void Camera::checkViewportWithEnemies(std::vector<BaseObject *> l_vObjectOut)
 
 		if (!GameCollision::getInstance()->isNested(Camera::getInstance()->getBound(), l_vObjectOut.at(i)->getBound())
 			&& !GameCollision::getInstance()->pointCollision(l_vObjectOut.at(i)->getPositionStart().x, l_vObjectOut.at(i)->getPositionStart().y, Camera::getInstance()->getBound()))
+		{
 			l_vObjectOut.at(i)->newObject();
+		}
 	}
 }
 
 Camera::Camera()
-{ 
+{
 	m_nWidth = GameGlobal::getInstance()->getWidth();
 	m_nHeight = GameGlobal::getInstance()->getHeight();
 	m_fPosWorld = Gvec3Zero;

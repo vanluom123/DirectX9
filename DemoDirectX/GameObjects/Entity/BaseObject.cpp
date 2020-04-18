@@ -198,7 +198,7 @@ void BaseObject::setDraw(bool isDraw)
 		_isAllowDraw = isDraw;
 }
 
-bool BaseObject::getDraw() const
+bool BaseObject::IsDraw() const
 {
 	return _isAllowDraw;
 }

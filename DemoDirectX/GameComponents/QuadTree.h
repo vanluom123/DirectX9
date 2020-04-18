@@ -7,7 +7,7 @@
 class QuadTree
 {
 	//thuc hien chia ra cac node
-	void split(); 
+	void split();
 
 	bool isContain(RECT r);
 
@@ -17,7 +17,7 @@ class QuadTree
 	RECT _bound;
 
 	//tuong ung voi so node
-	int _level; 
+	int _level;
 
 	QuadTree** _node;
 
@@ -25,23 +25,24 @@ class QuadTree
 	QuadTree();
 	QuadTree(int level, RECT bound);
 
-	static QuadTree * s_instance;
+	static QuadTree* s_instance;
 
 public:
 	~QuadTree();
 
-	static QuadTree * getInstance();
+	static QuadTree* getInstance();
 	static void release();
 
 	void initialize(int level, RECT bound);
 
 	void clear();
-	void insertObject(BaseObject *entity);
+	void insertObject(BaseObject* entity);
+	void removeObject(BaseObject* pEntity);
 
 	int getTotalObject();
-	void getAllObject(std::vector<BaseObject*> &EntityOut, RECT rect);
-	void getObjectCollide(std::vector<BaseObject*> &EntityStatic, RECT rect);
-	void getObjectCamera(std::vector<BaseObject*> &EntityOut, RECT rect);
+	void getAllObject(std::vector<BaseObject*>& EntityOut, RECT rect);
+	void getObjectCollide(std::vector<BaseObject*>& EntityStatic, RECT rect);
+	void getObjectCamera(std::vector<BaseObject*>& EntityOut, RECT rect);
 
 	RECT getBound() const;
 	int getLevel() const;

@@ -66,7 +66,7 @@ public:
 	void addVy(float vy);
 
 	void setDraw(bool isDraw);
-	bool getDraw() const;
+	bool IsDraw() const;
 
 	void setObjectType(Object_Type objectType);
 	Object_Type getObjectType() const;
